@@ -7,7 +7,8 @@ import sitemap from '@astrojs/sitemap';
 const site = process.env.PUBLIC_SITE_URL || 'http://localhost:4321';
 
 export default defineConfig({
-  site,
+  site: 'https://treystr.github.io',
+  base: 'bd-web',
   vite: {
     plugins: [tailwindcss()],
     css: {
