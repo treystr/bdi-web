@@ -1,0 +1,81 @@
+---
+alwaysApply: true
+---
+# Titan Core Astro Theme Rules
+
+## Project Overview
+This project uses the Titan Core Astro theme, which provides a set of pre-built components and layouts. The project structure is as follows:
+- `public/`: Static assets (e.g., favicon.ico)
+- `src/`: 
+  - `assets/`: Additional assets
+  - `components/`: 
+    - `blog/`: Blog-related components (e.g., Post cards, category pills)
+    - `forms/`: Form components
+    - `icons/`: Icon components
+    - `sections/`: Layout section components (e.g., Hero, Features, Split Panel, CTA Banner)
+    - `team/`: Team-related components (e.g., Team grid, member cards)
+    - `ui/`: UI components (e.g., Buttons, Forms, Cards)
+  - `content/`: Content files (e.g., blog posts, pages)
+  - `data/`: Configuration data (e.g., config.ts, menu.ts, features.ts)
+  - `layouts/`: Layout components (e.g., Layout.astro)
+  - `pages/`: Page components (e.g., index.astro, about.astro)
+  - `styles/`: Global styles
+  - `utils/`: Utility functions
+
+## Component Usage
+- Always use existing components from `src/components/` when possible.
+- For layout sections, use components from `src/components/sections/`, such as:
+  - Hero
+  - Features
+  - Split Panel
+  - CTA Banner
+  - etc.
+- For UI elements, use components from `src/components/ui/`, such as:
+  - Buttons
+  - Forms
+  - Cards
+  - etc.
+- For blog-related content, use components from `src/components/blog/`.
+- For team-related content, use components from `src/components/team/`.
+- Before creating a new component, check if an existing one can be reused or extended.
+
+## Styling
+- The theme provides 10 pre-configured themes (e.g., zeus, poseidon). The current theme is set in `src/data/config.ts` via `themeSetting`.
+- Use the theme's CSS classes and variables for styling.
+- Avoid hardcoding styles; instead, use the theme's provided classes.
+- If the theme switcher is not needed, remove it by editing `src/layouts/Layout.astro` (remove `ThemeSwitcher` import and component).
+
+## Page Creation
+- When creating new pages, look at existing pages in `src/pages/` to understand the structure and component usage.
+- Use the Layout components appropriately (e.g., wrap pages with `Layout.astro`).
+- Ensure new pages follow the same patterns as existing ones for consistency.
+
+## Configuration
+- Content and configuration are managed in `src/data/` and `src/content/`.
+- When adding new content, update the relevant files in `src/data/`, such as:
+  - `menu.ts`: For navigation menu
+  - `features.ts`: For feature sections
+  - `faqs.ts`: For FAQ sections
+  - `logos.ts`: For logos
+  - `categories.ts`: For blog categories
+- Use Astro's content collections for managing content in `src/content/`.
+
+## Best Practices
+- Follow Astro's best practices for component composition and routing.
+- Keep components reusable and avoid one-off implementations.
+- Use Astro's features like islands and hydration appropriately.
+- Write new components in `.astro` format unless a specific framework (e.g., React, Vue) is required.
+- Use TypeScript for enhanced type safety where applicable.
+
+## Cursor-Specific Instructions
+- Always check for existing components in `src/components/` before creating new ones.
+- Reference existing pages in `src/pages/` when creating new pages.
+- Use the theme's styling system for consistent design.
+- Avoid introducing custom styles or components unless absolutely necessary.
+- When adding new content, ensure to update the corresponding configuration files in `src/data/`.
+
+## Additional Notes
+- This project uses Astro, a modern web framework that supports partial hydration and multi-framework integration.
+- Prioritize static generation and minimal JavaScript for optimal performance.
+- Use descriptive variable names and follow Astro's naming conventions.
+- Organize files using Astro's file-based routing system.

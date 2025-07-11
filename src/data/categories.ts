@@ -1,0 +1,24 @@
+interface Category {
+  name: string;
+  slug: string;
+  description: string;
+}
+
+export const categories: Category[] = [
+  {
+    name: 'Outreach',
+    slug: 'outreach',
+    description: 'Latest in outreach and community engagement'
+  },
+  {
+    name: 'Fundraising',
+    slug: 'fundraising',
+    description: 'Latest in fundraising and donations'
+  },
+  
+];
+
+// Helper function to get category by slug
+export function getCategoryBySlug(slug: string): Category | undefined {
+  return categories.find(category => category.slug === slug);
+}

@@ -1,0 +1,127 @@
+---
+import { footerMenu, legalMenu } from '@data/menu';
+import Button from '@components/ui/Button.astro';
+import { siteConfig } from '@data/config';
+import { Github, Linkedin, Mail, Feather } from 'lucide-astro';
+import X from '@components/icons/X.astro';
+import Meetup from '@components/icons/Meetup.astro';
+
+interface ButtonProps {
+  text: string;
+  link: string;
+  target?: string;
+}
+
+interface Props {
+  footerCta?: {
+    title: string;
+    description: string;
+    hideCta: boolean;
+    button: ButtonProps;
+  };
+}
+
+const { footerCta } = Astro.props;
+
+const defaultCta = {
+  title: "Take Initiative",
+  description: "Support our mission to create positive change in our community. Your involvement helps us reach more people and make a greater impact.",
+  hideCta: false,
+  button: {
+    text: "Get Involved",
+    link: "/get-involved",
+    target: "_self"
+  }
+};
+
+const cta = footerCta || defaultCta;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class={`bg-black text-white ${cta.hideCta ? 'pt-8' : ''}`}>
+  <div class="site-container mx-auto px-4">
+    {!cta.hideCta && (
+      <div class="text-center py-8 mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold mb-3" data-aos="fade-up">{cta.title}</h2>
+        <p class="text-white mb-6 max-w-2xl mx-auto text-sm md:text-base" data-aos="fade-up" data-aos-delay="100">
+          {cta.description}
+        </p>
+        <Button 
+          href={cta.button.link} 
+          variant="ghostLight"
+          size="lg"
+          data-aos="fade-up"
+          data-aos-delay="200"
+          {...(cta.button.target && { target: cta.button.target })}
+        >
+          {cta.button.text}
+        </Button>
+      </div>
+    )}
+
+    <!-- Minimal Footer -->
+    <div class="text-center py-8 space-y-4">
+      <!-- Social Icons -->
+      <div>
+        <nav aria-label="Social media links">
+          <ul class="flex justify-center gap-6 items-center">
+            {siteConfig.socialLinks.map(link => {
+              const iconProps = { size: 20, class: "text-body-dark hover:text-white transition-colors" };
+              return (
+                <li>
+                  <a 
+                    href={link.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    aria-label={`Follow us on ${link.icon}`}
+                    class="inline-flex items-center justify-center text-body-dark hover:text-white transition-colors"
+                  >
+                    {link.icon === 'x' && <X size={20} class="text-body-dark hover:text-white transition-colors" />}
+                    {link.icon === 'github' && <Github {...iconProps} />}
+                    {link.icon === 'linkedin' && <Linkedin {...iconProps} />}
+                    {link.icon === 'mail' && <Mail {...iconProps} />}
+                    {link.icon === 'nostr' && <Feather {...iconProps} />}
+                    {link.icon === 'meetup' && <Meetup size={20} class="text-body-dark hover:text-white transition-colors" />}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </div>
+      
+      <!-- Horizontal Links with Dots -->
+      <div>
+        <nav>
+          <ul class="flex flex-wrap justify-center gap-1 text-sm">
+            {[...footerMenu, ...legalMenu].map((item, index, array) => (
+              <li class="flex items-center">
+                <a 
+                  href={item.link} 
+                  class="text-body-dark hover:text-white transition-colors px-2"
+                >
+                  {item.name}
+                </a>
+                {index < array.length - 1 && <span class="text-body-dark">•</span>}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+      
+      <!-- Descriptive Line -->
+      <div>
+        <p class="text-body-dark text-xs max-w-4xl mx-auto">
+          Bitcoin District Initiative (EIN TBD) is a non-profit organization (pending 501c3 status). All gifts and donations may be tax-deductible when IRS nonprofit determination is received.
+        </p>
+      </div>
+      
+      <!-- Copyright -->
+      <div>
+        <p class="text-body-dark text-sm">
+          © {currentYear} {siteConfig.companyName}
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,86 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Hero from '@components/sections/Hero.astro';
+import SplitPanel from '@components/sections/SplitPanel.astro';
+import Features from '@components/sections/Features.astro';
+import { featureLists } from '@data/features';
+import heroImage from '../assets/images/hero/hero0.jpg';
+import communityImage from '../assets/images/home/developer.jpg';
+
+const seoTitle = "Home";
+const seoDescription = "A modern, high-performance Astro theme for developer portfolios and documentation sites.";
+
+const heroContent = {
+    title: 'Empowering DC Communities Through Bitcoin Education and Advocacy',
+    description: 'We\'re a nonprofit (pending 501c3 status) dedicated to advancing the public understanding of Bitcoin and freedom technology. Our mission is to empower individuals, organizations and small businesses through accessible education, community engagement, and privacy-preserving tools.',
+    buttons: [
+        {
+            text: 'Get Involved',
+            link: '/get-involved',
+            target: '_self'
+        },
+        {
+            text: 'Donate',
+            link: '/donate',
+            target: '_self'
+        }
+    ],
+    backgroundImage: heroImage,
+    overlayOpacity: 0.6
+}
+
+const featuresSection = {
+    //eyebrow: "CORE FEATURES",
+    title: "Advancing Bitcoin & Freedom Tech in Washington, DC Metro Area",
+    description: "Our mission is to transform DC into a thriving Bitcoin hub by providing accessible education and resources that empower individuals, organizations and small businesses to achieve economic freedom and self sovereignty through Bitcoin and freedom technologies.",
+    features: featureLists.main.features,
+}
+
+const FooterCta = {
+    eyebrow: "Take Initiative",
+    title: 'Get Involved With Bitcoin Education in DC',
+    description: 'Join our mission to empower DC communities through Bitcoin education, advocacy, and outreach. Discover the many ways you can contribute, volunteer, or support our initiative.',
+    hideCta: false,
+    button: {
+        text: 'See How You Can Get Involved',
+        link: '/get-involved',
+        target: '_self'
+    }
+}
+
+const communitySection = {
+    eyebrow: "Community First",
+    headline: "Building Trust Through In-Person Connections",
+    description: "We believe in meeting people where they are. Through local meetups, workshops, and events, we create a trusted environment where DC residents can learn about Bitcoin without the noise and scams found online. Our face-to-face approach builds lasting relationships and empowers individuals with confidence and genuine understanding.",
+    image: {
+        src: communityImage,
+        alt: "Community members learning about Bitcoin together"
+    },
+    buttons: [
+        {
+            text: "Join Our Events",
+            link: "/events",
+            variant: "ghostDark" as const
+        }
+    ]
+}
+
+const mainCta = {
+    eyebrow: "Start Your Journey",
+    title: "Learn Bitcoin With Confidence",
+    description: "Whether you're new to Bitcoin or looking to deepen your understanding, we provide clear, practical education focused on self-sovereignty and personal freedom. Join our community of learners in Washington, DC.",
+    button: {
+        text: "Start Learning",
+        link: "/learn",
+        variant: "primary" as const,
+        target: "_self" as const
+    }
+};
+
+---
+
+<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription}>
+    <Hero content={heroContent} />
+    <Features content={featuresSection} padding="base" background="base" />
+    <SplitPanel content={communitySection} imagePosition="right" background="light" padding="base" />
+</Layout>

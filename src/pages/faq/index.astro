@@ -1,0 +1,29 @@
+---
+import Layout from "@layouts/Layout.astro"
+import InnerHero from "@components/sections/InnerHero.astro"
+import Faqs from '@components/sections/Faqs.astro';
+import { faqLists } from '@data/faqs';
+import { withRandomHeroContent } from '@utils/randomHeroImage';
+
+const seoTitle = "Frequently Asked Questions";
+const seoDescription = "Find answers to common questions about the Bitcoin District Initiative, our programs, and Bitcoin education resources.";
+
+const heroContent = withRandomHeroContent({
+    title: "Frequently Asked Questions",
+    description: "Find answers to common questions about our platform and services.",
+    randomBackground: true,
+    overlayOpacity: 0.6
+});
+
+const faqsSection = {
+    title: 'Frequently Asked Questions',
+    description: 'Find answers to common questions about the Bitcoin District Initiative, our programs, and Bitcoin education resources.',
+    faqs: faqLists.main.faqs
+}
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <InnerHero content={heroContent} />
+
+    <Faqs content={faqsSection} background="base" paddingTop="base" paddingBottom="large" />
+</Layout>

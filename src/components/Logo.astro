@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
+interface Props {
+    variant?: 'header' | 'footer' | 'dark';
+}
+
+const { variant = 'header' } = Astro.props;
+
+// Determine the appropriate CSS class based on the variant
+const getLogoClass = () => {
+    switch (variant) {
+        case 'header':
+            return 'text-header-logo hover:text-primary';
+        case 'footer':
+            return 'text-footer-logo hover:text-primary';
+        case 'dark':
+            return 'text-body-base hover:text-primary';
+        default:
+            return 'text-body-base hover:text-primary';
+    }
+};
+---
+
+<a href="/" class:list={['logo uppercase font-logo transition-colors duration-200 font-light flex items-center gap-1 sm:gap-2 whitespace-nowrap', getLogoClass()]}>
+    {
+        // If image is the only element in this link, its alt attribute should be a textual representation.
+        // Please, use something like your company name or "Home", not "logo."
+        // If there is link text, leave alt empty.
+    }
+    <Image src={logo} alt="" class="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0" />
+    <span class="font-bold text-sm sm:text-base">Bitcoin District</span> <span class="text-sm sm:text-base">Initiative</span>
+</a>

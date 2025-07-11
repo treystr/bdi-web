@@ -1,0 +1,22 @@
+---
+import Layout from '@layouts/Layout.astro';
+import InnerHero from '@components/sections/InnerHero.astro';
+import TeamGrid from '@components/sections/TeamGrid.astro';
+import { withRandomHeroContent } from '@utils/randomHeroImage';
+
+const seoTitle = "Our Team";
+const seoDescription = "Meet the Bitcoin District Initiative team: educators, advocates, and community builders dedicated to making Bitcoin accessible in Washington, DC. Learn how we're empowering our community through grassroots education and engagement.";
+
+const heroContent = withRandomHeroContent({
+    title: "Our Team",
+    description: "Our team at the Bitcoin District Initiative is all about bringing Bitcoin to life for DC’s communities. We’re educators, advocates, and locals passionate about teaching people and small businesses how to use Bitcoin to gain financial freedom and build a stronger, more connected community.",
+    randomBackground: true,
+    overlayOpacity: 0.6
+});
+
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <InnerHero content={heroContent}  />
+    <TeamGrid padding="base" />
+</Layout>
