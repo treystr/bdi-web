@@ -11,6 +11,11 @@ export const categories: Category[] = [
     description: 'Latest in outreach and community engagement'
   },
   {
+    name: 'Announcements',
+    slug: 'announcements',
+    description: 'Latest announcements and updates from our team'
+  },
+  {
     name: 'Fundraising',
     slug: 'fundraising',
     description: 'Latest in fundraising and donations'
