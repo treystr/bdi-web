@@ -18,9 +18,9 @@ export const headerMenu: MenuItem[] = [
 export const footerMenu = [
   { name: 'About', link: '/about' },
   { name: 'Our Team', link: '/team' },
-  { name: 'Blog', link: '/blog' },
-  { name: 'Transparency', link: '/transparency' },
-  { name: 'FAQ', link: '/faq' },
+//
+//  { name: 'Transparency', link: '/transparency' },
+//  { name: 'FAQ', link: '/faq' },
   { name: 'Contact Us', link: '/contact' },
 ];
 

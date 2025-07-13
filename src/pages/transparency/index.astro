@@ -13,33 +13,6 @@ const heroContent = withRandomHeroContent({
     overlayOpacity: 0.6
 });
 
-const transparencyFeatures = {
-    title: "Our Commitment to Transparency",
-    description: "We believe in open governance and public accountability. Explore our organizational documents, financial data, and operational information.",
-    features: [
-        {
-            icon: FileText,
-            title: "Organizational Documents",
-            description: "Access our bylaws, policies, and governance documents that guide our operations and decision-making processes."
-        },
-        {
-            icon: BarChart3,
-            title: "Financial Transparency",
-            description: "View our treasury dashboard and financial reports to see how your donations are being used to advance our mission."
-        },
-        {
-            icon: Users,
-            title: "Meeting Minutes",
-            description: "Stay informed about our board meetings and organizational decisions through publicly available meeting minutes."
-        },
-        {
-            icon: Scale,
-            title: "Legal Compliance",
-            description: "Review our annual reports and compliance documentation as we maintain our 501(c)(3) non-profit status."
-        }
-    ]
-}
-
 const contactCta = {
     title: "Questions About Our Operations?",
     description: "We're committed to full transparency. If you have questions about our organization, finances, or operations that aren't answered here, please don't hesitate to reach out.",
@@ -54,8 +27,6 @@ const contactCta = {
 <Layout title="Transparency" description="View our transparency and policy documents as well as our internal and external processes of our organization.">
     <InnerHero content={heroContent} />
     
-    <Features content={transparencyFeatures} background="base" padding="base" />
-
     <!-- Organizational Documents Section -->
     <section class="py-small bg-background-light">
         <div class="site-container mx-auto px-4">
@@ -191,8 +162,7 @@ const contactCta = {
                 <h2 class="text-3xl font-bold mb-6">Legal Information</h2>
                 <div class="p-6 bg-background-light rounded-lg border border-black">
                     <p class="text-body-base leading-relaxed">
-                        Bitcoin District Initiative, Inc. (EIN XX-XXXXXXX) is a PENDING 501(c)(3) non-profit organization. 
-                        All gifts and donations are tax-deductible to the full extent of the law once 501(c)(3) status is granted. 
+                        Bitcoin District Initiative, Inc. (EIN 39-2961184) is a non-profit organization (pending 501c3 status). 
                         We are committed to maintaining full compliance with all federal, state, and local regulations governing 
                         non-profit organizations.
                     </p>
