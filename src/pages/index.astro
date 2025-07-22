@@ -4,6 +4,7 @@ import Hero from '@components/sections/Hero.astro';
 import SplitPanel from '@components/sections/SplitPanel.astro';
 import Features from '@components/sections/Features.astro';
 import { featureLists } from '@data/features';
+import { narratives } from '@data/narratives';
 import heroImage from '../assets/images/hero/hero0.jpg';
 import communityImage from '../assets/images/home/studybitcoin_coffee.jpg';
 
@@ -30,9 +31,8 @@ const heroContent = {
 }
 
 const featuresSection = {
-    eyebrow: "Our Mission",
-    title: "Advancing Bitcoin & Freedom Tech in Washington, DC Metro Area",
-    description: "Our mission is empower Washington, DC residents, small businesses, and community organizations through comprehensive Bitcoin education. Our nonprofit delivers practical workshops, regular community gatherings, and accessible resources that help you understand and harness Bitcoin\'s potential for economic independence and individual sovereignty.",
+    title: "Our Mission",
+    description: narratives.mission.content,
     features: featureLists.main.features,
 }
 

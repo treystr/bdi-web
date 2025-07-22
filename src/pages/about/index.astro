@@ -5,6 +5,7 @@ import TeamGrid from '@components/sections/TeamGrid.astro';
 import { withRandomHeroContent } from '@utils/randomHeroImage';
 import { valueLists } from '@data/values';
 import { narratives } from '@data/narratives';
+import { community } from '@data/community';
 
 const seoTitle = "About Us";
 const seoDescription = "About the Bitcoin District Initiative";
@@ -55,4 +56,40 @@ const heroContent = withRandomHeroContent({
             ))}
         </div>
     </div>
+
+    <!-- Why In-Person Community Matters Section -->
+    <div class="site-container mx-auto px-4 mb-16 text-left">
+        <h2 class="text-3xl font-bold mb-8" data-aos="fade-up">Why In-Person Community Matters</h2>
+        <div class="grid gap-8 md:grid-cols-2" data-aos="fade-up" data-aos-delay="100">
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">{community.education.title}</h3>
+                    <p class="text-base opacity-90">{community.education.description}</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">{community['self-custody'].title}</h3>
+                    <p class="text-base opacity-90">{community['self-custody'].description}</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">{community['focused-learning'].title}</h3>
+                    <p class="text-base opacity-90">{community['focused-learning'].description}</p>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">{community['human-connections'].title}</h3>
+                    <p class="text-base opacity-90">{community['human-connections'].description}</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">{community['local-networks'].title}</h3>
+                    <p class="text-base opacity-90">{community['local-networks'].description}</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2">{community['lasting-impact'].title}</h3>
+                    <p class="text-base opacity-90">{community['lasting-impact'].description}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </Layout>
