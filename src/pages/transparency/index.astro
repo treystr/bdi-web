@@ -1,14 +1,13 @@
 ---
 import Layout from "@layouts/Layout.astro"
 import InnerHero from "@components/sections/InnerHero.astro"
-import Features from "@components/sections/Features.astro"
 import CtaBanner from "@components/sections/CtaBanner.astro"
-import { ExternalLink, FileText, BarChart3, Users, Scale } from 'lucide-astro'
+import { FileText, BarChart3, Users, Scale } from 'lucide-astro'
 import { withRandomHeroContent } from '@utils/randomHeroImage';
 
 const heroContent = withRandomHeroContent({
     title: "Transparency",
-    description: "As a public charity, the Bitcoin District Initiative is dedicated to maintaining the highest standards of transparency, integrity, and legal compliance. Rooted in the principles of the Bitcoin and open-source movement, we prioritize openness, accountability, and public engagement in all our activities. Our commitment to these values ensures that our community, supporters, and stakeholders can trust in our mission to transform Washington, DC into a thriving Bitcoin hub through accessible education and resources that empower individuals to achieve economic freedom and personal sovereignty.",
+    description: "The Bitcoin District Initiative upholds transparency, integrity, and compliance in all operations. Guided by Bitcoin’s open-source principles, we ensure accountability and trust, fostering a community-driven mission to make Washington, DC a Bitcoin hub through accessible education and resources for economic freedom and personal sovereignty.",
     randomBackground: true,
     overlayOpacity: 0.6
 });
@@ -87,7 +86,7 @@ const contactCta = {
                         </h3>
                         <p class="text-body-base mb-4">Real-time view of our financial status, including donations received, expenses, and current treasury balance.</p>
                         <a href="#" class="text-primary hover:underline flex items-center gap-1">
-                            Coming Soon <ExternalLink size={16} />
+                            Coming Soon
                         </a>
                     </div>
 
@@ -98,15 +97,13 @@ const contactCta = {
                         </h3>
                         <div class="space-y-3">
                             <div>
-                                <p class="font-medium">End of Year Report: 2025</p>
-                                <a href="#" class="text-primary hover:underline text-sm flex items-center gap-1">
-                                    Future Release <ExternalLink size={14} />
+                                <a href="/docs/eoy2025" class="font-medium text-primary hover:underline flex items-center gap-1">
+                                    End of Year Report: 2025
                                 </a>
                             </div>
                             <div>
-                                <p class="font-medium">Impact Report: 2025</p>
-                                <a href="#" class="text-primary hover:underline text-sm flex items-center gap-1">
-                                    Future Release <ExternalLink size={14} />
+                                <a href="/docs/impact2025" class="font-medium text-primary hover:underline flex items-center gap-1">
+                                    Impact Report: 2025
                                 </a>
                             </div>
                         </div>
@@ -131,7 +128,7 @@ const contactCta = {
                     <div class="space-y-2">
                         <div>
                             <a href="#" class="text-primary hover:underline flex items-center gap-1">
-                                2025-Q3 Meeting Minutes <ExternalLink size={16} /> (Coming Soon)
+                                2025-Q3 Meeting Minutes (Coming Soon)
                             </a>
                         </div>
                     </div>

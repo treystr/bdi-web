@@ -3,6 +3,8 @@ import Layout from '@layouts/Layout.astro';
 import InnerHero from '@components/sections/InnerHero.astro';
 import TeamGrid from '@components/sections/TeamGrid.astro';
 import { withRandomHeroContent } from '@utils/randomHeroImage';
+import { valueLists } from '@data/values';
+import { narratives } from '@data/narratives';
 
 const seoTitle = "About Us";
 const seoDescription = "About the Bitcoin District Initiative";
@@ -12,16 +14,9 @@ const heroContent = withRandomHeroContent({
     title: "About Us",
     randomBackground: true,
     overlayOpacity: 0.6,
-    description: "We're a nonprofit dedicated to fostering public understanding of Bitcoin and open-source freedom technologies. Our mission is to empower individuals, small businesses, and organizations with accessible education, vibrant community connections, and privacy-focused tools that promote financial independence and digital autonomy.",
+    description: "The Bitcoin District Initiative is organized as a 501(c)(3) nonprofit organization dedicated to advancing Bitcoin adoption in Washington, DC. Tax exempt status is pending IRS approval.",
 });
 
-// To use a specific hero background instead, replace the above heroContent with:
-// const heroContent = {
-//     title: "About Us",
-//     backgroundImage: heroImage,
-//     overlayOpacity: 0.6,
-//     description: "We're a nonprofit dedicated to fostering public understanding of Bitcoin and open-source freedom technologies. Our mission is to empower individuals, small businesses, and organizations with accessible education, vibrant community connections, and privacy-focused tools that promote financial independence and digital autonomy.",
-// }
 ---
 
 <Layout title={seoTitle} description={seoDescription}>
@@ -29,17 +24,17 @@ const heroContent = withRandomHeroContent({
 
     <!-- Our Mission Section -->
     <div class="site-container mx-auto px-4 mt-16 mb-16 text-left">
-        <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">Our Mission</h2>
+        <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">{narratives.mission.title}</h2>
         <p class="text-lg opacity-90" data-aos="fade-up" data-aos-delay="100">
-            The Bitcoin District Initiative is a grassroots nonprofit dedicated to empowering Washington, DC residents and small businesses through education on Bitcoin. We meet people where they are, offering clear, practical resources to help them understand what Bitcoin is, why it matters as a tool for freedom and self-sovereignty, and how to navigate common misconceptions—so they can explore its potential with confidence and hope, especially for those seeking alternatives to traditional systems.
+            {narratives.mission.content}
         </p>
     </div>
 
     <!-- Who We Are Section -->
     <div class="site-container mx-auto px-4 mb-16 text-left">
-        <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">Who We Are</h2>
+        <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">{narratives['who-we-are'].title}</h2>
         <p class="text-lg opacity-90" data-aos="fade-up" data-aos-delay="100">
-            The Bitcoin District Initiative was born from a deep commitment to grassroots education, making Bitcoin and freedom technologies understandable and actionable for everyone in the Washington, DC metro area. While policy discussions and corporate initiatives have their place in the District, our focus is on the ground level—engaging everyday people, small businesses, and local organizations to demystify Bitcoin's potential and demonstrate its practical benefits for daily life. Inspired by the growing energy of DC's Bitcoin enthusiasts, we're establishing a sustainable nonprofit foundation to amplify these efforts, encouraging more folks to explore the Bitcoin ecosystem and building an inclusive, knowledgeable community that thrives on collaboration and shared discovery.
+            {narratives['who-we-are'].content}
         </p>
     </div>
 
@@ -53,24 +48,11 @@ const heroContent = withRandomHeroContent({
     <div class="site-container mx-auto px-4 mt-16 mb-24 text-left">
         <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">Our Values</h2>
         <div class="text-lg opacity-90 space-y-4" data-aos="fade-up" data-aos-delay="100">
-            <p>
-                <strong>Empowerment through Education:</strong> Knowledge unlocks true freedom. We deliver hands-on educational programs on Bitcoin and freedom technologies, equipping individuals and communities with the skills for self-sovereignty and confident participation in the digital world.
-            </p>
-            <p>
-                <strong>Advocacy for Personal Sovereignty:</strong> We stand for individual autonomy and self-reliance. By promoting Bitcoin and privacy-enhancing tools, we enable people to take control of their financial and digital futures, liberated from centralized oversight or intrusion.
-            </p>
-            <p>
-                <strong>Commitment to Privacy:</strong> Privacy is essential to genuine freedom. We champion and teach about open-source technologies that safeguard personal data, building trust and security in a decentralized digital landscape where individuals can interact freely and privately.
-            </p>
-            <p>
-                <strong>Community-Driven Collaboration:</strong> We nurture an open, collaborative space where people connect to learn, exchange ideas, and evolve together. Through local workshops, meetups, and events, we strengthen networks right here in DC, bringing together diverse perspectives to advance Bitcoin and freedom for all.
-            </p>
-            <p>
-                <strong>Principled Innovation:</strong> We pursue Bitcoin and open-source advancements with integrity and responsibility. Our work prioritizes transparency, accessibility, and ethical practices, ensuring our education and outreach efforts support decentralization and the greater public good.
-            </p>
-            <p>
-                The Bitcoin District Initiative's core values drive our vision of transforming Washington, DC into a vibrant hub for Bitcoin innovation. We emphasize practical education and resources to empower individuals, small businesses, and organizations with the means to achieve economic freedom and personal sovereignty via Bitcoin and open-source tools. These principles shape our community events, workshops, and initiatives, cultivating an engaged, resilient ecosystem rooted in trust and shared growth.
-            </p>
+            {valueLists.main.values.map((value) => (
+                <p>
+                    <strong>{value.title}:</strong> {value.description}
+                </p>
+            ))}
         </div>
     </div>
 </Layout>

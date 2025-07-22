@@ -20,6 +20,11 @@ export const categories: Category[] = [
     slug: 'fundraising',
     description: 'Latest in fundraising and donations'
   },
+  {
+    name: 'Initiatives',
+    slug: 'initiatives',
+    description: 'Our ongoing initiatives and projects'
+  },
   
 ];
 
