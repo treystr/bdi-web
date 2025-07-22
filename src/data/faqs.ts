@@ -14,7 +14,7 @@ export const faqLists: Record<string, FaqList> = {
         faqs: [
             {
                 question: "What's the difference between 'Bitcoin District' and the 'Bitcoin District Initiative'?",
-                answer: "Bitcoin District is the open community of all Bitcoiners in and around Washington DC—including individuals, businesses, organizations and companies throughout the region. Bitcoin District belongs to everyone and is owned by the community, not any single entity. The Bitcoin District Initiative is just one nonprofit organization operating within the District, focused specifically on community-level Bitcoin adoption through education and outreach. While we host events in Bitcoin District, the community itself is much larger than our organization and includes all the amazing Bitcoiners and Bitcoin-focused businesses that make up this vibrant ecosystem."
+                answer: "Bitcoin District is the open community of all Bitcoiners in and around Washington DC—including individuals, businesses, organizations and companies throughout the region. Bitcoin District belongs to everyone and is owned by the community, not any single entity. The Bitcoin District Initiative is just one nonprofit organization operating within the District, focused specifically on community-level Bitcoin adoption through education and outreach. While we host events in Bitcoin District, the community itself is much larger than our organization and includes all the amazing Bitcoiners and Bitcoin-focused businesses that make up this vibrant community."
             },
             {
                 question: "What is the Bitcoin District Initiative?",

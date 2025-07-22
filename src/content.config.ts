@@ -1,9 +1,19 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { categories } from '@data/categories';
+import { parseISO } from 'date-fns';
 
 // Extract category names for the enum
 const categoryNames = categories.map((category) => category.name);
+
+// Helper function to parse dates consistently
+function parseDate(dateStr: string) {
+    const date = parseISO(dateStr);
+    if (isNaN(date.getTime())) {
+        throw new Error(`Invalid date: ${dateStr}`);
+    }
+    return date;
+}
 
 const blog = defineCollection({
     loader: glob({ base: './src/content/blog', pattern: '**/*.md' }),
@@ -12,7 +22,7 @@ const blog = defineCollection({
             title: z.string(),
             excerpt: z.string(),
             featuredImage: image().optional(),
-            publishDate: z.string().transform((str) => new Date(str)),
+            publishDate: z.string().transform(parseDate),
             publish: z.boolean().optional(),
             categories: z.array(z.enum(categoryNames as [string, ...string[]])),
             seo: z
@@ -48,7 +58,7 @@ const legal = defineCollection({
     loader: glob({ base: './src/content/legal', pattern: '**/*.md' }),
     schema: z.object({
         title: z.string(),
-        lastUpdated: z.string().transform((str) => new Date(str)),
+        lastUpdated: z.string().transform(parseDate),
         seo: z
             .object({
                 title: z.string().optional(),
@@ -58,4 +68,18 @@ const legal = defineCollection({
     }),
 });
 
-export const collections = { blog, team, legal };
+const docs = defineCollection({
+    loader: glob({ base: './src/content/docs', pattern: '**/*.md' }),
+    schema: z.object({
+        title: z.string(),
+        lastUpdated: z.string().transform(parseDate),
+        seo: z
+            .object({
+                title: z.string().optional(),
+                description: z.string().optional(),
+            })
+            .optional(),
+    }),
+});
+
+export const collections = { blog, team, legal, docs };

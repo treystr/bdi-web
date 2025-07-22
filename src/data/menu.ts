@@ -26,6 +26,6 @@ export const footerMenu = [
 
 export const legalMenu = [
     { name: 'Privacy Policy', link: '/legal/privacy-policy' },
-    { name: 'Terms of Service', link: '/legal/terms-of-service' }
+//    { name: 'Terms of Service', link: '/legal/terms-of-service' }
 ];
 

@@ -22,7 +22,7 @@ export const featureLists: Record<string, FeatureList> = {
             {
                 icon: Zap, // Workshop/learning icon
                 title: 'Education & Workshops',
-                description: 'Host workshops, seminars, and hands-on learning experiences to help individuals and small businesses achieve financial independence through Bitcoin.'
+                description: 'Host workshops, seminars, and hands-on learning experiences to help individuals and small businesses achieve economic independence through Bitcoin.'
             },
             {
                 icon: CodeXml, // Tools/resources icon
