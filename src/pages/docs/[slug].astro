@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import InnerHero from '../../components/sections/InnerHero.astro';
+import heroImage from '../../assets/images/wethepeople.jpg';
 
 export async function getStaticPaths() {
     const docsEntries = await getCollection('docs');
@@ -29,8 +30,9 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 // Hero content
 const heroContent = {
     title: entry.data.title,
-    description: '',
+    description: entry.data.seo?.description || '',
     overlayOpacity: 0.8,
+    backgroundImage: heroImage,
 };
 ---
 
@@ -38,10 +40,29 @@ const heroContent = {
     <InnerHero content={heroContent} />
 
     <article class="site-container--small mx-auto px-8 prose pb-base">
-        <div class="mt-12 mb-8">
-            <p class="text-sm text-body-base/80">Last updated: {formattedDate}</p>
+        <!-- Top navigation link -->
+        <div class="mt-4 mb-6">
+            <div class="flex justify-between items-baseline mb-4">
+                <a href="/docs" class="inline-flex items-center text-sm text-accent hover:text-accent-dark transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    All Documents
+                </a>
+                <span class="text-sm text-body-base/80">Last updated: {formattedDate}</span>
+            </div>
         </div>
 
         <Content />
+
+        <!-- Bottom navigation link -->
+        <div class="mt-12 pt-8 border-t border-body-base/10">
+            <a href="/docs" class="inline-flex items-center text-sm text-accent hover:text-accent-dark transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                All Documents
+            </a>
+        </div>
     </article>
 </Layout> 

@@ -4,9 +4,8 @@ lastUpdated: "2025-07-15"
 seo:
   title: "Bylaws of the Bitcoin District Initiative"
   description: "Official bylaws governing the structure, governance, and operating procedures of the Bitcoin District Initiative."
+type: bylaws
 ---
-
-# **Bylaws of the Bitcoin District Initiative**
 
 # **Preamble**
 
@@ -314,7 +313,5 @@ The Board shall adopt a gift acceptance policy governing the acceptance of donat
 # Adoption of Bylaws
 
 These bylaws were adopted by the Board of Directors of the Bitcoin District Initiative on July 15, 2025\.
-
-(names withheld for privacy)
 
 Bitcoin Block Height: **905706**

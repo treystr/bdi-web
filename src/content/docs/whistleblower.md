@@ -1,72 +1,94 @@
 ---
 title: "Whistleblower Protection Policy"
-lastUpdated: "2025-07-22"
+lastUpdated: "2025-07-23"
+type: policy
 seo:
   title: "Whistleblower Protection Policy"
   description: "Policy protecting individuals who report suspected wrongdoing."
 --- 
 
-# Whistleblower Protection Policy  
-**Bitcoin District Initiative**
+## **Article 1: Introduction**
 
-## 1. Purpose  
-The Bitcoin District Initiative (the "Corporation") is committed to lawful, ethical, and transparent conduct in all its operations. This Whistleblower Protection Policy is designed to encourage directors, officers, employees, volunteers, and other stakeholders to report suspected wrongdoing, ensure compliance with applicable laws—including the District of Columbia Nonprofit Corporation Act—and protect individuals from retaliation. It affirms the Corporation’s commitment to a culture of accountability and integrity.
+### **1.1 Purpose**
 
-## 2. Scope  
-This policy applies to all individuals associated with the Corporation, including but not limited to board members, officers, staff, volunteers, and contractors. Reportable concerns include:
+The Bitcoin District Initiative (hereinafter "the Corporation") is committed to lawful, ethical, and transparent conduct in all its operations. This Whistleblower Protection Policy encourages directors, officers, employees, volunteers, and other stakeholders to report suspected wrongdoing, ensures compliance with applicable laws—including the District of Columbia Nonprofit Corporation Act (D.C. Code § 29-401 et seq.)—and protects individuals from retaliation. It affirms the Corporation’s commitment to a culture of accountability and integrity in support of its mission to advance Bitcoin education and personal sovereignty.
 
-- Financial misconduct, fraud, or mismanagement of funds.
-- Violations of the Corporation’s policies, internal controls, or applicable federal, state, or local laws.
-- Unethical behavior, conflicts of interest, or abuse of authority.
-- Discrimination, harassment, or other violations of employment laws.
-- Misuse of organizational resources or donor-restricted funds.
-- Any conduct that jeopardizes the Corporation’s 501(c)(3) status.
+### **1.2 Scope**
 
-## 3. Reporting Responsibilities and Procedures  
+This policy applies to all individuals associated with the Corporation, including board members, officers, staff, volunteers, and contractors. Reportable concerns include:
 
-### 3.1. Affirmative Duty to Report  
-All Covered Persons (directors, officers, employees, and volunteers) have a duty to report suspected wrongdoing promptly and in good faith, based on a reasonable belief that misconduct has occurred.  
+* Financial misconduct, fraud, or mismanagement of funds.  
+* Violations of the Corporation’s policies or applicable federal, state, or local laws.  
+* Unethical behavior, conflicts of interest, or abuse of authority.  
+* Discrimination, harassment, or violations of employment laws.  
+* Misuse of organizational resources or donor-restricted funds.  
+* Conduct that jeopardizes the Corporation’s 501(c)(3) status.
 
-### 3.2. Reporting Channels  
-- **Primary Contact**: Reports should be submitted to the Corporation’s Secretary by email or in writing at the official address designated by the Board.  
-- **Alternate Contacts**: If the Secretary is implicated, unavailable, or if the reporter is uncomfortable contacting them, reports may be submitted to the President or Treasurer.  
-- **Anonymous Reporting**: Individuals may submit anonymous reports in writing to the Corporation’s principal office, or via a secure online form if available. Sufficient detail should be provided to allow investigation.  
-- **External Reporting**: If internal channels are ineffective or inappropriate, concerns may be reported to government agencies, such as the IRS or the DC Department of Licensing and Consumer Protection.
+## **Article 2: Reporting Procedures**
 
-### 3.3. Report Content  
-Reports should, when possible, include the nature of the concern, relevant dates, names of involved individuals, specific conduct, and any supporting documentation or evidence.
+### **2.1 Duty to Report**
 
-## 4. No Retaliation  
-No individual who in good faith reports a suspected violation or participates in an investigation shall suffer retaliation. Retaliation includes dismissal, demotion, harassment, or any adverse change in terms or conditions of affiliation with the Corporation. Retaliators may face disciplinary action, including termination, removal from the board, or legal action.
+All Covered Persons (directors, officers, employees, and volunteers) must report suspected wrongdoing promptly and in good faith, based on a reasonable belief that misconduct has occurred.
 
-## 5. Investigation and Oversight  
+### **2.2 Reporting Channels**
 
-### 5.1. Acknowledgment  
-The designated officer shall acknowledge receipt of a report within five (5) business days unless the report is anonymous.  
+* **Primary Contact**: Submit reports to the Corporation’s Secretary by email or in writing at the Board-designated address.  
+* **Alternate Contacts**: If the Secretary is implicated or unavailable, submit reports to the President or Treasurer.  
+* **Anonymous Reporting**: Anonymous reports may be submitted in writing to the Corporation’s principal office or via a secure online form, if available, with sufficient detail for investigation.  
+* **External Reporting**: If internal channels are ineffective, concerns may be reported to agencies like the IRS or DC Department of Licensing and Consumer Protection.
 
-### 5.2. Investigation  
-Reports will be reviewed and investigated promptly, fairly, and confidentially. The investigation will be overseen by the Board of Directors or a designated committee, with legal counsel or external advisors engaged when appropriate.
+### **2.3 Report Content**
 
-### 5.3. Findings and Resolution  
-Upon completion, the Board will determine any corrective actions or policy changes necessary and, where feasible, notify the whistleblower of the outcome, maintaining confidentiality as required by law.
+Reports should include the nature of the concern, relevant dates, names of involved individuals, specific conduct, and any supporting documentation.
 
-### 5.4. Board Reporting  
-The Board shall maintain oversight of whistleblower reports and investigations to ensure fair handling and resolution of all concerns.
+## **Article 3: Whistleblower Protections**
 
-## 6. Confidentiality  
-To the extent possible, the Corporation will maintain the confidentiality of the reporter’s identity and the information shared, consistent with the need to conduct an effective investigation and comply with legal obligations.
+### **3.1 No Retaliation**
 
-## 7. Good Faith Requirement  
-Reports must be made in good faith. Knowingly false or malicious reports may result in disciplinary action. Honest mistakes will not result in negative consequences for the reporter.
+Individuals reporting in good faith or participating in investigations shall not face retaliation, such as dismissal, demotion, harassment, or adverse changes in affiliation terms. Retaliators may face disciplinary action, including termination or removal from the board.
 
-## 8. Documentation and Recordkeeping  
-The Corporation shall maintain a confidential log of all whistleblower reports and outcomes in accordance with its document retention policy. Access will be limited to authorized individuals.
+### **3.2 Confidentiality**
 
-## 9. Distribution and Training  
-This policy shall be distributed to all directors, officers, employees, and volunteers at the time of engagement and reviewed annually. It shall also be publicly posted on the Corporation’s website to support transparency and accountability.
+The Corporation will maintain confidentiality of the reporter’s identity and information, consistent with investigation needs and legal obligations.
 
-## 10. Compliance and Indemnification  
-This policy supports compliance with applicable federal and DC laws, including the Sarbanes-Oxley Act and DC’s duty of directors to report material legal violations. Individuals acting in good faith under this policy may be entitled to indemnification under the Corporation’s bylaws and applicable law.
+### **3.3 Good Faith Requirement**
 
-## 11. Amendments  
-This policy may be amended by a two-thirds vote of the Board of Directors at a regular or special meeting, with at least seven days’ advance notice of proposed changes.
+Reports must be made in good faith. Knowingly false or malicious reports may lead to disciplinary action, but honest mistakes will not result in penalties.
+
+## **Article 4: Investigation and Resolution**
+
+### **4.1 Acknowledgment**
+
+The designated officer will acknowledge receipt of a report within five business days, unless anonymous.
+
+### **4.2 Investigation**
+
+Reports will be investigated promptly, fairly, and confidentially by the Board or a designated committee, with legal counsel engaged as needed.
+
+### **4.3 Findings and Resolution**
+
+The Board will determine corrective actions and, where feasible, notify the whistleblower of the outcome, maintaining confidentiality.
+
+### **4.4 Board Oversight**
+
+The Board will oversee all reports and investigations to ensure fair resolution.
+
+## **Article 5: Administration**
+
+### **5.1 Documentation**
+
+The Corporation will maintain a confidential log of whistleblower reports and outcomes, per its Record Retention and Destruction Policy.
+
+### **5.2 Distribution and Training**
+
+This policy will be distributed to all directors, officers, employees, and volunteers upon engagement and reviewed annually. It will be posted on the Corporation’s website for transparency.
+
+### **5.3 Compliance and Indemnification**
+
+This policy supports compliance with federal and DC laws, including the Sarbanes-Oxley Act. Individuals acting in good faith may be eligible for indemnification under the Corporation’s bylaws.
+
+## **Article 6: Amendments and Adoption**
+
+### **6.1 Amendments**
+
+This policy may be amended by a two-thirds vote of the Board, with seven days’ advance notice.

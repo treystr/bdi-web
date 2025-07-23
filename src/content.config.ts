@@ -73,6 +73,7 @@ const docs = defineCollection({
     schema: z.object({
         title: z.string(),
         lastUpdated: z.string().transform(parseDate),
+        type: z.enum(['policy', 'report', 'bylaws']).optional(),
         seo: z
             .object({
                 title: z.string().optional(),
