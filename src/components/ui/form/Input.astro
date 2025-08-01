@@ -12,6 +12,8 @@ interface Props {
     disabled?: boolean;
     background?: ThemeColor;
     class?: string;
+    autocomplete?: string;
+    inputmode?: 'text' | 'email' | 'tel' | 'numeric' | 'decimal' | 'search' | 'url';
 }
 
 const { 
@@ -23,7 +25,9 @@ const {
     required = false,
     disabled = false,
     background = 'base',
-    class: className = ''
+    class: className = '',
+    autocomplete,
+    inputmode
 } = Astro.props;
 
 const labelClass = getHeadlineColor(background);
@@ -45,6 +49,8 @@ const inputTextClass = getInputTextColor(background);
         placeholder={placeholder}
         required={required}
         disabled={disabled}
+        autocomplete={autocomplete}
+        inputmode={inputmode}
         class={`
             w-full px-4 py-2 
             ${inputBgClass}

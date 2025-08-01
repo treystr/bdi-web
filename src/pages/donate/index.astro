@@ -3,7 +3,6 @@ import Layout from "@layouts/Layout.astro"
 import InnerHero from "@components/sections/InnerHero.astro"
 import Features from "@components/sections/Features.astro"
 import SplitPanel from "@components/sections/SplitPanel.astro"
-import Stats from "@components/sections/Stats.astro"
 import CtaBanner from "@components/sections/CtaBanner.astro"
 import { Heart, Users, BookOpen, Shield } from 'lucide-astro'
 import { withRandomHeroContent } from '@utils/randomHeroImage';
@@ -18,6 +17,9 @@ const heroContent = withRandomHeroContent({
     randomBackground: true,
     overlayOpacity: 0.7
 });
+
+// Tax deductibility notice
+const taxNotice = "The Bitcoin District Initiative is currently in the process of applying for 501(c)(3) tax-exempt status with the Internal Revenue Service. If our application is approved, donations made while our application is pending may be considered tax-deductible to the extent allowed by law. We encourage you to consult with your tax advisor for guidance on deducting your contribution."
 
 // Impact areas that donations support
 const impactFeatures = {
@@ -44,43 +46,6 @@ const impactFeatures = {
             icon: Heart,
             title: 'Sustainable Infrastructure',
             description: 'Build lasting organizational capacity to ensure continuous Bitcoin education, mentorship programs, and community support for years to come.'
-        }
-    ]
-}
-
-// Goals and vision stats
-const impactStats = {
-    variant: 'side-by-side' as const,
-    eyebrow: "OUR VISION",
-    content: {
-        title: "Building Bitcoin Adoption Through Education",
-        description: "Our grassroots approach focuses on meeting people where they are, providing clear resources to help them understand Bitcoin's potential for hope and self-sovereignty. These are our goals as we work to cultivate lasting change in DC, one person at a time.",
-        button: {
-            text: "Learn About Our Mission",
-            link: "/about",
-            variant: "secondary" as const
-        }
-    },
-    stats: [
-        {
-            value: 500,
-            label: "Community Members to Educate",
-            suffix: "+"
-        },
-        {
-            value: 50,
-            label: "Workshops & Events to Host",
-            suffix: "+"
-        },
-        {
-            value: 25,
-            label: "Local Business Partnerships",
-            suffix: "+"
-        },
-        {
-            value: 100,
-            label: "Open Source Resources",
-            suffix: "%"
         }
     ]
 }
@@ -150,28 +115,21 @@ const FooterCta = {
         background="base"
         padding="large"
     />
+
     
-    <!-- Impact features -->
-    <Features 
-        content={impactFeatures} 
-        background="light" 
-        padding="large"
-    />
-    
-    <!-- Impact statistics -->
-    <Stats 
-        content={impactStats} 
-        background="base" 
-        padding="large"
-    />
-    
-    <!-- Why donate split panel -->
-    <SplitPanel 
-        content={whyDonateSection} 
-        imagePosition="right" 
-        background="light" 
-        padding="large"
-    />
+    <!-- Tax Deductibility Notice -->
+    <section class="py-8 bg-yellow-50 border-y border-yellow-200">
+        <div class="site-container px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="bg-yellow-100 border border-yellow-300 p-6 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-3 text-yellow-800">Tax Deductibility Notice</h3>
+                    <p class="text-sm text-yellow-700 leading-relaxed">
+                        {taxNotice}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <!-- Donation methods section -->
     <section id="donation-methods" class="py-large bg-white">
@@ -180,13 +138,13 @@ const FooterCta = {
                 <div class="text-center mb-16">
                     <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">Donation Methods</h2>
                     <p class="text-lg opacity-90" data-aos="fade-up" data-aos-delay="100">
-                        Choose your preferred method to support Bitcoin education in DC. All donations are tax-deductible and go directly toward our educational mission.
+                        Choose your preferred method to support grassroots Bitcoin education & advocacy in the DMV.
                     </p>
                 </div>
                 
                 <div class="grid md:grid-cols-2 gap-8">
                     <!-- Bitcoin Donation -->
-                    <div id="btc-donate" class="bg-background/90 p-8 rounded-lg border border-black" data-aos="fade-up">
+                    <div id="btc-donate" class="bg-orange-50 p-8 rounded-lg border border-orange-200" data-aos="fade-up">
                         <h3 class="text-h4 mb-4 font-bold">Donate Bitcoin</h3>
                         <p class="text-base opacity-90 mb-6">
                             Support our mission using Bitcoin directly. Your donation demonstrates the power of peer-to-peer money and helps us practice what we teach.
@@ -216,7 +174,7 @@ const FooterCta = {
                     </div>
                     
                     <!-- Fiat Donation -->
-                    <div id="fiat-donate" class="bg-background/90 p-8 rounded-lg border border-black" data-aos="fade-up" data-aos-delay="100">
+                    <div id="fiat-donate" class="bg-green-50 p-8 rounded-lg border border-green-200" data-aos="fade-up" data-aos-delay="100">
                         <h3 class="text-h4 mb-4 font-bold">Traditional Donation</h3>
                         <p class="text-base opacity-90 mb-6">
                             Prefer traditional payment methods? We're setting up convenient online donation options for credit cards, bank transfers, and other payment methods.
@@ -235,21 +193,26 @@ const FooterCta = {
                                 <li>• Credit & Debit Cards</li>
                                 <li>• Bank Transfers</li>
                                 <li>• Digital Payment Platforms</li>
-                                <li>• Cryptocurrency Payment Processors</li>
                             </ul>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-12">
-                    <div class="bg-background-alt p-6 rounded-lg">
-                        <h4 class="font-semibold mb-2">Tax Deductibility</h4>
-                        <p class="text-sm opacity-90">
-                            The Bitcoin District Initiative is organized as a 501(c)(3) nonprofit organization. Once our tax-exempt status is approved, all donations will be fully tax-deductible to the extent allowed by law. We will provide proper documentation for all contributions.
-                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Impact features -->
+    <Features 
+        content={impactFeatures} 
+        background="light" 
+        padding="large"
+    />
+    
+    <!-- Why donate split panel -->
+    <SplitPanel 
+        content={whyDonateSection} 
+        imagePosition="right" 
+        background="light" 
+        padding="large"
+    />
 </Layout>

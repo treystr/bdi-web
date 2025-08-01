@@ -5,22 +5,27 @@ import Textarea from "@components/ui/form/Textarea.astro";
 
 const formBackground = 'light';
 ---
-<form class="space-y-6 bg-white p-6 rounded-lg">
+<form id="contact-form" class="space-y-6 bg-white p-6 rounded-lg">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Input
-        label="Name"
-        id="name"
-        name="name"
-        required
-        background={formBackground}
+            label="Name"
+            id="name"
+            name="name"
+            required
+            background={formBackground}
+            autocomplete="name"
+            placeholder="Satoshi Nakamoto"
         />
         <Input
-        label="Email"
-        type="email"
-        id="email"
-        name="email"
-        required
-        background={formBackground}
+            label="Email"
+            type="email"
+            id="email"
+            name="email"
+            required
+            background={formBackground}
+            autocomplete="email"
+            inputmode="email"
+            placeholder="email@example.com"
         />
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -30,12 +35,17 @@ const formBackground = 'light';
             id="phone"
             name="phone"
             background={formBackground}
+            autocomplete="tel"
+            inputmode="tel"
+            placeholder="(555) 123-4567"
         />
         <Input
             label="Organization"
             id="organization"
             name="organization"
             background={formBackground}
+            autocomplete="organization"
+            placeholder="Your organization or company"
         />
     </div>
 
@@ -45,9 +55,156 @@ const formBackground = 'light';
         name="message"
         required
         background={formBackground}
+        autocomplete="off"
+        placeholder="Your message here... "
     />
 
+    <!-- Status Message -->
+    <div id="form-status" class="hidden p-3 rounded-md" role="alert"></div>
+
     <div class="mt-6">
-        <Button>Submit</Button>
+        <button 
+            type="submit" 
+            id="submit-btn"
+            class="group relative inline-flex overflow-hidden items-center justify-center rounded-border-small font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-md flex items-center gap-2 bg-primary text-white hover:bg-primary-light focus-visible:ring-primary hover:ring-2 hover:ring-primary hover:ring-offset-2 h-10 px-4 py-2 text-small"
+        >
+            <span class="absolute left-0 -mt-12 h-32 w-1/2 translate-x-[250%] rotate-12 bg-white opacity-20 transition-all duration-250 ease-out group-hover:translate-x-[2%]"></span>
+            Submit
+        </button>
     </div>
 </form>
+
+<script>
+interface ContactFormData {
+  name: string;
+  email: string;
+  phone?: string;
+  organization?: string;
+  message: string;
+}
+
+interface FormResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+class ContactFormHandler {
+  private form: HTMLFormElement;
+  private submitBtn: HTMLButtonElement;
+  private statusEl: HTMLDivElement;
+
+  constructor() {
+    this.form = document.getElementById('contact-form') as HTMLFormElement;
+    this.submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+    this.statusEl = document.getElementById('form-status') as HTMLDivElement;
+    
+    if (this.form) {
+      this.form.addEventListener('submit', this.handleSubmit.bind(this));
+    }
+  }
+
+  private async handleSubmit(event: Event): Promise<void> {
+    event.preventDefault();
+    
+    // Reset status
+    this.hideStatus();
+    
+    // Disable submit button
+    this.setSubmitting(true);
+
+    try {
+      // Collect form data
+      const formData = this.collectFormData();
+      
+      // Validate form data
+      if (!this.validateFormData(formData)) {
+        this.showStatus('Please fill in all required fields correctly.', 'error');
+        return;
+      }
+
+      // Submit to API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result: FormResponse = await response.json();
+
+      if (result.success) {
+        this.showStatus(result.message || 'Thank you! Your message has been sent successfully.', 'success');
+        this.form.reset();
+      } else {
+        this.showStatus(result.error || 'Something went wrong. Please try again.', 'error');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      this.showStatus('Network error. Please check your connection and try again.', 'error');
+    } finally {
+      this.setSubmitting(false);
+    }
+  }
+
+  private collectFormData(): ContactFormData {
+    const formData = new FormData(this.form);
+    return {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string || undefined,
+      organization: formData.get('organization') as string || undefined,
+      message: formData.get('message') as string,
+    };
+  }
+
+  private validateFormData(data: ContactFormData): boolean {
+    // Check required fields
+    if (!data.name?.trim() || !data.email?.trim() || !data.message?.trim()) {
+      return false;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private setSubmitting(isSubmitting: boolean): void {
+    if (this.submitBtn) {
+      this.submitBtn.disabled = isSubmitting;
+      this.submitBtn.textContent = isSubmitting ? 'Submitting...' : 'Submit';
+    }
+  }
+
+  private showStatus(message: string, type: 'success' | 'error'): void {
+    if (this.statusEl) {
+      this.statusEl.textContent = message;
+      this.statusEl.className = `p-3 rounded-md ${
+        type === 'success' 
+          ? 'bg-green-100 text-green-800 border border-green-200' 
+          : 'bg-red-100 text-red-800 border border-red-200'
+      }`;
+      this.statusEl.classList.remove('hidden');
+      
+      // Scroll to status message
+      this.statusEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  private hideStatus(): void {
+    if (this.statusEl) {
+      this.statusEl.classList.add('hidden');
+    }
+  }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  new ContactFormHandler();
+});
+</script>

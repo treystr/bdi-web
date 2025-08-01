@@ -4,7 +4,7 @@ lastUpdated: "2025-07-15"
 seo:
   title: "Bylaws of the Bitcoin District Initiative"
   description: "Official bylaws governing the structure, governance, and operating procedures of the Bitcoin District Initiative."
-type: bylaws
+type: main
 ---
 
 # **Preamble**
