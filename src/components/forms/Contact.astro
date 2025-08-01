@@ -123,22 +123,14 @@ class ContactFormHandler {
         return;
       }
 
-      // Submit to API
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      // Submit directly to Google Forms
+      const success = await this.submitToGoogleForm(formData);
 
-      const result: FormResponse = await response.json();
-
-      if (result.success) {
-        this.showStatus(result.message || 'Thank you! Your message has been sent successfully.', 'success');
+      if (success) {
+        this.showStatus('Thanks for your message. We will response shortly!', 'success');
         this.form.reset();
       } else {
-        this.showStatus(result.error || 'Something went wrong. Please try again.', 'error');
+        this.showStatus('Failed to submit form. Please try again.', 'error');
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -199,6 +191,47 @@ class ContactFormHandler {
   private hideStatus(): void {
     if (this.statusEl) {
       this.statusEl.classList.add('hidden');
+    }
+  }
+
+  private async submitToGoogleForm(formData: ContactFormData): Promise<boolean> {
+    try {
+      const formId = '1FAIpQLSf9wUIYF3-9bMJK3EoHvPHNJsGbgd_6ipR8_I7PNsEyWFUyVA';
+      const entries = {
+        name: 'entry.2053111584',
+        email: 'entry.1784549577',
+        phone: 'entry.849479955',
+        organization: 'entry.366023573',
+        message: 'entry.496949466'
+      };
+      
+      const baseUrl = `https://docs.google.com/forms/d/e/${formId}/formResponse`;
+      
+      // Create FormData object
+      const submitData = new FormData();
+      submitData.append(entries.name, formData.name);
+      submitData.append(entries.email, formData.email);
+      if (formData.phone) {
+        submitData.append(entries.phone, formData.phone);
+      }
+      if (formData.organization) {
+        submitData.append(entries.organization, formData.organization);
+      }
+      submitData.append(entries.message, formData.message);
+
+      // Submit to Google Forms
+      await fetch(baseUrl, {
+        method: 'POST',
+        body: submitData,
+        mode: 'no-cors' // Required for Google Forms submission
+      });
+
+      // Google Forms returns a CORS error but the submission still works
+      // Since we can't read the response due to no-cors mode, we assume success
+      return true;
+    } catch (error) {
+      console.error('Error submitting to Google Form:', error);
+      return false;
     }
   }
 }
