@@ -4,7 +4,7 @@ export const siteConfig = {
   Socials: {
       xSocial: 'https://x.com/btcdistrict',
       Github: 'https://github.com/',
-      Instagram: 'https://www.instagram.com/',
+      Instagram: 'https://www.instagram.com/bitcoindistrictinitiative/',
       LinkedIn: 'https://www.linkedin.com/company/',
       Email: 'hey@bitcoindistrictinitiative.org',
       Phone: null,
@@ -12,6 +12,7 @@ export const siteConfig = {
   },
   socialLinks: [
     { icon: 'x', url: 'https://x.com/btcd_init' },
+    { icon: 'instagram', url: 'https://www.instagram.com/bitcoindistrictinitiative/' },
     { icon: 'nostr', url: 'nostr:npub1yournostrpubkey' },
     { icon: 'meetup', url: 'https://www.meetup.com/bitcoin-district/' },
   ]

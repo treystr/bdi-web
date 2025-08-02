@@ -2,7 +2,7 @@
 import { footerMenu, legalMenu } from '@data/menu';
 import Button from '@components/ui/Button.astro';
 import { siteConfig } from '@data/config';
-import { Github, Linkedin, Mail, Feather } from 'lucide-astro';
+import { Github, Linkedin, Mail, Feather, Instagram } from 'lucide-astro';
 import X from '@components/icons/X.astro';
 import Meetup from '@components/icons/Meetup.astro';
 
@@ -77,6 +77,7 @@ const currentYear = new Date().getFullYear();
                     class="inline-flex items-center justify-center text-body-dark hover:text-white transition-colors"
                   >
                     {link.icon === 'x' && <X size={20} class="text-body-dark hover:text-white transition-colors" />}
+                    {link.icon === 'instagram' && <Instagram {...iconProps} />}
                     {link.icon === 'github' && <Github {...iconProps} />}
                     {link.icon === 'linkedin' && <Linkedin {...iconProps} />}
                     {link.icon === 'mail' && <Mail {...iconProps} />}
@@ -112,7 +113,7 @@ const currentYear = new Date().getFullYear();
       <!-- Descriptive Line -->
       <div>
         <p class="text-body-dark text-xs max-w-4xl mx-auto">
-          Bitcoin District Initiative (EIN 39-2961184) is organized a non-profit organization (pending 501c3 status). All gifts and donations may be tax-deductible when IRS nonprofit determination is received.
+          Bitcoin District Initiative (EIN <span style="white-space: nowrap;">39‑2961184</span>) is organized a non-profit organization (pending 501c3 status). All gifts and donations may be tax-deductible when IRS nonprofit determination is received.
         </p>
       </div>
       
