@@ -8,12 +8,12 @@ categories: ["Announcements"]
 
 seo:
   title: "What is the Bitcoin District Initiative?"
-  description: "Learn about BDI - a grassroots nonprofit bringing Bitcoin education and community to Washington, DC"
+  description: "Learn about The Bitcoin District Initiative - a grassroots nonprofit bringing Bitcoin education and community to Washington, DC"
 ---
 
 Hey DC! 👋
 
-I'm excited to introduce the Bitcoin District Initiative (BDI). This project represents months of planning and collaboration with local Bitcoiners, and we're thrilled to finally share it with you.
+I'm excited to introduce the Bitcoin District Initiative. This project represents months of planning and collaboration with local Bitcoiners, and we're thrilled to finally share it with you.
 
 ## Why Are We Here?
 
@@ -23,7 +23,7 @@ We believe that understanding Bitcoin starts at the community level. It happens 
 
 ## What We're About
 
-The Initiative is built on a simple idea: Bitcoin education should be accessible, practical, and rooted in community. We're creating a space where everyone can learn about Bitcoin's potential for financial sovereignty, regardless of their background or technical knowledge.
+The Initiative is built on a simple idea: Bitcoin education should be accessible, practical, and rooted in community. We're creating a space where everyone can learn about Bitcoin's potential for economic sovereignty, regardless of their background or technical knowledge.
 
 We're here to:
 - Provide clear, practical Bitcoin education through hands-on workshops
@@ -34,7 +34,7 @@ We're here to:
 
 ## This Is Your Initiative Too
 
-BDI is more than just another organization - it's a community project that will grow through your involvement. We believe everyone has something valuable to contribute, whether it's:
+The Initiative is more than just another organization - it's a community project that will grow through your involvement. We believe everyone has something valuable to contribute, whether it's:
 - Joining our educational workshops
 - Sharing your knowledge and experiences
 - Connecting us with your local community
@@ -43,10 +43,10 @@ BDI is more than just another organization - it's a community project that will 
 
 ## Let's Build This Together
 
-If you're reading this and feeling inspired to get involved, that's exactly what we're hoping for. BDI is about creating something meaningful together - a community that supports each other in understanding and using Bitcoin.
+If you're reading this and feeling inspired to get involved, that's exactly what we're hoping for. The Initiative is about creating something meaningful together - a community that supports each other in understanding and using Bitcoin.
 
 We're building this initiative one step at a time, focusing on real connections and genuine impact in our DC communities. Whether you're just starting your Bitcoin journey or you're already deeply involved, there's a place for you here.
 
 Ready to join us? We'd love to hear your thoughts and ideas. Come to our next meetup, reach out on Nostr, or drop us a message. Let's work together to make DC a vibrant hub for Bitcoin education and community growth.
 
-p.s. - Your input matters! What would you like to see from BDI? How can we better serve our local Bitcoin community? Share your thoughts - this initiative grows stronger with every voice. 
+p.s. - Your input matters! What would you like to see from The Initiative? How can we better serve our local Bitcoin community? Share your thoughts - this initiative grows stronger with every voice. 

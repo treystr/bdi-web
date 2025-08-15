@@ -10,6 +10,7 @@ const docsEntries = await getCollection('docs');
 const mainEntries = docsEntries.filter(entry => entry.data.type === 'main').sort((a, b) => a.data.title.localeCompare(b.data.title));
 const policyEntries = docsEntries.filter(entry => entry.data.type === 'policy').sort((a, b) => a.data.title.localeCompare(b.data.title));
 const reportEntries = docsEntries.filter(entry => entry.data.type === 'report').sort((a, b) => a.data.title.localeCompare(b.data.title));
+const taxEntries = docsEntries.filter(entry => entry.data.type === 'tax').sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 // Hero content
 const heroContent = {
@@ -119,6 +120,38 @@ const heroContent = {
                     </div>
                 </div>
             </div>
+
+            <!-- Tax Documents Section -->
+            {taxEntries.length > 0 && (
+                <div class="mt-12 pt-8 border-t border-body-base/10">
+                    <h2 class="text-xl font-bold mb-6">Tax Documents</h2>
+                    <div class="space-y-6">
+                        {taxEntries.map((entry) => {
+                            const formattedDate = new Intl.DateTimeFormat('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            }).format(entry.data.lastUpdated);
+
+                            return (
+                                <div class="border-b border-body-base/10 pb-6 last:border-b-0">
+                                    <a href={`/docs/${entry.id}`} class="group block">
+                                        <h3 class="text-lg font-semibold group-hover:text-accent transition-colors mb-1">
+                                            {entry.data.title}
+                                        </h3>
+                                        <p class="text-xs text-body-base/70 mb-3">Last updated: {formattedDate}</p>
+                                        {entry.data.seo?.description && (
+                                            <p class="text-sm text-body-base/60 leading-relaxed">
+                                                {entry.data.seo.description}
+                                            </p>
+                                        )}
+                                    </a>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
         </div>
     </section>
 </Layout> 

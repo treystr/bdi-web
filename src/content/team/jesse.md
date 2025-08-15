@@ -1,11 +1,11 @@
 ---
 name: "Jesse"
-headshot: "./images/ares.jpg"
-jobTitle: "Co-Director, Secretary"
+headshot: "./images/jesse.jpg"
+jobTitle: "Co-Founder"
 publish: true
 order: 3
-#linkedin: "https://www.linkedin.com/in/ares/"
-#linkedinUsername: "ares"
+#linkedin: "https://www.linkedin.com/in/jesse/"
+#linkedinUsername: "jesse"
 #email: "jesse@bitcoindistrictinitiative.org"
 #xSocial: "https://x.com/btcd_init"
 #xSocialUsername: "btcd_init"

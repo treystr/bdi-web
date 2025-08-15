@@ -11,9 +11,9 @@ export const siteConfig = {
       Location: 'Washington, DC',
   },
   socialLinks: [
-    { icon: 'x', url: 'https://x.com/btcd_init' },
-    { icon: 'instagram', url: 'https://www.instagram.com/bitcoindistrictinitiative/' },
-    { icon: 'nostr', url: 'nostr:npub1yournostrpubkey' },
+    { icon: 'x', url: 'https://x.com/btcdistrict' },
+    //{ icon: 'instagram', url: 'https://www.instagram.com/bitcoindistrictinitiative/' },
+    { icon: 'nostr', url: 'https://primal.net/p/nprofile1qqsdutvlg9h2d3sqjl0ak78sx35up9wv34kcz9fjs3xyecx79ngmktqw75l9f' },
     { icon: 'meetup', url: 'https://www.meetup.com/bitcoin-district/' },
   ]
 };
