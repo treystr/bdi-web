@@ -8,13 +8,18 @@ interface Props {
     padding?: PaddingSize;
     paddingTop?: PaddingSize;
     paddingBottom?: PaddingSize;
+    memberType?: 'bod' | 'volunteer' | 'advisor';
 }
 
-const { padding, paddingTop, paddingBottom } = Astro.props;
+const { padding, paddingTop, paddingBottom, memberType } = Astro.props as Props;
 const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
 
 const teamMembers = await getCollection('team', ({ data }) => {
-    return data.publish !== false;
+    if (data.publish === false) return false;
+    if (memberType) {
+        return data.type === memberType;
+    }
+    return true;
 });
 
 // Sort team members by order

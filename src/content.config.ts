@@ -40,6 +40,7 @@ const team = defineCollection({
     schema: ({ image }) =>
         z.object({
             name: z.string(),
+            type: z.enum(['bod', 'volunteer', 'advisor']).optional(),
             headshot: image().optional(),
             jobTitle: z.string(),
             email: z.string().optional(),

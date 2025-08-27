@@ -1,5 +1,6 @@
 ---
 name: "Trey"
+type: "bod"
 headshot: "./images/trey.jpg"
 jobTitle: "President & Co-Founder"
 publish: true

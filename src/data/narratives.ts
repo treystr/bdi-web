@@ -3,14 +3,13 @@ export interface Narrative {
     content: string;
 }
 
-// Direct key-based access - much cleaner!
 export const narratives: Record<string, Narrative> = {
     mission: {
         title: 'Our Mission',
-        content: 'To advance grassroots Bitcoin adoption in Washington, DC by equipping residents, small businesses, and organizations with education, community, and privacy tools that foster financial sovereignty and economic freedom.'
+        content: 'To advance grassroots Bitcoin adoption in Washington, DC by equipping residents, small businesses, and local organizations with hands-on education, community support, and privacy tools that foster personal sovereignty and economic freedom.'
     },
     'who-we-are': {
         title: 'Who We Are',
-        content: 'The Bitcoin District Initiative is a nonprofit born from the heart of the Bitcoin District, a vibrant, open community where everyone in Washington, DC is welcome to learn about and engage with Bitcoin. While the Bitcoin District is the grassroots hub for enthusiasts, newcomers, and local businesses to connect and share knowledge, The Initiative amplifies these efforts with sustainable funding and broader outreach. Fueled by a passion for accessible education, we simplify Bitcoin’s complexities through hands-on workshops, practical resources, and community events, empowering residents and organizations with tools for personal sovereignty and economic freedom. Rooted in DC’s growing Bitcoin scene, The Initiative builds a collaborative network, driven by the belief that fixing money can change the world.'
+        content: 'The Bitcoin District Initiative is a nonprofit dedicated to making Bitcoin accessible and actionable for everyone in Washington, DC. Born from the grassroots energy of the Bitcoin District, our work amplifies community-led efforts with sustainable funding, structured programs, and outreach that reaches beyond early adopters. We provide practical workshops, in-person meetups, and open-source resources that simplify Bitcoin’s complexities, showing its real-world value as sound, decentralized money. By fostering a collaborative local network, we empower residents, small businesses, and organizations to embrace Bitcoin as a tool for economic freedom and personal empowerment—driven by the belief that fixing money can change the world.'
     }
 };

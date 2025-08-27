@@ -1,5 +1,6 @@
 ---
 name: "Seong"
+type: "bod"
 headshot: "./images/zeus.jpg"
 jobTitle: "Co-Founder"
 publish: true
