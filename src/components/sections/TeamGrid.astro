@@ -9,9 +9,10 @@ interface Props {
     paddingTop?: PaddingSize;
     paddingBottom?: PaddingSize;
     memberType?: 'bod' | 'volunteer' | 'advisor';
+    title?: string;
 }
 
-const { padding, paddingTop, paddingBottom, memberType } = Astro.props as Props;
+const { padding, paddingTop, paddingBottom, memberType, title } = Astro.props as Props;
 const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
 
 const teamMembers = await getCollection('team', ({ data }) => {
@@ -28,6 +29,11 @@ const sortedTeamMembers = teamMembers.sort((a, b) => a.data.order - b.data.order
 
 <section class:list={['relative', paddingClass]}>
     <div class="site-container mx-auto px-4">
+        {title && (
+            <div class="text-center mb-10">
+                <h2 class="text-h3">{title}</h2>
+            </div>
+        )}
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 xl:gap-x-8 xl:gap-y-14">
             {
                 sortedTeamMembers.map((member, index) => (

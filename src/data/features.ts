@@ -14,31 +14,31 @@ export interface FeatureList {
     features: Feature[];
 }
 
-// Example feature lists
 export const featureLists: Record<string, FeatureList> = {
     main: {
         id: 'main',
         features: [
             {
-                icon: Zap, // Workshop/learning icon
+                icon: Zap,
                 title: 'Education & Workshops',
-                description: 'Host workshops, seminars, and hands-on learning experiences to help individuals and small businesses achieve economic independence through Bitcoin.'
+                description: 'Offer hands-on workshops and seminars in DC that make Bitcoin accessible, helping individuals and small businesses build confidence in achieving economic freedom and personal sovereignty.'
             },
             {
-                icon: CodeXml, // Tools/resources icon
-                title: 'Practical Tools & Guides',
-                description: 'Develop and share user-friendly guides and materials that simplify Bitcoin adoption, self-custody, and privacy-focused practices.'
+                icon: CodeXml,
+                title: 'Guides & Open Resources',
+                description: 'Create and share clear, practical guides that support Bitcoin adoption, self-custody, and privacy, empowering people to use sound money with confidence.'
             },
             {
-                icon: Shield, // Privacy/freedom icon
-                title: 'Privacy & Freedom Advocacy',
-                description: 'Promote privacy-preserving, censorship-resistant, and freedom-enhancing technologies for decentralized systems and self-sovereignty.'
+                icon: Shield,
+                title: 'Privacy & Freedom Tools',
+                description: 'Champion privacy-preserving, censorship-resistant, and open-source technologies that strengthen self-sovereignty and protect individual rights.'
             },
             {
-                icon: Smile, // Community/events icon
-                title: 'Community Outreach',
-                description: 'Organize local events, meetups, and collaborations in DC to foster Bitcoin adoption, economic resilience, and a thriving grassroots community.'
+                icon: Smile,
+                title: 'Community Engagement',
+                description: 'Host meetups, local events, and grassroots collaborations in Washington, DC to grow a resilient, connected Bitcoin community.'
             }
         ]
     },
 };
+
