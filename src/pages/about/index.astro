@@ -2,6 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 import InnerHero from '@components/sections/InnerHero.astro';
 import TeamGrid from '@components/sections/TeamGrid.astro';
+import Button from '@components/ui/Button.astro';
 import { withRandomHeroContent } from '@utils/randomHeroImage';
 import { valueLists } from '@data/values';
 import { narratives } from '@data/narratives';
@@ -44,6 +45,13 @@ const heroContent = withRandomHeroContent({
         <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">Board of Directors</h2>
     </div>
     <TeamGrid paddingTop={undefined} paddingBottom={undefined} memberType="bod" />
+    
+    <!-- View Full Team Link -->
+    <div class="site-container mx-auto px-4 mt-8 mb-8 text-center">
+        <Button href="/team" variant="secondary" size="md" data-aos="fade-up">
+            View Full Team
+        </Button>
+    </div>
 
     <!-- Our Values Section -->
     <div class="site-container mx-auto px-4 mt-16 mb-24 text-left">

@@ -18,5 +18,25 @@ const heroContent = withRandomHeroContent({
 
 <Layout title={seoTitle} description={seoDescription}>
     <InnerHero content={heroContent}  />
-    <TeamGrid padding="base" title="Board of Directors" memberType="bod" />
+    
+    <!-- Join Our Team Section -->
+    <section class="bg-base py-16">
+        <div class="site-container mx-auto px-4">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-6" data-aos="fade-up">Ready to Help Build DC's Bitcoin Future?</h2>
+                <p class="text-lg mb-8" data-aos="fade-up" data-aos-delay="100">
+                    We're building a principled, grassroots community of Bitcoiners right here in the DMV. The <strong>Bitcoin District Initiative</strong> is powered by volunteers, educators, and advocates who believe in Bitcoin's promise of economic freedom, monetary sovereignty, and personal empowerment. If you're passionate about Bitcoin and want to help us grow through education, outreach, or community building, we invite you to join our mission. Together, we can make Washington, DC a leading hub for sound money and grassroots adoption.
+                </p>
+                <div class="flex justify-center" data-aos="fade-up" data-aos-delay="200">
+                    <a href="/contact" class="inline-flex items-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors">
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <TeamGrid padding="small" title="Board of Directors" memberType="bod" />
+    <TeamGrid padding="small" title="Advisory Council" memberType="advisor" />
+    <TeamGrid padding="small" title="Volunteers" memberType="volunteer" />
 </Layout>
