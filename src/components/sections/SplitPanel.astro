@@ -30,6 +30,9 @@ export interface Props {
     paddingTop?: PaddingSize;
     paddingBottom?: PaddingSize;
     padding?: PaddingSize;
+    // Image display props
+    imageAspect?: 'square' | '4/3' | '16/9' | '3/2';
+    imageFit?: 'cover' | 'contain';
 }
 
 const {
@@ -40,6 +43,9 @@ const {
     paddingTop,
     paddingBottom,
     padding,
+    // Image display props
+    imageAspect = '4/3',
+    imageFit = 'cover',
 } = Astro.props;
 
 const { eyebrow, headline, subheadline, description, image, buttons = [] } = content;
@@ -48,6 +54,18 @@ const { src, alt = '' } = image;
 const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
 const bgColor = getBackgroundColor(background);
 const textColor = getTextColor(background);
+
+// Map aspect ratio prop to Tailwind class
+const aspectRatioMap = {
+    'square': 'aspect-square',
+    '4/3': 'aspect-[4/3]',
+    '16/9': 'aspect-video',
+    '3/2': 'aspect-[3/2]'
+};
+const aspectClass = aspectRatioMap[imageAspect];
+
+// Map fit prop to class
+const objectFitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover';
 ---
 
 <section class:list={['relative', bgColor, paddingClass]}>
@@ -62,13 +80,13 @@ const textColor = getTextColor(background);
             {/* Image Side */}
             {
                 imagePosition === 'left' && (
-                    <div class="relative aspect-[4/3] overflow-hidden rounded-[var(--border-radius-base)] border border-black">
+                    <div class:list={["relative overflow-hidden rounded-[var(--border-radius-base)] border border-black", aspectClass]}>
                         <Image
                             {src}
                             {alt}
                             width={800}
                             height={600}
-                            class="w-full h-full object-cover"
+                            class:list={["w-full h-full", objectFitClass]}
                             quality={80}
                             format="webp"
                         />
@@ -116,7 +134,7 @@ const textColor = getTextColor(background);
             {
                 imagePosition === 'right' && (
                     <div
-                        class="relative aspect-[4/3] overflow-hidden rounded-[var(--border-radius-base)] border border-black"
+                        class:list={["relative overflow-hidden rounded-[var(--border-radius-base)] border border-black", aspectClass]}
                         data-aos="fade-up"
                         data-aos-delay="100"
                     >
@@ -125,7 +143,7 @@ const textColor = getTextColor(background);
                             {alt}
                             width={800}
                             height={600}
-                            class="w-full h-full object-cover"
+                            class:list={["w-full h-full", objectFitClass]}
                             quality={80}
                             format="webp"
                         />

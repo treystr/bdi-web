@@ -1,19 +1,17 @@
 ---
 import Layout from "@layouts/Layout.astro"
 import InnerHero from "@components/sections/InnerHero.astro"
-import Features from "@components/sections/Features.astro"
 import SplitPanel from "@components/sections/SplitPanel.astro"
 import CtaBanner from "@components/sections/CtaBanner.astro"
-import { Heart, Users, BookOpen, Shield } from 'lucide-astro'
 import { withRandomHeroContent } from '@utils/randomHeroImage';
-import communityImage from '../../assets/images/home/studybitcoin_coffee.jpg'
+import qrCodeImage from '../../assets/images/bd_wosQRZAP.png'
 
 const seoTitle = "Support Our Mission"
 const seoDescription = "Support the Bitcoin District Initiative's mission to empower DC communities through Bitcoin education, privacy advocacy, and grassroots outreach. Your donation makes a huge difference."
 
 const heroContent = withRandomHeroContent({
     title: "Support Our Mission",
-    description: "Your donation empowers our grassroots mission to educate Washington, DC communities about Bitcoin, privacy technologies, and financial sovereignty. Every contribution helps us build a more decentralized and free society.",
+    description: "Help us empower Washington, DC communities through Bitcoin education and privacy advocacy. Zap us some sats to support our grassroots mission!",
     randomBackground: true,
     overlayOpacity: 0.7
 });
@@ -21,86 +19,40 @@ const heroContent = withRandomHeroContent({
 // Tax deductibility notice
 const taxNotice = "The Bitcoin District Initiative is currently in the process of applying for 501(c)(3) tax-exempt status with the Internal Revenue Service. If our application is approved, donations made while our application is pending may be considered tax-deductible to the extent allowed by law. We encourage you to consult with your tax advisor for guidance on deducting your contribution."
 
-// Impact areas that donations support
-const impactFeatures = {
-    eyebrow: "YOUR IMPACT",
-    title: "How Your Donation Makes a Difference",
-    description: "Every contribution directly supports our educational programs, community outreach, and development of privacy-focused tools that empower individuals and small businesses in the DC metro area.",
-    features: [
-        {
-            icon: BookOpen,
-            title: 'Educational Workshops',
-            description: 'Fund free workshops and seminars that teach Bitcoin basics, self-custody practices, and privacy tools to DC residents and small businesses seeking financial alternatives.'
-        },
-        {
-            icon: Users,
-            title: 'Community Outreach',
-            description: 'Support local meetups, partnerships with nonprofits, and grassroots initiatives that bring Bitcoin education to underserved communities across Washington, DC.'
-        },
-        {
-            icon: Shield,
-            title: 'Privacy & Freedom Tools',
-            description: 'Enable development and distribution of open-source resources that help people achieve digital autonomy and protection from centralized oversight.'
-        },
-        {
-            icon: Heart,
-            title: 'Sustainable Infrastructure',
-            description: 'Build lasting organizational capacity to ensure continuous Bitcoin education, mentorship programs, and community support for years to come.'
-        }
-    ]
-}
-
-// Why in-person community matters
-const whyDonateSection = {
-    eyebrow: "WHY DONATE",
-    headline: "Why In-Person Bitcoin Education Matters",
-    subheadline: "Your Support Enables Critical Grassroots Work",
-    description: "In an era of online scams and misinformation, in-person Bitcoin education provides a trusted environment where people can learn about true financial sovereignty. Your donation helps us cut through the noise, champion self-custody practices, and build lasting trust within DC's Bitcoin community. We meet people where they are, helping them navigate complex concepts while avoiding speculation and focusing on Bitcoin's empowering potential for personal freedom.",
+// Main donation section with QR code
+const donationSection = {
+    eyebrow: "DONATE NOW",
+    headline: "Zap Us on Lightning",
+    subheadline: "Support Bitcoin Education in DC",
+    description: "Scan the QR code with your Lightning wallet or send sats directly to our Lightning address: bitcoindistrict@walletofsatoshi.com. Your contribution directly supports free workshops, community outreach, and privacy education across the DMV area.",
     image: {
-        src: communityImage,
-        alt: "Community education and workshops"
-    },
+        src: qrCodeImage,
+        alt: "Bitcoin District Lightning donation QR code"
+    }
+}
+
+// More options coming soon
+const comingSoonCta = {
+    eyebrow: "MORE OPTIONS",
+    title: "Additional Donation Methods Coming Soon",
+    description: "We're working on adding more ways to support our mission, including on-chain Bitcoin donations and traditional payment options. Check back soon for updates!",
     buttons: [
         {
-            text: "Why Community Matters",
-            link: "/about#community",
+            text: "Get Involved in Other Ways",
+            link: "/get-involved",
             variant: "secondary" as const
         }
     ]
 }
 
-// Main donation CTA
-const donationCta = {
-    eyebrow: "TAKE ACTION",
-    title: "Join Our Mission to Empower DC Through Bitcoin",
-    description: "Your contribution supports educational workshops, community outreach, privacy tool development, and partnerships with local organizations. Together, we're building a foundation for economic freedom and digital autonomy in Washington, DC.",
-    buttons: [
-        {
-            text: "Donate Bitcoin",
-            link: "#btc-donate",
-            variant: "primary" as const
-        },
-        {
-            text: "Donate Fiat",
-            link: "#fiat-donate",
-            variant: "secondary" as const
-        }
-    ]
-}
-
-// Get involved CTA
-const getInvolvedCta = {
+const FooterCta = {
     title: "More Ways to Support Our Mission",
-    description: "Beyond financial contributions, you can volunteer your time, partner with us as a business, or help spread awareness about Bitcoin education in DC. Every form of support strengthens our grassroots movement.",
+    description: "Beyond financial contributions, you can volunteer your time, partner with us as a business, or help spread awareness about Bitcoin education in DC.",
     button: {
         text: "Explore All Ways to Get Involved",
         link: "/get-involved",
         variant: "ghostLight" as const
-    }
-}
-
-const FooterCta = {
-    ...getInvolvedCta,
+    },
     hideCta: false
 }
 ---
@@ -108,14 +60,15 @@ const FooterCta = {
 <Layout footerCta={FooterCta} title={seoTitle} description={seoDescription}>
     <InnerHero content={heroContent} />
     
-    <!-- Main donation CTA -->
-    <CtaBanner
-        content={donationCta}
-        variant="contained"
-        background="base"
+    <!-- Main QR Code Donation Section -->
+    <SplitPanel 
+        content={donationSection} 
+        imagePosition="left" 
+        background="base" 
         padding="large"
+        imageAspect="square"
+        imageFit="contain"
     />
-
     
     <!-- Tax Deductibility Notice -->
     <section class="py-8 bg-yellow-50 border-y border-yellow-200">
@@ -131,88 +84,11 @@ const FooterCta = {
         </div>
     </section>
     
-    <!-- Donation methods section -->
-    <section id="donation-methods" class="py-large bg-white">
-        <div class="site-container px-4">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">Donation Methods</h2>
-                    <p class="text-lg opacity-90" data-aos="fade-up" data-aos-delay="100">
-                        Choose your preferred method to support grassroots Bitcoin education & advocacy in the DMV.
-                    </p>
-                </div>
-                
-                <div class="grid md:grid-cols-2 gap-8">
-                    <!-- Bitcoin Donation -->
-                    <div id="btc-donate" class="bg-orange-50 p-8 rounded-lg border border-orange-200" data-aos="fade-up">
-                        <h3 class="text-h4 mb-4 font-bold">Donate Bitcoin</h3>
-                        <p class="text-base opacity-90 mb-6">
-                            Support our mission using Bitcoin directly. Your donation demonstrates the power of peer-to-peer money and helps us practice what we teach.
-                        </p>
-                        
-                        <div class="space-y-4">
-                            <div>
-                                <h4 class="font-semibold mb-2">On-Chain Bitcoin:</h4>
-                                <div class="bg-white p-4 rounded border mb-2">
-                                    <p class="text-sm font-mono break-all">
-                                        [Bitcoin Address Coming Soon]
-                                    </p>
-                                </div>
-                                <p class="text-xs opacity-75">QR code will be provided for easy scanning</p>
-                            </div>
-                            
-                            <div>
-                                <h4 class="font-semibold mb-2">Lightning Network:</h4>
-                                <div class="bg-white p-4 rounded border mb-2">
-                                    <p class="text-sm font-mono break-all">
-                                        [Lightning Address Coming Soon]
-                                    </p>
-                                </div>
-                                <p class="text-xs opacity-75">Fast, low-fee Lightning payments accepted</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Fiat Donation -->
-                    <div id="fiat-donate" class="bg-green-50 p-8 rounded-lg border border-green-200" data-aos="fade-up" data-aos-delay="100">
-                        <h3 class="text-h4 mb-4 font-bold">Traditional Donation</h3>
-                        <p class="text-base opacity-90 mb-6">
-                            Prefer traditional payment methods? We're setting up convenient online donation options for credit cards, bank transfers, and other payment methods.
-                        </p>
-                        
-                        <div class="bg-yellow-50 border border-yellow-200 p-4 rounded mb-4">
-                            <h4 class="font-semibold mb-2 text-yellow-800">Coming Soon</h4>
-                            <p class="text-sm text-yellow-700">
-                                We're currently evaluating secure, privacy-respecting payment processors to offer traditional donation methods. Check back soon for updates, or contact us directly to discuss donation options.
-                            </p>
-                        </div>
-                        
-                        <div class="space-y-2">
-                            <p class="text-sm font-semibold">Planned Options:</p>
-                            <ul class="text-sm opacity-75 space-y-1">
-                                <li>• Credit & Debit Cards</li>
-                                <li>• Bank Transfers</li>
-                                <li>• Digital Payment Platforms</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Impact features -->
-    <Features 
-        content={impactFeatures} 
-        background="light" 
-        padding="large"
-    />
-    
-    <!-- Why donate split panel -->
-    <SplitPanel 
-        content={whyDonateSection} 
-        imagePosition="right" 
-        background="light" 
+    <!-- More Options Coming Soon -->
+    <CtaBanner
+        content={comingSoonCta}
+        variant="contained"
+        background="light"
         padding="large"
     />
 </Layout>
