@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro"
 import InnerHero from "@components/sections/InnerHero.astro"
 import SplitPanel from "@components/sections/SplitPanel.astro"
 import CtaBanner from "@components/sections/CtaBanner.astro"
+import { Copy, Check } from 'lucide-astro'
 import { withRandomHeroContent } from '@utils/randomHeroImage';
 import qrCodeImage from '../../assets/images/bd_wosQRZAP.png'
 
@@ -24,12 +25,15 @@ const donationSection = {
     eyebrow: "DONATE NOW",
     headline: "Zap Us on Lightning",
     subheadline: "Support Bitcoin Education in DC",
-    description: "Scan the QR code with your Lightning wallet or send sats directly to our Lightning address: bitcoindistrict@walletofsatoshi.com. Your contribution directly supports free workshops, community outreach, and privacy education across the DMV area.",
+    description: "Scan the QR code with your Lightning wallet or send sats to our Lightning address below. Your contribution directly supports free workshops, community outreach, and privacy education across the DMV area.",
     image: {
         src: qrCodeImage,
         alt: "Bitcoin District Lightning donation QR code"
     }
 }
+
+// Lightning address for easy copying
+const lightningAddress = "bitcoindistrict@walletofsatoshi.com"
 
 // More options coming soon
 const comingSoonCta = {
@@ -68,7 +72,54 @@ const FooterCta = {
         padding="large"
         imageAspect="square"
         imageFit="contain"
-    />
+    >
+        <!-- Copyable Lightning Address -->
+        <div class="mt-6" data-aos="fade-up">
+            <div class="flex items-center gap-2 bg-orange-50 border border-orange-300 rounded-lg p-4 group hover:bg-orange-100 transition-colors">
+                <span class="font-mono text-sm flex-1 break-all text-gray-800" id="lightning-address">
+                    {lightningAddress}
+                </span>
+                <button
+                    id="copy-btn"
+                    type="button"
+                    class="flex-shrink-0 p-2 rounded-md hover:bg-orange-200 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    aria-label="Copy Lightning address"
+                >
+                    <Copy id="copy-icon" size={20} class="text-orange-700" />
+                    <Check id="check-icon" size={20} class="text-green-600 hidden" />
+                </button>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const copyBtn = document.getElementById('copy-btn');
+                const copyIcon = document.getElementById('copy-icon');
+                const checkIcon = document.getElementById('check-icon');
+                const addressText = document.getElementById('lightning-address');
+
+                if (copyBtn && copyIcon && checkIcon && addressText) {
+                    copyBtn.addEventListener('click', async () => {
+                        try {
+                            await navigator.clipboard.writeText(addressText.textContent?.trim() || '');
+                            
+                            // Show check icon
+                            copyIcon.classList.add('hidden');
+                            checkIcon.classList.remove('hidden');
+                            
+                            // Reset after 2 seconds
+                            setTimeout(() => {
+                                copyIcon.classList.remove('hidden');
+                                checkIcon.classList.add('hidden');
+                            }, 2000);
+                        } catch (err) {
+                            console.error('Failed to copy:', err);
+                        }
+                    });
+                }
+            });
+        </script>
+    </SplitPanel>
     
     <!-- Tax Deductibility Notice -->
     <section class="py-8 bg-yellow-50 border-y border-yellow-200">

@@ -113,6 +113,9 @@ const objectFitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover
                     )
                 }
 
+                {/* Slot for additional custom content */}
+                <slot />
+
                 {
                     buttons.length > 0 && (
                         <div class="flex flex-wrap gap-4 mt-8" data-aos="fade-up">
