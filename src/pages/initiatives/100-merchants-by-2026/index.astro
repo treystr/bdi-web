@@ -1,0 +1,164 @@
+---
+import { getEntry, render } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+import InnerHero from '@components/sections/InnerHero.astro';
+import CtaBanner from '@components/sections/CtaBanner.astro';
+import { withRandomHeroContent } from '@utils/randomHeroImage';
+import CompactStats from '@components/initiatives/CompactStats.astro';
+import Timeline from '@components/initiatives/Timeline.astro';
+import onboardingData from '@data/onboarding.json';
+
+// Get the initiative entry
+const entry = await getEntry('initiatives', '100-merchants-by-2026');
+if (!entry) {
+    return Astro.redirect('/404');
+}
+
+const { Content } = await render(entry);
+
+// Calculate stats
+const sortedEntries = [...onboardingData].sort((a, b) => 
+    new Date(a.date).getTime() - new Date(b.date).getTime()
+);
+
+const total = sortedEntries.length;
+const currentDate = new Date();
+const currentMonth = currentDate.getMonth();
+const currentYear = currentDate.getFullYear();
+
+const mtd = sortedEntries.filter(e => {
+    const entryDate = new Date(e.date);
+    return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear;
+}).length;
+
+// Calculate months remaining until end of 2026
+const endDate = new Date('2026-12-31');
+const monthsRemaining = Math.max(1, 
+    (endDate.getFullYear() - currentYear) * 12 + 
+    (endDate.getMonth() - currentMonth)
+);
+
+const neededPerMonth = (100 - total) / monthsRemaining;
+
+// Use SEO data from frontmatter if available
+const seoTitle = entry.data.seo?.title || entry.data.title;
+const seoDescription = entry.data.seo?.description || entry.data.shortDescription;
+
+// Hero content
+const heroContent = withRandomHeroContent({
+    title: entry.data.title,
+    description: entry.data.shortDescription,
+    randomBackground: true,
+    overlayOpacity: entry.data.hero?.overlayOpacity || 0.7,
+    ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image })
+});
+
+// Donate CTA
+const donateCta = {
+    eyebrow: "SUPPORT THIS INITIATIVE",
+    title: `Help Us Achieve: ${entry.data.title}`,
+    description: "Your donation directly funds this program and helps us create lasting impact in DC communities. Every contribution, big or small, makes a difference.",
+    buttons: [
+        {
+            text: "Donate Now",
+            link: "/donate",
+            variant: "primary" as const
+        },
+        {
+            text: "Volunteer",
+            link: "/get-involved",
+            variant: "secondary" as const
+        }
+    ]
+};
+
+// Status badge styling
+const statusStyles = {
+    active: 'bg-green-100 text-green-800',
+    completed: 'bg-blue-100 text-blue-800',
+    planned: 'bg-yellow-100 text-yellow-800',
+};
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <InnerHero content={heroContent} />
+
+    {/* Initiative Status Bar */}
+    <section class="py-3 bg-body-base/5 border-b border-body-base/10">
+        <div class="site-container px-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <span class={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full ${statusStyles[entry.data.status] || statusStyles.active}`}>
+                        {entry.data.status.charAt(0).toUpperCase() + entry.data.status.slice(1)}
+                    </span>
+                    {entry.data.featured && (
+                        <span class="inline-block px-2.5 py-0.5 text-xs font-semibold bg-accent text-white rounded-full">
+                            Featured Initiative
+                        </span>
+                    )}
+                </div>
+                <div class="flex gap-2">
+                    <a href="/donate" class="btn btn-primary btn-sm">
+                        Donate to This Initiative
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {/* Compact Stats */}
+    <section class="py-2 bg-base">
+        <div class="site-container px-4">
+            <CompactStats 
+                goal2025={21}
+                date2025="2025-12-31"
+                goal2026={100}
+                date2026="2026-12-31"
+                count={total}
+                total={total}
+                mtd={mtd}
+                neededPerMonth={neededPerMonth}
+            />
+        </div>
+    </section>
+
+    {/* Main Content */}
+    <article class="site-container mx-auto px-4 prose prose-lg mt-8 mb-16">
+        <Content />
+    </article>
+
+    {/* Timeline */}
+    <Timeline />
+
+    {/* Donate CTA */}
+    <CtaBanner
+        content={donateCta}
+        variant="contained"
+        background="light"
+        padding="large"
+    />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const copyBtn = document.getElementById('copy-link-btn');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', async () => {
+                    const link = copyBtn.getAttribute('data-link');
+                    if (link) {
+                        try {
+                            await navigator.clipboard.writeText(link);
+                            const originalText = copyBtn.textContent;
+                            copyBtn.textContent = 'Copied!';
+                            setTimeout(() => {
+                                copyBtn.textContent = originalText;
+                            }, 2000);
+                        } catch (err) {
+                            console.error('Failed to copy:', err);
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</Layout>
+

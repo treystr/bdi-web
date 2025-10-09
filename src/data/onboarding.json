@@ -1,0 +1,26 @@
+[
+  {
+    "date": "2025-07-13",
+    "block_height": 905381,
+    "business_name": "District Lemonade",
+    "business_website": "https://www.instagram.com/drinkdistrictlemonade/",
+    "photo_url": "/media/onboarding/905381-lemonade.jpg",
+    "description": "District Lemonade, a father–son lemonade stand in Dupont Circle, became DC's first to accept Bitcoin after a spontaneous \"show me how\" moment. Within minutes, their first Lightning payment was complete—turning curiosity into action and inspiring a wave of local support from the Bitcoin District community."
+  },
+  {
+    "date": "2025-08-10",
+    "block_height": 909371,
+    "business_name": "Banner Bee",
+    "business_website": "https://bannerbees.com/",
+    "photo_url": "/media/onboarding/909371-bee.jpg",
+    "description": "Banner Bee Company, a family-run honey vendor at the Dupont Farmers Market, learned to accept Bitcoin payments through a quick hands-on demo—making their first Lightning sale within minutes and showing how simple it is for local artisans to join DC's growing Bitcoin economy."
+  },
+  {
+    "date": "2025-09-25",
+    "block_height": 916324,
+    "business_name": "The Big Chef",
+    "business_website": "https://www.instagram.com/tbcgourmet/",
+    "photo_url": "/media/onboarding/916324-chef.jpg",
+    "description": "The Big Chef, a small sandwich and crêpe shop in DC's Bloomingdale neighborhood, made its first Bitcoin Lightning sale during a quick hands-on onboarding. Now proudly displaying \"Bitcoin Accepted Here,\" the owner joins local merchants exploring Bitcoin as a new way to serve their community."
+  }
+]

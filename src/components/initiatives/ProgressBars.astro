@@ -1,0 +1,180 @@
+---
+interface Props {
+    goal2025: number;
+    date2025: string;
+    goal2026: number;
+    date2026: string;
+    count: number;
+}
+
+const { goal2025, date2025, goal2026, date2026, count } = Astro.props;
+
+const progress2025 = Math.min((count / goal2025) * 100, 100);
+const progress2026 = Math.min((count / goal2026) * 100, 100);
+
+const formatDate = (dateStr: string) => {
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        year: 'numeric',
+    }).format(new Date(dateStr));
+};
+---
+
+<div class="progress-bars-container">
+    <div class="progress-bars-grid">
+        <!-- 2025 Goal -->
+        <div class="progress-bar-wrapper">
+            <div class="progress-header">
+                <h3 class="progress-goal-title">2025 Goal</h3>
+                <div class="progress-stats">
+                    <span class="progress-current">{count}</span>
+                    <span class="progress-separator">/</span>
+                    <span class="progress-target">{goal2025}</span>
+                </div>
+            </div>
+            <div class="progress-bar-track">
+                <div 
+                    class="progress-bar-fill"
+                    style={`width: ${progress2025}%`}
+                    role="progressbar"
+                    aria-valuenow={count}
+                    aria-valuemin={0}
+                    aria-valuemax={goal2025}
+                >
+                    <span class="progress-percentage">{Math.round(progress2025)}%</span>
+                </div>
+            </div>
+            <p class="progress-deadline">Target: {formatDate(date2025)}</p>
+        </div>
+
+        <!-- 2026 Goal -->
+        <div class="progress-bar-wrapper">
+            <div class="progress-header">
+                <h3 class="progress-goal-title">2026 Goal</h3>
+                <div class="progress-stats">
+                    <span class="progress-current">{count}</span>
+                    <span class="progress-separator">/</span>
+                    <span class="progress-target">{goal2026}</span>
+                </div>
+            </div>
+            <div class="progress-bar-track">
+                <div 
+                    class="progress-bar-fill progress-bar-fill-2026"
+                    style={`width: ${progress2026}%`}
+                    role="progressbar"
+                    aria-valuenow={count}
+                    aria-valuemin={0}
+                    aria-valuemax={goal2026}
+                >
+                    <span class="progress-percentage">{Math.round(progress2026)}%</span>
+                </div>
+            </div>
+            <p class="progress-deadline">Target: {formatDate(date2026)}</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .progress-bars-container {
+        width: 100%;
+        margin: 2rem 0;
+    }
+
+    .progress-bars-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+        .progress-bars-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+    }
+
+    .progress-bar-wrapper {
+        background: var(--color-base);
+        border: 1px solid rgba(var(--color-body-base-rgb), 0.1);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .progress-goal-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--color-body-base);
+    }
+
+    .progress-stats {
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: baseline;
+        gap: 0.25rem;
+    }
+
+    .progress-current {
+        color: var(--color-accent);
+        font-size: 2rem;
+    }
+
+    .progress-separator {
+        color: rgba(var(--color-body-base-rgb), 0.3);
+        font-size: 1.5rem;
+    }
+
+    .progress-target {
+        color: rgba(var(--color-body-base-rgb), 0.6);
+    }
+
+    .progress-bar-track {
+        width: 100%;
+        height: 2rem;
+        background: rgba(var(--color-body-base-rgb), 0.08);
+        border-radius: 9999px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+        border-radius: 9999px;
+        transition: width 0.6s ease-out;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 0.75rem;
+        min-width: 0;
+    }
+
+    .progress-bar-fill-2026 {
+        background: linear-gradient(90deg, #f7931a 0%, #d67010 100%);
+    }
+
+    .progress-percentage {
+        color: white;
+        font-size: 0.875rem;
+        font-weight: 700;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        white-space: nowrap;
+    }
+
+    .progress-deadline {
+        margin: 0.75rem 0 0 0;
+        font-size: 0.875rem;
+        color: rgba(var(--color-body-base-rgb), 0.7);
+        text-align: center;
+    }
+</style>
+

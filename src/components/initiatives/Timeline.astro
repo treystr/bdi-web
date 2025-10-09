@@ -1,0 +1,178 @@
+---
+import TimelineItem from './TimelineItem.astro';
+import MilestoneFlag from './MilestoneFlag.astro';
+import onboardingData from '@data/onboarding.json';
+
+// Sort by block height ascending (earliest blocks first)
+const sortedEntries = [...onboardingData].sort((a, b) => 
+    a.block_height - b.block_height
+);
+
+// Milestone markers to show
+const milestones = [5, 21, 50, 75, 100];
+---
+
+<section class="timeline-section" aria-label="Business onboarding timeline">
+    <div class="timeline-container">
+        <div class="timeline-header-section">
+            <h2 class="timeline-title">Onboarding Timeline</h2>
+            <p class="timeline-subtitle">
+                Follow our journey as we onboard DC businesses to Bitcoin, one merchant at a time.
+            </p>
+        </div>
+
+        <div class="timeline-list">
+            {sortedEntries.map((entry, index) => {
+                const items = [];
+                const businessNumber = index + 1; // Generate sequential number based on block height order
+                
+                // Check if we should show a milestone marker BEFORE this entry
+                const shouldShowMilestone = milestones.some(m => 
+                    m === businessNumber && m !== 1
+                );
+                
+                if (shouldShowMilestone) {
+                    items.push(
+                        <MilestoneFlag value={businessNumber} />
+                    );
+                }
+                
+                // Add the timeline item
+                items.push(
+                    <TimelineItem
+                        number={businessNumber}
+                        date={entry.date}
+                        blockHeight={entry.block_height}
+                        businessName={entry.business_name}
+                        businessWebsite={entry.business_website}
+                        photoUrl={entry.photo_url}
+                        description={entry.description}
+                    />
+                );
+                
+                return items;
+            })}
+        </div>
+
+        <!-- Show "To Be Continued" message if we haven't reached 100 yet -->
+        {sortedEntries.length < 100 && (
+            <div class="timeline-continuation">
+                <div class="continuation-content">
+                    <div class="continuation-icon">🚀</div>
+                    <div class="continuation-text">
+                        <h3>The Journey Continues...</h3>
+                        <p>
+                            We're actively onboarding more businesses every week. 
+                            Check back regularly to see our progress toward 100 merchants by 2026!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        )}
+    </div>
+</section>
+
+<style>
+    .timeline-section {
+        padding: 3rem 0;
+        background: var(--color-base);
+    }
+
+    .timeline-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .timeline-header-section {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 4rem;
+    }
+
+    .timeline-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: var(--color-body-base);
+    }
+
+    .timeline-subtitle {
+        font-size: 1.125rem;
+        color: rgba(var(--color-body-base-rgb), 0.7);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .timeline-list {
+        position: relative;
+        padding: 2rem 0;
+    }
+
+    .timeline-continuation {
+        margin-top: 4rem;
+        padding: 2rem;
+    }
+
+    .continuation-content {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        background: linear-gradient(135deg, rgba(var(--color-accent-rgb), 0.1) 0%, rgba(var(--color-accent-rgb), 0.05) 100%);
+        border: 2px dashed rgba(var(--color-accent-rgb), 0.3);
+        border-radius: 12px;
+        padding: 2.5rem 2rem;
+    }
+
+    .continuation-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .continuation-text h3 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--color-body-base);
+        margin: 0 0 0.75rem 0;
+    }
+
+    .continuation-text p {
+        font-size: 1rem;
+        color: rgba(var(--color-body-base-rgb), 0.7);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .timeline-title {
+            font-size: 2rem;
+        }
+
+        .timeline-subtitle {
+            font-size: 1rem;
+        }
+
+        .continuation-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .continuation-icon {
+            font-size: 3rem;
+        }
+
+        .continuation-text h3 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+

@@ -1,0 +1,124 @@
+---
+interface Props {
+    value: number;
+}
+
+const { value } = Astro.props;
+
+const milestoneMessages: Record<number, string> = {
+    5: "First Milestone Reached!",
+    21: "2025 Goal Achieved!",
+    50: "Halfway to 100!",
+    75: "Three Quarters There!",
+    100: "Mission Accomplished! 🎉"
+};
+
+const message = milestoneMessages[value] || `${value} Businesses!`;
+---
+
+<div class="milestone-flag" data-milestone={value}>
+    <div class="milestone-content">
+        <div class="milestone-icon">🎯</div>
+        <div class="milestone-text">
+            <div class="milestone-number">{value}</div>
+            <div class="milestone-message">{message}</div>
+        </div>
+    </div>
+    <div class="milestone-line"></div>
+</div>
+
+<style>
+    .milestone-flag {
+        position: relative;
+        margin: 3rem 0;
+        padding: 0 1rem;
+    }
+
+    .milestone-content {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        background: linear-gradient(135deg, #f7931a 0%, #d67010 100%);
+        color: white;
+        padding: 1.5rem 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(247, 147, 26, 0.3);
+        position: relative;
+        z-index: 2;
+        max-width: 600px;
+        margin: 0 auto;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .milestone-icon {
+        font-size: 3rem;
+        line-height: 1;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+    }
+
+    .milestone-text {
+        flex: 1;
+    }
+
+    .milestone-number {
+        font-size: 2.5rem;
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 0.25rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .milestone-message {
+        font-size: 1.125rem;
+        font-weight: 600;
+        opacity: 0.95;
+        letter-spacing: 0.02em;
+    }
+
+    .milestone-line {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, 
+            transparent 0%, 
+            rgba(247, 147, 26, 0.3) 20%, 
+            rgba(247, 147, 26, 0.3) 80%, 
+            transparent 100%
+        );
+        transform: translateX(-50%);
+        z-index: 1;
+    }
+
+    @media (max-width: 640px) {
+        .milestone-content {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .milestone-number {
+            font-size: 2rem;
+        }
+
+        .milestone-message {
+            font-size: 1rem;
+        }
+
+        .milestone-icon {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+

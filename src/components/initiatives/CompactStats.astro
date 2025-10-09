@@ -1,0 +1,268 @@
+---
+interface Props {
+    goal2025: number;
+    date2025: string;
+    goal2026: number;
+    date2026: string;
+    count: number;
+    total: number;
+    mtd: number;
+    neededPerMonth: number;
+}
+
+const { goal2025, date2025, goal2026, date2026, count, total, mtd, neededPerMonth } = Astro.props;
+
+const progress2025 = Math.min((count / goal2025) * 100, 100);
+const progress2026 = Math.min((count / goal2026) * 100, 100);
+
+const formatDate = (dateStr: string) => {
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        year: 'numeric',
+    }).format(new Date(dateStr));
+};
+---
+
+<section class="compact-stats">
+    <div class="stats-row">
+        <!-- Current Progress -->
+        <div class="stat-item highlight">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-content">
+                <div class="stat-value">{total}</div>
+                <div class="stat-label">Total Onboarded</div>
+            </div>
+        </div>
+
+        <!-- 2025 Progress -->
+        <div class="stat-item progress-item">
+            <div class="progress-mini">
+                <div class="progress-header-mini">
+                    <span class="progress-label">2025 Goal</span>
+                    <span class="progress-numbers">{count}/{goal2025}</span>
+                </div>
+                <div class="progress-bar-mini">
+                    <div class="progress-fill-mini" style={`width: ${progress2025}%`}>
+                        <span class="progress-percent-mini">{Math.round(progress2025)}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2026 Progress -->
+        <div class="stat-item progress-item">
+            <div class="progress-mini">
+                <div class="progress-header-mini">
+                    <span class="progress-label">2026 Goal</span>
+                    <span class="progress-numbers">{count}/{goal2026}</span>
+                </div>
+                <div class="progress-bar-mini">
+                    <div class="progress-fill-mini progress-fill-2026" style={`width: ${progress2026}%`}>
+                        <span class="progress-percent-mini">{Math.round(progress2026)}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- This Month -->
+        <div class="stat-item">
+            <div class="stat-icon">📅</div>
+            <div class="stat-content">
+                <div class="stat-value">{mtd}</div>
+                <div class="stat-label">This Month</div>
+            </div>
+        </div>
+
+        <!-- Needed Per Month -->
+        <div class="stat-item">
+            <div class="stat-icon">📈</div>
+            <div class="stat-content">
+                <div class="stat-value">{neededPerMonth.toFixed(1)}</div>
+                <div class="stat-label">Needed/Month</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .compact-stats {
+        background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+        padding: 1.5rem 0;
+        margin: 0;
+        border-radius: 8px;
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        align-items: center;
+    }
+
+    @media (min-width: 768px) {
+        .stats-row {
+            grid-template-columns: 1.2fr 1.5fr 1.5fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+    }
+
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 8px;
+        padding: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.2s ease, background 0.2s ease;
+        min-height: 70px;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .stat-item.highlight {
+        background: rgba(255, 255, 255, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .stat-item.progress-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+
+    .stat-icon {
+        font-size: 1.5rem;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+
+    .stat-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--color-base);
+        line-height: 1;
+        margin-bottom: 0.125rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--color-base);
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* Progress Mini Styles */
+    .progress-mini {
+        width: 100%;
+    }
+
+    .progress-header-mini {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .progress-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--color-base);
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .progress-numbers {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: var(--color-base);
+    }
+
+    .progress-bar-mini {
+        width: 100%;
+        height: 1rem;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .progress-fill-mini {
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 6px;
+        transition: width 0.6s ease-out;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 0.25rem;
+        min-width: 0;
+    }
+
+    .progress-fill-2026 {
+        background: linear-gradient(90deg, #f7931a 0%, #d67010 100%);
+    }
+
+    .progress-percent-mini {
+        color: var(--color-body-base);
+        font-size: 0.625rem;
+        font-weight: 700;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        white-space: nowrap;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 767px) {
+        .stats-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .stat-item {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            min-height: 60px;
+        }
+
+        .stat-item.progress-item {
+            grid-column: span 2;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+        }
+
+        .stat-icon {
+            font-size: 1.25rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .stats-row {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-item.progress-item {
+            grid-column: span 1;
+        }
+    }
+</style>

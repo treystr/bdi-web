@@ -84,4 +84,31 @@ const docs = defineCollection({
     }),
 });
 
-export const collections = { blog, team, legal, docs };
+const initiatives = defineCollection({
+    loader: glob({ base: './src/content/initiatives', pattern: '**/*.md' }),
+    schema: ({ image }) =>
+        z.object({
+            title: z.string(),
+            shortDescription: z.string(),
+            startDate: z.string().transform(parseDate),
+            targetDate: z.string().transform(parseDate).optional(),
+            status: z.enum(['active', 'completed', 'planned']),
+            goalAmount: z.number(),
+            currentAmount: z.number(),
+            featured: z.boolean().default(false),
+            hero: z
+                .object({
+                    image: image().optional().nullable(),
+                    overlayOpacity: z.number().optional(),
+                })
+                .optional(),
+            seo: z
+                .object({
+                    title: z.string().optional(),
+                    description: z.string().optional(),
+                })
+                .optional(),
+        }),
+});
+
+export const collections = { blog, team, legal, docs, initiatives };

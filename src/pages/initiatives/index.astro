@@ -1,0 +1,234 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import InnerHero from '@components/sections/InnerHero.astro';
+import CtaBanner from '@components/sections/CtaBanner.astro';
+import { withRandomHeroContent } from '@utils/randomHeroImage';
+
+const initiativesEntries = await getCollection('initiatives');
+
+// Sort by featured first, then by start date (newest first)
+const sortedInitiatives = initiativesEntries.sort((a, b) => {
+    if (a.data.featured && !b.data.featured) return -1;
+    if (!a.data.featured && b.data.featured) return 1;
+    const aDate = new Date(a.data.startDate).getTime();
+    const bDate = new Date(b.data.startDate).getTime();
+    return bDate - aDate;
+});
+
+// Separate active and completed initiatives
+const activeInitiatives = sortedInitiatives.filter(entry => entry.data.status === 'active');
+const completedInitiatives = sortedInitiatives.filter(entry => entry.data.status === 'completed');
+
+// Hero content
+const heroContent = withRandomHeroContent({
+    title: 'Our Mission Initiatives',
+    description: 'These are the programs and projects that drive our mission forward. Every initiative represents a tangible way we\'re empowering communities through Bitcoin education, privacy advocacy, and grassroots outreach.',
+    randomBackground: true,
+    overlayOpacity: 0.7
+});
+
+// CTA to donate
+const donateCta = {
+    eyebrow: "SUPPORT OUR WORK",
+    title: "Power These Initiatives with Your Support",
+    description: "Every dollar you contribute directly funds these mission-critical programs. Your donation helps us expand our reach, serve more communities, and create lasting impact.",
+    buttons: [
+        {
+            text: "Donate Now",
+            link: "/donate",
+            variant: "primary" as const
+        },
+        {
+            text: "Get Involved",
+            link: "/get-involved",
+            variant: "secondary" as const
+        }
+    ]
+};
+
+const seoTitle = "Our Mission Initiatives"
+const seoDescription = "Explore the Bitcoin District Initiative's flagship programs and projects. From merchant onboarding to community education, these initiatives showcase our commitment to empowering DC communities through Bitcoin."
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <InnerHero content={heroContent} />
+
+    <section class="py-base">
+        <div class="site-container px-8">
+            <!-- Intro Section -->
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h2 class="text-3xl font-bold mb-6">Making Real Impact in DC Communities</h2>
+                <p class="text-lg text-body-base/80 leading-relaxed">
+                    Each initiative below represents a strategic program designed to advance our mission. 
+                    These aren't just ideas—they're active projects with clear goals, measurable outcomes, 
+                    and direct impact on the communities we serve. Your support makes them possible.
+                </p>
+            </div>
+
+            <!-- Active Initiatives -->
+            {activeInitiatives.length > 0 && (
+                <div class="mb-20">
+                    <h2 class="text-2xl font-bold mb-8 pb-4 border-b-2 border-accent">Active Initiatives</h2>
+                    <div class="grid gap-8 md:gap-10">
+                        {activeInitiatives.map((entry) => {
+                            const progressPercent = entry.data.goalAmount 
+                                ? Math.round((entry.data.currentAmount / entry.data.goalAmount) * 100)
+                                : 0;
+                            
+                            const startDate = new Intl.DateTimeFormat('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                            }).format(new Date(entry.data.startDate));
+
+                            const targetDate = entry.data.targetDate 
+                                ? new Intl.DateTimeFormat('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                }).format(new Date(entry.data.targetDate))
+                                : null;
+
+                            return (
+                                <article class="bg-base border border-body-base/10 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:border-accent/30">
+                                    <div class="p-8 md:p-10">
+                                        {entry.data.featured && (
+                                            <span class="inline-block px-3 py-1 text-xs font-semibold bg-accent text-white rounded-full mb-4">
+                                                Featured Initiative
+                                            </span>
+                                        )}
+                                        
+                                        <a href={`/initiatives/${entry.id}`} class="group">
+                                            <h3 class="text-2xl md:text-3xl font-bold mb-4 group-hover:text-accent transition-colors">
+                                                {entry.data.title}
+                                            </h3>
+                                        </a>
+                                        
+                                        <p class="text-body-base/80 text-lg mb-6 leading-relaxed">
+                                            {entry.data.shortDescription}
+                                        </p>
+
+                                        {/* Timeline */}
+                                        <div class="flex flex-wrap gap-4 mb-6 text-sm text-body-base/70">
+                                            <div>
+                                                <span class="font-semibold">Started:</span> {startDate}
+                                            </div>
+                                            {targetDate && (
+                                                <div>
+                                                    <span class="font-semibold">Target:</span> {targetDate}
+                                                </div>
+                                            )}
+                                        </div>
+
+                        {/* Progress Bar */}
+                        {entry.data.goalAmount > 0 && (
+                            <div class="mb-6">
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="font-semibold">Funding Progress</span>
+                                    <span class="text-body-base/70">
+                                        ${entry.data.currentAmount.toLocaleString()} / ${entry.data.goalAmount.toLocaleString()}
+                                    </span>
+                                </div>
+                                <div class="w-full bg-body-base/10 rounded-full h-3 overflow-hidden">
+                                    <div 
+                                        class="bg-accent h-full rounded-full transition-all duration-500"
+                                        style={`width: ${progressPercent}%`}
+                                    />
+                                </div>
+                                <p class="text-xs text-body-base/60 mt-1">
+                                    {progressPercent}% funded
+                                </p>
+                            </div>
+                        )}
+
+                                        {/* CTA Buttons */}
+                                        <div class="flex flex-wrap gap-4 mt-8">
+                                            <a 
+                                                href={`/initiatives/${entry.id}`}
+                                                class="btn btn-primary"
+                                            >
+                                                Learn More
+                                            </a>
+                                            <a 
+                                                href="/donate"
+                                                class="btn btn-secondary"
+                                            >
+                                                Support This Initiative
+                                            </a>
+                                        </div>
+                                    </div>
+                                </article>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
+            <!-- Completed Initiatives -->
+            {completedInitiatives.length > 0 && (
+                <div class="mt-20">
+                    <h2 class="text-2xl font-bold mb-8 pb-4 border-b-2 border-body-base/20">Completed Initiatives</h2>
+                    <div class="grid gap-6 md:grid-cols-2">
+                        {completedInitiatives.map((entry) => {
+                            const startDate = new Intl.DateTimeFormat('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                            }).format(new Date(entry.data.startDate));
+
+                            return (
+                                <article class="bg-base border border-body-base/10 rounded-lg p-6 hover:shadow-md transition-shadow">
+                                    <span class="inline-block px-3 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full mb-3">
+                                        Completed
+                                    </span>
+                                    
+                                    <a href={`/initiatives/${entry.id}`} class="group">
+                                        <h3 class="text-xl font-bold mb-3 group-hover:text-accent transition-colors">
+                                            {entry.data.title}
+                                        </h3>
+                                    </a>
+                                    
+                                    <p class="text-body-base/70 mb-4 text-sm leading-relaxed">
+                                        {entry.data.shortDescription}
+                                    </p>
+
+                                    <div class="text-xs text-body-base/60 mb-4">
+                                        Completed: {startDate}
+                                    </div>
+
+                                    <a 
+                                        href={`/initiatives/${entry.id}`}
+                                        class="text-sm text-accent hover:text-accent-dark font-semibold inline-flex items-center gap-2"
+                                    >
+                                        View Results
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </a>
+                                </article>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
+            <!-- Empty State (if no initiatives exist) -->
+            {activeInitiatives.length === 0 && completedInitiatives.length === 0 && (
+                <div class="text-center py-20">
+                    <h2 class="text-2xl font-bold mb-4">Coming Soon</h2>
+                    <p class="text-body-base/70 max-w-2xl mx-auto">
+                        We're currently planning our flagship initiatives. Check back soon to see 
+                        how we're making an impact in DC communities through Bitcoin education and adoption.
+                    </p>
+                </div>
+            )}
+        </div>
+    </section>
+
+    <!-- Donate CTA -->
+    <CtaBanner
+        content={donateCta}
+        variant="contained"
+        background="light"
+        padding="large"
+    />
+</Layout>
+
