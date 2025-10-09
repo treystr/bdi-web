@@ -35,3 +35,11 @@ export const themeSetting = {
 export const headerSetting = {
   headerMode: 'transition' // 'fixed' or 'transition'
 }
+
+export const layoutSetting = {
+  containerWidths: {
+    hero: '1200px',
+    content: '1100px', 
+    article: '800px'
+  }
+}

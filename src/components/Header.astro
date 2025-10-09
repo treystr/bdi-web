@@ -102,7 +102,7 @@ const isCurrentPage = (link: string) => {
 </style>
 
 <header class="fixed top-0 z-50 w-full left-0" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
-    <div class="site-container mx-auto px-4 mt-4">
+    <div class="site-container--content mx-auto px-4 mt-4">
         <div class={`flex justify-between items-center py-4 rounded-lg px-4 border transition-all duration-300 ${
             overlayMode 
                 ? 'header-overlay-transparent border-white/20' 
@@ -296,11 +296,15 @@ const isCurrentPage = (link: string) => {
     if (headerMode === 'transition') {
         let lastScrollY = 0;
         let ticking = false;
-        const scrollThreshold = 5; // Minimum scroll distance to trigger change
+        let scrollTimeout: number | null = null;
+        const scrollThreshold = 8; // Increased threshold for better stability
+        const hideThreshold = 100; // Scroll position to start hiding header
+        const showThreshold = 50; // How much to scroll up before showing header
 
         function updateHeader() {
-            const currentScrollY = window.scrollY;
+            const currentScrollY = Math.max(0, window.scrollY); // Prevent negative values
             const scrollDirection = currentScrollY - lastScrollY;
+            const scrollDistance = Math.abs(scrollDirection);
             
             // Handle overlay mode background transitions
             if (overlayMode && headerInner) {
@@ -315,31 +319,55 @@ const isCurrentPage = (link: string) => {
                 }
             }
             
-            // Only trigger if we've scrolled more than the threshold
-            if (Math.abs(scrollDirection) > scrollThreshold) {
-                if (currentScrollY > 100 && scrollDirection > 0 && !isHidden) {
-                    // Scrolling down past 100px - hide header with smooth transition
+            // Only trigger visibility changes if we've scrolled enough
+            if (scrollDistance > scrollThreshold) {
+                if (scrollDirection > 0 && currentScrollY > hideThreshold && !isHidden) {
+                    // Scrolling down past threshold - hide header
                     isHidden = true;
                     header.style.transform = 'translateY(-100%)';
                     header.style.opacity = '0';
-                } else if ((scrollDirection < 0 || currentScrollY <= 100) && isHidden) {
-                    // Scrolling up or at top - show header with smooth transition
-                    isHidden = false;
-                    header.style.transform = 'translateY(0)';
-                    header.style.opacity = '1';
+                } else if (scrollDirection < 0 && isHidden) {
+                    // Scrolling up while hidden - show header after sufficient upward scroll
+                    const scrolledUpEnough = lastScrollY - currentScrollY > showThreshold;
+                    if (scrolledUpEnough || currentScrollY <= hideThreshold) {
+                        isHidden = false;
+                        header.style.transform = 'translateY(0)';
+                        header.style.opacity = '1';
+                    }
                 }
                 
                 lastScrollY = currentScrollY;
+            }
+            
+            // Always show header when at the very top
+            if (currentScrollY <= 10 && isHidden) {
+                isHidden = false;
+                header.style.transform = 'translateY(0)';
+                header.style.opacity = '1';
             }
             
             ticking = false;
         }
 
         function onScroll() {
+            // Clear any existing timeout
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            
             if (!ticking) {
                 requestAnimationFrame(updateHeader);
                 ticking = true;
             }
+            
+            // Set a timeout to ensure header is visible when scrolling stops
+            scrollTimeout = window.setTimeout(() => {
+                if (window.scrollY <= hideThreshold && isHidden) {
+                    isHidden = false;
+                    header.style.transform = 'translateY(0)';
+                    header.style.opacity = '1';
+                }
+            }, 150);
         }
 
         window.addEventListener('scroll', onScroll, { passive: true });
@@ -347,6 +375,15 @@ const isCurrentPage = (link: string) => {
         // Handle window resize to reset header position
         window.addEventListener('resize', () => {
             if (!isHidden) {
+                header.style.transform = 'translateY(0)';
+                header.style.opacity = '1';
+            }
+        });
+        
+        // Handle page visibility change (e.g., tab switching)
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && window.scrollY <= hideThreshold && isHidden) {
+                isHidden = false;
                 header.style.transform = 'translateY(0)';
                 header.style.opacity = '1';
             }
