@@ -1,7 +1,22 @@
 ---
 import { Image } from 'astro:assets';
 import Button from '@components/ui/Button.astro';
+import FeaturedInitiativeCard from '@components/ui/FeaturedInitiativeCard.astro';
 import defaultHeroImage from '@assets/images/hero/default.jpg';
+
+interface Initiative {
+    id: string;
+    data: {
+        title: string;
+        shortDescription: string;
+        goalAmount: number;
+        currentAmount: number;
+        startDate: Date;
+        targetDate?: Date;
+        status: 'active' | 'completed' | 'planned';
+        featured: boolean;
+    };
+}
 
 interface HeroContent {
     title: string;
@@ -16,6 +31,7 @@ interface HeroContent {
     overlayOpacity?: number; // Value between 0 and 1
     contentPosition?: 'center' | 'bottom' | 'top'; // Flexible positioning
     textAlign?: 'left' | 'center' | 'right';
+    featuredContent?: Initiative; // Optional featured content to display at bottom
 }
 
 interface Props {
@@ -66,8 +82,10 @@ const alignmentClasses = {
     ></div>
 
     {/* Content Container */}
-    <div class={`relative z-10 w-full h-full flex flex-col ${positionClasses[contentPosition]}`}>
-        <div class={`site-container--hero mx-auto px-4 ${alignmentClasses[textAlign]}`}>
+    <div class={`relative z-10 w-full h-full flex flex-col ${content.featuredContent ? 'justify-between' : positionClasses[contentPosition]}`}>
+        {/* Main Hero Content */}
+        <div class={`${content.featuredContent ? 'flex-1 flex flex-col justify-center' : ''}`}>
+            <div class={`site-container--hero mx-auto px-4 ${alignmentClasses[textAlign]}`}>
                 <h1 class="text-white mb-6" data-aos="fade-up">
                     {content.title}
                 </h1>
@@ -91,17 +109,29 @@ const alignmentClasses = {
                         ))}
                     </div>
                 )}
+            </div>
         </div>
+
+        {/* Featured Content at Bottom */}
+        {content.featuredContent && (
+            <div class="pb-16 sm:pb-20 px-4">
+                <div class="site-container--hero mx-auto">
+                    <FeaturedInitiativeCard initiative={content.featuredContent} />
+                </div>
+            </div>
+        )}
     </div>
 
-    {/* Scroll Indicator */}
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-        <div class="scroll-indicator animate-bounce">
-            <svg class="w-6 h-6 text-white opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
+    {/* Scroll Indicator - Hide when featured content is present */}
+    {!content.featuredContent && (
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+            <div class="scroll-indicator animate-bounce">
+                <svg class="w-6 h-6 text-white opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
         </div>
-    </div>
+    )}
 </section>
 
 <style>
