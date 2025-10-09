@@ -1,23 +1,22 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import InnerHero from '@components/sections/InnerHero.astro';
+import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import TeamGrid from '@components/sections/TeamGrid.astro';
-import { withRandomHeroContent } from '@utils/randomHeroImage';
 
 const seoTitle = "Our Team";
 const seoDescription = "Meet the Bitcoin District Initiative team: educators, advocates, and community builders dedicated to making Bitcoin accessible in Washington, DC. Learn how we're empowering our community through grassroots education and engagement.";
 
-const heroContent = withRandomHeroContent({
+const heroContent = {
     title: "Our Team",
-    description: "Our team at the Bitcoin District Initiative is all about bringing Bitcoin to life for DC’s communities. We’re educators, advocates, and locals passionate about teaching people and small businesses how to use Bitcoin to gain financial freedom and build a stronger, more connected community.",
-    randomBackground: true,
-    overlayOpacity: 0.6
-});
+    description: "Our team at the Bitcoin District Initiative is all about bringing Bitcoin to life for DC's communities. We're educators, advocates, and locals passionate about teaching people and small businesses how to use Bitcoin to gain financial freedom and build a stronger, more connected community.",
+    contentPosition: 'center',
+    textAlign: 'center'
+};
 
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
-    <InnerHero content={heroContent}  />
+<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
+    <FullScreenHero content={heroContent}  />
     
     <!-- Join Our Team Section -->
     <section class="bg-base py-16">

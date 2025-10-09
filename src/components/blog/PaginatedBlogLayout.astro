@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BlogList from './BlogList.astro';
-import InnerHero from '../sections/InnerHero.astro';
+import FullScreenHero from '../sections/FullScreenHero.astro';
 import Button from '../ui/Button.astro';
 import { ChevronLeft, ChevronRight } from 'lucide-astro';
 
@@ -42,12 +42,13 @@ const heroContent = {
     title: title,
     description: subtitle,
     backgroundImage: blogHeroImage,
-    overlayOpacity: 0.2
+    contentPosition: 'center' as const,
+    textAlign: 'center' as const
 }
 ---
-<Layout title={seoTitle} description={seoDescription}>
+<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
     <main>
-    <InnerHero content={heroContent}/>
+    <FullScreenHero content={heroContent}/>
     <BlogList posts={paginatedPosts} currentCategory={currentCategory} />
 
     {totalPages > 1 && (

@@ -1,16 +1,17 @@
 ---
 import Layout from "@layouts/Layout.astro"
-import InnerHero from "@components/sections/InnerHero.astro"
+import FullScreenHero from "@components/sections/FullScreenHero.astro"
 import CtaBanner from "@components/sections/CtaBanner.astro"
 import { FileText, BarChart3, Users, Scale } from 'lucide-astro'
-import { withRandomHeroContent } from '@utils/randomHeroImage';
+import heroImage from "@assets/images/hero/hero9.jpg"
 
-const heroContent = withRandomHeroContent({
+const heroContent = {
     title: "Transparency",
-    description: "The Bitcoin District Initiative upholds transparency, integrity, and compliance in all operations. Guided by Bitcoin’s open-source principles, we ensure accountability and trust, fostering a community-driven mission to make Washington, DC a Bitcoin hub through accessible education and resources for economic freedom and personal sovereignty.",
-    randomBackground: true,
-    overlayOpacity: 0.6
-});
+    backgroundImage: heroImage,
+    description: "The Bitcoin District Initiative upholds transparency, integrity, and compliance in all operations. Guided by Bitcoin's open-source principles, we ensure accountability and trust, fostering a community-driven mission to make Washington, DC a Bitcoin hub through accessible education and resources for economic freedom and personal sovereignty.",
+    contentPosition: 'center',
+    textAlign: 'center'
+};
 
 const contactCta = {
     title: "Questions About Our Operations?",
@@ -23,8 +24,8 @@ const contactCta = {
 }
 ---
 
-<Layout title="Transparency" description="View our transparency and policy documents as well as our internal and external processes of our organization.">
-    <InnerHero content={heroContent} />
+<Layout title="Transparency" description="View our transparency and policy documents as well as our internal and external processes of our organization." fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
     
     <!-- Organizational Documents Section -->
     <section class="py-small bg-background-light">

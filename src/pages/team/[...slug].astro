@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
-import InnerHero from '@components/sections/InnerHero.astro';
+import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import MobileProfile from '@components/team/MobileProfile.astro';
 import DesktopProfile from '@components/team/DesktopProfile.astro';
 
@@ -18,11 +18,13 @@ const { Content } = await render(entry);
 const heroContent = {
   title: entry.data.name,
   description: entry.data.jobTitle,
+  contentPosition: 'center',
+  textAlign: 'center'
 }
 ---
 
-<Layout title={entry.data.name} description={`Team member: ${entry.data.name}`}>
-  <InnerHero content={heroContent} />
+<Layout title={entry.data.name} description={`Team member: ${entry.data.name}`} fullscreenHero={true}>
+  <FullScreenHero content={heroContent} />
   <div class="site-container mx-auto px-4">
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12 pt-8 lg:pt-0">
       <!-- Profile Sidebar -->

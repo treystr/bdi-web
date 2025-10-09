@@ -1,19 +1,20 @@
 ---
 import Layout from "@layouts/Layout.astro"
-import InnerHero from "@components/sections/InnerHero.astro"
+import FullScreenHero from "@components/sections/FullScreenHero.astro"
 import Faqs from '@components/sections/Faqs.astro';
 import { faqLists } from '@data/faqs';
-import { withRandomHeroContent } from '@utils/randomHeroImage';
+import heroImage from "@assets/images/hero/hero8.jpg"
 
 const seoTitle = "Frequently Asked Questions";
 const seoDescription = "Find answers to common questions about the Bitcoin District Initiative, our programs, and Bitcoin education resources.";
 
-const heroContent = withRandomHeroContent({
+const heroContent = {
     title: "Frequently Asked Questions",
+    backgroundImage: heroImage,
     description: "Find answers to common questions about our platform and services.",
-    randomBackground: true,
-    overlayOpacity: 0.6
-});
+    contentPosition: 'center',
+    textAlign: 'center'
+};
 
 const faqsSection = {
     title: 'Frequently Asked Questions',
@@ -22,8 +23,8 @@ const faqsSection = {
 }
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
-    <InnerHero content={heroContent} />
+<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
 
     <Faqs content={faqsSection} background="base" paddingTop="base" paddingBottom="large" />
 </Layout>

@@ -7,6 +7,12 @@ import Button from '@components/ui/Button.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
 
+interface Props {
+    overlayMode?: boolean;
+}
+
+const { overlayMode = false } = Astro.props;
+
 const ctaButton = {
     name: 'Donate',
     link: '/donate',
@@ -95,9 +101,13 @@ const isCurrentPage = (link: string) => {
     }
 </style>
 
-<header class="fixed top-0 z-50 w-full left-0" data-header-mode={headerSetting.headerMode}>
+<header class="fixed top-0 z-50 w-full left-0" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
     <div class="site-container mx-auto px-4 mt-4">
-        <div class="flex justify-between items-center bg-white py-4 rounded-lg px-4 border-black border">
+        <div class={`flex justify-between items-center py-4 rounded-lg px-4 border transition-all duration-300 ${
+            overlayMode 
+                ? 'header-overlay-transparent border-white/20' 
+                : 'bg-white border-black'
+        }`}>
             <Logo />
             <nav class="relative flex items-center gap-2 lg:gap-8" aria-label="Site Navigation">
                 {/* Desktop Menu */}
@@ -279,6 +289,8 @@ const isCurrentPage = (link: string) => {
     // Header scroll behavior
     const header = document.querySelector('header') as HTMLElement;
     const headerMode = header?.getAttribute('data-header-mode');
+    const overlayMode = header?.getAttribute('data-overlay-mode') === 'true';
+    const headerInner = header?.querySelector('div > div') as HTMLElement;
     let isHidden = false; // Move to global scope for mobile menu access
 
     if (headerMode === 'transition') {
@@ -289,6 +301,19 @@ const isCurrentPage = (link: string) => {
         function updateHeader() {
             const currentScrollY = window.scrollY;
             const scrollDirection = currentScrollY - lastScrollY;
+            
+            // Handle overlay mode background transitions
+            if (overlayMode && headerInner) {
+                if (currentScrollY > 50) {
+                    // Scrolled down - make header more opaque
+                    headerInner.classList.remove('header-overlay-transparent');
+                    headerInner.classList.add('header-overlay');
+                } else {
+                    // At top - keep transparent
+                    headerInner.classList.remove('header-overlay');
+                    headerInner.classList.add('header-overlay-transparent');
+                }
+            }
             
             // Only trigger if we've scrolled more than the threshold
             if (Math.abs(scrollDirection) > scrollThreshold) {

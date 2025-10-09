@@ -26,9 +26,10 @@ interface Props {
 		};
 	};
 	canonicalUrl?: string;
+	fullscreenHero?: boolean; // Enable fullscreen hero mode
 }
 
-const { title, description, image, footerCta, canonicalUrl } = Astro.props;
+const { title, description, image, footerCta, canonicalUrl, fullscreenHero } = Astro.props;
 
 const pageTitle = title ? `${title} ${Separator} ${SiteName}` : SiteName;
 const pageDescription = description || defaultDescription || '';
@@ -70,8 +71,8 @@ const fullCanonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
 		<meta property="twitter:description" content={pageDescription} />
 		{pageImage && <meta property="twitter:image" content={new URL(pageImage, siteConfig.siteUrl).toString()} />}
 	</head>
-	<body data-theme={theme}>
-		<Header />
+	<body data-theme={theme} class={fullscreenHero ? 'fullscreen-hero-layout' : ''}>
+		<Header overlayMode={fullscreenHero} />
 		<slot />
 		<Footer footerCta={footerCta} />
 		

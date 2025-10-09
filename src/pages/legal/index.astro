@@ -1,8 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import InnerHero from '../../components/sections/InnerHero.astro';
-import { withRandomHeroContent } from '@utils/randomHeroImage';
+import FullScreenHero from '../../components/sections/FullScreenHero.astro';
 
 const legalEntries = await getCollection('legal');
 
@@ -10,16 +9,16 @@ const legalEntries = await getCollection('legal');
 const sortedEntries = legalEntries.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 // Hero content
-const heroContent = withRandomHeroContent({
+const heroContent = {
     title: 'Legal Information',
     description: 'Important policies and terms governing the use of our services',
-    overlayOpacity: 0.8,
-    randomBackground: true,
-});
+    contentPosition: 'center',
+    textAlign: 'center'
+};
 ---
 
-<Layout title="Legal Information">
-    <InnerHero content={heroContent} />
+<Layout title="Legal Information" fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
 
     <section class="py-small">
         <div class="site-container px-8">

@@ -1,9 +1,8 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import InnerHero from '@components/sections/InnerHero.astro';
+import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import TeamGrid from '@components/sections/TeamGrid.astro';
 import Button from '@components/ui/Button.astro';
-import { withRandomHeroContent } from '@utils/randomHeroImage';
 import { valueLists } from '@data/values';
 import { narratives } from '@data/narratives';
 import { community } from '@data/community';
@@ -11,18 +10,17 @@ import { community } from '@data/community';
 const seoTitle = "About Us";
 const seoDescription = "About the Bitcoin District Initiative";
 
-// Using random hero background - comment this out and use the one below to go back to specific image
-const heroContent = withRandomHeroContent({
+const heroContent = {
     title: "About Us",
-    randomBackground: true,
-    overlayOpacity: 0.6,
     description: "The Bitcoin District Initiative is organized as a 501(c)(3) nonprofit organization dedicated to advancing Bitcoin adoption in Washington, DC. Tax exempt status is pending IRS approval.",
-});
+    contentPosition: 'center',
+    textAlign: 'center'
+};
 
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
-    <InnerHero content={heroContent}  />
+<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
+    <FullScreenHero content={heroContent}  />
 
     <!-- Our Mission Section -->
     <div class="site-container mx-auto px-4 mt-16 mb-16 text-left">

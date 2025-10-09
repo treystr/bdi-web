@@ -1,8 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import InnerHero from '../../components/sections/InnerHero.astro';
-import heroImage from '../../assets/images/wethepeople.jpg';
+import FullScreenHero from '../../components/sections/FullScreenHero.astro';
+import heroImage from '@assets/images/wethepeople.jpg';
 
 const docsEntries = await getCollection('docs');
 
@@ -15,14 +15,15 @@ const taxEntries = docsEntries.filter(entry => entry.data.type === 'tax').sort((
 // Hero content
 const heroContent = {
     title: 'Organizational Documents',
-    description: 'Official documents, policies, and reports governing our organization',
-    overlayOpacity: 0.8,
     backgroundImage: heroImage,
+    description: 'Official documents, policies, and reports governing our organization',
+    contentPosition: 'center',
+    textAlign: 'center',
 };
 ---
 
-<Layout title="Organizational Documents">
-    <InnerHero content={heroContent} />
+<Layout title="Organizational Documents" fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
 
     <section class="py-small">
         <div class="site-container px-8">

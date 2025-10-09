@@ -1,21 +1,22 @@
 ---
 import Layout from "@layouts/Layout.astro"
-import InnerHero from "@components/sections/InnerHero.astro"
+import FullScreenHero from "@components/sections/FullScreenHero.astro"
 import SplitPanel from "@components/sections/SplitPanel.astro"
 import CtaBanner from "@components/sections/CtaBanner.astro"
 import { Copy, Check } from 'lucide-astro'
-import { withRandomHeroContent } from '@utils/randomHeroImage';
 import qrCodeImage from '../../assets/images/bd_wosQRZAP.png'
+import heroImage from "@assets/images/hero/hero6.jpg"
 
 const seoTitle = "Support Our Mission"
 const seoDescription = "Support the Bitcoin District Initiative's mission to empower DC communities through Bitcoin education, privacy advocacy, and grassroots outreach. Your donation makes a huge difference."
 
-const heroContent = withRandomHeroContent({
+const heroContent = {
     title: "Support Our Mission",
+    backgroundImage: heroImage,
     description: "Help us empower Washington, DC communities through Bitcoin education and privacy advocacy. Zap us some sats to support our grassroots mission!",
-    randomBackground: true,
-    overlayOpacity: 0.7
-});
+    contentPosition: 'center',
+    textAlign: 'center'
+};
 
 // Tax deductibility notice
 const taxNotice = "The Bitcoin District Initiative is currently in the process of applying for 501(c)(3) tax-exempt status with the Internal Revenue Service. If our application is approved, donations made while our application is pending may be considered tax-deductible to the extent allowed by law. We encourage you to consult with your tax advisor for guidance on deducting your contribution."
@@ -57,12 +58,12 @@ const FooterCta = {
         link: "/get-involved",
         variant: "ghostLight" as const
     },
-    hideCta: false
+    hideCta: true
 }
 ---
 
-<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription}>
-    <InnerHero content={heroContent} />
+<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription} fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
     
     <!-- Main QR Code Donation Section -->
     <SplitPanel 

@@ -29,7 +29,7 @@ export const blogSetting = {
 }
 
 export const themeSetting = {
-  theme: 'hermes'
+  theme: 'satoshi'
 }
 
 export const headerSetting = {

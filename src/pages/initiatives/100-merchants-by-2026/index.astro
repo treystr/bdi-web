@@ -1,9 +1,8 @@
 ---
 import { getEntry, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
-import InnerHero from '@components/sections/InnerHero.astro';
+import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
-import { withRandomHeroContent } from '@utils/randomHeroImage';
 import CompactStats from '@components/initiatives/CompactStats.astro';
 import Timeline from '@components/initiatives/Timeline.astro';
 import onboardingData from '@data/onboarding.json';
@@ -45,13 +44,14 @@ const seoTitle = entry.data.seo?.title || entry.data.title;
 const seoDescription = entry.data.seo?.description || entry.data.shortDescription;
 
 // Hero content
-const heroContent = withRandomHeroContent({
+const heroContent = {
     title: entry.data.title,
     description: entry.data.shortDescription,
-    randomBackground: true,
     overlayOpacity: entry.data.hero?.overlayOpacity || 0.7,
+    contentPosition: 'center',
+    textAlign: 'center',
     ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image })
-});
+};
 
 // Donate CTA
 const donateCta = {
@@ -80,8 +80,8 @@ const statusStyles = {
 };
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
-    <InnerHero content={heroContent} />
+<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
 
     {/* Initiative Status Bar */}
     <section class="py-3 bg-body-base/5 border-b border-body-base/10">

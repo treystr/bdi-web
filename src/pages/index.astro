@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import Hero from '@components/sections/Hero.astro';
+import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import SplitPanel from '@components/sections/SplitPanel.astro';
 import Features from '@components/sections/Features.astro';
 import { featureLists } from '@data/features';
@@ -32,7 +32,8 @@ const heroContent = {
         }
     ],
     backgroundImage: heroImage,
-    overlayOpacity: 0.6
+    contentPosition: 'center',
+    textAlign: 'center'
 }
 
 const featuresSection = {
@@ -77,8 +78,8 @@ const mainCta = {
 
 ---
 
-<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription}>
-    <Hero content={heroContent} />
+<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription} fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
     <Features content={featuresSection} padding="base" background="base" />
     <SplitPanel content={communitySection} imagePosition="right" background="light" padding="base" />
 </Layout>

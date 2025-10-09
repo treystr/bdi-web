@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import InnerHero from '../../components/sections/InnerHero.astro';
+import FullScreenHero from '../../components/sections/FullScreenHero.astro';
 import heroImage from '../../assets/images/wethepeople.jpg';
 
 export async function getStaticPaths() {
@@ -33,10 +33,13 @@ const heroContent = {
     description: entry.data.seo?.description || '',
     overlayOpacity: 0.8,
     backgroundImage: heroImage,
+    contentPosition: 'center',
+    textAlign: 'center'
 };
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
+<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
     <InnerHero content={heroContent} />
 
     <article class="site-container--small mx-auto px-8 prose pb-base">

@@ -377,7 +377,42 @@
         --color-nav-text-active: var(--color-primary);
         --color-nav-text-current: var(--color-primary);
         --color-nav-submenu-bg: var(--color-background-light);
-        --color-header-logo: var(--color-primary);
+        --color-header-logo: #ffffff;
+        --color-footer-logo: var(--color-primary);
+    }
+
+    [data-theme='satoshi'] {
+        --color-primary: #f7931a;
+        --color-primary-light: #ff9f33;
+        --color-primary-dark: #e6851a;
+        --color-secondary: #666666;
+        --color-secondary-light: #808080;
+        --color-secondary-dark: #4d4d4d;
+        --color-accent: #f7931a;
+        --color-background: #f8faff;
+        --color-background-light: #f0f4fa;
+        --color-background-dark: #1a2333;
+        --color-headline: #1a2333;
+        --color-headline-light: #1a2333;
+        --color-headline-dark: #ffffff;
+        --color-body-base: #1a2333;
+        --color-body-light: #1a2333;
+        --color-body-dark: #ffffff;
+        --color-eyebrow: #264d73;
+        --color-eyebrow-light: #264d73;
+        --color-eyebrow-dark: #ff9f33;
+        --color-input: var(--color-background-light);
+        --color-input-light: var(--color-background-light);
+        --color-input-dark: var(--color-background-dark);
+        --color-input-text: var(--color-body-base);
+        --color-input-text-light: var(--color-headline-light);
+        --color-input-text-dark: var(--color-headline-dark);
+        --color-nav-text: var(--color-body-base);
+        --color-nav-text-hover: var(--color-primary);
+        --color-nav-text-active: var(--color-primary);
+        --color-nav-text-current: var(--color-primary);
+        --color-nav-submenu-bg: var(--color-background-light);
+        --color-header-logo: #ffffff;
         --color-footer-logo: var(--color-primary);
     }
 
@@ -495,6 +530,36 @@
     .py-large { padding-top: var(--spacing-large); padding-bottom: var(--spacing-large); }
     
     .cursor-pointer { cursor: pointer; }
+    
+    /* Full-screen hero utilities */
+    .fullscreen-hero-layout { 
+        padding-top: 0 !important; 
+    }
+    
+    /* Header overlay styles */
+    .header-overlay {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    .header-overlay-transparent {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    .header-overlay .text-body-base,
+    .header-overlay .text-nav-text {
+        color: rgba(26, 31, 60, 0.9) !important;
+    }
+    
+    .header-overlay-transparent .text-body-base,
+    .header-overlay-transparent .text-nav-text {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
 }
 
 html,

@@ -1,9 +1,8 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import InnerHero from '@components/sections/InnerHero.astro';
+import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
-import { withRandomHeroContent } from '@utils/randomHeroImage';
 
 const initiativesEntries = await getCollection('initiatives');
 
@@ -21,12 +20,12 @@ const activeInitiatives = sortedInitiatives.filter(entry => entry.data.status ==
 const completedInitiatives = sortedInitiatives.filter(entry => entry.data.status === 'completed');
 
 // Hero content
-const heroContent = withRandomHeroContent({
+const heroContent = {
     title: 'Our Mission Initiatives',
     description: 'These are the programs and projects that drive our mission forward. Every initiative represents a tangible way we\'re empowering communities through Bitcoin education, privacy advocacy, and grassroots outreach.',
-    randomBackground: true,
-    overlayOpacity: 0.7
-});
+    contentPosition: 'center',
+    textAlign: 'center'
+};
 
 // CTA to donate
 const donateCta = {
@@ -51,8 +50,8 @@ const seoTitle = "Our Mission Initiatives"
 const seoDescription = "Explore the Bitcoin District Initiative's flagship programs and projects. From merchant onboarding to community education, these initiatives showcase our commitment to empowering DC communities through Bitcoin."
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
-    <InnerHero content={heroContent} />
+<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
 
     <section class="py-base">
         <div class="site-container px-8">

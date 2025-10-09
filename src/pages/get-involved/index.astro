@@ -1,12 +1,11 @@
 ---
 import Layout from "@layouts/Layout.astro"
-import InnerHero from "@components/sections/InnerHero.astro"
+import FullScreenHero from "@components/sections/FullScreenHero.astro"
 import Features from "@components/sections/Features.astro"
 import SplitPanel from "@components/sections/SplitPanel.astro"
 import Stats from "@components/sections/Stats.astro"
 import CtaBanner from "@components/sections/CtaBanner.astro"
 import { Heart, Users, BookOpen, Shield, Megaphone, Handshake, Globe } from 'lucide-astro' // Added new icons for involvement sections
-import { withRandomHeroContent } from '@utils/randomHeroImage';
 import communityImage from '../../assets/images/home/studybitcoin_coffee.jpg'
 
 // Update SEO
@@ -14,12 +13,12 @@ const seoTitle = "Get Involved"
 const seoDescription = "Join the Bitcoin District Initiative in empowering DC communities through Bitcoin education, privacy advocacy, and grassroots outreach. Discover ways to volunteer, donate, partner, and more."
 
 // Update hero
-const heroContent = withRandomHeroContent({
+const heroContent = {
     title: "Get Involved",
     description: "Join our grassroots movement to educate and empower Washington, DC communities with Bitcoin knowledge, privacy tools, and financial sovereignty. Whether through volunteering, donations, or partnerships, your involvement helps build a more decentralized future.",
-    randomBackground: true,
-    overlayOpacity: 0.7
-});
+    contentPosition: 'center',
+    textAlign: 'center'
+};
 
 // Update impact features to involvement ways (focusing on main categories)
 const involvementFeatures = {
@@ -147,8 +146,8 @@ const FooterCta = {
 }
 ---
 
-<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription}>
-    <InnerHero content={heroContent} />
+<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription} fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
     
     <!-- Main involvement CTA -->
     <CtaBanner
