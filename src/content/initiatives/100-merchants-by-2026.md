@@ -1,6 +1,6 @@
 ---
 title: "100 Merchants by 2026"
-shortDescription: "Growing Bitcoin adoption across 100 DC-area businesses by the end of 2026, creating a thriving circular economy in the nation's capital."
+shortDescription: "Growing Bitcoin adoption across 100 DC-area businesses by the end of 2026, building a thriving circular economy in the nation's capital."
 startDate: "2025-07-01"
 targetDate: "2026-12-31"
 status: "active"

@@ -14,24 +14,29 @@ export const valueLists: Record<string, ValueList> = {
         values: [
             {
                 title: 'Empowerment through Education',
-                description: 'Knowledge is the foundation of freedom. At the Bitcoin District Initiative, we provide hands-on learning experiences that focus on Bitcoin as sound money—a fixed, decentralized, and sovereign system. By equipping individuals and communities with the tools to understand and use Bitcoin, we empower them to achieve personal sovereignty and confidently participate in a world built on economic freedom.'
+                description:
+                    'Knowledge is the foundation of freedom. At the Bitcoin District Initiative, we offer hands-on learning experiences that make Bitcoin usable in everyday life. By teaching individuals and small businesses how to earn, save, and transact in sound money, we empower DC residents to participate directly in a growing Bitcoin circular economy built on personal sovereignty and economic freedom.'
             },
             {
                 title: 'Advocacy for Personal Sovereignty',
-                description: 'We champion individual autonomy and self-reliance. Bitcoin is more than a currency—it is a tool for liberation. By promoting self-custody and open participation, we help people take control of their savings and secure their future, free from centralized control and the risks of fragile fiat systems. Bitcoin enables anyone to be their own bank, ensuring wealth that is secure, durable, and beyond external interference.'
+                description:
+                    'We stand for self-reliance and individual autonomy. Bitcoin is more than a technology—it is a pathway to true independence. Through self-custody education and practical use, we help people reclaim control over their savings and economic choices, free from the risks of centralized systems. A thriving circular economy begins when individuals take ownership of their own money.'
             },
             {
                 title: 'Commitment to Privacy',
-                description: 'Privacy is essential to true freedom. In an age of growing financial surveillance, we advocate for open-source tools that safeguard personal data and transaction confidentiality. By teaching our community how to use Bitcoin securely alongside privacy technologies, we ensure individuals can transact freely and protect their sovereignty in an increasingly interconnected world.'
+                description:
+                    'Privacy is the cornerstone of a free and open society. In an era of financial surveillance, we promote privacy-preserving tools and practices that protect every participant in the circular economy. By combining Bitcoin education with privacy workshops, we ensure that residents and merchants in DC can transact securely, with dignity and confidence.'
             },
             {
                 title: 'Community-Driven Collaboration',
-                description: 'We believe in the strength of local, in-person connections. Through workshops, meetups, and outreach in Washington, DC, we create collaborative spaces where residents, local businesses, and organizations can learn, share, and grow together. By fostering relationships rooted in trust and knowledge, we drive grassroots Bitcoin adoption and build a resilient local network dedicated to advancing economic freedom.'
+                description:
+                    'A Bitcoin circular economy grows through human connection. Through meetups, workshops, and local partnerships, we bring together residents, educators, and small business owners to learn and build collectively. Each new collaboration strengthens DC’s local Bitcoin network and demonstrates how grassroots coordination can create lasting economic resilience.'
             },
             {
                 title: 'Principled Innovation',
-                description: 'We pursue Bitcoin and open-source advancements with integrity and humility. Our work is guided by transparency, accessibility, and responsibility, ensuring that education and outreach strengthen decentralization and serve the public good. Bitcoin is not just technology—it is a generational solution to broken monetary systems and a moral imperative to preserve freedom for the future.'
+                description:
+                    'We approach Bitcoin education and adoption with integrity, humility, and a commitment to open-source values. Our work prioritizes transparency, accessibility, and responsibility—ensuring innovation serves the public good and supports decentralization. By building honestly and openly, we set a model for how Bitcoin economies can grow sustainably and ethically.'
             }
         ]
-    },
+    }
 };

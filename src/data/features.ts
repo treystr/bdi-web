@@ -20,25 +20,30 @@ export const featureLists: Record<string, FeatureList> = {
         features: [
             {
                 icon: Zap,
-                title: 'Education & Workshops',
-                description: 'Offer hands-on workshops and seminars in DC that make Bitcoin accessible, helping individuals and local businesses build confidence in achieving economic freedom and personal sovereignty.'
+                title: 'Education That Empowers',
+                description:
+                    'We bring Bitcoin education to life through hands-on workshops and in-person training across Washington, DC. From beginners to small business owners, we teach practical skills for earning, saving, and transacting in sound money—laying the groundwork for a true Bitcoin circular economy.'
             },
             {
                 icon: CodeXml,
-                title: 'Guides & Open Resources',
-                description: 'Create and share clear, practical guides that support Bitcoin adoption, self-custody, and privacy, empowering people to use sound money with confidence.'
+                title: 'Open Guides & Free Resources',
+                description:
+                    'We create clear, actionable guides that make self-custody and Bitcoin use simple for everyone. All our materials are open-source and freely available, helping DC residents and merchants build lasting confidence in using Bitcoin as everyday money.'
             },
             {
                 icon: Shield,
-                title: 'Privacy & Freedom Tools',
-                description: 'Champion privacy-preserving, censorship-resistant, and open-source technologies that strengthen self-sovereignty and protect individual rights.'
+                title: 'Privacy & Sovereignty Tools',
+                description:
+                    'Freedom requires privacy. We promote and teach privacy-preserving, censorship-resistant technologies that empower individuals and small businesses to protect their data, secure their savings, and transact freely within the Bitcoin economy.'
             },
             {
                 icon: Smile,
-                title: 'Community Engagement',
-                description: 'Host meetups, local events, and grassroots collaborations in Washington, DC to grow a resilient, connected Bitcoin community.'
+                title: 'Community That Builds Together',
+                description:
+                    'A thriving Bitcoin economy grows from human connection. Through meetups, merchant onboarding, and grassroots collaboration, we’re strengthening Washington, DC’s local network of Bitcoin users, educators, and builders—proving that real change starts at the community level.'
             }
         ]
-    },
+    }
 };
+
 
