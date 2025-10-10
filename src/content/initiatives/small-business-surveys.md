@@ -1,11 +1,11 @@
 ---
 title: "Small Business Surveys"
 shortDescription: "Gathering insights from 100 DC small businesses by end of 2025 to understand payment challenges and guide Bitcoin education programs."
-startDate: "2025-01-01"
+startDate: "2025-09-01"
 targetDate: "2025-12-31"
 status: "active"
-goalAmount: 0
-currentAmount: 0
+goalAmount: 100
+currentAmount: 10
 featured: true
 hero:
   image: null
