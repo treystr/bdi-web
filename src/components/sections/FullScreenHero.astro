@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Button from '@components/ui/Button.astro';
 import FeaturedInitiativeCard from '@components/ui/FeaturedInitiativeCard.astro';
+import HeroStats from '@components/initiatives/HeroStats.astro';
 import defaultHeroImage from '@assets/images/hero/default.jpg';
 
 interface Initiative {
@@ -32,6 +33,16 @@ interface HeroContent {
     contentPosition?: 'center' | 'bottom' | 'top'; // Flexible positioning
     textAlign?: 'left' | 'center' | 'right';
     featuredContent?: Initiative; // Optional featured content to display at bottom
+    statsContent?: {
+        goal2025: number;
+        date2025: string;
+        goal2026: number;
+        date2026: string;
+        count: number;
+        total: number;
+        mtd: number;
+        neededPerMonth: number;
+    }; // Optional stats content to display at bottom
 }
 
 interface Props {
@@ -82,22 +93,22 @@ const alignmentClasses = {
     ></div>
 
     {/* Content Container */}
-    <div class={`relative z-10 w-full h-full flex flex-col ${content.featuredContent ? 'justify-between' : positionClasses[contentPosition]}`}>
+    <div class={`relative z-10 w-full h-full flex flex-col ${content.featuredContent || content.statsContent ? 'justify-between' : positionClasses[contentPosition]}`}>
         {/* Main Hero Content */}
-        <div class={`${content.featuredContent ? 'flex-1 flex flex-col justify-center' : ''}`}>
-            <div class={`site-container--hero mx-auto px-4 ${alignmentClasses[textAlign]}`}>
-                <h1 class="text-white mb-6" data-aos="fade-up">
+        <div class={`${content.featuredContent || content.statsContent ? 'flex-1 flex flex-col justify-center' : ''} pt-20 sm:pt-24 md:pt-0`}>
+            <div class={`site-container--hero mx-auto px-4 sm:px-6 lg:px-8 ${alignmentClasses[textAlign]}`}>
+                <h1 class="text-white mb-4 sm:mb-6 hero-title" data-aos="fade-up">
                     {content.title}
                 </h1>
                 
                 {content.description && (
-                    <p class="text-white text-lg md:text-xl leading-relaxed mb-8 opacity-90" data-aos="fade-up" data-aos-delay="100">
+                    <p class="text-white text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 opacity-90 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="100">
                         {content.description}
                     </p>
                 )}
                 
                 {content.buttons && content.buttons.length > 0 && (
-                    <div class="flex flex-wrap gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex flex-wrap gap-3 sm:gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
                         {content.buttons.map((button) => (
                             <Button
                                 href={button.link}
@@ -120,10 +131,28 @@ const alignmentClasses = {
                 </div>
             </div>
         )}
+
+        {/* Stats Content at Bottom */}
+        {content.statsContent && (
+            <div class="pb-16 sm:pb-20 px-4">
+                <div class="site-container--hero mx-auto">
+                    <HeroStats 
+                        goal2025={content.statsContent.goal2025}
+                        date2025={content.statsContent.date2025}
+                        goal2026={content.statsContent.goal2026}
+                        date2026={content.statsContent.date2026}
+                        count={content.statsContent.count}
+                        total={content.statsContent.total}
+                        mtd={content.statsContent.mtd}
+                        neededPerMonth={content.statsContent.neededPerMonth}
+                    />
+                </div>
+            </div>
+        )}
     </div>
 
-    {/* Scroll Indicator - Hide when featured content is present */}
-    {!content.featuredContent && (
+    {/* Scroll Indicator - Hide when featured content or stats are present */}
+    {!content.featuredContent && !content.statsContent && (
         <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
             <div class="scroll-indicator animate-bounce">
                 <svg class="w-6 h-6 text-white opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,5 +193,37 @@ const alignmentClasses = {
     .fullscreen-hero h1,
     .fullscreen-hero p {
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Hero title mobile optimization */
+    .hero-title {
+        font-size: var(--text-hero-mobile);
+        line-height: 1.1;
+    }
+    
+    /* Responsive adjustments for hero content */
+    @media (min-width: 768px) {
+        .hero-title {
+            font-size: var(--text-h1);
+            line-height: 1.2;
+        }
+    }
+    
+    /* Ensure proper spacing on mobile for fullscreen hero */
+    @media (max-width: 767px) {
+        .fullscreen-hero .site-container--hero {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .fullscreen-hero h1 {
+            margin-bottom: 1rem;
+        }
+        
+        .fullscreen-hero p {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
     }
 </style>

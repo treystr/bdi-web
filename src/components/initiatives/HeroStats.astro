@@ -1,0 +1,254 @@
+---
+import { Target, Calendar, TrendingUp, BarChart3 } from 'lucide-astro';
+
+interface Props {
+    goal2025: number;
+    date2025: string;
+    goal2026: number;
+    date2026: string;
+    count: number;
+    total: number;
+    mtd: number;
+    neededPerMonth: number;
+    class?: string;
+}
+
+const { 
+    goal2025, 
+    date2025, 
+    goal2026, 
+    date2026, 
+    count, 
+    total, 
+    mtd, 
+    neededPerMonth,
+    class: className = '' 
+} = Astro.props;
+
+const progress2025 = Math.min((count / goal2025) * 100, 100);
+const progress2026 = Math.min((count / goal2026) * 100, 100);
+---
+
+<div class={`hero-stats-widget ${className}`}>
+    <!-- Mobile Layout: 2x2 grid -->
+    <div class="md:hidden grid grid-cols-2 gap-3 max-w-md mx-auto">
+        <!-- Total Onboarded Card -->
+        <div class="stat-card">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-2">
+                    <Target class="w-5 h-5 text-green-400" />
+                </div>
+                <div class="stat-value-mobile">
+                    {total}
+                </div>
+                <div class="stat-label-mobile">
+                    Total Onboarded
+                </div>
+            </div>
+        </div>
+
+        <!-- This Month Card -->
+        <div class="stat-card">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-2">
+                    <Calendar class="w-5 h-5 text-blue-400" />
+                </div>
+                <div class="stat-value-mobile">
+                    {mtd}
+                </div>
+                <div class="stat-label-mobile">
+                    This Month
+                </div>
+            </div>
+        </div>
+
+        <!-- 2025 Goal Card -->
+        <div class="stat-card">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-2">
+                    <BarChart3 class="w-5 h-5 text-purple-400" />
+                </div>
+                <div class="stat-value-mobile">
+                    {count}/{goal2025}
+                </div>
+                <div class="stat-label-mobile">
+                    2025 Goal
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-1 mt-2">
+                    <div class="bg-purple-400 h-1 rounded-full transition-all duration-500" style={`width: ${progress2025}%`}></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2026 Goal Card -->
+        <div class="stat-card">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-2">
+                    <TrendingUp class="w-5 h-5 text-orange-400" />
+                </div>
+                <div class="stat-value-mobile">
+                    {count}/{goal2026}
+                </div>
+                <div class="stat-label-mobile">
+                    2026 Goal
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-1 mt-2">
+                    <div class="bg-orange-400 h-1 rounded-full transition-all duration-500" style={`width: ${progress2026}%`}></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Desktop/Tablet Layout: 4-column grid -->
+    <div class="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <!-- Total Onboarded -->
+        <div class="stat-card-desktop text-center">
+            <div class="flex items-center justify-center mx-auto mb-3 text-green-400">
+                <Target class="w-8 h-8" />
+            </div>
+            <div class="stat-value-desktop">
+                {total}
+            </div>
+            <div class="stat-label-desktop">
+                Total Onboarded
+            </div>
+        </div>
+
+        <!-- This Month -->
+        <div class="stat-card-desktop text-center">
+            <div class="flex items-center justify-center mx-auto mb-3 text-blue-400">
+                <Calendar class="w-8 h-8" />
+            </div>
+            <div class="stat-value-desktop">
+                {mtd}
+            </div>
+            <div class="stat-label-desktop">
+                This Month
+            </div>
+        </div>
+
+        <!-- 2025 Goal -->
+        <div class="stat-card-desktop text-center">
+            <div class="flex items-center justify-center mx-auto mb-3 text-purple-400">
+                <BarChart3 class="w-8 h-8" />
+            </div>
+            <div class="stat-value-desktop">
+                {count}/{goal2025}
+            </div>
+            <div class="stat-label-desktop">
+                2025 Goal
+            </div>
+            <div class="w-full bg-white/20 rounded-full h-2 mt-3">
+                <div class="bg-purple-400 h-2 rounded-full transition-all duration-500" style={`width: ${progress2025}%`}></div>
+            </div>
+        </div>
+
+        <!-- 2026 Goal -->
+        <div class="stat-card-desktop text-center">
+            <div class="flex items-center justify-center mx-auto mb-3 text-orange-400">
+                <TrendingUp class="w-8 h-8" />
+            </div>
+            <div class="stat-value-desktop">
+                {count}/{goal2026}
+            </div>
+            <div class="stat-label-desktop">
+                2026 Goal
+            </div>
+            <div class="w-full bg-white/20 rounded-full h-2 mt-3">
+                <div class="bg-orange-400 h-2 rounded-full transition-all duration-500" style={`width: ${progress2026}%`}></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-stats-widget {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .stat-card-desktop {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .stat-card-desktop:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .stat-value-mobile {
+        font-size: 1rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.25rem;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-label-mobile {
+        font-size: 0.625rem;
+        font-weight: 600;
+        color: white;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-value-desktop {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.25rem;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-label-desktop {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: white;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Ensure proper spacing and alignment */
+    .hero-stats-widget .grid {
+        align-items: stretch;
+    }
+
+    /* Progress bar animations */
+    .stat-card div[style*="width"],
+    .stat-card-desktop div[style*="width"] {
+        transition: width 0.8s ease-out;
+    }
+</style>

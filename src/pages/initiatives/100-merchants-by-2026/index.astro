@@ -3,7 +3,6 @@ import { getEntry, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
-import CompactStats from '@components/initiatives/CompactStats.astro';
 import Timeline from '@components/initiatives/Timeline.astro';
 import onboardingData from '@data/onboarding.json';
 
@@ -48,9 +47,19 @@ const heroContent = {
     title: entry.data.title,
     description: entry.data.shortDescription,
     overlayOpacity: entry.data.hero?.overlayOpacity || 0.7,
-    contentPosition: 'center',
-    textAlign: 'center',
-    ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image })
+    contentPosition: 'center' as const,
+    textAlign: 'center' as const,
+    ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image }),
+    statsContent: {
+        goal2025: 21,
+        date2025: "2025-12-31",
+        goal2026: 100,
+        date2026: "2026-12-31",
+        count: total,
+        total,
+        mtd,
+        neededPerMonth
+    }
 };
 
 // Donate CTA
@@ -103,22 +112,6 @@ const statusStyles = {
                     </a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    {/* Compact Stats */}
-    <section class="py-2 bg-base">
-        <div class="site-container--content px-4">
-            <CompactStats 
-                goal2025={21}
-                date2025="2025-12-31"
-                goal2026={100}
-                date2026="2026-12-31"
-                count={total}
-                total={total}
-                mtd={mtd}
-                neededPerMonth={neededPerMonth}
-            />
         </div>
     </section>
 
