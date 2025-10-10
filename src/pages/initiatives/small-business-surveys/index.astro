@@ -1,0 +1,155 @@
+---
+import { getEntry, render } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+import FullScreenHero from '@components/sections/FullScreenHero.astro';
+import CtaBanner from '@components/sections/CtaBanner.astro';
+import heroImage from "@assets/images/hero/hero7.jpg"
+
+// Get the initiative entry
+const entry = await getEntry('initiatives', 'small-business-surveys');
+if (!entry) {
+    return Astro.redirect('/404');
+}
+
+const { Content } = await render(entry);
+
+// Manual survey count - update this number as surveys are completed
+const surveyCount = 1; // Update this manually as surveys are completed
+const surveyGoal = 100;
+
+// Use SEO data from frontmatter if available
+const seoTitle = entry.data.seo?.title || entry.data.title;
+const seoDescription = entry.data.seo?.description || entry.data.shortDescription;
+
+// Hero content
+const heroContent = {
+    title: entry.data.title,
+    backgroundImage: heroImage,
+    description: entry.data.shortDescription,
+    overlayOpacity: entry.data.hero?.overlayOpacity || 0.7,
+    contentPosition: 'center' as const,
+    textAlign: 'center' as const,
+    buttons: [
+        {
+            text: "Get Involved",
+            link: "/get-involved",
+            variant: "primary" as const
+        },
+        {
+            text: "Learn More",
+            link: "/about",
+            variant: "secondary" as const
+        }
+    ],
+    ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image }),
+    simpleStatsContent: {
+        count: surveyCount,
+        goal: surveyGoal,
+        label: "Surveys Completed"
+    }
+};
+
+// Get Involved CTA
+const getInvolvedCta = {
+    eyebrow: "JOIN OUR MISSION",
+    title: `Help Us Achieve: ${entry.data.title}`,
+    description: "Are you interested in supporting Bitcoin education for DC small businesses? Join our volunteer team conducting door-to-door surveys and building relationships with local business owners.",
+    buttons: [
+        {
+            text: "Get Involved",
+            link: "/get-involved",
+            variant: "primary" as const
+        },
+        {
+            text: "Learn More",
+            link: "/about",
+            variant: "secondary" as const
+        }
+    ]
+};
+
+// Status badge styling
+const statusStyles = {
+    active: 'bg-green-100 text-green-800',
+    completed: 'bg-blue-100 text-blue-800',
+    planned: 'bg-yellow-100 text-yellow-800',
+};
+---
+
+<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
+    <FullScreenHero content={heroContent} />
+
+    {/* Initiative Status Bar */}
+    <section class="py-3 bg-body-base/5 border-b border-body-base/10">
+        <div class="site-container--content px-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <span class={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full ${statusStyles[entry.data.status] || statusStyles.active}`}>
+                        {entry.data.status.charAt(0).toUpperCase() + entry.data.status.slice(1)}
+                    </span>
+                    {entry.data.featured && (
+                        <span class="inline-block px-2.5 py-0.5 text-xs font-semibold bg-accent text-white rounded-full">
+                            Featured Initiative
+                        </span>
+                    )}
+                </div>
+                <div class="flex gap-2">
+                    <a href="/get-involved" class="btn btn-primary btn-sm">
+                        Get Involved
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {/* Main Content */}
+    <article class="site-container--article mx-auto px-4 prose prose-lg mt-8 mb-16">
+        <Content />
+    </article>
+
+    {/* Survey Information Section */}
+    <section class="py-16 bg-body-base/5">
+        <div class="site-container--content px-8">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">Small Business Survey</h2>
+                <p class="text-lg text-body-muted mb-8">
+                    Our volunteers are conducting door-to-door surveys with DC small businesses 
+                    to understand their payment challenges and Bitcoin education needs.
+                </p>
+                
+                {/* Survey Image */}
+                <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                    <img 
+                        src="/media/onboarding/smb_survey.jpg" 
+                        alt="Bitcoin District Initiative Small Business Survey Form"
+                        class="w-full max-w-4xl mx-auto rounded-lg shadow-md"
+                        loading="lazy"
+                    />
+                    <p class="text-sm text-gray-600 mt-4 text-center">
+                        Our field survey helps us understand payment challenges facing DC small businesses.
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="/get-involved" class="btn btn-primary">
+                        Volunteer to Help
+                    </a>
+                    <a href="/contact" class="btn btn-secondary">
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    {/* Get Involved CTA */}
+    <CtaBanner
+        content={getInvolvedCta}
+        variant="contained"
+        background="light"
+        padding="large"
+    />
+
+</Layout>
+

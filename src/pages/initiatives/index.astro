@@ -3,6 +3,7 @@ import Layout from '@layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
+import heroImage from "@assets/images/hero/hero5.jpg"
 
 const initiativesEntries = await getCollection('initiatives');
 
@@ -25,6 +26,7 @@ const featuredInitiative = sortedInitiatives.find(entry => entry.data.featured);
 // Hero content
 const heroContent = {
     title: 'Our Mission Initiatives',
+    backgroundImage: heroImage,
     description: 'These are the programs and projects that drive our mission forward. Every initiative represents a tangible way we\'re empowering communities through Bitcoin education, privacy advocacy, and grassroots outreach.',
     contentPosition: 'center' as const,
     textAlign: 'center' as const,

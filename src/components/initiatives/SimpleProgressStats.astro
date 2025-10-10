@@ -1,0 +1,173 @@
+---
+import { Target } from 'lucide-astro';
+
+interface Props {
+    count: number;
+    goal: number;
+    label?: string;
+    class?: string;
+}
+
+const { 
+    count, 
+    goal, 
+    label = "Surveys Completed",
+    class: className = '' 
+} = Astro.props;
+
+const progress = Math.min((count / goal) * 100, 100);
+const percentage = Math.round(progress);
+---
+
+<div class={`simple-progress-stats ${className}`}>
+    <!-- Mobile Layout -->
+    <div class="md:hidden">
+        <div class="stat-card-mobile">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-3">
+                    <Target class="w-6 h-6 text-accent" />
+                </div>
+                <div class="stat-value-mobile">
+                    {count}/{goal}
+                </div>
+                <div class="stat-label-mobile">
+                    {label}
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-2 mt-3">
+                    <div class="bg-accent h-2 rounded-full transition-all duration-500" style={`width: ${progress}%`}></div>
+                </div>
+                <div class="percentage-mobile mt-2">
+                    {percentage}% Complete
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Desktop Layout -->
+    <div class="hidden md:block">
+        <div class="stat-card-desktop">
+            <div class="text-center">
+                <div class="flex items-center justify-center mx-auto mb-4">
+                    <Target class="w-10 h-10 text-accent" />
+                </div>
+                <div class="stat-value-desktop">
+                    {count}/{goal}
+                </div>
+                <div class="stat-label-desktop">
+                    {label}
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-3 mt-4">
+                    <div class="bg-accent h-3 rounded-full transition-all duration-500" style={`width: ${progress}%`}></div>
+                </div>
+                <div class="percentage-desktop mt-3">
+                    {percentage}% Complete
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .simple-progress-stats {
+        animation: fadeInUp 0.8s ease-out;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .stat-card-mobile {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .stat-card-mobile:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .stat-card-desktop {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .stat-card-desktop:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .stat-value-mobile {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-label-mobile {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: white;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .percentage-mobile {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: white;
+        opacity: 0.8;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-value-desktop {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-label-desktop {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: white;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .percentage-desktop {
+        font-size: 1rem;
+        font-weight: 600;
+        color: white;
+        opacity: 0.8;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Progress bar animations */
+    .stat-card-mobile div[style*="width"],
+    .stat-card-desktop div[style*="width"] {
+        transition: width 0.8s ease-out;
+    }
+</style>
