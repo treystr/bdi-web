@@ -21,7 +21,7 @@ export const featureLists: Record<string, FeatureList> = {
             {
                 icon: Zap,
                 title: 'Education & Workshops',
-                description: 'Offer hands-on workshops and seminars in DC that make Bitcoin accessible, helping individuals and small businesses build confidence in achieving economic freedom and personal sovereignty.'
+                description: 'Offer hands-on workshops and seminars in DC that make Bitcoin accessible, helping individuals and local businesses build confidence in achieving economic freedom and personal sovereignty.'
             },
             {
                 icon: CodeXml,

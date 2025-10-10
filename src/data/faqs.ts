@@ -14,7 +14,7 @@ export const faqLists: Record<string, FaqList> = {
         faqs: [
             {
                 question: "What is the Bitcoin District Initiative?",
-                answer: "The Bitcoin District Initiative is a nonprofit dedicated to advancing public understanding of Bitcoin and freedom technologies in Washington, DC and beyond. Through education, community meetups, and open-source resources, we empower individuals and small businesses to achieve financial independence and personal sovereignty."
+                answer: "The Bitcoin District Initiative is a nonprofit dedicated to advancing public understanding of Bitcoin and freedom technologies in Washington, DC and beyond. Through education, community meetups, and open-source resources, we empower individuals and local businesses to achieve financial independence and personal sovereignty."
             },
             {
                 question: "What's the difference between 'Bitcoin District' and the 'Bitcoin District Initiative'?",
@@ -22,7 +22,7 @@ export const faqLists: Record<string, FaqList> = {
             },
             {
                 question: "Who can participate in your programs?",
-                answer: "Anyone interested in learning about Bitcoin and privacy-preserving technologies is welcome. Our programs are designed for all levels—from beginners to experienced users—including individuals, small businesses, and community groups."
+                answer: "Anyone interested in learning about Bitcoin and privacy-preserving technologies is welcome. Our programs are designed for all levels—from beginners to experienced users—including individuals, local businesses, and community groups."
             },
             {
                 question: "Are your events and resources free?",
@@ -30,7 +30,7 @@ export const faqLists: Record<string, FaqList> = {
             },
             {
                 question: "Can my business benefit from your programs?",
-                answer: "Absolutely. We provide workshops and resources tailored to small businesses, helping owners explore Bitcoin for payments, improve financial independence, and protect customer privacy. We also conduct outreach and market research to better understand local business needs."
+                answer: "Absolutely. We provide workshops and resources tailored to local businesses, helping owners explore Bitcoin for payments, improve financial independence, and protect customer privacy. We also conduct outreach and market research to better understand local business needs."
             },
             {
                 question: "How can I get involved with the Bitcoin District Initiative?",

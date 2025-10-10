@@ -2,19 +2,20 @@ export const siteConfig = {
   companyName: 'Bitcoin District Initiative',
   siteUrl: 'https://bitcoindistrictinitiative.org',
   Socials: {
-      xSocial: 'https://x.com/btcdistrict',
+      xSocial: 'https://x.com/btcd_init',
       Github: 'https://github.com/',
       Instagram: 'https://www.instagram.com/bitcoindistrictinitiative/',
-      LinkedIn: 'https://www.linkedin.com/company/',
+      LinkedIn: 'https://www.linkedin.com/company/bitcoindistrictinitiative',
       Email: 'hey@bitcoindistrictinitiative.org',
       Phone: null,
       Location: 'Washington, DC',
   },
   socialLinks: [
-    { icon: 'x', url: 'https://x.com/btcdistrict' },
-    //{ icon: 'instagram', url: 'https://www.instagram.com/bitcoindistrictinitiative/' },
+    { icon: 'x', url: 'https://x.com/btcd_init' },
+    { icon: 'instagram', url: 'https://www.instagram.com/btcdistrict/' },
     { icon: 'nostr', url: 'https://primal.net/p/nprofile1qqsdutvlg9h2d3sqjl0ak78sx35up9wv34kcz9fjs3xyecx79ngmktqw75l9f' },
     { icon: 'meetup', url: 'https://www.meetup.com/bitcoin-district/' },
+    { icon: 'linkedin', url: 'https://www.linkedin.com/company/bitcoindistrictinitiative' },
   ]
 };
 

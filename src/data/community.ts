@@ -7,7 +7,7 @@ export interface Community {
 export const community: Record<string, Community> = {
     education: {
         title: 'Bringing Education to You',
-        description: 'Bitcoin can feel overwhelming at first. Our in-person meetups and outreach programs bring education directly to residents, small businesses, and local organizations—tailored to their level of understanding. This practical, hands-on approach builds confidence and helps people clearly see Bitcoin’s role as sound money.'
+        description: 'Bitcoin can feel overwhelming at first. Our in-person meetups and outreach programs bring education directly to residents, local businesses, and local organizations—tailored to their level of understanding. This practical, hands-on approach builds confidence and helps people clearly see Bitcoin's role as sound money.'
     },
     'self-custody': {
         title: 'Mastering Self-Custody & Privacy',

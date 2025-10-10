@@ -6,7 +6,7 @@ import CtaBanner from '@components/sections/CtaBanner.astro';
 import heroImage from "@assets/images/hero/hero7.jpg"
 
 // Get the initiative entry
-const entry = await getEntry('initiatives', 'small-business-surveys');
+const entry = await getEntry('initiatives', 'local-business-surveys');
 if (!entry) {
     return Astro.redirect('/404');
 }
@@ -53,7 +53,7 @@ const heroContent = {
 const getInvolvedCta = {
     eyebrow: "JOIN OUR MISSION",
     title: `Help Us Achieve: ${entry.data.title}`,
-    description: "Are you interested in supporting Bitcoin education for DC small businesses? Join our volunteer team conducting door-to-door surveys and building relationships with local business owners.",
+    description: "Are you interested in supporting Bitcoin education for DC local businesses? Join our volunteer team conducting door-to-door surveys and building relationships with local business owners.",
     buttons: [
         {
             text: "Get Involved",
@@ -111,9 +111,9 @@ const statusStyles = {
     <section class="py-16 bg-body-base/5">
         <div class="site-container--content px-8">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl font-bold mb-4">Small Business Survey</h2>
+                <h2 class="text-3xl font-bold mb-4">Local Business Survey</h2>
                 <p class="text-lg text-body-muted mb-8">
-                    Our volunteers are conducting door-to-door surveys with DC small businesses 
+                    Our volunteers are conducting door-to-door surveys with DC local businesses 
                     to understand their payment challenges and Bitcoin education needs.
                 </p>
                 
@@ -121,12 +121,12 @@ const statusStyles = {
                 <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
                     <img 
                         src="/media/onboarding/smb_survey.jpg" 
-                        alt="Bitcoin District Initiative Small Business Survey Form"
+                        alt="Bitcoin District Initiative Local Business Survey Form"
                         class="w-full max-w-4xl mx-auto rounded-lg shadow-md"
                         loading="lazy"
                     />
                     <p class="text-sm text-gray-600 mt-4 text-center">
-                        Our field survey helps us understand payment challenges facing DC small businesses.
+                        Our field survey helps us understand payment challenges facing DC local businesses.
                     </p>
                 </div>
 

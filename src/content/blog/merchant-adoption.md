@@ -13,7 +13,7 @@ seo:
 
 ## Bringing Bitcoin to Main Street DC
 
-At the Bitcoin District Initiative, we believe Bitcoin isn’t just for individuals—it’s for communities. One of the most powerful ways to grow real-world adoption is by helping local merchants accept Bitcoin payments. From corner coffee shops to family-owned restaurants, small businesses form the backbone of Washington, DC’s neighborhoods. When they begin accepting Bitcoin, they unlock new opportunities for economic freedom and connect directly to a global, decentralized monetary network.
+At the Bitcoin District Initiative, we believe Bitcoin isn't just for individuals—it's for communities. One of the most powerful ways to grow real-world adoption is by helping local merchants accept Bitcoin payments. From corner coffee shops to family-owned restaurants, local businesses form the backbone of Washington, DC's neighborhoods. When they begin accepting Bitcoin, they unlock new opportunities for economic freedom and connect directly to a global, decentralized monetary network.
 
 ## Why Merchant Adoption Matters
 
@@ -24,7 +24,7 @@ Bitcoin empowers business owners to:
 - **Reach new customers**—Bitcoiners are eager to support businesses that share their values.  
 - **Strengthen sovereignty** through direct, peer-to-peer transactions without reliance on intermediaries.  
 
-For many small businesses in DC, accepting Bitcoin is more than just a payment option—it’s a statement of independence and innovation.
+For many local businesses in DC, accepting Bitcoin is more than just a payment option—it's a statement of independence and innovation.
 
 ## Our Approach
 

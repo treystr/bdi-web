@@ -27,10 +27,10 @@ Its primary purpose is to advance the public understanding of Bitcoin and freedo
 
 The Corporation’s activities include, but are not limited to:
 
-* Hosting workshops, seminars, online courses, and hands-on learning experiences that teach individuals and small businesses how to achieve financial independence through Bitcoin and peer-to-peer financial networks, with practical resources designed to be accessible to all.  
+* Hosting workshops, seminars, online courses, and hands-on learning experiences that teach individuals and local businesses how to achieve financial independence through Bitcoin and peer-to-peer financial networks, with practical resources designed to be accessible to all.  
 * Developing and sharing user-friendly tools, guides, and materials that simplify Bitcoin adoption, enabling individuals to take control of their financial lives through self-custody and privacy-focused practices.  
 * Promoting privacy-preserving, censorship-resistant, and other freedom-enhancing technologies to enhance access to and understanding of decentralized systems and self-sovereignty.  
-* Organizing local events, meetups, and collaborations in the Washington, DC area to foster Bitcoin adoption and economic resilience through hands-on workshops, mentorship programs, and partnerships with small businesses and community organizations.
+* Organizing local events, meetups, and collaborations in the Washington, DC area to foster Bitcoin adoption and economic resilience through hands-on workshops, mentorship programs, and partnerships with local businesses and community organizations.
 
 ### 
 

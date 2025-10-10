@@ -1,25 +1,25 @@
 ---
-title: "Small Business Surveys"
-shortDescription: "Gathering insights from 100 DC small businesses by end of 2025 to understand payment challenges and guide Bitcoin education programs."
+title: "Local Business Surveys"
+shortDescription: "Gathering insights from 100 DC local businesses by end of 2025 to understand payment challenges and guide Bitcoin education programs."
 startDate: "2025-09-01"
 targetDate: "2025-12-31"
 status: "active"
-goalAmount: 100
-currentAmount: 10
-featured: true
+goalAmount: 0
+currentAmount: 0
+featured: false
 hero:
   image: null
   overlayOpacity: 0.7
 seo:
-  title: "Small Business Surveys – Bitcoin District Initiative"
-  description: "Help us gather insights from 100 DC small businesses to understand payment challenges and guide Bitcoin education. Participate in our grassroots research effort."
+  title: "Local Business Surveys – Bitcoin District Initiative"
+  description: "Help us gather insights from 100 DC local businesses to understand payment challenges and guide Bitcoin education. Participate in our grassroots research effort."
 ---
 
-# Small Business Survey
+# Local Business Survey
 
 ## Overview
 
-Our **Small Business Survey** is a grassroots research effort designed to better understand the challenges small businesses in Washington, DC face with payments, savings, and technology. By listening directly to local merchants, we aim to identify where Bitcoin can make the most meaningful impact — from lowering fees and reducing fraud to creating new opportunities for economic freedom.
+Our **Local Business Survey** is a grassroots research effort designed to better understand the challenges local businesses in Washington, DC face with payments, savings, and technology. By listening directly to local merchants, we aim to identify where Bitcoin can make the most meaningful impact — from lowering fees and reducing fraud to creating new opportunities for economic freedom.
 
 This initiative also serves as an **entry point for conversation**. We’ve found that it can sometimes be awkward to walk into a business and start talking about Bitcoin right away. The survey helps break the ice — giving us a natural way to listen first, learn about each business’s real-world challenges, and start a thoughtful discussion about how Bitcoin might fit into their goals. It’s about building trust, not making a pitch.
 
@@ -33,7 +33,7 @@ Through this effort, we're gathering insights that will help guide educational p
    Use the survey as a bridge to open authentic discussions with local business owners — listening to their challenges before introducing Bitcoin as a potential solution.
 
 2. **Understand Local Business Needs**  
-   Identify the most common challenges DC small businesses face with customer payments — such as high fees, delayed payouts, or chargebacks.
+   Identify the most common challenges DC local businesses face with customer payments — such as high fees, delayed payouts, or chargebacks.
 
 3. **Measure Awareness and Familiarity**  
    Assess how well business owners currently understand Bitcoin, from basic awareness to active use or interest in accepting it as payment.
@@ -61,6 +61,6 @@ Through this effort, we're gathering insights that will help guide educational p
   Produce guides, case studies, and step-by-step materials that make Bitcoin payments and savings easy to understand and implement.
 
 - **Strengthen Community Partnerships:**  
-  Collaborate with local chambers, small business associations, and civic groups to extend Bitcoin education throughout the District.
+  Collaborate with local chambers, business associations, and civic groups to extend Bitcoin education throughout the District.
 
 ---

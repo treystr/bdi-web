@@ -17,7 +17,7 @@ Each year moving forward, we will release an **Impact Report** to share our prog
 ---
 
 ## Why This Matters
-Publishing an annual Impact Report is one of the ways we demonstrate accountability to our supporters and community. It shows the **positive impacts we’re having at the local level**—from residents gaining confidence with Bitcoin, to small businesses learning self-custody, to new partnerships that strengthen grassroots adoption.  
+Publishing an annual Impact Report is one of the ways we demonstrate accountability to our supporters and community. It shows the **positive impacts we're having at the local level**—from residents gaining confidence with Bitcoin, to local businesses learning self-custody, to new partnerships that strengthen grassroots adoption.  
 
 For donors, volunteers, and future participants, the Impact Report offers a clear view of how contributions of time, energy, and resources translate into **real-world outcomes that empower people through Bitcoin education and community collaboration**.  
 

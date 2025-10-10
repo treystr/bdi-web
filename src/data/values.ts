@@ -26,7 +26,7 @@ export const valueLists: Record<string, ValueList> = {
             },
             {
                 title: 'Community-Driven Collaboration',
-                description: 'We believe in the strength of local, in-person connections. Through workshops, meetups, and outreach in Washington, DC, we create collaborative spaces where residents, small businesses, and organizations can learn, share, and grow together. By fostering relationships rooted in trust and knowledge, we drive grassroots Bitcoin adoption and build a resilient local network dedicated to advancing economic freedom.'
+                description: 'We believe in the strength of local, in-person connections. Through workshops, meetups, and outreach in Washington, DC, we create collaborative spaces where residents, local businesses, and organizations can learn, share, and grow together. By fostering relationships rooted in trust and knowledge, we drive grassroots Bitcoin adoption and build a resilient local network dedicated to advancing economic freedom.'
             },
             {
                 title: 'Principled Innovation',
