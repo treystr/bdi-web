@@ -1,34 +1,33 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import FullScreenHero from '@components/sections/FullScreenHero.astro';
-import SplitPanel from '@components/sections/SplitPanel.astro';
+import InitiativeCards from '@components/sections/InitiativeCards.astro';
 import Features from '@components/sections/Features.astro';
 import { featureLists } from '@data/features';
 import { narratives } from '@data/narratives';
 import heroImage from '../assets/images/hero/hero0.jpg';
-import communityImage from '../assets/images/home/studybitcoin_coffee.jpg';
 
 const seoTitle = "Home";
 const seoDescription = "Building a Bitcoin Circular Economy in the Nation’s Capital";
 
 const heroContent = {
-    title: 'Building a Bitcoin Circular Economy in the Nation’s Capital',
-    description: 'We’re proving that a thriving Bitcoin circular economy can take root right here in Washington, DC—showing that when it works here, it can work anywhere.',
+    title: "Building a Bitcoin Circular Economy in the Nation's Capital",
+    description: "We're proving that a thriving Bitcoin circular economy can take root right here in Washington, DC—showing that when it works here, it can work anywhere.",
     buttons: [
         {
-            text: 'Our Initiatives',
-            link: '/initiatives',
-            target: '_self'
+            text: "Our Initiatives",
+            link: "/initiatives",
+            target: "_self"
         },
         {
-            text: 'Donate',
-            link: '/donate',
-            target: '_self'
+            text: "Donate",
+            link: "/donate",
+            target: "_self"
         }
     ],
     backgroundImage: heroImage,
-    contentPosition: 'center',
-    textAlign: 'center'
+    contentPosition: "center" as const,
+    textAlign: "center" as const
 }
 
 const featuresSection = {
@@ -37,14 +36,10 @@ const featuresSection = {
     features: featureLists.main.features,
 }
 
-const communitySection = {
-    eyebrow: "Community First",
-    headline: "Meeting People Where They Are",
-    description: "At the Initiative, we believe the best way to share Bitcoin is through real, human connections. Our grassroots meetups, workshops, and outreach efforts create welcoming spaces where DC residents and local businesses can learn about Bitcoin without the noise of online hype. By focusing on relationships at the local level, we're building trust and introducing open-source tools that encourage collaboration, resilience, and shared growth across our community.",
-    image: {
-        src: communityImage,
-        alt: "Community members learning about Bitcoin together"
-    },
+const initiativesSection = {
+    eyebrow: "Our Impact",
+    headline: "Active Initiatives Driving Change",
+    description: "These are the programs and projects currently driving our mission to build a Bitcoin circular economy in Washington, DC. Each initiative represents real-world action—from educating local businesses to building community connections—proving that sound money can thrive at the grassroots level.",
 }
 
 const FooterCta = {
@@ -73,8 +68,8 @@ const mainCta = {
 
 ---
 
-<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription} fullscreenHero={true}>
+<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
     <FullScreenHero content={heroContent} />
+    <InitiativeCards content={initiativesSection} background="light" padding="base" />
     <Features content={featuresSection} padding="base" background="base" />
-    <SplitPanel content={communitySection} imagePosition="right" background="light" padding="base" />
 </Layout>

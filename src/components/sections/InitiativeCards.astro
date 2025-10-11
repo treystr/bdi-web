@@ -1,0 +1,199 @@
+---
+import Button from '@components/ui/Button.astro';
+import Eyebrow from '@components/ui/Eyebrow.astro';
+import { getPaddingClass, getBackgroundColor, getTextColor } from '@utils/styleUtils';
+import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
+import { Image } from 'astro:assets';
+import { getActiveInitiatives, getSortedInitiatives } from '@data/initiatives';
+import type { Initiative } from '@data/initiatives';
+
+interface Content {
+    eyebrow?: string;
+    headline: string;
+    description?: string;
+}
+
+export interface Props {
+    content: Content;
+    // Layout props
+    background?: ThemeColor;
+    paddingTop?: PaddingSize;
+    paddingBottom?: PaddingSize;
+    padding?: PaddingSize;
+    // Display options
+    maxCards?: number;
+    showFeaturedOnly?: boolean;
+}
+
+const {
+    content,
+    // Layout props
+    background = 'base',
+    paddingTop,
+    paddingBottom,
+    padding,
+    // Display options
+    maxCards,
+    showFeaturedOnly = false,
+} = Astro.props;
+
+const { eyebrow, headline, description } = content;
+
+// Get initiatives from data file
+let activeInitiatives = getActiveInitiatives();
+
+// Optionally filter for featured only
+if (showFeaturedOnly) {
+    activeInitiatives = activeInitiatives.filter(init => init.featured);
+}
+
+// Sort initiatives
+activeInitiatives = getSortedInitiatives().filter(init => init.status === 'active');
+
+// Apply featured filter after sorting if needed
+if (showFeaturedOnly) {
+    activeInitiatives = activeInitiatives.filter(init => init.featured);
+}
+
+// Limit number of cards if specified
+if (maxCards && maxCards > 0) {
+    activeInitiatives = activeInitiatives.slice(0, maxCards);
+}
+
+const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
+const bgColor = getBackgroundColor(background);
+const textColor = getTextColor(background);
+---
+
+<section class:list={['relative', bgColor, paddingClass]}>
+    <div class="container mx-auto px-4">
+        <!-- Header Content -->
+        <div class="text-center mb-12 md:mb-16">
+            {eyebrow && (
+                <Eyebrow 
+                    text={eyebrow} 
+                    background={background} 
+                />
+            )}
+            <h2 class:list={['text-3xl md:text-4xl lg:text-5xl font-bold mb-6', textColor]}>
+                {headline}
+            </h2>
+            {description && (
+                <p class:list={['text-lg md:text-xl leading-relaxed max-w-3xl mx-auto', textColor, 'opacity-90']}>
+                    {description}
+                </p>
+            )}
+        </div>
+
+        <!-- Initiative Cards Grid -->
+        {activeInitiatives.length > 0 ? (
+            <div class="grid gap-8 md:grid-cols-2 lg:gap-12">
+                {activeInitiatives.map((initiative, index) => {
+                    const targetDate = initiative.targetDate 
+                        ? new Intl.DateTimeFormat('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                        }).format(initiative.targetDate)
+                        : null;
+
+
+                    // Use the cardImage from the initiative data
+                    const cardImage = initiative.cardImage;
+
+                    return (
+                        <article 
+                            class="bg-base border border-body-base/10 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:border-accent/30 group"
+                            data-aos="fade-up"
+                            data-aos-delay={index * 100}
+                        >
+                            <!-- Card Image -->
+                            <div class="relative aspect-[16/9] overflow-hidden">
+                                <Image
+                                    src={cardImage}
+                                    alt={`${initiative.title} initiative`}
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    loading="lazy"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                                
+                                <!-- Status Badge -->
+                                <div class="absolute top-4 left-4">
+                                    {initiative.featured ? (
+                                        <span class="inline-block px-3 py-1 text-xs font-semibold bg-accent text-white rounded-full">
+                                            Featured Initiative
+                                        </span>
+                                    ) : (
+                                        <span class="inline-block px-3 py-1 text-xs font-semibold bg-primary text-white rounded-full">
+                                            Active
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+
+                            <!-- Card Content -->
+                            <div class="p-6 md:p-8">
+                                <!-- Title -->
+                                <h3 class="text-xl md:text-2xl font-bold mb-4">
+                                    <a 
+                                        href={`/initiatives/${initiative.slug}`}
+                                        class="group-hover:text-accent transition-colors hover:text-accent"
+                                    >
+                                        {initiative.title}
+                                    </a>
+                                </h3>
+                                
+                                <!-- Description -->
+                                <p class="text-body-base/80 leading-relaxed mb-6">
+                                    {initiative.shortDescription}
+                                </p>
+
+                                <!-- Timeline Info -->
+                                {targetDate && (
+                                    <div class="flex items-center gap-2 mb-6 text-sm text-body-base/70">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span>Target: {targetDate}</span>
+                                    </div>
+                                )}
+
+
+                                <!-- CTA Button -->
+                                <div class="flex justify-start">
+                                    <Button
+                                        href={`/initiatives/${initiative.slug}`}
+                                        variant="primary"
+                                        size="md"
+                                        target="_self"
+                                    >
+                                        Learn More
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </Button>
+                                </div>
+                            </div>
+                        </article>
+                    );
+                })}
+            </div>
+        ) : (
+            <!-- Empty State -->
+            <div class="text-center py-16">
+                <div class="max-w-md mx-auto">
+                    <div class="w-16 h-16 bg-body-base/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-body-base/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <h3 class:list={['text-xl font-semibold mb-2', textColor]}>
+                        No Active Initiatives
+                    </h3>
+                    <p class:list={['text-body-base/70']}>
+                        We're currently planning new initiatives. Check back soon!
+                    </p>
+                </div>
+            </div>
+        )}
+    </div>
+</section>
