@@ -5,6 +5,7 @@ import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import Timeline from '@components/initiatives/Timeline.astro';
 import onboardingData from '@data/onboarding.json';
+import heroImage from '@assets/images/hero/hero-dupont.jpg';
 
 // Get the initiative entry
 const entry = await getEntry('initiatives', '100-merchants-by-2026');
@@ -45,6 +46,7 @@ const seoDescription = entry.data.seo?.description || entry.data.shortDescriptio
 // Hero content
 const heroContent = {
     title: entry.data.title,
+    backgroundImage: heroImage,
     description: entry.data.shortDescription,
     overlayOpacity: entry.data.hero?.overlayOpacity || 0.7,
     contentPosition: 'center' as const,
