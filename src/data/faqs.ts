@@ -45,7 +45,7 @@ export const faqLists: Record<string, FaqList> = {
             {
                 question: "Are my donations tax-exempt?",
                 answer:
-                    "We have applied for 501(c)(3) nonprofit status with the IRS and expect approval soon. Once approved, donations will be fully tax-deductible as allowed by law. We’ll notify our community as soon as our determination letter is received."
+                    "Yes! The Bitcoin District Initiative is a 501(c)(3) tax-exempt nonprofit organization. Your donations are fully tax-deductible to the extent allowed by law. We recommend consulting with your tax advisor for guidance on deducting your contribution."
             },
             {
                 question: "Why focus only on Bitcoin?",
