@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import FullScreenHero from '../../components/sections/FullScreenHero.astro';
+import PageHeader from '../../components/sections/PageHeader.astro';
 
 export async function getStaticPaths() {
     const legalEntries = await getCollection('legal');
@@ -26,18 +26,14 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
     timeZone: 'UTC'
 }).format(entry.data.lastUpdated);
 
-// Hero content
-const heroContent = {
+const pageHeaderContent = {
     title: entry.data.title,
-    description: '',
-    overlayOpacity: 0.8,
-    contentPosition: 'center',
-    textAlign: 'center'
+    description: ''
 };
 ---
 
-<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
-    <FullScreenHero content={heroContent} />
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
 
     <article class="site-container--article mx-auto px-8 prose pb-base">
         <div class="mt-12 mb-8">

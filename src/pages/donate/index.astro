@@ -1,21 +1,17 @@
 ---
 import Layout from "@layouts/Layout.astro"
-import FullScreenHero from "@components/sections/FullScreenHero.astro"
+import PageHeader from "@components/sections/PageHeader.astro"
 import SplitPanel from "@components/sections/SplitPanel.astro"
 import CtaBanner from "@components/sections/CtaBanner.astro"
 import { Copy, Check } from 'lucide-astro'
 import qrCodeImage from '../../assets/images/bd_wosQRZAP.png'
-import heroImage from "@assets/images/hero/hero6.jpg"
 
 const seoTitle = "Support Our Mission"
 const seoDescription = "Support the Bitcoin District Initiative's mission to empower DC communities through Bitcoin education, privacy advocacy, and grassroots outreach. Your donation makes a huge difference."
 
-const heroContent = {
+const pageHeaderContent = {
     title: "Support Our Mission",
-    backgroundImage: heroImage,
-    description: "Help us empower Washington, DC communities through Bitcoin education and privacy advocacy. As a 501(c)(3) tax-exempt nonprofit, your donations are tax-deductible. Zap us some sats to support our grassroots mission!",
-    contentPosition: 'center',
-    textAlign: 'center'
+    description: "Help us empower Washington, DC communities through Bitcoin education and privacy advocacy. As a 501(c)(3) tax-exempt nonprofit, your donations are tax-deductible. Zap us some sats to support our grassroots mission!"
 };
 
 // Tax deductibility notice
@@ -62,8 +58,8 @@ const FooterCta = {
 }
 ---
 
-<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription} fullscreenHero={true}>
-    <FullScreenHero content={heroContent} />
+<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription}>
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
     
     <!-- Main QR Code Donation Section -->
     <SplitPanel 

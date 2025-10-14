@@ -1,22 +1,20 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import FullScreenHero from '@components/sections/FullScreenHero.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
 import TeamGrid from '@components/sections/TeamGrid.astro';
 
 const seoTitle = "Our Team";
 const seoDescription = "Meet the Bitcoin District Initiative team: educators, advocates, and community builders dedicated to making Bitcoin accessible in Washington, DC. Learn how we're empowering our community through grassroots education and engagement.";
 
-const heroContent = {
+const pageHeaderContent = {
     title: "Our Team",
-    description: "Our team at the Bitcoin District Initiative is all about bringing Bitcoin to life for DC's communities. We're educators, advocates, and locals passionate about teaching people and local businesses how to use Bitcoin to gain financial freedom and build a stronger, more connected community.",
-    contentPosition: 'center',
-    textAlign: 'center'
+    description: "Our team at the Bitcoin District Initiative is all about bringing Bitcoin to life for DC's communities. We're educators, advocates, and locals passionate about teaching people and local businesses how to use Bitcoin to gain financial freedom and build a stronger, more connected community."
 };
 
 ---
 
-<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
-    <FullScreenHero content={heroContent}  />
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
     
     <TeamGrid padding="small" title="Board of Directors" memberType="bod" />
     <TeamGrid padding="small" title="Advisors" memberType="advisor" />

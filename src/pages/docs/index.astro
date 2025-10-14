@@ -1,8 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import FullScreenHero from '../../components/sections/FullScreenHero.astro';
-import heroImage from '@assets/images/wethepeople.jpg';
+import PageHeader from '../../components/sections/PageHeader.astro';
 
 const docsEntries = await getCollection('docs');
 
@@ -12,18 +11,14 @@ const policyEntries = docsEntries.filter(entry => entry.data.type === 'policy').
 const reportEntries = docsEntries.filter(entry => entry.data.type === 'report').sort((a, b) => a.data.title.localeCompare(b.data.title));
 const taxEntries = docsEntries.filter(entry => entry.data.type === 'tax').sort((a, b) => a.data.title.localeCompare(b.data.title));
 
-// Hero content
-const heroContent = {
+const pageHeaderContent = {
     title: 'Organizational Documents',
-    backgroundImage: heroImage,
-    description: 'Official documents, policies, and reports governing our organization',
-    contentPosition: 'center',
-    textAlign: 'center',
+    description: 'Official documents, policies, and reports governing our organization'
 };
 ---
 
-<Layout title="Organizational Documents" fullscreenHero={true}>
-    <FullScreenHero content={heroContent} />
+<Layout title="Organizational Documents">
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
 
     <section class="py-small">
         <div class="site-container--content px-8">

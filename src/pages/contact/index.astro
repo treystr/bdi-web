@@ -1,17 +1,15 @@
 ---
 import Layout from "@layouts/Layout.astro"
-import FullScreenHero from "@components/sections/FullScreenHero.astro"
+import PageHeader from "@components/sections/PageHeader.astro"
 import ContactInfo from "@components/sections/ContactInfo.astro"
 
-const heroContent = {
+const pageHeaderContent = {
     title: "Contact Us",
-    description: 'Please reach out to us with any questions or ideas on how you can get involved.',
-    contentPosition: 'center',
-    textAlign: 'center'
+    description: 'Please reach out to us with any questions or ideas on how you can get involved.'
 };
 ---
 
-<Layout title="Contact Us" description="Contact us for more information" fullscreenHero={true}>
-    <FullScreenHero content={heroContent} />
+<Layout title="Contact Us" description="Contact us for more information">
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
     <ContactInfo background="base" padding="base" content={{ title: 'Reach Out', description: 'We look forward to hearing from you!' }} />
 </Layout>

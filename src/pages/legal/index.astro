@@ -1,24 +1,21 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import FullScreenHero from '../../components/sections/FullScreenHero.astro';
+import PageHeader from '../../components/sections/PageHeader.astro';
 
 const legalEntries = await getCollection('legal');
 
 // Sort entries by title
 const sortedEntries = legalEntries.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
-// Hero content
-const heroContent = {
+const pageHeaderContent = {
     title: 'Legal Information',
-    description: 'Important policies and terms governing the use of our services',
-    contentPosition: 'center',
-    textAlign: 'center'
+    description: 'Important policies and terms governing the use of our services'
 };
 ---
 
-<Layout title="Legal Information" fullscreenHero={true}>
-    <FullScreenHero content={heroContent} />
+<Layout title="Legal Information">
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
 
     <section class="py-small">
         <div class="site-container--content px-8">

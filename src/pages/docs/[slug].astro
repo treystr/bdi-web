@@ -1,8 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import FullScreenHero from '../../components/sections/FullScreenHero.astro';
-import heroImage from '../../assets/images/wethepeople.jpg';
+import PageHeader from '../../components/sections/PageHeader.astro';
 
 export async function getStaticPaths() {
     const docsEntries = await getCollection('docs');
@@ -27,19 +26,14 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
     timeZone: 'UTC'
 }).format(entry.data.lastUpdated);
 
-// Hero content
-const heroContent = {
+const pageHeaderContent = {
     title: entry.data.title,
-    description: entry.data.seo?.description || '',
-    overlayOpacity: 0.8,
-    backgroundImage: heroImage,
-    contentPosition: 'center',
-    textAlign: 'center'
+    description: entry.data.seo?.description || ''
 };
 ---
 
-<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
-    <FullScreenHero content={heroContent} />
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
 
     <article class="site-container--small mx-auto px-8 prose pb-base">
         <!-- Top navigation link -->
