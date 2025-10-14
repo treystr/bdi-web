@@ -1,18 +1,23 @@
 ---
 import Layout from "@layouts/Layout.astro"
+import PageHeader from '@components/sections/PageHeader.astro';
 import Faqs from '@components/sections/Faqs.astro';
 import { faqLists } from '@data/faqs';
 
 const seoTitle = "Frequently Asked Questions";
 const seoDescription = "Find answers to common questions about the Bitcoin District Initiative, our programs, and Bitcoin education resources.";
 
-const faqsSection = {
+const pageHeaderContent = {
     title: 'Frequently Asked Questions',
-    description: 'Find answers to common questions about the Bitcoin District Initiative, our programs, and Bitcoin education resources.',
+    description: 'Find answers to common questions about the Bitcoin District Initiative, our programs, and Bitcoin education resources.'
+};
+
+const faqsSection = {
     faqs: faqLists.main.faqs
 }
 ---
 
 <Layout title={seoTitle} description={seoDescription}>
-    <Faqs content={faqsSection} background="base" paddingTop="large" paddingBottom="large" />
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
+    <Faqs content={faqsSection} background="base" paddingBottom="large" />
 </Layout>

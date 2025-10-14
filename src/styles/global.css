@@ -568,6 +568,12 @@
     .header-overlay-transparent .text-header-logo {
         color: rgba(255, 255, 255, 0.9) !important;
     }
+    
+    .header-solid .text-body-base,
+    .header-solid .text-nav-text,
+    .header-solid .text-header-logo {
+        color: rgba(26, 31, 60, 0.9) !important;
+    }
 }
 
 html,

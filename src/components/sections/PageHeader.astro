@@ -1,0 +1,99 @@
+---
+interface Props {
+    title: string;
+    description?: string;
+    background?: 'base' | 'light' | 'dark';
+}
+
+const { title, description, background = 'base' } = Astro.props;
+
+// Background classes for theme consistency
+const backgroundClasses = {
+    base: 'bg-background',
+    light: 'bg-background-light',
+    dark: 'bg-background-dark'
+};
+---
+
+<section class={`page-header relative w-full`}>
+    {/* Decorative gradient background section - extends to top of viewport */}
+    <div class="gradient-section-bg"></div>
+</section>
+
+{/* Content area - separate from gradient section */}
+<section class={`page-content ${backgroundClasses[background]}`}>
+    <div class="site-container--content mx-auto px-4 py-8 sm:py-12 md:py-16">
+        <h1 class="page-header-title text-headline mb-4" data-aos="fade-up">
+            {title}
+        </h1>
+        
+        {description && (
+            <p class="page-header-description text-body-base text-lg md:text-xl opacity-80 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
+                {description}
+            </p>
+        )}
+    </div>
+</section>
+
+<style>
+    .page-header {
+        /* Gradient section that extends to top of viewport */
+        position: relative;
+        width: 100%;
+        height: 110px;
+    }
+    
+    .gradient-section-bg {
+        /* Decorative gradient background with Bitcoin orange colors */
+        /* Extends to the very top of the page, behind the header */
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            135deg,
+            rgba(247, 147, 26, 0.85) 0%,   /* Bitcoin orange */
+            rgba(217, 122, 15, 0.95) 50%,  /* Darker orange */
+            rgba(247, 147, 26, 0.85) 100%  /* Bitcoin orange */
+        );
+        /* Add a subtle bottom border for definition */
+        box-shadow: 0 2px 8px rgba(247, 147, 26, 0.3);
+    }
+    
+    .page-content {
+        /* Content section with proper background */
+        position: relative;
+    }
+    
+    .page-header-title {
+        font-size: var(--text-h1);
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    
+    .page-header-description {
+        line-height: 1.6;
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+        .page-header {
+            height: 95px;
+        }
+        
+        .page-header-title {
+            font-size: var(--text-h2);
+            margin-bottom: 1rem;
+        }
+        
+        .page-header-description {
+            font-size: 1rem;
+        }
+    }
+    
+    /* Smaller mobile devices */
+    @media (max-width: 480px) {
+        .page-header {
+            height: 85px;
+        }
+    }
+</style>
+

@@ -106,9 +106,9 @@ const isCurrentPage = (link: string) => {
         <div class={`flex justify-between items-center py-4 rounded-lg px-4 border transition-all duration-300 ${
             overlayMode 
                 ? 'header-overlay-transparent border-white/20' 
-                : 'bg-white border-black'
+                : 'header-solid bg-white border-black'
         }`}>
-            <Logo />
+            <Logo variant="header" />
             <nav class="relative flex items-center gap-2 lg:gap-8" aria-label="Site Navigation">
                 {/* Desktop Menu */}
                 <ul class="hidden lg:flex lg:gap-8 items-center">

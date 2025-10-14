@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import FullScreenHero from '@components/sections/FullScreenHero.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
 import TeamGrid from '@components/sections/TeamGrid.astro';
 import Button from '@components/ui/Button.astro';
 import { valueLists } from '@data/values';
@@ -10,20 +10,18 @@ import { community } from '@data/community';
 const seoTitle = "About Us";
 const seoDescription = "About the Bitcoin District Initiative";
 
-const heroContent = {
+const pageHeaderContent = {
     title: "About Us",
-    description: "We're proving that a thriving Bitcoin circular economy can take root right here in Washington, DC—showing that when it works here, it can work anywhere.",
-    contentPosition: 'center',
-    textAlign: 'center'
+    description: "We're proving that a thriving Bitcoin circular economy can take root right here in Washington, DC—showing that when it works here, it can work anywhere."
 };
 
 ---
 
-<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
-    <FullScreenHero content={heroContent}  />
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
 
     <!-- Our Mission Section -->
-    <div class="site-container--content mx-auto px-4 mt-16 mb-16 text-left">
+    <div class="site-container--content mx-auto px-4 mb-16 text-left">
         <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">{narratives.mission.title}</h2>
         <p class="text-lg opacity-90" data-aos="fade-up" data-aos-delay="100">
             {narratives.mission.content}
