@@ -27,7 +27,7 @@ const featuredInitiative = sortedInitiatives.find(entry => entry.data.featured);
 const heroContent = {
     title: 'Our Initiatives',
     backgroundImage: heroImage,
-    description: 'These are the programs and projects driving our mission to build a Bitcoin circular economy in the Nation\'s Capital. Each initiative turns education, privacy, and local collaboration into real-world action—helping residents and businesses use Bitcoin in everyday life and proving that sound money can thrive from the ground up.',
+    description: 'These are the active projects driving our mission to build a Bitcoin circular economy in the Nation\'s Capital.',
     contentPosition: 'center' as const,
     textAlign: 'center' as const,
     featuredContent: featuredInitiative
@@ -35,9 +35,9 @@ const heroContent = {
 
 // CTA to donate
 const donateCta = {
-    eyebrow: "SUPPORT OUR WORK",
-    title: "Power These Initiatives with Your Support",
-    description: "Every dollar you contribute directly funds these mission-critical programs. Your donation helps us expand our reach, serve more communities, and create lasting impact.",
+    //eyebrow: "SUPPORT OUR WORK",
+    title: "Support our Work",
+    // description: "Every dollar you contribute directly funds these mission-critical programs. Your donation helps us expand our reach, serve more communities, and create lasting impact.",
     buttons: [
         {
             text: "Donate Now",
@@ -53,7 +53,7 @@ const donateCta = {
 };
 
 const seoTitle = "Our Initiatives"
-const seoDescription = "Discover how the Bitcoin District Initiative is building a Bitcoin circular economy in Washington, DC. Our initiatives connect education, merchant adoption, and community collaboration to bring sound money to everyday life in the Nation’s Capital.";
+const seoDescription = "Discover how the Bitcoin District Initiative is building a Bitcoin circular economy in Washington, DC. Our initiatives connect education, local business adoption, and community collaboration to bring sound money to everyday life in the Nation's Capital.";
 ---
 
 <Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
@@ -63,11 +63,9 @@ const seoDescription = "Discover how the Bitcoin District Initiative is building
         <div class="site-container--content px-8">
             <!-- Intro Section -->
             <div class="max-w-3xl mx-auto text-center mb-16">
-                <h2 class="text-3xl font-bold mb-6">Making Real Impact in DC Communities</h2>
+                <h2 class="text-3xl font-bold mb-6">Bringing Bitcoin to Main Street DC</h2>
                 <p class="text-lg text-body-base/80 leading-relaxed">
-                    Each initiative below represents a strategic program designed to advance our mission. 
-                    These aren't just ideas—they're active projects with clear goals, measurable outcomes, 
-                    and direct impact on the communities we serve. Your support makes them possible.
+                    These are active projects with clear goals, measurable outcomes, and direct impact on the communities we serve.
                 </p>
             </div>
 
@@ -98,7 +96,7 @@ const seoDescription = "Discover how the Bitcoin District Initiative is building
                                     <div class="p-8 md:p-10">
                                         {entry.data.featured && (
                                             <span class="inline-block px-3 py-1 text-xs font-semibold bg-accent text-white rounded-full mb-4">
-                                                Featured Initiative
+                                                Kickoff Initiative
                                             </span>
                                         )}
                                         
@@ -124,26 +122,26 @@ const seoDescription = "Discover how the Bitcoin District Initiative is building
                                             )}
                                         </div>
 
-                        {/* Progress Bar */}
-                        {entry.data.goalAmount > 0 && (
-                            <div class="mb-6">
-                                <div class="flex justify-between text-sm mb-2">
-                                    <span class="font-semibold">Funding Progress</span>
-                                    <span class="text-body-base/70">
-                                        ${entry.data.currentAmount.toLocaleString()} / ${entry.data.goalAmount.toLocaleString()}
-                                    </span>
-                                </div>
-                                <div class="w-full bg-body-base/10 rounded-full h-3 overflow-hidden">
-                                    <div 
-                                        class="bg-accent h-full rounded-full transition-all duration-500"
-                                        style={`width: ${progressPercent}%`}
-                                    />
-                                </div>
-                                <p class="text-xs text-body-base/60 mt-1">
-                                    {progressPercent}% funded
-                                </p>
-                            </div>
-                        )}
+                                        {/* Progress Bar */}
+                                        {entry.data.goalAmount > 0 && (
+                                            <div class="mb-6">
+                                                <div class="flex justify-between text-sm mb-2">
+                                                    <span class="font-semibold">Funding Progress</span>
+                                                    <span class="text-body-base/70">
+                                                        ${entry.data.currentAmount.toLocaleString()} / ${entry.data.goalAmount.toLocaleString()}
+                                                    </span>
+                                                </div>
+                                                <div class="w-full bg-body-base/10 rounded-full h-3 overflow-hidden">
+                                                    <div 
+                                                        class="bg-accent h-full rounded-full transition-all duration-500"
+                                                        style={`width: ${progressPercent}%`}
+                                                    />
+                                                </div>
+                                                <p class="text-xs text-body-base/60 mt-1">
+                                                    {progressPercent}% funded
+                                                </p>
+                                            </div>
+                                        )}
 
                                         {/* CTA Buttons */}
                                         <div class="flex flex-wrap gap-4 mt-8">
@@ -157,7 +155,7 @@ const seoDescription = "Discover how the Bitcoin District Initiative is building
                                                 href="/donate"
                                                 class="btn btn-secondary"
                                             >
-                                                Support This Initiative
+                                                Donate
                                             </a>
                                         </div>
                                     </div>

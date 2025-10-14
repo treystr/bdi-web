@@ -2,7 +2,7 @@
 name: "Trey"
 type: "bod"
 headshot: "./images/trey.jpg"
-jobTitle: "President & Co-Founder"
+jobTitle: "President"
 publish: true
 order: 1
 linkedin: "https://www.linkedin.com/in/trey-musgrave-a85947357/"

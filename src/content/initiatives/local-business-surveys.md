@@ -19,11 +19,11 @@ seo:
 
 ## Overview
 
-Our **Local Business Survey** is a grassroots research effort designed to better understand the challenges local businesses in Washington, DC face with payments, savings, and technology. By listening directly to local merchants, we aim to identify where Bitcoin can make the most meaningful impact — from lowering fees and reducing fraud to creating new opportunities for economic freedom.
+Our **Local Business Survey** is a grassroots research effort designed to better understand the challenges local businesses in Washington, DC face with payments, savings, and technology. By listening directly to local businesses, we aim to identify where Bitcoin can make the most meaningful impact — from lowering fees and reducing fraud to creating new opportunities for economic freedom.
 
 This initiative also serves as an **entry point for conversation**. We’ve found that it can sometimes be awkward to walk into a business and start talking about Bitcoin right away. The survey helps break the ice — giving us a natural way to listen first, learn about each business’s real-world challenges, and start a thoughtful discussion about how Bitcoin might fit into their goals. It’s about building trust, not making a pitch.
 
-Through this effort, we're gathering insights that will help guide educational programs, workshops, and hands-on merchant onboarding across the District. Our goal is to meet business owners where they are, learn from their experiences, and build tools and resources that make Bitcoin adoption simple, secure, and empowering.
+Through this effort, we're gathering insights that will help guide educational programs, workshops, and hands-on local business onboarding across the District. Our goal is to meet business owners where they are, learn from their experiences, and build tools and resources that make Bitcoin adoption simple, secure, and empowering.
 
 ---
 
@@ -39,7 +39,7 @@ Through this effort, we're gathering insights that will help guide educational p
    Assess how well business owners currently understand Bitcoin, from basic awareness to active use or interest in accepting it as payment.
 
 4. **Evaluate Barriers to Adoption**  
-   Learn what's holding merchants back — whether it's technical uncertainty, lack of demand, or the need for practical training.
+   Learn what's holding local businesses back — whether it's technical uncertainty, lack of demand, or the need for practical training.
 
 5. **Guide Educational Outreach**  
    Use the results to design targeted workshops, one-on-one trainings, and community meetups that make Bitcoin adoption approachable and beneficial for local businesses.
@@ -55,9 +55,9 @@ Through this effort, we're gathering insights that will help guide educational p
   Aggregate and anonymize survey responses to share key insights publicly, ensuring transparency and community value.
 
 - **Develop Local Programs:**  
-  Shape our 2025 educational and merchant outreach roadmap based on what DC business owners actually need.
+  Shape our 2025 educational and local business outreach roadmap based on what DC business owners actually need.
 
-- **Create Merchant Resources:**  
+- **Create Local Business Resources:**  
   Produce guides, case studies, and step-by-step materials that make Bitcoin payments and savings easy to understand and implement.
 
 - **Strengthen Community Partnerships:**  

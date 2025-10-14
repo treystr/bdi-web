@@ -18,9 +18,9 @@ export interface Initiative {
 
 export const initiatives: Initiative[] = [
     {
-        id: '100-merchants-by-2026',
-        title: "100 Merchants by 2026",
-        shortDescription: "Growing Bitcoin adoption across 100 DC-area businesses by the end of 2026, building a thriving circular economy in the nation's capital.",
+        id: '100-local-businesses-by-2026',
+        title: "100 Local Businesses by 2026",
+        shortDescription: "Onboarding 100 DC-area businesses by the end of 2026, building a thriving circular economy in the nation's capital. Bitcoin works best when ownership is distributed — when it circulates through local hands.",
         cardImage: lemonadeImage,
         status: 'active',
         featured: true,
@@ -28,7 +28,7 @@ export const initiatives: Initiative[] = [
         targetDate: new Date('2026-12-31'),
         goalAmount: 0,
         currentAmount: 0,
-        slug: '100-merchants-by-2026'
+        slug: '100-local-businesses-by-2026'
     },
     {
         id: 'local-business-surveys',

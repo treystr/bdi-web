@@ -25,7 +25,7 @@ export const valueLists: Record<string, ValueList> = {
             {
                 title: 'Commitment to Privacy',
                 description:
-                    'Privacy is the cornerstone of a free and open society. In an era of financial surveillance, we promote privacy-preserving tools and practices that protect every participant in the circular economy. By combining Bitcoin education with privacy workshops, we ensure that residents and merchants in DC can transact securely, with dignity and confidence.'
+                    'Privacy is the cornerstone of a free and open society. In an era of financial surveillance, we promote privacy-preserving tools and practices that protect every participant in the circular economy. By combining Bitcoin education with privacy workshops, we ensure that residents and local businesses in DC can transact securely, with dignity and confidence.'
             },
             {
                 title: 'Community-Driven Collaboration',

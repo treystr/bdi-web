@@ -23,12 +23,12 @@ export const community: Record<string, Community> = {
     'human-connections': {
         title: 'Fostering Human Connections',
         description:
-            'A thriving circular economy depends on trust and collaboration. Our face-to-face meetups build relationships among residents, merchants, and educators—creating a supportive local network of Bitcoiners working together toward shared goals of freedom and resilience.'
+            'A thriving circular economy depends on trust and collaboration. Our face-to-face meetups build relationships among residents, local businesses, and educators—creating a supportive local network of Bitcoiners working together toward shared goals of freedom and resilience.'
     },
     'local-networks': {
         title: 'Building the DC Bitcoin Economy',
         description:
-            'From our hub in the Nation’s Capital, we connect individuals, small businesses, and community leaders to build real Bitcoin commerce and collaboration. Each new connection strengthens the local circular economy and demonstrates how sound money can work at the neighborhood level.'
+            'From our hub in the Nation\'s Capital, we connect individuals, local businesses, and community leaders to build real Bitcoin commerce and collaboration. Each new connection strengthens the local circular economy and demonstrates how sound money can work at the neighborhood level.'
     },
     'lasting-impact': {
         title: 'Creating Lasting Impact',

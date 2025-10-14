@@ -13,7 +13,7 @@ seo:
 
 ## Listening Before Leading
 
-At the Bitcoin District Initiative, we know that successful Bitcoin adoption begins with listening. While we're excited to help merchants accept Bitcoin, we also recognize that every local business faces unique challenges and questions. That's why we're conducting **market research across Washington, DC**—to better understand how local entrepreneurs view Bitcoin, what concerns they have, and how we can best support them.
+At the Bitcoin District Initiative, we know that successful Bitcoin adoption begins with listening. While we're excited to help local businesses accept Bitcoin, we also recognize that every local business faces unique challenges and questions. That's why we're conducting **market research across Washington, DC**—to better understand how local entrepreneurs view Bitcoin, what concerns they have, and how we can best support them.
 
 ## Why Market Research Matters
 
@@ -21,7 +21,7 @@ Our mission is rooted in education and empowerment, not assumptions. By surveyin
 
 - **Identify barriers** that prevent businesses from adopting Bitcoin.  
 - **Understand priorities**—such as cost savings, customer demand, or ease of use.  
-- **Gather insights** on how Bitcoin can align with merchants’ real-world needs.  
+- **Gather insights** on how Bitcoin can align with local businesses' real-world needs.  
 - **Shape solutions** that are practical, accessible, and tailored to the DC community.  
 
 This research ensures that our outreach efforts are grounded in the lived experiences of the very businesses we seek to serve.
@@ -38,10 +38,10 @@ By pairing survey responses with in-person conversations, we’re able to collec
 
 ## From Insights to Action
 
-This market research is not an academic exercise—it's the foundation for real-world change. The insights we gather will directly inform our **merchant onboarding program**, ensuring that our workshops, educational guides, and outreach address the actual needs of DC's local businesses.
+This market research is not an academic exercise—it's the foundation for real-world change. The insights we gather will directly inform our **local business onboarding program**, ensuring that our workshops, educational guides, and outreach address the actual needs of DC's local businesses.
 
 For example:  
-- If merchants cite **staff training** as a concern, we’ll create tailored onboarding workshops.  
+- If local businesses cite **staff training** as a concern, we’ll create tailored onboarding workshops.  
 - If they worry about **tax reporting**, we’ll prepare simple, clear resources.  
 - If they’re excited about **new customers**, we’ll connect them to the DC Bitcoin community.  
 

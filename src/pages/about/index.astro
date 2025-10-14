@@ -12,7 +12,7 @@ const seoDescription = "About the Bitcoin District Initiative";
 
 const heroContent = {
     title: "About Us",
-    description: "The Bitcoin District Initiative is a 501(c)(3) tax-exempt nonprofit organization dedicated to advancing Bitcoin adoption in Washington, DC.",
+    description: "We're proving that a thriving Bitcoin circular economy can take root right here in Washington, DC—showing that when it works here, it can work anywhere.",
     contentPosition: 'center',
     textAlign: 'center'
 };
@@ -30,72 +30,8 @@ const heroContent = {
         </p>
     </div>
 
-    <!-- Who We Are Section -->
-    <div class="site-container--content mx-auto px-4 mb-16 text-left">
-        <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">{narratives['who-we-are'].title}</h2>
-        <p class="text-lg opacity-90" data-aos="fade-up" data-aos-delay="100">
-            {narratives['who-we-are'].content}
-        </p>
-    </div>
-
-    <!-- Board of Directors Section -->
-    <div class="site-container--content mx-auto px-4 mb-2 text-left">
-        <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">Board of Directors</h2>
-    </div>
-    <TeamGrid paddingTop={undefined} paddingBottom={undefined} memberType="bod" />
+    <TeamGrid padding="small" alignment="left" title="Board of Directors" description="Board members are not compensated for their board member duties and do not benefit from donations." memberType="bod" />
+    <TeamGrid padding="small" title="Advisors" memberType="advisor" />
+    <TeamGrid padding="small" title="Volunteers" memberType="volunteer" />
     
-    <!-- View Full Team Link -->
-    <div class="site-container--content mx-auto px-4 mt-8 mb-8 text-center">
-        <Button href="/team" variant="secondary" size="md" data-aos="fade-up">
-            View Full Team
-        </Button>
-    </div>
-
-    <!-- Our Values Section -->
-    <div class="site-container--content mx-auto px-4 mt-16 mb-24 text-left">
-        <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">Our Values</h2>
-        <div class="text-lg opacity-90 space-y-4" data-aos="fade-up" data-aos-delay="100">
-            {valueLists.main.values.map((value) => (
-                <p>
-                    <strong>{value.title}:</strong> {value.description}
-                </p>
-            ))}
-        </div>
-    </div>
-
-    <!-- Why In-Person Community Matters Section -->
-    <div class="site-container--content mx-auto px-4 mb-16 text-left">
-        <h2 class="text-3xl font-bold mb-8" data-aos="fade-up">Why In-Person Community Matters</h2>
-        <div class="grid gap-8 md:grid-cols-2" data-aos="fade-up" data-aos-delay="100">
-            <div class="space-y-6">
-                <div>
-                    <h3 class="text-xl font-semibold mb-2">{community.education.title}</h3>
-                    <p class="text-base opacity-90">{community.education.description}</p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-semibold mb-2">{community['self-custody'].title}</h3>
-                    <p class="text-base opacity-90">{community['self-custody'].description}</p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-semibold mb-2">{community['focused-learning'].title}</h3>
-                    <p class="text-base opacity-90">{community['focused-learning'].description}</p>
-                </div>
-            </div>
-            <div class="space-y-6">
-                <div>
-                    <h3 class="text-xl font-semibold mb-2">{community['human-connections'].title}</h3>
-                    <p class="text-base opacity-90">{community['human-connections'].description}</p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-semibold mb-2">{community['local-networks'].title}</h3>
-                    <p class="text-base opacity-90">{community['local-networks'].description}</p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-semibold mb-2">{community['lasting-impact'].title}</h3>
-                    <p class="text-base opacity-90">{community['lasting-impact'].description}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </Layout>

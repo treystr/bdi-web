@@ -6,11 +6,11 @@ export interface Narrative {
 export const narratives: Record<string, Narrative> = {
     mission: {
         title: 'Our Mission',
-        content: 'Building a Bitcoin Circular Economy in the Nation’s Capital'
+        content: 'Build a grassroots Bitcoin Circular Economy in the Nation’s Capital. The Bitcoin District Initiative is a 501(c)(3) nonprofit public charity advancing grassroots Bitcoin adoption in Washington, DC and beyond. Our objectives are to support local business adoption and foster circular Bitcoin economies, educate residents and communities through accessible workshops and meetups, and partner with other local initiatives to expand sustainable, Bitcoin-based economic networks nationwide. Guided by a volunteer board and rooted in transparency and open-source principles, we\’re building a foundation for real-world Bitcoin use that strengthens economic freedom and personal sovereignty from the ground up.'
     },
     'who-we-are': {
         title: 'Who We Are',
-        content: 'The Bitcoin District Initiative is a nonprofit building a Bitcoin circular economy in the Nation’s Capital. Rooted in the grassroots energy of Washington, DC’s Bitcoin community, our mission is to make sound money usable in everyday life. We connect education, small business adoption, and community collaboration to create a living, local Bitcoin economy. Through practical workshops, in-person meetups, and open-source resources, we help residents and merchants understand and use Bitcoin as a tool for economic freedom and personal sovereignty. By strengthening local connections and promoting real Bitcoin usage, we’re proving that when a circular economy takes root in DC, it can take root anywhere.'
+        content: 'The Bitcoin District Initiative is a 501(c)(3)nonprofit building a Bitcoin circular economy in the Nation\’s Capital.'
     }
 
 };

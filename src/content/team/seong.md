@@ -2,7 +2,7 @@
 name: "Seong"
 type: "bod"
 headshot: "./images/seong.jpg"
-jobTitle: "Co-Founder"
+jobTitle: "Treasurer"
 publish: true
 order: 2
 linkedin: "https://www.linkedin.com/in/seongkwanhong/"

@@ -28,7 +28,7 @@ export const featureLists: Record<string, FeatureList> = {
                 icon: CodeXml,
                 title: 'Open Guides & Free Resources',
                 description:
-                    'We create clear, actionable guides that make self-custody and Bitcoin use simple for everyone. All our materials are open-source and freely available, helping DC residents and merchants build lasting confidence in using Bitcoin as everyday money.'
+                    'We create clear, actionable guides that make self-custody and Bitcoin use simple for everyone. All our materials are open-source and freely available, helping DC residents and local businesses build lasting confidence in using Bitcoin as everyday money.'
             },
             {
                 icon: Shield,
@@ -40,7 +40,7 @@ export const featureLists: Record<string, FeatureList> = {
                 icon: Smile,
                 title: 'Community That Builds Together',
                 description:
-                    'A thriving Bitcoin economy grows from human connection. Through meetups, merchant onboarding, and grassroots collaboration, we’re strengthening Washington, DC’s local network of Bitcoin users, educators, and builders—proving that real change starts at the community level.'
+                    'A thriving Bitcoin economy grows from human connection. Through meetups, local business onboarding, and grassroots collaboration, we\'re strengthening Washington, DC\'s local network of Bitcoin users, educators, and builders—proving that real change starts at the community level.'
             }
         ]
     }

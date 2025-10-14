@@ -1,16 +1,16 @@
 ---
-title: "Impact Report 2025"
+title: "Impact Report 2026"
 description: "Our first annual impact report, to be published in 2026, highlighting the achievements and community impact of the Bitcoin District Initiative."
 type: report
 lastUpdated: "2025-08-27"
 seo:
   title: "2025 Impact Report – Bitcoin District Initiative"
-  description: "Our first annual Impact Report will be released in 2026, sharing progress, programs, and community impact from 2025."
+  description: "Our first annual Impact Report will be released in 2026, sharing progress, programs, and community impact from 2026."
 ---
 
-# Impact Report 2025
+# Impact Report 2026
 
-The Bitcoin District Initiative will publish its **first annual Impact Report** in early **2026**, covering our activities and achievements throughout 2025.  
+The Bitcoin District Initiative will publish its **first annual Impact Report** in early **2027**, covering our activities and achievements throughout 2025.  
 
 Each year moving forward, we will release an **Impact Report** to share our progress with supporters, community members, and the broader public. These reports will document how our programs, workshops, and outreach efforts are advancing our mission to build a thriving Bitcoin hub in Washington, DC.
 
@@ -25,4 +25,4 @@ For donors, volunteers, and future participants, the Impact Report offers a clea
 
 ---
 
-📢 **Stay tuned:** The **2025 Impact Report will be published in Q1 2026** and made available here for download.  
+📢 **Stay tuned:** The **2026 Impact Report will be published in Q1 2027** and made available here for download.  

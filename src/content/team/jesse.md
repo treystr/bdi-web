@@ -2,7 +2,7 @@
 name: "Jesse"
 type: "bod"
 headshot: "./images/jesse.jpg"
-jobTitle: "Co-Founder"
+jobTitle: "Secretary"
 publish: true
 order: 3
 #linkedin: "https://www.linkedin.com/in/jesse/"

@@ -28,6 +28,7 @@ interface HeroContent {
         link: string;
         variant?: 'primary' | 'secondary' | 'ghostLight' | 'ghostDark';
         target?: string;
+        hideOnDesktop?: boolean;
     }[];
     backgroundImage?: any;
     overlayOpacity?: number; // Value between 0 and 1
@@ -120,6 +121,7 @@ const alignmentClasses = {
                                 href={button.link}
                                 target={button.target || '_self'}
                                 variant={button.variant || 'primary'}
+                                class={button.hideOnDesktop ? 'md:hidden' : ''}
                             >
                                 {button.text}
                             </Button>
