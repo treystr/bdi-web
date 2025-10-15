@@ -8,8 +8,6 @@ seo:
   description: "Our first annual Impact Report will be released in 2026, sharing progress, programs, and community impact from 2026."
 ---
 
-# Impact Report 2026
-
 The Bitcoin District Initiative will publish its **first annual Impact Report** in early **2027**, covering our activities and achievements throughout 2025.  
 
 Each year moving forward, we will release an **Impact Report** to share our progress with supporters, community members, and the broader public. These reports will document how our programs, workshops, and outreach efforts are advancing our mission to build a thriving Bitcoin hub in Washington, DC.

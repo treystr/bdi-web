@@ -7,8 +7,6 @@ seo:
 type: main
 ---
 
-# Articles of Incorporation
-
 The **Articles of Incorporation** are the foundational legal documents that formally established the **Bitcoin District Initiative** as a nonprofit corporation in Washington, DC. Filed with the District of Columbia, these Articles define our organization’s **legal existence, structure, and charitable purpose**.  
 
 They serve as the starting point for everything we do, outlining:
