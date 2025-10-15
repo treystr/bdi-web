@@ -1,11 +1,13 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import FullScreenHero from '@components/sections/FullScreenHero.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
-import heroImage from "@assets/images/hero/hero-dupont.jpg"
 
 const initiativesEntries = await getCollection('initiatives');
+
+console.log('Total initiatives loaded:', initiativesEntries.length);
+console.log('Initiative IDs:', initiativesEntries.map(e => e.id));
 
 // Sort by featured first, then by start date (newest first)
 const sortedInitiatives = initiativesEntries.sort((a, b) => {
@@ -19,19 +21,6 @@ const sortedInitiatives = initiativesEntries.sort((a, b) => {
 // Separate active and completed initiatives
 const activeInitiatives = sortedInitiatives.filter(entry => entry.data.status === 'active');
 const completedInitiatives = sortedInitiatives.filter(entry => entry.data.status === 'completed');
-
-// Find the featured initiative
-const featuredInitiative = sortedInitiatives.find(entry => entry.data.featured);
-
-// Hero content
-const heroContent = {
-    title: 'Our Initiatives',
-    backgroundImage: heroImage,
-    description: 'These are the active projects driving our mission to build a Bitcoin circular economy in the Nation\'s Capital.',
-    contentPosition: 'center' as const,
-    textAlign: 'center' as const,
-    featuredContent: featuredInitiative
-};
 
 // CTA to donate
 const donateCta = {
@@ -56,23 +45,18 @@ const seoTitle = "Our Initiatives"
 const seoDescription = "Discover how the Bitcoin District Initiative is building a Bitcoin circular economy in Washington, DC. Our initiatives connect education, local business adoption, and community collaboration to bring sound money to everyday life in the Nation's Capital.";
 ---
 
-<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
-    <FullScreenHero content={heroContent} />
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader 
+        title="Our Initiatives" 
+        description="These are the active projects driving our mission to build a Bitcoin circular economy in the Nation's Capital by bringing Bitcoin to Main Street DC." 
+        background="base" 
+    />
 
-    <section class="py-base">
+    <section class="py-xsmall">
         <div class="site-container--content px-8">
-            <!-- Intro Section -->
-            <div class="max-w-3xl mx-auto text-center mb-16">
-                <h2 class="text-3xl font-bold mb-6">Bringing Bitcoin to Main Street DC</h2>
-                <p class="text-lg text-body-base/80 leading-relaxed">
-                    These are active projects with clear goals, measurable outcomes, and direct impact on the communities we serve.
-                </p>
-            </div>
-
             <!-- Active Initiatives -->
             {activeInitiatives.length > 0 && (
                 <div class="mb-20">
-                    <h2 class="text-2xl font-bold mb-8 pb-4 border-b-2 border-accent">Active Initiatives</h2>
                     <div class="grid gap-8 md:gap-10">
                         {activeInitiatives.map((entry) => {
                             const progressPercent = entry.data.goalAmount 
@@ -93,70 +77,82 @@ const seoDescription = "Discover how the Bitcoin District Initiative is building
 
                             return (
                                 <article class="bg-base border border-body-base/10 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:border-accent/30">
-                                    <div class="p-8 md:p-10">
-                                        {entry.data.featured && (
-                                            <span class="inline-block px-3 py-1 text-xs font-semibold bg-accent text-white rounded-full mb-4">
-                                                Kickoff Initiative
-                                            </span>
-                                        )}
+                                    <div class="grid md:grid-cols-2 gap-0">
+                                        {/* Left: Image */}
+                                        <div class="relative h-64 md:h-full min-h-[300px]">
+                                            <img 
+                                                src={entry.data.cardImage.src} 
+                                                alt={entry.data.title} 
+                                                class="w-full h-full object-cover"
+                                            />
+                                        </div>
                                         
-                                        <a href={`/initiatives/${entry.id}`} class="group">
-                                            <h3 class="text-2xl md:text-3xl font-bold mb-4 group-hover:text-accent transition-colors">
-                                                {entry.data.title}
-                                            </h3>
-                                        </a>
-                                        
-                                        <p class="text-body-base/80 text-lg mb-6 leading-relaxed">
-                                            {entry.data.shortDescription}
-                                        </p>
+                                        {/* Right: Content */}
+                                        <div class="p-8 md:p-10 flex flex-col">
+                                            {entry.data.featured && (
+                                                <span class="inline-block px-3 py-1 text-xs font-semibold bg-accent text-white rounded-full mb-4 w-fit">
+                                                    Kickoff Initiative
+                                                </span>
+                                            )}
+                                            
+                                            <a href={`/initiatives/${entry.id}`} class="group">
+                                                <h3 class="text-2xl md:text-3xl font-bold mb-4 group-hover:text-accent transition-colors">
+                                                    {entry.data.title}
+                                                </h3>
+                                            </a>
+                                            
+                                            <p class="text-body-base/80 text-lg mb-6 leading-relaxed">
+                                                {entry.data.shortDescription}
+                                            </p>
 
-                                        {/* Timeline */}
-                                        <div class="flex flex-wrap gap-4 mb-6 text-sm text-body-base/70">
-                                            <div>
-                                                <span class="font-semibold">Started:</span> {startDate}
-                                            </div>
-                                            {targetDate && (
+                                            {/* Timeline */}
+                                            <div class="flex flex-wrap gap-4 mb-6 text-sm text-body-base/70">
                                                 <div>
-                                                    <span class="font-semibold">Target:</span> {targetDate}
+                                                    <span class="font-semibold">Started:</span> {startDate}
+                                                </div>
+                                                {targetDate && (
+                                                    <div>
+                                                        <span class="font-semibold">Target:</span> {targetDate}
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Progress Bar */}
+                                            {entry.data.goalAmount > 0 && (
+                                                <div class="mb-6">
+                                                    <div class="flex justify-between text-sm mb-2">
+                                                        <span class="font-semibold">Funding Progress</span>
+                                                        <span class="text-body-base/70">
+                                                            ${entry.data.currentAmount.toLocaleString()} / ${entry.data.goalAmount.toLocaleString()}
+                                                        </span>
+                                                    </div>
+                                                    <div class="w-full bg-body-base/10 rounded-full h-3 overflow-hidden">
+                                                        <div 
+                                                            class="bg-accent h-full rounded-full transition-all duration-500"
+                                                            style={`width: ${progressPercent}%`}
+                                                        />
+                                                    </div>
+                                                    <p class="text-xs text-body-base/60 mt-1">
+                                                        {progressPercent}% funded
+                                                    </p>
                                                 </div>
                                             )}
-                                        </div>
 
-                                        {/* Progress Bar */}
-                                        {entry.data.goalAmount > 0 && (
-                                            <div class="mb-6">
-                                                <div class="flex justify-between text-sm mb-2">
-                                                    <span class="font-semibold">Funding Progress</span>
-                                                    <span class="text-body-base/70">
-                                                        ${entry.data.currentAmount.toLocaleString()} / ${entry.data.goalAmount.toLocaleString()}
-                                                    </span>
-                                                </div>
-                                                <div class="w-full bg-body-base/10 rounded-full h-3 overflow-hidden">
-                                                    <div 
-                                                        class="bg-accent h-full rounded-full transition-all duration-500"
-                                                        style={`width: ${progressPercent}%`}
-                                                    />
-                                                </div>
-                                                <p class="text-xs text-body-base/60 mt-1">
-                                                    {progressPercent}% funded
-                                                </p>
+                                            {/* CTA Buttons */}
+                                            <div class="flex flex-wrap gap-4 mt-auto">
+                                                <a 
+                                                    href={`/initiatives/${entry.id}`}
+                                                    class="btn btn-primary"
+                                                >
+                                                    Learn More
+                                                </a>
+                                                <a 
+                                                    href="/donate"
+                                                    class="btn btn-secondary"
+                                                >
+                                                    Donate
+                                                </a>
                                             </div>
-                                        )}
-
-                                        {/* CTA Buttons */}
-                                        <div class="flex flex-wrap gap-4 mt-8">
-                                            <a 
-                                                href={`/initiatives/${entry.id}`}
-                                                class="btn btn-primary"
-                                            >
-                                                Learn More
-                                            </a>
-                                            <a 
-                                                href="/donate"
-                                                class="btn btn-secondary"
-                                            >
-                                                Donate
-                                            </a>
                                         </div>
                                     </div>
                                 </article>

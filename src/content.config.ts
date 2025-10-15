@@ -90,6 +90,7 @@ const initiatives = defineCollection({
         z.object({
             title: z.string(),
             shortDescription: z.string(),
+            cardImage: image(),
             startDate: z.string().transform(parseDate),
             targetDate: z.string().transform(parseDate).optional(),
             status: z.enum(['active', 'completed', 'planned']),

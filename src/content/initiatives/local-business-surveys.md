@@ -1,6 +1,7 @@
 ---
 title: "Local Business Surveys"
 shortDescription: "Gathering insights from 100 DC local businesses by end of 2025 to understand payment challenges and guide Bitcoin education programs."
+cardImage: "../../assets/images/smb.jpg"
 startDate: "2025-09-01"
 targetDate: "2025-12-31"
 status: "active"
