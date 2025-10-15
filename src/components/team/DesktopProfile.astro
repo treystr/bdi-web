@@ -20,76 +20,75 @@ const typeLabel =
 
 <div class="hidden lg:block">
     <Image
-        class="w-full rounded-md object-cover mb-6 border border-black"
+        class="w-full rounded-lg object-cover mb-6 shadow-md"
         src={entry.data.headshot}
-        alt=""
+        alt={entry.data.name}
         width={896}
         height={1280}
         quality={80}
         format="webp"
     />
-    <div class="flex flex-col items-center">
-        <h2 class="text-h5 font-bold text-body-base mb-2">{entry.data.name}</h2>
-        {typeLabel && <p class="text-xsmall text-body-base opacity-80 mb-1">{typeLabel}</p>}
-        <p class="text-small text-body-base mb-4">{entry.data.jobTitle}</p>
+    <div class="space-y-4">
+        <div>
+            <h1 class="text-3xl font-bold text-body-base mb-1">{entry.data.name}</h1>
+            <p class="text-lg text-body-base font-medium mb-1">{entry.data.jobTitle}</p>
+            {typeLabel && <p class="text-sm text-body-base opacity-70">{typeLabel}</p>}
+        </div>
 
-        <div class="flex flex-col items-center gap-4">
+        <div class="space-y-2 pt-2">
             {
                 entry.data.email && (
                     <a
                         href={`mailto:${entry.data.email}`}
-                        class="flex items-start gap-2 text-body-base hover:text-primary transition-colors text-small"
+                        class="flex items-center gap-2 text-body-base hover:text-primary transition-colors"
                     >
-                        <Mail size={18} strokeWidth={1.25} />
-                        <span>Email</span>
+                        <Mail size={18} strokeWidth={1.5} />
+                        <span class="text-sm">Email</span>
                     </a>
                 )
             }
-
-            <div class="flex flex-col items-center gap-3">
-                {
-                    entry.data.github && (
-                        <a
-                            href={entry.data.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="flex items-center gap-2 text-body-base hover:text-primary transition-colors text-small"
-                            aria-label="GitHub Profile"
-                        >
-                            <Github size={18} strokeWidth={1.25} />
-                            {entry.data.githubUsername && <span>{entry.data.githubUsername}</span>}
-                        </a>
-                    )
-                }
-                {
-                    entry.data.xSocial && (
-                        <a
-                            href={entry.data.xSocial}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="flex items-center gap-2 text-body-base hover:text-primary transition-colors text-small"
-                            aria-label="X (Twitter) Profile"
-                        >
-                            <X size={16} />
-                            {entry.data.xSocialUsername && <span>@{entry.data.xSocialUsername}</span>}
-                        </a>
-                    )
-                }
-                {
-                    entry.data.linkedin && (
-                        <a
-                            href={entry.data.linkedin}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="flex items-center gap-2 text-body-base hover:text-primary transition-colors text-small"
-                            aria-label="LinkedIn Profile"
-                        >
-                            <Linkedin size={18} strokeWidth={1.25} />
-                            {entry.data.linkedinUsername && <span>{entry.data.linkedinUsername}</span>}
-                        </a>
-                    )
-                }
-            </div>
+            {
+                entry.data.github && (
+                    <a
+                        href={entry.data.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-center gap-2 text-body-base hover:text-primary transition-colors"
+                        aria-label="GitHub Profile"
+                    >
+                        <Github size={18} strokeWidth={1.5} />
+                        <span class="text-sm">{entry.data.githubUsername || 'GitHub'}</span>
+                    </a>
+                )
+            }
+            {
+                entry.data.xSocial && (
+                    <a
+                        href={entry.data.xSocial}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-center gap-2 text-body-base hover:text-primary transition-colors"
+                        aria-label="X (Twitter) Profile"
+                    >
+                        <X size={16} />
+                        <span class="text-sm">{entry.data.xSocialUsername ? `@${entry.data.xSocialUsername}` : 'X'}</span>
+                    </a>
+                )
+            }
+            {
+                entry.data.linkedin && (
+                    <a
+                        href={entry.data.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-center gap-2 text-body-base hover:text-primary transition-colors"
+                        aria-label="LinkedIn Profile"
+                    >
+                        <Linkedin size={18} strokeWidth={1.5} />
+                        <span class="text-sm">{entry.data.linkedinUsername || 'LinkedIn'}</span>
+                    </a>
+                )
+            }
         </div>
     </div>
 </div>

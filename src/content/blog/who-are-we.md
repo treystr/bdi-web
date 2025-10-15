@@ -8,7 +8,7 @@ categories: ["Announcements"]
 
 seo:
   title: "What is the Bitcoin District Initiative?"
-  description: "Learn about The Bitcoin District Initiative - a grassroots nonprofit bringing Bitcoin education and community to Washington, DC"
+  description: "Learn about The Bitcoin District Initiative - a grassroots not-for-profit bringing Bitcoin education and community to Washington, DC"
 ---
 
 Hey DC! 👋

@@ -15,7 +15,7 @@ export const faqLists: Record<string, FaqList> = {
             {
                 question: "What is the Bitcoin District Initiative?",
                 answer:
-                    "The Bitcoin District Initiative is a nonprofit building a Bitcoin circular economy in the Nation’s Capital. "
+                    "The Bitcoin District Initiative is a not-for-profit building a Bitcoin circular economy in the Nation's Capital. "
             },
             {
                 question: "How can I get involved with the Bitcoin District Initiative?",
@@ -25,7 +25,7 @@ export const faqLists: Record<string, FaqList> = {
             {
                 question: "Are my donations tax-exempt?",
                 answer:
-                    "Yes! The Bitcoin District Initiative is a 501(c)(3) tax-exempt nonprofit organization. Your donations are fully tax-deductible to the extent allowed by law. We recommend consulting with your tax advisor for guidance on deducting your contribution."
+                    "Yes! The Bitcoin District Initiative is a 501(c)(3) tax-exempt not-for-profit organization. Your donations are fully tax-deductible to the extent allowed by law. We recommend consulting with your tax advisor for guidance on deducting your contribution."
             },
             {
                 question: "Why focus only on Bitcoin?",

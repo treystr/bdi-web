@@ -24,7 +24,7 @@ No prior experience is required—just bring curiosity, dedication, and a desire
 
 ## **Donate to Support Our Mission**
 
-As a 501(c)(3) nonprofit, we rely on charitable contributions to provide free resources, host community events, and expand access to Bitcoin knowledge across DC. Your donations are tax-deductible and directly support grassroots education.  
+As a 501(c)(3) not-for-profit, we rely on charitable contributions to provide free resources, host community events, and expand access to Bitcoin knowledge across DC. Your donations are tax-deductible and directly support grassroots education.  
 
 **One-Time Gifts:** Contribute securely via Bitcoin or traditional payment methods.  
 

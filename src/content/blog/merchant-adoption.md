@@ -28,7 +28,7 @@ For many local businesses in DC, accepting Bitcoin is more than just a payment o
 
 ## Our Approach
 
-Our initiative to onboard local businesses is rooted in our nonprofit mission: providing **accessible education, hands-on support, and open-source tools** that empower communities to thrive with Bitcoin. Here’s how we do it:
+Our initiative to onboard local businesses is rooted in our not-for-profit mission: providing **accessible education, hands-on support, and open-source tools** that empower communities to thrive with Bitcoin. Here's how we do it:
 
 1. **Direct Outreach:** We meet business owners face-to-face, listen to their concerns, and explain the practical benefits of Bitcoin.  
 2. **Hands-On Setup:** Our volunteers help local businesses install free, open-source Bitcoin payment software, ensuring they can self-custody funds securely.  

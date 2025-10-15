@@ -1,4 +1,4 @@
-export type PaddingSize = 'xsmall' | 'small' | 'base' | 'large';
+export type PaddingSize = 'xxsmall' | 'xsmall' | 'small' | 'base' | 'large';
 export type ThemeColor = 'base' | 'light' | 'dark';
 
 interface PaddingOptions {

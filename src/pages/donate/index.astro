@@ -11,11 +11,11 @@ const seoDescription = "Support the Bitcoin District Initiative's mission to emp
 
 const pageHeaderContent = {
     title: "Support Our Mission",
-    description: "Help us empower Washington, DC communities through Bitcoin education and privacy advocacy. As a 501(c)(3) tax-exempt nonprofit, your donations are tax-deductible. Zap us some sats to support our grassroots mission!"
+    description: "Help us empower Washington, DC communities through Bitcoin education and privacy advocacy. As a 501(c)(3) tax-exempt not-for-profit, your donations are tax-deductible. Zap us some sats to support our grassroots mission!"
 };
 
 // Tax deductibility notice
-const taxNotice = "The Bitcoin District Initiative is a 501(c)(3) tax-exempt nonprofit organization. Your donations are tax-deductible to the extent allowed by law. We encourage you to consult with your tax advisor for guidance on deducting your contribution."
+const taxNotice = "The Bitcoin District Initiative is a 501(c)(3) tax-exempt not-for-profit organization. Your donations are tax-deductible to the extent allowed by law. We encourage you to consult with your tax advisor for guidance on deducting your contribution."
 
 // Main donation section with QR code
 const donationSection = {
@@ -117,21 +117,7 @@ const FooterCta = {
             });
         </script>
     </SplitPanel>
-    
-    <!-- Tax Deductibility Notice -->
-    <section class="py-8 bg-yellow-50 border-y border-yellow-200">
-        <div class="site-container--content px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <div class="bg-yellow-100 border border-yellow-300 p-6 rounded-lg">
-                    <h3 class="text-lg font-semibold mb-3 text-yellow-800">Tax Deductibility Notice</h3>
-                    <p class="text-sm text-yellow-700 leading-relaxed">
-                        {taxNotice}
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
+     
     <!-- More Options Coming Soon -->
     <CtaBanner
         content={comingSoonCta}

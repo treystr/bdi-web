@@ -4,7 +4,6 @@ import Button from '@components/ui/Button.astro';
 import { siteConfig } from '@data/config';
 import { Github, Linkedin, Mail, Feather, Instagram } from 'lucide-astro';
 import X from '@components/icons/X.astro';
-import Meetup from '@components/icons/Meetup.astro';
 
 interface ButtonProps {
   text: string;
@@ -82,7 +81,7 @@ const currentYear = new Date().getFullYear();
                     {link.icon === 'linkedin' && <Linkedin {...iconProps} />}
                     {link.icon === 'mail' && <Mail {...iconProps} />}
                     {link.icon === 'nostr' && <Feather {...iconProps} />}
-                    {link.icon === 'meetup' && <Meetup size={20} class="text-body-dark hover:text-white transition-colors" />}
+
                   </a>
                 </li>
               );
@@ -113,7 +112,7 @@ const currentYear = new Date().getFullYear();
       <!-- Descriptive Line -->
       <div>
         <p class="text-body-dark text-xs max-w-4xl mx-auto">
-          Bitcoin District Initiative is a DC 501(c)(3) tax-exempt nonprofit organization. All gifts and donations are tax-deductible to the extent allowed by law.
+          Bitcoin District Initiative is a DC 501(c)(3) tax-exempt not-for-profit organization. All gifts and donations are tax-deductible to the extent allowed by law.
         </p>
       </div>
       

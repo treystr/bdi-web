@@ -14,7 +14,6 @@ export const siteConfig = {
     { icon: 'x', url: 'https://x.com/btcd_init' },
     { icon: 'instagram', url: 'https://www.instagram.com/btcdistrict/' },
     { icon: 'nostr', url: 'https://primal.net/p/nprofile1qqsdutvlg9h2d3sqjl0ak78sx35up9wv34kcz9fjs3xyecx79ngmktqw75l9f' },
-    { icon: 'meetup', url: 'https://www.meetup.com/bitcoin-district/' },
     { icon: 'linkedin', url: 'https://www.linkedin.com/company/bitcoindistrictinitiative' },
   ]
 };
@@ -22,7 +21,7 @@ export const siteConfig = {
 export const SEO = {
   Separator: '|',
   SiteName: 'Bitcoin District Initiative',
-  defaultDescription: 'Building DC’s Grassroots Bitcoin Community',
+  defaultDescription: 'Building a Bitcoin Circular Economy in the Nation\'s Capital',
 };
   
 export const blogSetting = {
