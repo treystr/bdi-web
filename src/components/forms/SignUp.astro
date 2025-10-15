@@ -1,0 +1,31 @@
+---
+interface Props {
+  size?: 'small' | 'medium' | 'large';
+}
+
+const { size = 'small' } = Astro.props;
+
+// Define max-width values for each size
+const sizeConfig = {
+  small: { maxWidth: '440px', textSize: 'text-xs' },
+  medium: { maxWidth: '600px', textSize: 'text-sm' },
+  large: { maxWidth: '800px', textSize: 'text-base' }
+};
+
+const config = sizeConfig[size];
+---
+
+<div class="newsletter-signup">
+  <div style={`min-height: 58px; max-width: ${config.maxWidth}; margin: 0 auto; width: 100%`}>
+    <script 
+      src="https://cdn.jsdelivr.net/ghost/signup-form@~0.3/umd/signup-form.min.js" 
+      data-label-1="Initiative" 
+      data-button-color="#f7931a" 
+      data-button-text-color="#FFFFFF" 
+      data-site="https://news.bitcoindistrict.org/" 
+      data-locale="en" 
+      async
+    ></script>
+  </div>
+</div>
+
