@@ -76,11 +76,11 @@ const backgroundClasses = {
     /* Mobile optimizations */
     @media (max-width: 768px) {
         .page-header {
-            height: 95px;
+            height: 130px;
         }
         
         .page-header-title {
-            font-size: var(--text-h2);
+            /* Keep h1 size - clamp handles mobile appropriately */
             margin-bottom: 1rem;
         }
         
@@ -92,7 +92,7 @@ const backgroundClasses = {
     /* Smaller mobile devices */
     @media (max-width: 480px) {
         .page-header {
-            height: 85px;
+            height: 110px;
         }
     }
 </style>

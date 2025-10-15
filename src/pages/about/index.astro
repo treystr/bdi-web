@@ -2,10 +2,6 @@
 import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
 import TeamGrid from '@components/sections/TeamGrid.astro';
-import Button from '@components/ui/Button.astro';
-import { valueLists } from '@data/values';
-import { narratives } from '@data/narratives';
-import { community } from '@data/community';
 
 const seoTitle = "About Us";
 const seoDescription = "About the Bitcoin District Initiative";
@@ -21,15 +17,17 @@ const pageHeaderContent = {
     <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
 
     <!-- Our Mission Section -->
-    <div class="site-container--content mx-auto px-4 mb-16 text-left">
-        <h2 class="text-3xl font-bold mb-4" data-aos="fade-up">{narratives.mission.title}</h2>
-        <p class="text-lg opacity-90" data-aos="fade-up" data-aos-delay="100">
-            {narratives.mission.content}
-        </p>
-    </div>
+    <section class="py-xsmall bg-background">
+        <div class="site-container--content mx-auto px-4">
+            <h2 class="text-headline mb-4" data-aos="fade-up">Our Mission</h2>
+            <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90 max-w-4xl" data-aos="fade-up" data-aos-delay="100">
+                Build a grassroots Bitcoin Circular Economy in the Nation's Capital. The Bitcoin District Initiative is a 501(c)(3) nonprofit public charity advancing grassroots Bitcoin adoption in Washington, DC and beyond. Our objectives are to support local business adoption and foster circular Bitcoin economies, educate residents and communities through accessible workshops and meetups, and partner with other local initiatives to expand sustainable, Bitcoin-based economic networks nationwide. Guided by a volunteer board and rooted in transparency and open-source principles, we're building a foundation for real-world Bitcoin use that strengthens economic freedom and personal sovereignty from the ground up.
+            </p>
+        </div>
+    </section>
 
-    <TeamGrid padding="small" alignment="left" title="Board of Directors" description="Board members are not compensated for their board member duties and do not benefit from donations." memberType="bod" />
-    <TeamGrid padding="small" title="Advisors" memberType="advisor" />
-    <TeamGrid padding="small" title="Volunteers" memberType="volunteer" />
+    <TeamGrid padding="xsmall" align="left" title="Board of Directors" description="Board members are not compensated for their board member duties and do not benefit from donations." memberType="bod" />
+    <TeamGrid padding="xsmall" title="Advisors" memberType="advisor" />
+    <TeamGrid padding="xsmall" title="Volunteers" memberType="volunteer" />
     
 </Layout>

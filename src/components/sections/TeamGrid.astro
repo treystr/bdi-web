@@ -11,15 +11,15 @@ interface Props {
     memberType?: 'bod' | 'volunteer' | 'advisor';
     title?: string;
     description?: string;
-    alignment?: 'left' | 'center' | 'right';
+    align?: 'left' | 'center' | 'right';
 }
 
-const { padding, paddingTop, paddingBottom, memberType, title, description, alignment = 'left' } = Astro.props as Props;
+const { padding, paddingTop, paddingBottom, memberType, title, description, align = 'left' } = Astro.props as Props;
 const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
 
-// Determine alignment classes
-const getAlignmentClasses = (alignment: string) => {
-    switch (alignment) {
+// Determine grid alignment classes
+const getAlignmentClasses = (align: string) => {
+    switch (align) {
         case 'center':
             return 'justify-center';
         case 'right':
@@ -29,7 +29,20 @@ const getAlignmentClasses = (alignment: string) => {
     }
 };
 
-const alignmentClass = getAlignmentClasses(alignment);
+// Determine text alignment classes
+const getTextAlignmentClasses = (align: string) => {
+    switch (align) {
+        case 'center':
+            return 'text-center';
+        case 'right':
+            return 'text-right';
+        default:
+            return 'text-left';
+    }
+};
+
+const alignmentClass = getAlignmentClasses(align);
+const textAlignmentClass = getTextAlignmentClasses(align);
 
 const teamMembers = await getCollection('team', ({ data }) => {
     if (data.publish === false) return false;
@@ -46,7 +59,7 @@ const sortedTeamMembers = teamMembers.sort((a, b) => a.data.order - b.data.order
 <section class:list={['relative', paddingClass]}>
     <div class="site-container--content mx-auto px-4">
         {title && (
-            <div class="text-center mb-10">
+            <div class:list={[textAlignmentClass, 'mb-10']}>
                 <h2 class="text-h3">{title}</h2>
                 {description && (
                     <p class="text-lg opacity-90 mt-4">{description}</p>

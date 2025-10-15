@@ -71,6 +71,7 @@
     --text-large: clamp(1.25rem, 3vw + 0.25rem, 1.5rem);
     --text-xlarge: clamp(2rem, 5vw + 1rem, 4rem);
 
+    --spacing-xsmall: clamp(1rem, 5vw + 0.5rem, 3rem);
     --spacing-small: clamp(2rem, 10vw + 1rem, 6rem);
     --spacing-base: clamp(4rem, 10vw + 1rem, 8rem);
     --spacing-large: clamp(6rem, 10vw + 1rem, 10rem);
@@ -523,14 +524,17 @@
     .text-header-logo { color: var(--color-header-logo); }
     .text-footer-logo { color: var(--color-footer-logo); }
     
+    .pt-xsmall { padding-top: var(--spacing-xsmall); }
     .pt-small { padding-top: var(--spacing-small); }
     .pt-base { padding-top: var(--spacing-base); }
     .pt-large { padding-top: var(--spacing-large); }
 
+    .pb-xsmall { padding-bottom: var(--spacing-xsmall); }
     .pb-small { padding-bottom: var(--spacing-small); }
     .pb-base { padding-bottom: var(--spacing-base); }
     .pb-large { padding-bottom: var(--spacing-large); }
 
+    .py-xsmall { padding-top: var(--spacing-xsmall); padding-bottom: var(--spacing-xsmall); }
     .py-small { padding-top: var(--spacing-small); padding-bottom: var(--spacing-small); }
     .py-base { padding-top: var(--spacing-base); padding-bottom: var(--spacing-base); }
     .py-large { padding-top: var(--spacing-large); padding-bottom: var(--spacing-large); }
