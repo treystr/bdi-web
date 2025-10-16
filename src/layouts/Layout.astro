@@ -81,6 +81,9 @@ const fullCanonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
 			AOS.init({
 				duration: 800,
 				once: true,
+				offset: 0,
+				anchorPlacement: 'top-bottom',
+				startEvent: 'load'
 			});
 		</script>
 	</body>
