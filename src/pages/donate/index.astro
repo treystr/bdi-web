@@ -1,125 +1,78 @@
 ---
 import Layout from "@layouts/Layout.astro"
 import PageHeader from "@components/sections/PageHeader.astro"
-import SplitPanel from "@components/sections/SplitPanel.astro"
 import CtaBanner from "@components/sections/CtaBanner.astro"
-import { Copy, Check } from 'lucide-astro'
-import qrCodeImage from '../../assets/images/bd_wosQRZAP.png'
 
 const seoTitle = "Support Our Mission"
-const seoDescription = "Support the Bitcoin District Initiative's mission to empower DC communities through Bitcoin education, privacy advocacy, and grassroots outreach. Your donation makes a huge difference."
+const seoDescription = "Help Transform the Nation's Capital into a Bitcoin Circular Economy"
 
 const pageHeaderContent = {
     title: "Support Our Mission",
-    description: "Help us empower Washington, DC communities through Bitcoin education and privacy advocacy. As a 501(c)(3) tax-exempt not-for-profit, your donations are tax-deductible. Zap us some sats to support our grassroots mission!"
+    description: "Help Transform the Nation's Capital into a Bitcoin Circular Economy"
 };
 
-// Main donation section with QR code
-const donationSection = {
-    eyebrow: "DONATE NOW",
-    headline: "Zap Us on Lightning",
-    subheadline: "Support Bitcoin Education in DC",
-    description: "Scan the QR code with your Lightning wallet or send sats to our Lightning address below. Your contribution directly supports free workshops, community outreach, and privacy education across the DMV area.",
-    image: {
-        src: qrCodeImage,
-        alt: "Bitcoin District Lightning donation QR code"
-    }
-}
+const zapriteDonateUrl = "https://pay.zaprite.com/pl_1DjlHBRtHC"
 
-// Lightning address for easy copying
-const lightningAddress = "bitcoindistrict@walletofsatoshi.com"
-
-// More options coming soon
-const comingSoonCta = {
-    eyebrow: "MORE OPTIONS",
-    title: "Additional Donation Methods Coming Soon",
-    description: "We're working on adding more ways to support our mission, including on-chain Bitcoin donations and traditional payment options. Check back soon for updates!",
+// Primary CTA
+const heroDonate = {
+    title: "Make Your Tax-Deductible Donation",
+    description: "For a tax receipt, please include your name and email when donating through Zaprite.",
     buttons: [
         {
-            text: "Get Involved in Other Ways",
-            link: "/get-involved",
-            variant: "secondary" as const
+            text: "Donate Now",
+            link: zapriteDonateUrl,
+            variant: "primary" as const,
+            target: "_blank" as const
         }
     ]
 }
-
-const FooterCta = {
-    title: "More Ways to Support Our Mission",
-    description: "Beyond financial contributions, you can volunteer your time, partner with us as a business, or help spread awareness about Bitcoin education in DC.",
-    button: {
-        text: "Explore All Ways to Get Involved",
-        link: "/get-involved",
-        variant: "ghostLight" as const
-    },
-    hideCta: true
-}
 ---
 
-<Layout footerCta={FooterCta} title={seoTitle} description={seoDescription}>
+<Layout title={seoTitle} description={seoDescription}>
     <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
     
-    <!-- Main QR Code Donation Section -->
-    <SplitPanel 
-        content={donationSection} 
-        imagePosition="left" 
-        background="base" 
-        padding="small"
-        imageAspect="square"
-        imageFit="contain"
-    >
-        <!-- Copyable Lightning Address -->
-        <div class="mt-6" data-aos="fade-up">
-            <div class="flex items-center gap-2 bg-orange-50 border border-orange-300 rounded-lg p-4 group hover:bg-orange-100 transition-colors">
-                <span class="font-mono text-sm flex-1 break-all text-gray-800" id="lightning-address">
-                    {lightningAddress}
-                </span>
-                <button
-                    id="copy-btn"
-                    type="button"
-                    class="flex-shrink-0 p-2 rounded-md hover:bg-orange-200 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400"
-                    aria-label="Copy Lightning address"
-                >
-                    <Copy id="copy-icon" size={20} class="text-orange-700" />
-                    <Check id="check-icon" size={20} class="text-green-600 hidden" />
-                </button>
+    <!-- Primary Donation CTA -->
+    <CtaBanner 
+        content={heroDonate}
+        variant="full-width"
+        background="base"
+        padding="xsmall"
+        buttonSize="xxl"
+    />
+
+    <!-- Mission & Impact Section -->
+    <section class="py-small bg-background-alt">
+        <div class="site-container--content mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div data-aos="fade-up">
+                    <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90 mb-6">
+                        The Bitcoin District Initiative is a 501(c)(3) nonprofit working to make Washington, DC—the nation's capital—a thriving Bitcoin circular economy where residents and businesses can earn, save, and spend in Bitcoin.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-headline text-xl md:text-2xl mb-4">Why DC?</h3>
+                    <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90 mb-6">
+                        Because it's America's capital—a place that belongs to everyone. People from across the country and around the world come here to connect with the ideals that shaped our nation. Showing that Bitcoin works as real money in DC sends a message that reaches far beyond the city itself.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-headline text-xl md:text-2xl mb-4">Your Donation Helps Us:</h3>
+                    <ul class="space-y-3 mb-6 text-body-base text-base md:text-lg leading-relaxed opacity-90 list-disc list-inside">
+                        <li>Meet business owners face-to-face, helping them accept Bitcoin and strengthen their communities.</li>
+                        <li>Host hands-on workshops teaching self-custody, Lightning, and privacy tools.</li>
+                        <li>Organize local meetups and outreach events that build knowledge and trust.</li>
+                        <li>Create and share open-source resources that make Bitcoin practical for everyone.</li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <p class="text-body-base text-base md:text-lg leading-relaxed font-semibold mb-8">
+                        We're building a Bitcoin circular economy in Washington, DC—one business, one neighborhood, one block at a time.
+                    </p>
+                </div>
             </div>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const copyBtn = document.getElementById('copy-btn');
-                const copyIcon = document.getElementById('copy-icon');
-                const checkIcon = document.getElementById('check-icon');
-                const addressText = document.getElementById('lightning-address');
-
-                if (copyBtn && copyIcon && checkIcon && addressText) {
-                    copyBtn.addEventListener('click', async () => {
-                        try {
-                            await navigator.clipboard.writeText(addressText.textContent?.trim() || '');
-                            
-                            // Show check icon
-                            copyIcon.classList.add('hidden');
-                            checkIcon.classList.remove('hidden');
-                            
-                            // Reset after 2 seconds
-                            setTimeout(() => {
-                                copyIcon.classList.remove('hidden');
-                                checkIcon.classList.add('hidden');
-                            }, 2000);
-                        } catch (err) {
-                            console.error('Failed to copy:', err);
-                        }
-                    });
-                }
-            });
-        </script>
-    </SplitPanel>
-     
-    <!-- More Options Coming Soon -->
-    <CtaBanner
-        content={comingSoonCta}
-        variant="contained"
-        background="light"
-        padding="small"
-    />
+    </section>
 </Layout>

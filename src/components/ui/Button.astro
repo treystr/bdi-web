@@ -2,7 +2,7 @@
 export interface Props {
   href?: string;
   variant?: 'primary' | 'secondary' | 'accent' | 'ghostLight' | 'ghostDark';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   disabled?: boolean;
   class?: string;
   type?: 'button' | 'submit' | 'reset';
@@ -34,7 +34,9 @@ const variants = {
 const sizes = {
   sm: 'h-9 px-3 text-xsmall',
   md: 'h-10 px-4 py-2 text-small',
-  lg: 'h-11 px-8 text-base'
+  lg: 'h-11 px-8 text-base',
+  xl: 'h-14 px-10 text-lg',
+  xxl: 'h-16 px-12 text-xl'
 };
 
 const classes = [

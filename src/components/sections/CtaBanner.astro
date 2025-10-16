@@ -27,6 +27,7 @@ export interface Props {
     padding?: PaddingSize;
     paddingTop?: PaddingSize;
     paddingBottom?: PaddingSize;
+    buttonSize?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 }
 
 const {
@@ -35,7 +36,8 @@ const {
     background = 'dark',
     padding,
     paddingTop,
-    paddingBottom
+    paddingBottom,
+    buttonSize = 'md'
 } = Astro.props;
 
 const bgColor = getBackgroundColor(background);
@@ -94,7 +96,7 @@ const containerBgColor = containerBgColors[background as keyof typeof containerB
                             href={btn.link}
                             variant={btn.variant || 'primary'}
                             target={btn.target || '_self'}
-                            size="md"
+                            size={buttonSize}
                         >
                             {btn.text}
                         </Button>
@@ -111,7 +113,7 @@ const containerBgColor = containerBgColors[background as keyof typeof containerB
                         href={button.link}
                         variant={button.variant || 'primary'}
                         target={button.target || '_self'}
-                        size="md"
+                        size={buttonSize}
                     >
                         {button.text}
                     </Button>
