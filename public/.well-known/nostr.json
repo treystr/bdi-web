@@ -1,0 +1,12 @@
+{
+    "names": {
+        "hey": "87789f8ef4ae61e94cbf1f929b3e00ccea3f08e4d0d9d9cc979ddbefa8e2ccb2"
+    },
+    "relays": {
+        "87789f8ef4ae61e94cbf1f929b3e00ccea3f08e4d0d9d9cc979ddbefa8e2ccb2": [
+        "wss://relay.bitcoindistrict.org",
+        "wss://relay.primal.net",
+        "wss://relay.damus.io"
+        ]
+    }
+}
