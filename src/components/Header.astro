@@ -113,7 +113,7 @@ const isCurrentPage = (link: string) => {
                 {/* Desktop Menu */}
                 <ul class="hidden lg:flex lg:gap-8 items-center">
                     {
-                        headerMenu.map((item, index) => (
+                        headerMenu.filter(item => !item.mobileOnly).map((item, index) => (
                             <li class="relative group">
                                 <div class="flex items-center gap-1">
                                     <a

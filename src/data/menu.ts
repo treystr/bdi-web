@@ -5,6 +5,7 @@ export interface MenuItem {
     link: string;
     children?: MenuItem[];
     showArrow?: boolean;
+    mobileOnly?: boolean;
 }
 
 export const headerMenu: MenuItem[] = [
@@ -12,7 +13,8 @@ export const headerMenu: MenuItem[] = [
     { name: 'About', link: '/about' },
     { name: 'Initiatives', link: '/initiatives' },
     { name: 'Transparency', link: '/transparency' },
-    { name: 'FAQ', link: '/faq' }
+    { name: 'FAQ', link: '/faq' },
+    { name: 'Join Bitcoin District', link: 'https://bitcoindistrict.org', mobileOnly: true }
 ];
 
 export const footerMenu = [

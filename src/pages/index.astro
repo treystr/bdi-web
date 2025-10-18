@@ -2,6 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import InitiativeCards from '@components/sections/InitiativeCards.astro';
+import CtaBanner from '@components/sections/CtaBanner.astro';
 import heroImage from '../assets/images/hero/hero-bizgrid.jpg';
 
 const seoTitle = "Home";
@@ -36,9 +37,27 @@ const initiativesSection = {
     description: "We're bringing Bitcoin to Main Street DC with these kickoff initiatives.",
 }
 
+const joinDistrictSection = {
+    eyebrow: "MEET THE COMMUNITY",
+    title: "Join Bitcoin District",
+    description: "Bitcoin District is DC's local Bitcoin community — a place to meet up, learn, and connect with others who care about sound money and personal sovereignty. It's where newcomers get plugged in and builders find support. The Initiative grows out of this community, working to bring Bitcoin into the wider city — but it all starts here, with people coming together to learn.",
+    button: {
+        text: "bitcoindistrict.org",
+        link: "https://bitcoindistrict.org",
+        target: "_blank" as const,
+        variant: "primary" as const
+    }
+}
+
 ---
 
 <Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
     <FullScreenHero content={heroContent} />
     <InitiativeCards content={initiativesSection} background="light" padding="base" />
+    <CtaBanner 
+        content={joinDistrictSection} 
+        background="light" 
+        padding="large" 
+        variant="full-width" 
+    />
 </Layout>
