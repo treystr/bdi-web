@@ -2,7 +2,7 @@
 name: "Bhavna"
 type: "advisor"
 headshot: "./images/bhavna.jpg"
-jobTitle: "Head of Operations"
+jobTitle: "Senior Operations Advisor"
 publish: true
 order: 1
 linkedin: "https://www.linkedin.com/in/bhavna-patel-2610852/"
