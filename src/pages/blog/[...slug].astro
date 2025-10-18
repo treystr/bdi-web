@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
 import CategoryPill from '@components/ui/CategoryPill.astro';
 import Date from '@components/ui/Date.astro';
 import { Image } from 'astro:assets';
@@ -38,39 +39,24 @@ else if (!seoImage && post.data.featuredImage) {
 ---
 
 <Layout title={seoTitle} description={seoDescription} image={seoImage}>
-    <div class="w-full h-120 absolute top-0 left-0 z-0 overflow-hidden border-b border-black">
-        {
-            post.data.featuredImage && (
-                <>
-                    <Image
-                        src={post.data.featuredImage}
-                        alt=""
-                        width={1920}
-                        height={1080}
-                        class="w-full h-full object-cover grayscale opacity-20"
-                        quality={60}
-                    />
-                    <div class="absolute inset-0 bg-primary/10 backdrop-blur-md" />
-                </>
-            )
-        }
-    </div>
+    <PageHeader 
+        title={post.data.title} 
+        description={post.data.excerpt} 
+        background="base" 
+    />
 
-    <article class="site-container--article mx-auto px-4 prose relative z-10 pb-base">
-        <div class="mt-42 mb-12 text-center">
-            <h1>{post.data.title}</h1>
-            <div class="flex items-center justify-center gap-4 text-gray-600">
-                <Date date={post.data.publishDate} />
-                {
-                    post.data.categories && (
-                        <div class="flex flex-wrap gap-2">
-                            {post.data.categories.map((category) => (
-                                <CategoryPill category={category} />
-                            ))}
-                        </div>
-                    )
-                }
-            </div>
+    <article class="site-container--article mx-auto px-4 pb-base">
+        <div class="flex items-center justify-center gap-4 text-body-base/70 mb-8">
+            <Date date={post.data.publishDate} />
+            {
+                post.data.categories && (
+                    <div class="flex flex-wrap gap-2">
+                        {post.data.categories.map((category) => (
+                            <CategoryPill category={category} />
+                        ))}
+                    </div>
+                )
+            }
         </div>
 
         {
@@ -87,7 +73,7 @@ else if (!seoImage && post.data.featuredImage) {
             )
         }
 
-        <div class="mt-8">
+        <div class="prose prose-lg max-w-none">
             <Content />
         </div>
     </article>

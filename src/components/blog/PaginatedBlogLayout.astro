@@ -1,11 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BlogList from './BlogList.astro';
-import FullScreenHero from '../sections/FullScreenHero.astro';
+import PageHeader from '../sections/PageHeader.astro';
 import Button from '../ui/Button.astro';
 import { ChevronLeft, ChevronRight } from 'lucide-astro';
-
-import blogHeroImage from '@assets/images/hero/hero7.jpg';
 
 const seoTitle = "Blog";
 const seoDescription = "Our blog is where we share our thoughts and ideas about the latest trends in the web development industry.";
@@ -37,18 +35,10 @@ const prevPage = currentPage > 1
 ? baseUrl
 : `${baseUrl}/${currentPage - 1}`
 : null;
-
-const heroContent = {
-    title: title,
-    description: subtitle,
-    backgroundImage: blogHeroImage,
-    contentPosition: 'center' as const,
-    textAlign: 'center' as const
-}
 ---
-<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
+<Layout title={seoTitle} description={seoDescription}>
     <main>
-    <FullScreenHero content={heroContent}/>
+    <PageHeader title={title} description={subtitle} background="base" />
     <BlogList posts={paginatedPosts} currentCategory={currentCategory} />
 
     {totalPages > 1 && (
