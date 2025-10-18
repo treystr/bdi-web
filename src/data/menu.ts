@@ -22,6 +22,7 @@ export const footerMenu = [
 //  { name: 'Transparency', link: '/transparency' },
 //  { name: 'FAQ', link: '/faq' },
   { name: 'Contact Us', link: '/contact' },
+  { name: 'Join Bitcoin District', link: 'https://bitcoindistrict.org' },
 ];
 
 export const legalMenu = [

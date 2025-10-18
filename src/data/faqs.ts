@@ -41,7 +41,12 @@ export const faqLists: Record<string, FaqList> = {
                 question: "How can I stay updated on events and initiatives?",
                 answer:
                     "Subscribe to our newsletter and event calendar to stay informed. We also share updates through our website, social media, and the broader Bitcoin District community channels—so you’ll always know what’s happening in DC’s growing Bitcoin scene."
-            }
+            },
+            {
+                question: "What’s the difference between Bitcoin District and the Bitcoin District Initiative?",
+                answer:
+                    "Bitcoin District is the grassroots community of Bitcoiners in Washington, DC—a meetup built on friendship, learning, and a shared belief that Bitcoin can help make the world a better place. The Bitcoin District Initiative was born out of that same community as a 501(c)(3) nonprofit created to turn that energy into action—helping DC become a thriving Bitcoin circular economy. While the Initiative focuses on education, business onboarding, and public programs, Bitcoin District remains an open, independent community that welcomes anyone who wants to learn, build, and be part of DC’s growing Bitcoin story."
+            }            
         ]
     }
 };
