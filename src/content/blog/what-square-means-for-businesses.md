@@ -19,8 +19,8 @@ This change isn’t just about convenience. It’s about giving businesses the f
 
 ## Key Features That Matter
 
-### **1. Zero Fees (Through 2027)**
-Square is waiving all Bitcoin transaction fees until at least 2027. That means businesses can receive payments instantly over Lightning without paying card or processing fees—keeping more of what they earn.
+### **1. Zero Fees (Until 2027)**
+As of this writing, Square is not charging any Bitcoin transaction fees until at least 2027. That means businesses can receive payments instantly over Lightning without paying card or processing fees—keeping more of what they earn.
 
 ### **2. Open Payments: Any Lightning Wallet Works**
 Customers can pay from *any* Lightning wallet, not just Square’s. This open approach avoids vendor lock-in and keeps Bitcoin payments interoperable and free. Whether it’s Phoenix, Muun, Blink, or Breez—your customers can use the wallet they already trust.
@@ -49,6 +49,6 @@ For communities like **the Bitcoin District in Washington, DC**, this change is 
 
 If you're a DC-area business ready to start accepting Bitcoin—or curious how Square's new system compares to other open-source solutions—the Bitcoin District Initiative can help.
 
-We provide **free onboarding support**, **hands-on training**, and **educational resources** to help you integrate Bitcoin payments securely and confidently.
+We provide **free onboarding support**, **hands-on training**, and **educational resources** to help you integrate Bitcoin payments.
 
 Please [reach out](/contact) and learn how to make Bitcoin part of your business today.
