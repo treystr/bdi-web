@@ -5,7 +5,7 @@ import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import Timeline from '@components/initiatives/Timeline.astro';
 import onboardingData from '@data/onboarding.json';
-import heroImage from '@assets/images/hero/hero-dupont.jpg';
+import heroImage from '@assets/images/hero/hero-bizgrid.jpg';
 
 // Get the initiative entry
 const entry = await getEntry('initiatives', '100-local-businesses-by-2026');
@@ -21,23 +21,6 @@ const sortedEntries = [...onboardingData].sort((a, b) =>
 );
 
 const total = sortedEntries.length;
-const currentDate = new Date();
-const currentMonth = currentDate.getMonth();
-const currentYear = currentDate.getFullYear();
-
-const mtd = sortedEntries.filter(e => {
-    const entryDate = new Date(e.date);
-    return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear;
-}).length;
-
-// Calculate months remaining until end of 2026
-const endDate = new Date('2026-12-31');
-const monthsRemaining = Math.max(1, 
-    (endDate.getFullYear() - currentYear) * 12 + 
-    (endDate.getMonth() - currentMonth)
-);
-
-const neededPerMonth = (100 - total) / monthsRemaining;
 
 // Use SEO data from frontmatter if available
 const seoTitle = entry.data.seo?.title || entry.data.title;
@@ -52,15 +35,10 @@ const heroContent = {
     contentPosition: 'center' as const,
     textAlign: 'center' as const,
     ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image }),
-    statsContent: {
-        goal2025: 21,
-        date2025: "2025-12-31",
-        goal2026: 100,
-        date2026: "2026-12-31",
+    simpleStatsContent: {
         count: total,
-        total,
-        mtd,
-        neededPerMonth
+        goal: 100,
+        label: "Businesses Onboarded"
     }
 };
 
