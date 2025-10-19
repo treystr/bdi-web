@@ -26,19 +26,19 @@ export const categories: Category[] = [
     description: 'Our ongoing initiatives and projects'
   },
   {
-    name: 'Merchants',
+    name: 'Businesses',
     slug: 'merchants',
     description: 'Resources for businesses accepting Bitcoin'
   },
   {
-    name: 'Individuals',
+    name: 'Learn',
     slug: 'individuals',
-    description: 'Educational resources for learning about Bitcoin'
+    description: 'Resources for learning about Bitcoin'
   },
   {
     name: 'Onboarding',
     slug: 'onboarding',
-    description: 'Resources for volunteers onboarding merchants'
+    description: 'Resources for volunteers onboarding businesses'
   },
   
 ];

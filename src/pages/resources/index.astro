@@ -6,11 +6,11 @@ import { getCollection } from 'astro:content';
 import { getCategoryBySlug } from '@data/categories';
 
 const seoTitle = "Resources";
-const seoDescription = "Educational resources and guides for merchants, individuals, and volunteers helping to build a Bitcoin circular economy in Washington, DC.";
+const seoDescription = "Educational resources and guides for businesses, individuals, and volunteers helping to build a Bitcoin circular economy in Washington, DC.";
 
 const pageHeaderContent = {
     title: "Resources",
-    description: "Educational resources and guides to help merchants accept Bitcoin, individuals learn about Bitcoin, and volunteers onboard businesses in Washington, DC."
+    description: "Educational resources and guides to help businesses accept Bitcoin, individuals learn about Bitcoin, and volunteers onboard businesses in Washington, DC."
 };
 
 // Get all published blog posts
@@ -19,18 +19,18 @@ const allPosts = await getCollection('blog', ({ data }) => {
 });
 
 // Get resource categories
-const merchantCategory = getCategoryBySlug('merchants');
+const businessCategory = getCategoryBySlug('merchants');
 const individualCategory = getCategoryBySlug('individuals');
 const onboardingCategory = getCategoryBySlug('onboarding');
 
 // Filter posts by category
-const merchantPosts = allPosts
-    .filter(post => post.data.categories?.includes('Merchants'))
+const businessPosts = allPosts
+    .filter(post => post.data.categories?.includes('Businesses'))
     .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
     .slice(0, 6); // Show max 6 per section
 
 const individualPosts = allPosts
-    .filter(post => post.data.categories?.includes('Individuals'))
+    .filter(post => post.data.categories?.includes('Learn'))
     .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
     .slice(0, 6);
 
@@ -47,22 +47,22 @@ const onboardingPosts = allPosts
         background="base" 
     />
 
-    <!-- For Merchants Section -->
+    <!-- For Businesses Section -->
     <section class="py-xsmall bg-background">
         <div class="site-container--content mx-auto px-4">
             <div class="mb-8">
                 <h2 class="text-3xl font-bold mb-3" data-aos="fade-up">
-                    For Merchants
+                    For Businesses
                 </h2>
                 <p class="text-body-base/80 text-lg mb-6 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
-                    {merchantCategory?.description || 'Resources for businesses accepting Bitcoin'}
+                    {businessCategory?.description || 'Resources for businesses accepting Bitcoin'}
                 </p>
             </div>
 
-            {merchantPosts.length > 0 ? (
+            {businessPosts.length > 0 ? (
                 <>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                        {merchantPosts.map((post, index) => (
+                        {businessPosts.map((post, index) => (
                             <BlogPost
                                 title={post.data.title}
                                 excerpt={post.data.excerpt}
@@ -79,7 +79,7 @@ const onboardingPosts = allPosts
                             href="/category/merchants" 
                             class="btn btn-secondary inline-flex items-center gap-2"
                         >
-                            View All Merchant Resources
+                            View All Business Resources
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
@@ -87,65 +87,20 @@ const onboardingPosts = allPosts
                     </div>
                 </>
             ) : (
-                <p class="text-body-base/60 italic">No merchant resources available yet. Check back soon!</p>
-            )}
-        </div>
-    </section>
-
-    <!-- For Individuals Section -->
-    <section class="py-xsmall bg-base">
-        <div class="site-container--content mx-auto px-4">
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold mb-3" data-aos="fade-up">
-                    For Individuals
-                </h2>
-                <p class="text-body-base/80 text-lg mb-6 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
-                    {individualCategory?.description || 'Educational resources for learning about Bitcoin'}
-                </p>
-            </div>
-
-            {individualPosts.length > 0 ? (
-                <>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                        {individualPosts.map((post, index) => (
-                            <BlogPost
-                                title={post.data.title}
-                                excerpt={post.data.excerpt}
-                                featuredImage={post.data.featuredImage || ''}
-                                publishDate={post.data.publishDate}
-                                categories={post.data.categories || []}
-                                slug={post.id}
-                                index={index}
-                            />
-                        ))}
-                    </div>
-                    <div class="text-center" data-aos="fade-up">
-                        <a 
-                            href="/category/individuals" 
-                            class="btn btn-secondary inline-flex items-center gap-2"
-                        >
-                            View All Individual Resources
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </>
-            ) : (
-                <p class="text-body-base/60 italic">No individual resources available yet. Check back soon!</p>
+                <p class="text-body-base/60 italic">No business resources available yet. Check back soon!</p>
             )}
         </div>
     </section>
 
     <!-- For Onboarding Section -->
-    <section class="py-xsmall bg-background">
+    <section class="py-xsmall bg-base">
         <div class="site-container--content mx-auto px-4">
             <div class="mb-8">
                 <h2 class="text-3xl font-bold mb-3" data-aos="fade-up">
                     For Onboarding
                 </h2>
                 <p class="text-body-base/80 text-lg mb-6 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
-                    {onboardingCategory?.description || 'Resources for volunteers onboarding merchants'}
+                    {onboardingCategory?.description || 'Resources for volunteers onboarding businesses'}
                 </p>
             </div>
 
@@ -178,6 +133,51 @@ const onboardingPosts = allPosts
                 </>
             ) : (
                 <p class="text-body-base/60 italic">No onboarding resources available yet. Check back soon!</p>
+            )}
+        </div>
+    </section>
+
+    <!-- For Learners Section -->
+    <section class="py-xsmall bg-background">
+        <div class="site-container--content mx-auto px-4">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-3" data-aos="fade-up">
+                    For Learners
+                </h2>
+                <p class="text-body-base/80 text-lg mb-6 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
+                    {individualCategory?.description || 'Resources for learning about Bitcoin'}
+                </p>
+            </div>
+
+            {individualPosts.length > 0 ? (
+                <>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        {individualPosts.map((post, index) => (
+                            <BlogPost
+                                title={post.data.title}
+                                excerpt={post.data.excerpt}
+                                featuredImage={post.data.featuredImage || ''}
+                                publishDate={post.data.publishDate}
+                                categories={post.data.categories || []}
+                                slug={post.id}
+                                index={index}
+                            />
+                        ))}
+                    </div>
+                    <div class="text-center" data-aos="fade-up">
+                        <a 
+                            href="/category/individuals" 
+                            class="btn btn-secondary inline-flex items-center gap-2"
+                        >
+                            View All Learning Resources
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </>
+            ) : (
+                <p class="text-body-base/60 italic">No learning resources available yet. Check back soon!</p>
             )}
         </div>
     </section>
