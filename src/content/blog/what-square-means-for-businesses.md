@@ -1,6 +1,6 @@
 ---
 title: "What Square's Bitcoin Update Means for Businesses"
-excerpt: "Square just made it easier than ever for small businesses to accept Bitcoin—and keep their freedom to choose how they use it."
+excerpt: "Square just made it easier than ever for small businesses to accept Bitcoin—and keep their freedom to choose how they use it. The Bitcoin District Initiative is here to help you make sense of it all!"
 publishDate: "2025-10-18"
 featuredImage: "./images/square_test_compass.jpg"
 publish: true
@@ -13,42 +13,67 @@ seo:
 
 ## A Major Step for Bitcoin Payments
 
-Square's latest Bitcoin update marks a turning point for small businesses. For the first time, businesses using Square can now accept **Bitcoin payments over the Lightning Network** with no extra setup and—most importantly—**no transaction fees through 2027**.
+Square's latest Bitcoin update marks a major turning point for millions of businesses across the country. For the first time, Square sellers can now accept **Bitcoin** natively across the entire Square POS ecosystem. Businesses have 2 options with respect to the Bitcoin paid by their customers:
 
-This change isn’t just about convenience. It’s about giving businesses the freedom to transact directly, globally, and instantly—with or without relying on banks or payment processors.
+  1. Hold all the Bitcoin in your Square Bitcoin wallet (zero processing or withdrawal fees)
+  2. Automatically convert some or all of the Bitcoin into your Square USD wallet (with a 1% conversion fee)
 
-## Key Features That Matter
+This isn’t just about convenience — it’s about giving businesses direct, global, and instant payment freedom without middlemen.
 
-### **1. Zero Fees (Until 2027)**
-As of this writing, Square is not charging any Bitcoin transaction fees until at least 2027. That means businesses can receive payments instantly over Lightning without paying card or processing fees—keeping more of what they earn.
+Compass Coffee in DC became the first local business to roll out this new feature at one of their cafés. Members of the [Bitcoin District](https://bitcoindistrict.org) community stopped by to try it out — each using a different Bitcoin wallet to pay for coffee. Every transaction settled instantly.
 
-### **2. Open Payments: Any Lightning Wallet Works**
-Customers can pay from *any* Lightning wallet, not just Square’s. This open approach avoids vendor lock-in and keeps Bitcoin payments interoperable and free. Whether it’s Phoenix, Muun, Blink, or Breez—your customers can use the wallet they already trust.
+<blockquote class="twitter-tweet" data-align="center" data-theme="light" data-dnt="true">
+  <p lang="en" dir="ltr">Loading tweet from @CompassCoffeeDC...</p>
+  <a href="https://twitter.com/CompassCoffeeDC/status/1978509064540664103" target="_blank" rel="noopener noreferrer">
+    View tweet on X
+  </a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>    
 
-### **3. Full Control Over Conversion**
-Businesses can choose to automatically convert 100% of their Bitcoin sales into dollars, protecting against price volatility while still accepting Bitcoin. This helps businesses onboard without risk or accounting complexity.
+## Read More from Square
+- **[Square Bitcoin](https://squareup.com/us/en/bitcoin)** - Complete overview of Square's Bitcoin payment and conversion features, including setup instructions and fee structure.
+- **[Square Opening the Door to Bitcoin](https://squareup.com/us/en/the-bottom-line/inside-square/square-opening-the-door-to-bitcoin)** - Square's announcement and vision for making Bitcoin accessible to businesses everywhere.
 
-### **4. Option to Save in Bitcoin**
-Sellers can now choose to automatically save **up to 50% of their dollar sales in Bitcoin** with a simple toggle inside Square’s dashboard. Square charges a 1% conversion fee for this option—giving businesses an easy, compliant way to start holding Bitcoin as savings.
+## What Businesses Should Know
+
+### **Zero Fees (Until 2027)**
+As of this writing, Square is not charging any Bitcoin transaction fees until at least 2027. That means businesses can receive Bitcoin payments instantly without paying any processing fees—keeping more of what they earn.
+
+### **Open Payments: Any Lightning Wallet Works**
+
+The Lightning Network is a faster, low-cost layer built on top of Bitcoin that enables instant payments between anyone, anywhere.
+
+Customers can pay from *any* Lightning wallet, not just Square’s. This open approach avoids vendor lock-in and keeps Bitcoin payments interoperable and free. Whether it’s Phoenix, Muun, Blink, or Breez — your customers can use the wallet they already trust.
 
 
-## Why This Matters for the Bitcoin Circular Economy
+### **Full Control Over Conversion**
+
+Square’s Bitcoin tools give business owners complete control over how they manage their funds — right at the point of sale. Once Bitcoin payments are enabled, sellers can decide what happens next:
+
+- **Hold Bitcoin:** Keep some or all of the Bitcoin received, adding it directly to the business’s Bitcoin balance.
+- **Convert Bitcoin to Dollars:** Automatically convert incoming Bitcoin payments into dollars through Square’s point-of-sale system, with conversion handled instantly behind the scenes.   
+- **Convert Dollars into Bitcoin:** Choose to automatically convert a portion of dollar sales into Bitcoin, building a stronger position over time.
+
+Every business can set its own preferences — whether they simply want to accept Bitcoin as payment or begin saving in it gradually. Square handles the technical side so business owners can focus on serving their customers.
+
+## Why This Matters for Local Businesses
 
 Paying with Bitcoin isn’t new — but **how easy Square just made it is**.  
 
-What's changed is that a neighborhood business can now turn on Bitcoin payments in minutes, right inside the same Square app they already use for credit cards and cash. There's no new hardware, no extra setup, no friction. I set up the Lightning wallet in about **two minutes**, and it ran seamlessly alongside the same systems millions of businesses have trusted for years.
+Now, any neighborhood business can turn on Bitcoin payments in minutes, directly inside the same Square app they already use for credit cards and cash. There’s no new hardware, no extra setup, and no disruption to existing systems. 
 
-This update finally closes the gap between **convenience and sovereignty**. Businesses can now accept Bitcoin payments as easily as swiping a card — but without the fees, chargebacks, or middlemen.  
+Businesses can now accept Bitcoin payments as easily as swiping a card — but with open, peer-to-peer settlement and no middlemen.  
 
-That means more local shops can participate in a **true Bitcoin circular economy**—spending, saving, and earning in sound money, without needing permission from banks or payment processors.
+For local merchants, this update means there’s finally an easy way to serve the growing Bitcoin community in Washington, DC. Groups like **Bitcoin District** — made up of everyday residents, small business owners, and local Bitcoiners — are eager to start spending their bitcoin at neighborhood cafés, shops, and especially at farmers markets across the city.  
 
-For communities like **the Bitcoin District in Washington, DC**, this change is a huge step forward. It supports our mission to help local businesses adopt Bitcoin in practical, privacy-respecting ways that reduce costs, build resilience, and strengthen the local economy.
+A **Bitcoin circular economy** simply means keeping value local — where customers can earn, spend, and save using Bitcoin within their own community. Square’s integration brings that vision within reach by making it simple for any business to accept Bitcoin right alongside dollars.  
 
+This is great news for us at the **Bitcoin District Initiative**, as it makes our goal of helping **100 DC businesses start accepting Bitcoin by 2026** very achievable.
 
 ## Next Steps for DC Businesses
 
-If you're a DC-area business ready to start accepting Bitcoin—or curious how Square's new system compares to other open-source solutions—the Bitcoin District Initiative can help.
+If you're a DC-area business ready to start accepting Bitcoin — or simply curious how Square’s new system compares to other open-source tools — the **Bitcoin District Initiative** can help.  
 
-We provide **free onboarding support**, **hands-on training**, and **educational resources** to help you integrate Bitcoin payments.
+We offer **free onboarding support**, **hands-on training**, and **educational resources** designed to help local businesses integrate Bitcoin payments smoothly and confidently.  
 
-Please [reach out](/contact) and learn how to make Bitcoin part of your business today.
+[Reach out](/contact) to learn how Bitcoin can fit naturally into your existing operations — giving your customers more choice and your business more flexibility.

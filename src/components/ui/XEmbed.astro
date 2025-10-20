@@ -1,0 +1,268 @@
+---
+export interface Props {
+    tweetId?: string;
+    username?: string;
+    url?: string;
+    hideConversation?: boolean;
+    theme?: 'light' | 'dark';
+    align?: 'left' | 'center' | 'right';
+}
+
+const { tweetId, username, url, hideConversation = false, theme = 'light', align = 'center' } = Astro.props;
+
+// Function to extract tweet ID and username from URL
+function parseTweetUrl(url: string): { tweetId: string; username?: string } {
+    // Convert x.com to twitter.com for compatibility
+    const normalizedUrl = url.replace(/^https?:\/\/x\.com/, 'https://twitter.com');
+    
+    // Match patterns like: https://twitter.com/username/status/1234567890
+    const match = normalizedUrl.match(/https?:\/\/twitter\.com\/([^\/]+)\/status\/(\d+)/);
+    
+    if (match) {
+        return {
+            username: match[1],
+            tweetId: match[2]
+        };
+    }
+    
+    // Fallback: try to extract just the tweet ID from various formats
+    const idMatch = url.match(/(\d{15,20})/); // Tweet IDs are typically 15-20 digits
+    if (idMatch) {
+        return { tweetId: idMatch[1] };
+    }
+    
+    throw new Error(`Invalid tweet URL or ID: ${url}`);
+}
+
+// Determine tweet ID and username
+let finalTweetId: string;
+let finalUsername: string | undefined;
+
+if (url) {
+    // Parse from URL
+    try {
+        const parsed = parseTweetUrl(url);
+        finalTweetId = parsed.tweetId;
+        finalUsername = parsed.username || username;
+    } catch (error) {
+        console.error('XEmbed: Failed to parse tweet URL:', error);
+        finalTweetId = '';
+        finalUsername = undefined;
+    }
+} else if (tweetId) {
+    // Use provided tweetId
+    finalTweetId = tweetId;
+    finalUsername = username;
+} else {
+    console.error('XEmbed: Either tweetId or url must be provided');
+    finalTweetId = '';
+    finalUsername = undefined;
+}
+
+// Construct the tweet URL (always use twitter.com for embedding)
+const tweetUrl = finalUsername 
+    ? `https://twitter.com/${finalUsername}/status/${finalTweetId}`
+    : `https://twitter.com/i/status/${finalTweetId}`;
+
+// Generate a unique ID for this embed instance
+const embedId = `tweet-${finalTweetId}-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+{finalTweetId ? (
+    <div class="x-embed-container" data-align={align} id={embedId}>
+        <blockquote 
+            class="twitter-tweet" 
+            data-theme={theme} 
+            data-conversation={hideConversation ? 'none' : 'all'}
+            data-dnt="true"
+        >
+            <p>Loading tweet from @{finalUsername || 'X'}...</p>
+            <a href={tweetUrl} target="_blank" rel="noopener noreferrer">
+                View tweet on X
+            </a>
+        </blockquote>
+        
+        <!-- Fallback content if embed fails -->
+        <div class="x-embed-fallback" style="display: none;">
+            <div class="x-embed-error">
+                <p>Unable to load tweet. <a href={tweetUrl} target="_blank" rel="noopener noreferrer">View on X</a></p>
+            </div>
+        </div>
+    </div>
+) : (
+    <div class="x-embed-error">
+        <p>Error: Invalid tweet URL or ID provided.</p>
+    </div>
+)}
+
+<script define:vars={{ embedId, tweetUrl }}>
+    // Enhanced Twitter widgets loading with error handling
+    (function() {
+        let retryCount = 0;
+        const maxRetries = 3;
+        const retryDelay = 2000;
+        
+        function loadTwitterWidgets() {
+            if (typeof window === 'undefined') return;
+            
+            if (!window.twttr) {
+                // Load Twitter widgets script
+                const script = document.createElement('script');
+                script.src = 'https://platform.twitter.com/widgets.js';
+                script.async = true;
+                script.charset = 'utf-8';
+                
+                script.onload = function() {
+                    if (window.twttr && window.twttr.widgets) {
+                        window.twttr.widgets.load().then(function() {
+                            checkEmbedSuccess();
+                        });
+                    }
+                };
+                
+                script.onerror = function() {
+                    console.error('Failed to load Twitter widgets script');
+                    showFallback();
+                };
+                
+                document.head.appendChild(script);
+            } else if (window.twttr.widgets) {
+                // Script already loaded, just render widgets
+                window.twttr.widgets.load().then(function() {
+                    checkEmbedSuccess();
+                });
+            }
+        }
+        
+        function checkEmbedSuccess() {
+            setTimeout(function() {
+                const container = document.getElementById(embedId);
+                if (!container) return;
+                
+                const iframe = container.querySelector('iframe');
+                const blockquote = container.querySelector('.twitter-tweet');
+                
+                // If no iframe was created and blockquote is still visible, embed failed
+                if (!iframe && blockquote && blockquote.style.display !== 'none') {
+                    if (retryCount < maxRetries) {
+                        retryCount++;
+                        console.log(`Retrying tweet embed (${retryCount}/${maxRetries})`);
+                        setTimeout(loadTwitterWidgets, retryDelay);
+                    } else {
+                        console.warn('Tweet embed failed after maximum retries');
+                        showFallback();
+                    }
+                }
+            }, 3000); // Wait 3 seconds to check if embed loaded
+        }
+        
+        function showFallback() {
+            const container = document.getElementById(embedId);
+            if (!container) return;
+            
+            const blockquote = container.querySelector('.twitter-tweet');
+            const fallback = container.querySelector('.x-embed-fallback');
+            
+            if (blockquote) blockquote.style.display = 'none';
+            if (fallback) fallback.style.display = 'block';
+        }
+        
+        // Start the loading process
+        loadTwitterWidgets();
+    })();
+</script>
+
+<style>
+    .x-embed-container {
+        margin: 2rem 0;
+        max-width: 100%;
+    }
+    
+    .x-embed-container[data-align="center"] {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .x-embed-container[data-align="right"] {
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    /* Ensure responsive behavior */
+    .x-embed-container .twitter-tweet {
+        max-width: 100% !important;
+        margin: 0 auto;
+    }
+    
+    /* Error and fallback styling */
+    .x-embed-error {
+        border: 1px solid #e1e8ed;
+        border-radius: 12px;
+        padding: 1rem;
+        background-color: #f7f9fa;
+        text-align: center;
+        margin: 1rem 0;
+    }
+    
+    .x-embed-error p {
+        margin: 0;
+        color: #536471;
+        font-size: 0.9rem;
+    }
+    
+    .x-embed-error a {
+        color: #1d9bf0;
+        text-decoration: none;
+    }
+    
+    .x-embed-error a:hover {
+        text-decoration: underline;
+    }
+    
+    .x-embed-fallback {
+        margin-top: 1rem;
+    }
+    
+    /* Loading state improvements */
+    .twitter-tweet {
+        border: 1px solid #e1e8ed;
+        border-radius: 12px;
+        padding: 1rem;
+        background-color: #ffffff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    .twitter-tweet p {
+        margin: 0.5rem 0;
+        color: #536471;
+        font-size: 0.9rem;
+    }
+    
+    .twitter-tweet a {
+        color: #1d9bf0;
+        text-decoration: none;
+    }
+    
+    .twitter-tweet a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Dark theme support */
+    [data-theme="dark"] .twitter-tweet {
+        background-color: #15202b;
+        border-color: #38444d;
+    }
+    
+    [data-theme="dark"] .twitter-tweet p {
+        color: #8b98a5;
+    }
+    
+    [data-theme="dark"] .x-embed-error {
+        background-color: #15202b;
+        border-color: #38444d;
+    }
+    
+    [data-theme="dark"] .x-embed-error p {
+        color: #8b98a5;
+    }
+</style>
