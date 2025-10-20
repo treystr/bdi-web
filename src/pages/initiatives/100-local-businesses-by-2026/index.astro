@@ -31,7 +31,7 @@ const heroContent = {
     title: entry.data.title,
     backgroundImage: heroImage,
     description: entry.data.shortDescription,
-    overlayOpacity: entry.data.hero?.overlayOpacity || 0.7,
+    overlayOpacity: 0.85,
     contentPosition: 'center' as const,
     textAlign: 'center' as const,
     ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image }),
@@ -71,29 +71,6 @@ const statusStyles = {
 
 <Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
     <FullScreenHero content={heroContent} />
-
-    {/* Initiative Status Bar */}
-    <section class="py-3 bg-body-base/5 border-b border-body-base/10">
-        <div class="site-container--content px-8">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <span class={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full ${statusStyles[entry.data.status] || statusStyles.active}`}>
-                        {entry.data.status.charAt(0).toUpperCase() + entry.data.status.slice(1)}
-                    </span>
-                    {entry.data.featured && (
-                        <span class="inline-block px-2.5 py-0.5 text-xs font-semibold bg-accent text-white rounded-full">
-                            Featured Initiative
-                        </span>
-                    )}
-                </div>
-                <div class="flex gap-2">
-                    <a href="/donate" class="btn btn-primary btn-sm">
-                        Donate to This Initiative
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     {/* Main Content */}
     <article class="site-container--article mx-auto px-4 prose prose-lg mt-8 mb-16">
