@@ -1,6 +1,6 @@
 ---
 title: "Local Business Surveys"
-shortDescription: "Gathering insights from 100 DC local businesses by end of 2025 to understand payment challenges and guide Bitcoin education programs."
+shortDescription: "Gathering insights from 50 DC local businesses by end of 2025 to understand payment challenges and guide Bitcoin education programs."
 cardImage: "../../assets/images/smb.jpg"
 startDate: "2025-09-01"
 targetDate: "2025-12-31"
@@ -13,7 +13,7 @@ hero:
   overlayOpacity: 0.7
 seo:
   title: "Local Business Surveys – Bitcoin District Initiative"
-  description: "Help us gather insights from 100 DC local businesses to understand payment challenges and guide Bitcoin education. Participate in our grassroots research effort."
+  description: "Help us gather insights from 50 DC local businesses to understand payment challenges and guide Bitcoin education. Participate in our grassroots research effort."
 ---
 
 # Local Business Survey
