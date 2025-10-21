@@ -36,12 +36,12 @@ Your goal isn’t to win an argument—it’s to build trust.
 
 When people feel respected, they’re far more open to learning later.
 
-**And remember to humanize Bitcoin.**  
+**We are humanizing Bitcoin**  
 For many business owners, Bitcoin still feels abstract—something they’ve only heard about online.  
-When you ask, *“Do you accept Bitcoin?”* it reminds them that real people—not bots or speculators—actually want to spend it.  
+When you ask, *“Do you accept Bitcoin?”* it reminds them that real people actually want to spend it.  
 That simple question shows there’s living demand from their own customers, and it helps make Bitcoin feel human, local, and worth taking seriously.
 
-## 3. Be Prepared (and Honest When You Don’t Know)
+## 3. Be Prepared to Answer Basic Questions
 
 You don’t need to have every technical answer.  
 Just be familiar with the basics of Bitcoin payments and how people use them in everyday life.  

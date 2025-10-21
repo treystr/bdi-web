@@ -1,15 +1,16 @@
 ---
 title: "What Square's Bitcoin Update Means for Businesses"
-excerpt: "Square just made it easier than ever for small businesses to accept Bitcoin—and keep their freedom to choose how they use it. The Bitcoin District Initiative is here to help you make sense of it all!"
+excerpt: "Square just made it possible for small businesses to accept Bitcoin—no extra hardware, no added fees."
 publishDate: "2025-10-18"
 featuredImage: "./images/square_test_compass.jpg"
 publish: true
 categories: ["Businesses"]
 
 seo:
-  title: "Square’s Bitcoin Update: What It Means for Small Businesses"
-  description: "Square's new Bitcoin features let businesses accept Lightning payments with zero fees and full control over Bitcoin or dollar conversions."
+  title: "Square’s Bitcoin Update for Small Businesses"
+  description: "Square now enables Bitcoin and Lightning payments with zero fees and full control over conversion to dollars."
 ---
+
 
 ## A Major Step for Bitcoin Payments
 

@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { themeSetting } from "../data/config";
 const { theme } = themeSetting;
 
-const { SiteName, Separator, defaultDescription } = SEO;
+const { SiteName, Separator, defaultDescription, defaultOgImage } = SEO;
 
 interface Props {
 	title?: string;
@@ -33,7 +33,7 @@ const { title, description, image, footerCta, canonicalUrl, fullscreenHero } = A
 
 const pageTitle = title ? `${title} ${Separator} ${SiteName}` : SiteName;
 const pageDescription = description || defaultDescription || '';
-const pageImage = image || '';
+const pageImage = image || defaultOgImage || '';
 const canonicalPath = canonicalUrl || Astro.url.pathname;
 const fullCanonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
 
