@@ -32,9 +32,12 @@ if (seoImage && !seoImage.startsWith('http')) {
 }
 // If no SEO image is specified, but we have a featured image, use its URL
 else if (!seoImage && post.data.featuredImage) {
-    // For Astro image objects, we need to create an absolute URL
+    // For Astro image objects, we need to get the original source path and make it absolute
     const siteUrl = import.meta.env.SITE || 'https://bitcoindistrictinitiative.org';
-    seoImage = new URL(post.data.featuredImage.src, siteUrl).toString();
+    // Astro image objects have a 'src' property that contains the original import path
+    // We need to convert this to a public URL for OG meta tags
+    const imagePath = post.data.featuredImage.src;
+    seoImage = new URL(imagePath, siteUrl).toString();
 }
 ---
 
