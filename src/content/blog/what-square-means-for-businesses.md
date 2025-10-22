@@ -7,8 +7,8 @@ publish: true
 categories: ["Businesses"]
 
 seo:
-  title: "Square’s Bitcoin Update for Small Businesses"
-  description: "Square now enables Bitcoin and Lightning payments with zero fees and full control over conversion to dollars."
+  title: "Square's Bitcoin Update for Small Businesses"
+  description: "Square now enables Bitcoin and Lightning payments with zero fees and full control over conversion to dollars. Learn how DC businesses can use this feature."
 ---
 
 

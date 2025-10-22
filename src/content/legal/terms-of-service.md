@@ -3,7 +3,7 @@ title: "Terms of Service"
 lastUpdated: "2024-03-04"
 seo:
   title: "Terms of Service - Rules for Using Our Platform"
-  description: "Our terms of service outline the rules, guidelines, and legal agreements between you and our company."
+  description: "Bitcoin District Initiative's terms of service outlining the rules, guidelines, and legal agreements for using our website and educational resources."
 ---
 
 ## Introduction

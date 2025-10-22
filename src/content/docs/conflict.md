@@ -4,7 +4,7 @@ type: policy
 lastUpdated: "2025-07-23"
 seo:
   title: "Conflict of Interest Policy"
-  description: "Policy outlining procedures for identifying and managing conflicts of interest."
+  description: "Bitcoin District Initiative's conflict of interest policy outlining procedures for identifying and managing potential conflicts to ensure ethical governance and transparency."
 ---
 
 ## Article 1: Purpose

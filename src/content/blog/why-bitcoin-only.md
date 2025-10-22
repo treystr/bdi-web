@@ -7,8 +7,8 @@ publish: true
 categories: ["Learn"]
 
 seo:
-  title: "Why We’re a Bitcoin-Only Nonprofit"
-  description: "Why the Bitcoin District Initiative is Bitcoin-only—because Bitcoin is the only open, decentralized, and incorruptible foundation for freedom technology."
+  title: "Why We're a Bitcoin-Only Nonprofit"
+  description: "Why the Bitcoin District Initiative focuses exclusively on Bitcoin—the only truly open, decentralized, and incorruptible foundation for freedom technology."
 ---
 
 ## Why We’re a Bitcoin-Only Nonprofit

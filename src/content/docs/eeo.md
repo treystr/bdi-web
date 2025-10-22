@@ -4,7 +4,7 @@ lastUpdated: "2025-07-23"
 type: policy
 seo:
   title: "EEO & Non-Discrimination Policy"
-  description: "Policy affirming equal employment opportunity and non-discrimination."
+  description: "Bitcoin District Initiative's equal employment opportunity and non-discrimination policy ensuring fair treatment and compliance with federal and DC employment laws."
 --- 
 
 ## **Article 1: Introduction and Purpose**

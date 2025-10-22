@@ -8,7 +8,7 @@ categories: ["Learn"]
 
 seo:
   title: "Bitcoin Basics - Getting Started with Bitcoin"
-  description: "Learn what Bitcoin is, why it matters, and how to start using it and holding it yourself."
+  description: "New to Bitcoin? Learn what Bitcoin is, why it matters, and how to start using it. Take a look at these beginner resources and reach out if you have questions!"
 ---
 
 ## Welcome to Your Bitcoin Journey

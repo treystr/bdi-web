@@ -8,7 +8,7 @@ categories: ["Initiatives"]
 
 seo:
   title: "Bitcoin Local Business Adoption in DC"
-  description: "The Bitcoin District Initiative is hitting the streets of DC to help businesses accept Bitcoin payments."
+  description: "The Bitcoin District Initiative helps DC local businesses accept Bitcoin payments, reduce costs, and join the circular economy movement in Washington, DC."
 ---
 
 ## Bringing Bitcoin to Main Street DC

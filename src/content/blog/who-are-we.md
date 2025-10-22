@@ -8,7 +8,7 @@ categories: ["Announcements"]
 
 seo:
   title: "What is the Bitcoin District Initiative?"
-  description: "The Bitcoin District Initiative is a 501(c)(3) nonprofit building a grassroots Bitcoin circular economy in Washington, DC through education, business onboarding, and open-source community development."
+  description: "The Bitcoin District Initiative is a 501(c)(3) nonprofit building a grassroots Bitcoin circular economy in Washington, DC through education and business onboarding."
 ---
 
 Hey DC! 👋  

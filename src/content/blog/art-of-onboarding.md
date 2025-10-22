@@ -8,7 +8,7 @@ categories: ["Onboarding"]
 
 seo:
   title: "The Art of Onboarding Businesses to Bitcoin"
-  description: "A set of guiding principles for Bitcoiners—how to engage local businesses in ways that build trust, curiosity, and lasting adoption."
+  description: "Essential principles for Bitcoiners onboarding local businesses to Bitcoin. Learn how to build trust, spark curiosity, and create lasting adoption in your community."
 ---
 
 ## Interested in Helping Transform DC into a Bitcoin Circular Economy?
