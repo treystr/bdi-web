@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+npm import { getImage } from 'astro:assets';
 import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
 import CategoryPill from '@components/ui/CategoryPill.astro';
@@ -22,7 +23,6 @@ const seoTitle = post.data.seo?.title || post.data.title;
 const seoDescription = post.data.seo?.description || post.data.excerpt;
 
 // For SEO image, use the seo.image if provided, otherwise use the featured image
-// The Layout component expects a string for the image, so we need to handle that
 let seoImage: string | undefined = post.data.seo?.image;
 
 // If seoImage is provided but not an absolute URL, make it absolute
@@ -30,14 +30,26 @@ if (seoImage && !seoImage.startsWith('http')) {
     const siteUrl = import.meta.env.SITE || 'https://bitcoindistrictinitiative.org';
     seoImage = new URL(seoImage.startsWith('/') ? seoImage : `/${seoImage}`, siteUrl).toString();
 }
-// If no SEO image is specified, but we have a featured image, use its URL
+// If no SEO image is specified, but we have a featured image, use Astro's getImage to get the static URL
 else if (!seoImage && post.data.featuredImage) {
-    // For Astro image objects, we need to get the original source path and make it absolute
-    const siteUrl = import.meta.env.SITE || 'https://bitcoindistrictinitiative.org';
-    // Astro image objects have a 'src' property that contains the original import path
-    // We need to convert this to a public URL for OG meta tags
-    const imagePath = post.data.featuredImage.src;
-    seoImage = new URL(imagePath, siteUrl).toString();
+    try {
+        // Use getImage to generate the optimized image and get its static URL
+        const optimizedImage = await getImage({
+            src: post.data.featuredImage,
+            width: 1200,
+            height: 630,
+            format: 'jpg',
+            quality: 80
+        });
+        
+        // Get the site URL for absolute URL generation
+        const siteUrl = import.meta.env.SITE || 'https://bitcoindistrictinitiative.org';
+        seoImage = new URL(optimizedImage.src, siteUrl).toString();
+    } catch (error) {
+        console.warn('Failed to process featured image for OG meta tag:', error);
+        // Fallback will be handled by Layout component (defaultOgImage)
+        seoImage = undefined;
+    }
 }
 ---
 
