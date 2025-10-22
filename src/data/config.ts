@@ -21,7 +21,7 @@ export const siteConfig = {
 export const SEO = {
   Separator: '|',
   SiteName: 'Bitcoin District Initiative',
-  defaultDescription: 'Building a Bitcoin Circular Economy in the Nation\'s Capital',
+  defaultDescription: 'We\'re building a Bitcoin Circular Economy in the Nation\'s Capital',
   defaultOgImage: '/og-default.jpg',
 };
   
