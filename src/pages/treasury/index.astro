@@ -1,0 +1,265 @@
+---
+import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
+import TreasuryCard from '@components/ui/TreasuryCard.astro';
+
+// SEO and page metadata
+const seoTitle = 'Treasury Dashboard';
+const seoDescription = 'View our current USD and Bitcoin treasury balances. We keep our working funds in dollars and our savings in Bitcoin to strengthen our mission in DC.';
+
+// Page header content
+const pageHeaderContent = {
+    title: "Treasury Dashboard",
+    description: "We keep our working funds in dollars and our savings in Bitcoin. Spending from fiat helps us run our programs today, while holding Bitcoin strengthens our ability to build and serve tomorrow — as adoption grows, so does our capacity to advance our mission here in DC."
+};
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
+
+    <!-- Treasury Cards Section -->
+    <section class="py-16">
+        <div class="site-container--content px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8" id="treasury-cards">
+                    <!-- USD Card -->
+                    <div data-aos="fade-up" data-aos-delay="200">
+                        <TreasuryCard 
+                            currency="USD"
+                            isLoading={true}
+                        />
+                    </div>
+                    
+                    <!-- BTC Card -->
+                    <div data-aos="fade-up" data-aos-delay="300">
+                        <TreasuryCard 
+                            currency="BTC"
+                            isLoading={true}
+                        />
+                    </div>
+                </div>
+
+                <!-- Data Source Info -->
+                <div class="mt-12 text-center" data-aos="fade-up" data-aos-delay="400">
+                    <div class="bg-gray-50 rounded-lg p-6 max-w-2xl mx-auto">
+                        <h3 class="text-lg font-semibold text-body-base mb-2">
+                            Transparency & Data
+                        </h3>
+                        <p class="text-sm text-body-base/70 leading-relaxed">
+                            Our treasury balances are automatically updated daily at 6:00 AM EST showing our commitment to financial transparency.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<script>
+    // Treasury data fetching and display logic
+    class TreasuryDashboard {
+        private usdUrl: string;
+        private btcUrl: string;
+
+        constructor() {
+            this.usdUrl = 'https://raw.githubusercontent.com/treystr/bdi-data/main/treasury/usd.csv';
+            this.btcUrl = 'https://raw.githubusercontent.com/treystr/bdi-data/main/treasury/btc.csv';
+            this.init();
+        }
+
+        async init(): Promise<void> {
+            await this.loadTreasuryData();
+        }
+
+        async fetchCSV(url: string): Promise<Record<string, string>> {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const csvText = await response.text();
+                return this.parseCSV(csvText);
+            } catch (error) {
+                console.error(`Error fetching CSV from ${url}:`, error);
+                throw error;
+            }
+        }
+
+        parseCSV(csvText: string): Record<string, string> {
+            const lines = csvText.trim().split('\n');
+            if (lines.length < 2) {
+                throw new Error('Invalid CSV format');
+            }
+
+            const headers = lines[0].split(',').map((h: string) => h.trim());
+            const dataLines = lines.slice(1);
+            
+            const data = dataLines.map((line: string) => {
+                const values = line.split(',').map((v: string) => v.trim());
+                const row: Record<string, string> = {};
+                headers.forEach((header: string, index: number) => {
+                    row[header] = values[index];
+                });
+                return row;
+            });
+
+            // Return the most recent entry (last row)
+            return data[data.length - 1];
+        }
+
+        updateCard(currency: string, data: Record<string, string> | null, error: Error | null = null): void {
+            const cardContainer = document.querySelector(`[data-aos-delay="${currency === 'USD' ? '200' : '300'}"]`);
+            if (!cardContainer) return;
+
+            if (error) {
+                // Update with error state
+                cardContainer.innerHTML = this.createCardHTML(currency, null, null, false, error.message);
+            } else if (data) {
+                // Update with actual data
+                const balance = parseFloat(data.balance);
+                const lastUpdated = data.date;
+                cardContainer.innerHTML = this.createCardHTML(currency, balance, lastUpdated, false, null);
+            }
+        }
+
+        createCardHTML(currency: string, balance: number | null, lastUpdated: string | null, isLoading: boolean, error: string | null): string {
+            const currencyIcon = currency === 'USD' ? '💵' : '₿';
+            const currencyName = currency === 'USD' ? 'US Dollars' : 'Bitcoin';
+            const currencyDescription = currency === 'USD' 
+                ? 'Working funds for daily operations' 
+                : 'Long-term savings and treasury reserves';
+            const badgeClass = currency === 'USD' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800';
+            const badgeText = currency === 'USD' ? 'Operations' : 'Savings';
+
+            let balanceHTML = '';
+            if (isLoading) {
+                balanceHTML = `
+                    <div class="animate-pulse">
+                        <div class="h-8 bg-gray-200 rounded w-32 mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded w-24"></div>
+                    </div>
+                `;
+            } else if (error) {
+                balanceHTML = `
+                    <div class="text-red-600">
+                        <p class="text-2xl font-bold">Error</p>
+                        <p class="text-sm">${error}</p>
+                    </div>
+                `;
+            } else if (balance !== null && balance !== undefined) {
+                const formattedBalance = this.formatBalance(balance, currency);
+                balanceHTML = `
+                    <div>
+                        <p class="text-3xl font-bold text-body-base mb-1">
+                            ${formattedBalance}
+                        </p>
+                        <p class="text-sm text-body-base/60">
+                            ${currencyDescription}
+                        </p>
+                    </div>
+                `;
+            }
+
+            const lastUpdatedHTML = lastUpdated && !isLoading && !error ? `
+                <div class="pt-4 border-t border-gray-100">
+                    <p class="text-xs text-body-base/50">
+                        Last updated: ${this.formatDate(lastUpdated)} EST
+                    </p>
+                </div>
+            ` : '';
+
+            return `
+                <div class="treasury-card bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" style="min-height: 200px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">${currencyIcon}</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-body-base">${currency}</h3>
+                                <p class="text-sm text-body-base/70">${currencyName}</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-medium ${badgeClass} rounded-full">
+                            ${badgeText}
+                        </span>
+                    </div>
+                    <div class="mb-4">
+                        ${balanceHTML}
+                    </div>
+                    ${lastUpdatedHTML}
+                </div>
+            `;
+        }
+
+        formatBalance(amount: number, currency: string): string {
+            if (currency === 'USD') {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(amount);
+            } else {
+                return `${amount.toFixed(8)} BTC`;
+            }
+        }
+
+        formatDate(dateString: string): string {
+            try {
+                const date = new Date(dateString);
+                return new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    timeZone: 'America/New_York'
+                }).format(date);
+            } catch {
+                return 'Unknown';
+            }
+        }
+
+        async loadTreasuryData(): Promise<void> {
+            // Load USD data
+            try {
+                const usdData = await this.fetchCSV(this.usdUrl);
+                this.updateCard('USD', usdData);
+            } catch (error) {
+                this.updateCard('USD', null, error as Error);
+            }
+
+            // Load BTC data
+            try {
+                const btcData = await this.fetchCSV(this.btcUrl);
+                this.updateCard('BTC', btcData);
+            } catch (error) {
+                this.updateCard('BTC', null, error as Error);
+            }
+        }
+    }
+
+    // Initialize the dashboard when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        new TreasuryDashboard();
+    });
+</script>
+
+<style>
+    .treasury-card:hover {
+        transform: translateY(-2px);
+    }
+    
+    /* Loading animation */
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
+    
+    .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+</style>
