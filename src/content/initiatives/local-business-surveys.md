@@ -18,50 +18,19 @@ seo:
 
 # Local Business Survey
 
-## Overview
+## Overview  
 
-Our **Local Business Survey** is a grassroots research effort designed to better understand the challenges local businesses in Washington, DC face with payments, savings, and technology. By listening directly to local businesses, we aim to identify where Bitcoin can make the most meaningful impact — from lowering fees and reducing fraud to creating new opportunities for economic freedom.
+The **Local Business Survey** is a grassroots effort to understand what small, independent businesses in DC think about Bitcoin — from farmers market stands to single-owner shops.
 
-This initiative also serves as an **entry point for conversation**. We’ve found that it can sometimes be awkward to walk into a business and start talking about Bitcoin right away. The survey helps break the ice — giving us a natural way to listen first, learn about each business’s real-world challenges, and start a thoughtful discussion about how Bitcoin might fit into their goals. It’s about building trust, not making a pitch.
+The survey also makes it easy to **start real conversations**. Instead of leading with Bitcoin, it gives us a reason to stop by, ask good questions, and learn how local businesses actually operate. It’s about building trust and listening — not pitching.  
 
-Through this effort, we're gathering insights that will help guide educational programs, workshops, and hands-on local business onboarding across the District. Our goal is to meet business owners where they are, learn from their experiences, and build tools and resources that make Bitcoin adoption simple, secure, and empowering.
+Every survey response is collected in-person at farmers' markets or just by going door-to-door around the district.
 
----
+## Goals  
 
-## Goals
-
-1. **Start Meaningful Conversations**  
-   Use the survey as a bridge to open authentic discussions with local business owners — listening to their challenges before introducing Bitcoin as a potential solution.
-
-2. **Understand Local Business Needs**  
-   Identify the most common challenges DC local businesses face with customer payments — such as high fees, delayed payouts, or chargebacks.
-
-3. **Measure Awareness and Familiarity**  
-   Assess how well business owners currently understand Bitcoin, from basic awareness to active use or interest in accepting it as payment.
-
-4. **Evaluate Barriers to Adoption**  
-   Learn what's holding local businesses back — whether it's technical uncertainty, lack of demand, or the need for practical training.
-
-5. **Guide Educational Outreach**  
-   Use the results to design targeted workshops, one-on-one trainings, and community meetups that make Bitcoin adoption approachable and beneficial for local businesses.
-
-6. **Support a Thriving Local Bitcoin Economy**  
-   Help establish a real-world Bitcoin circular economy in Washington, DC — one built on trust, local connections, and sound money principles.
-
----
-
-## How We'll Use the Results
-
-- **Publish an Open Summary Report:**  
-  Aggregate and anonymize survey responses to share key insights publicly, ensuring transparency and community value.
-
-- **Develop Local Programs:**  
-  Shape our 2025 educational and local business outreach roadmap based on what DC business owners actually need.
-
-- **Create Local Business Resources:**  
-  Produce guides, case studies, and step-by-step materials that make Bitcoin payments and savings easy to understand and implement.
-
-- **Strengthen Community Partnerships:**  
-  Collaborate with local chambers, business associations, and civic groups to extend Bitcoin education throughout the District.
+1. **Spark Genuine Conversations** – Use the survey as a friendly way to engage local business owners and learn about their real challenges.  
+2. **Understand Local Needs** – Identify pain points in payments and savings, like high fees or delayed payouts.  
+3. **Evaluate Barriers to Adoption** – Learn what’s holding people back — whether technical, cultural, or practical.  
+4. **Measure Awareness and Tailor Educational Programs** – Gauge familiarity with Bitcoin and shape future outreach around what businesses actually need.  
 
 ---
