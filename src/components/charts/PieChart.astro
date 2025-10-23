@@ -84,15 +84,17 @@ const counts = data.map(item => item.count);
                     plugins: {
                         legend: {
                             display: true,
-                            position: 'right',
+                            position: 'bottom',
                             labels: {
                                 color: 'rgba(0, 0, 0, 0.7)',
                                 font: {
-                                    size: 12
+                                    size: 13
                                 },
-                                padding: 15,
+                                padding: 20,
                                 usePointStyle: true,
                                 pointStyle: 'circle',
+                                boxWidth: 12,
+                                boxHeight: 12,
                                 generateLabels: function(chart) {
                                     const data = chart.data;
                                     if (data.labels.length && data.datasets.length) {
@@ -176,7 +178,7 @@ const counts = data.map(item => item.count);
     
     .chart-wrapper {
         position: relative;
-        height: 350px;
+        height: 420px;
         width: 100%;
     }
     
@@ -204,13 +206,7 @@ const counts = data.map(item => item.count);
         }
         
         .chart-wrapper {
-            height: 300px;
-        }
-        
-        /* Stack legend below chart on mobile */
-        .chart-wrapper :global(.chartjs-legend) {
-            position: static !important;
-            margin-top: 1rem;
+            height: 380px;
         }
     }
 </style>

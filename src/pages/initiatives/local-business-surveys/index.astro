@@ -18,7 +18,7 @@ const { Content } = await render(entry);
 // Fetch survey data from GitHub
 let surveyData = null;
 let surveyError = null;
-let surveyCount = 16; // Fallback count
+let surveyCount = 18; // Fallback count
 
 try {
     const response = await fetch('https://raw.githubusercontent.com/treystr/bdi-data/main/survey/results.json');
@@ -54,19 +54,14 @@ const heroContent = {
     overlayOpacity: entry.data.hero?.overlayOpacity || 0.7,
     contentPosition: 'center' as const,
     textAlign: 'center' as const,
+    ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image }),
     buttons: [
         {
-            text: "Contact Us",
-            link: "/contact",
-            variant: "primary" as const
-        },
-        {
-            text: "Learn More",
-            link: "/about",
-            variant: "secondary" as const
+            text: "See Results",
+            link: "#survey-results",
+            variant: 'primary' as const
         }
     ],
-    ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image }),
     simpleStatsContent: {
         count: surveyCount,
         goal: surveyGoal,
@@ -79,18 +74,6 @@ const getInvolvedCta = {
     eyebrow: "JOIN OUR MISSION",
     title: `Help Us Achieve: ${entry.data.title}`,
     description: "Are you interested in supporting Bitcoin education for DC local businesses? Join our volunteer team conducting door-to-door surveys and building relationships with local business owners.",
-    buttons: [
-        {
-            text: "Contact Us",
-            link: "/contact",
-            variant: "primary" as const
-        },
-        {
-            text: "Learn More",
-            link: "/about",
-            variant: "secondary" as const
-        }
-    ]
 };
 
 // Status badge styling
@@ -109,50 +92,15 @@ const statusStyles = {
         <Content />
     </article>
 
-    {/* Survey Information Section */}
-    <section class="py-16 bg-body-base/5">
-        <div class="site-container--content px-8">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl font-bold mb-4">Local Business Survey</h2>
-                <p class="text-lg text-body-muted mb-8">
-                    Our volunteers are conducting door-to-door surveys with DC local businesses 
-                    to understand their payment challenges and Bitcoin education needs.
-                </p>
-                
-                {/* Survey Image */}
-                <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                    <img 
-                        src="/media/onboarding/smb_survey.jpg" 
-                        alt="Bitcoin District Initiative Local Business Survey Form"
-                        class="w-full max-w-4xl mx-auto rounded-lg shadow-md"
-                        loading="lazy"
-                    />
-                    <p class="text-sm text-gray-600 mt-4 text-center">
-                        Our field survey helps us understand payment challenges facing DC local businesses.
-                    </p>
-                </div>
-
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="/contact" class="btn btn-primary">
-                        Contact Us
-                    </a>
-                    <a href="/donate" class="btn btn-secondary">
-                        Donate
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
     {/* Survey Results Charts Section */}
     {surveyData && (
-        <section class="py-16">
+        <section id="survey-results" class="py-16">
             <div class="site-container--content px-8">
                 <div class="max-w-6xl mx-auto">
                     <div class="text-center mb-12">
                         <h2 class="text-3xl font-bold mb-4">Survey Results</h2>
                         <p class="text-lg text-body-muted mb-2">
-                            Insights from {surveyCount} local businesses surveyed across Washington, DC
+                            Insights from local businesses surveyed across the greater DC metropolitan area
                         </p>
                         <p class="text-sm text-body-muted">
                             Data updated daily from our ongoing field research
@@ -250,13 +198,54 @@ const statusStyles = {
         </section>
     )}
 
-    {/* Get Involved CTA */}
-    <CtaBanner
-        content={getInvolvedCta}
-        variant="contained"
-        background="light"
-        padding="large"
-    />
+        {/* Survey Information Section */}
+        <section class="py-16 bg-body-base/5">
+            <div class="site-container--content px-8">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold mb-4">Printable Field Survey</h2>
+                    <p class="text-lg text-body-muted mb-8">
+                        This is our printable field survey we take with us when we get out into the city and strike up conversations with local businesses.
+                    </p>
+                    
+                    {/* Survey Image */}
+                    <div class="mb-8">
+                        <img 
+                            src="/media/onboarding/smb_survey.jpg" 
+                            alt="Bitcoin District Initiative Local Business Survey Form"
+                            class="w-full max-w-lg mx-auto rounded-lg shadow-lg bg-white p-4"
+                            loading="lazy"
+                        />
+                    </div>
+    
+
+                </div>
+            </div>
+        </section>
 
 </Layout>
+
+<script>
+    // Smooth scrolling for anchor links
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add smooth scrolling to all anchor links that start with #
+        const anchorLinks = document.querySelectorAll('a[href^="#"]');
+        
+        anchorLinks.forEach(link => {
+            link.addEventListener('click', function(e: Event) {
+                e.preventDefault();
+                
+                const target = e.currentTarget as HTMLAnchorElement;
+                const targetId = target.getAttribute('href');
+                const targetElement = targetId ? document.querySelector(targetId) : null;
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    });
+</script>
 
