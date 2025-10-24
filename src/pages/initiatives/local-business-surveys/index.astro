@@ -55,13 +55,7 @@ const heroContent = {
     contentPosition: 'center' as const,
     textAlign: 'center' as const,
     ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image }),
-    buttons: [
-        {
-            text: "See Results",
-            link: "#survey-results",
-            variant: 'primary' as const
-        }
-    ],
+    buttons: [],
     simpleStatsContent: {
         count: surveyCount,
         goal: surveyGoal,
@@ -94,7 +88,7 @@ const statusStyles = {
 
     {/* Survey Results Charts Section */}
     {surveyData && (
-        <section id="survey-results" class="py-16">
+        <section id="survey-results" class="py-16 hidden" data-survey-results-section>
             <div class="site-container--content px-8">
                 <div class="max-w-6xl mx-auto">
                     <div class="text-center mb-12">
@@ -222,10 +216,24 @@ const statusStyles = {
             </div>
         </section>
 
+    {/* Eye Icon Toggle - Bottom of Page */}
+    <div class="fixed bottom-6 right-6 z-50">
+        <button 
+            id="eye-toggle-btn" 
+            class="w-12 h-12 bg-gray-800/80 hover:bg-gray-700/90 text-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg backdrop-blur-sm"
+            title="Toggle Survey Results"
+        >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+            </svg>
+        </button>
+    </div>
+
 </Layout>
 
 <script>
-    // Smooth scrolling for anchor links
+    // Smooth scrolling for anchor links and Eye toggle functionality
     document.addEventListener('DOMContentLoaded', function() {
         // Add smooth scrolling to all anchor links that start with #
         const anchorLinks = document.querySelectorAll('a[href^="#"]');
@@ -246,6 +254,47 @@ const statusStyles = {
                 }
             });
         });
+
+        // Eye toggle functionality
+        const eyeToggleBtn = document.getElementById('eye-toggle-btn') as HTMLButtonElement;
+        const surveyResultsSection = document.querySelector('[data-survey-results-section]') as HTMLElement;
+        
+        if (eyeToggleBtn && surveyResultsSection) {
+            let resultsVisible = false;
+            
+            eyeToggleBtn.addEventListener('click', function() {
+                if (resultsVisible) {
+                    // Hide results
+                    surveyResultsSection.style.opacity = '0';
+                    surveyResultsSection.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        surveyResultsSection.classList.add('hidden');
+                    }, 300);
+                    resultsVisible = false;
+                } else {
+                    // Show results
+                    surveyResultsSection.classList.remove('hidden');
+                    surveyResultsSection.style.opacity = '0';
+                    surveyResultsSection.style.transform = 'translateY(20px)';
+                    surveyResultsSection.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    
+                    setTimeout(() => {
+                        surveyResultsSection.style.opacity = '1';
+                        surveyResultsSection.style.transform = 'translateY(0)';
+                    }, 50);
+                    
+                    resultsVisible = true;
+                    
+                    // Scroll to results
+                    setTimeout(() => {
+                        surveyResultsSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 300);
+                }
+            });
+        }
     });
 </script>
 
