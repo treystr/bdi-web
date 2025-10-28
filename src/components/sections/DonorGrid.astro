@@ -2,8 +2,22 @@
 import { getPaddingClass, getBackgroundColor, getHeadlineColor, getTextColor } from '@utils/styleUtils';
 import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
 import Eyebrow from '@components/ui/Eyebrow.astro';
-import GenesisDonorCard from '@components/ui/GenesisDonorCard.astro';
-import donorsData from '@data/genesis-donors.json';
+import DonorCard from '@components/ui/DonorCard.astro';
+
+interface Donor {
+    id: string;
+    displayName: string;
+    avatarUrl?: string;
+    message?: string;
+    links?: {
+        twitter?: string;
+        nostr?: string;
+        github?: string;
+    };
+    badges?: string[];
+    blockHeight?: number;
+    rank?: number;
+}
 
 export interface Props {
     content: {
@@ -11,15 +25,25 @@ export interface Props {
         title: string;
         description?: string;
     };
+    donorsData: Donor[];
     background?: ThemeColor;
     padding?: PaddingSize;
     paddingTop?: PaddingSize;
     paddingBottom?: PaddingSize;
+    maxDonors?: number;
+    showMessage?: boolean;
+    showSocials?: boolean;
+    showBlockHeight?: boolean;
 }
 
 const {
     content: { eyebrow, title, description },
-    background = 'base'
+    donorsData,
+    background = 'base',
+    maxDonors,
+    showMessage = true,
+    showSocials = true,
+    showBlockHeight = true
 } = Astro.props;
 
 const bgColor = getBackgroundColor(background);
@@ -32,7 +56,22 @@ const paddingClass = getPaddingClass({
 const headlineColor = getHeadlineColor(background);
 const textColor = getTextColor(background);
 
-const donors = donorsData;
+// Sort donors: ranked first (by rank ascending), then unranked in original order
+const sortedDonors = ([...donorsData] as Donor[]).sort((a, b) => {
+    const aRank = a.rank ?? Infinity;
+    const bRank = b.rank ?? Infinity;
+    
+    // If both have ranks or both don't have ranks
+    if ((a.rank !== undefined && b.rank !== undefined) || (a.rank === undefined && b.rank === undefined)) {
+        return aRank - bRank;
+    }
+    
+    // Ranked donors come before unranked
+    return a.rank !== undefined ? -1 : 1;
+});
+
+// Apply max donors limit if specified
+const donors = maxDonors ? sortedDonors.slice(0, maxDonors) : sortedDonors;
 const hasDonors = donors.length > 0;
 ---
 
@@ -69,7 +108,13 @@ const hasDonors = donors.length > 0;
         {hasDonors ? (
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
                 {donors.map((donor, index) => (
-                    <GenesisDonorCard donor={donor} index={index} />
+                    <DonorCard 
+                        donor={donor} 
+                        index={index}
+                        showMessage={showMessage}
+                        showSocials={showSocials}
+                        showBlockHeight={showBlockHeight}
+                    />
                 ))}
             </div>
         ) : (
@@ -84,4 +129,5 @@ const hasDonors = donors.length > 0;
         )}
     </div>
 </section>
+
 

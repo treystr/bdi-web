@@ -17,15 +17,44 @@ interface Props {
         };
         badges?: string[];
         blockHeight?: number;
+        rank?: number;
     };
     index?: number;
+    showMessage?: boolean;
+    showSocials?: boolean;
+    showBlockHeight?: boolean;
 }
 
-const { donor, index = 0 } = Astro.props;
+const { 
+    donor, 
+    index = 0,
+    showMessage = true,
+    showSocials = true,
+    showBlockHeight = true
+} = Astro.props;
 
 // Note: avatarUrl in JSON should be ignored - we'll always use satoshi.png as placeholder
 // Custom avatars can be added by importing them in this component and mapping by donor ID
 const avatarSrc = satoshiAvatar;
+
+// Get first available link in priority order: twitter → nostr → github
+const getPrimaryLink = () => {
+    if (!donor.links) return null;
+    
+    if (donor.links.twitter) {
+        return `https://x.com/${donor.links.twitter}`;
+    }
+    if (donor.links.nostr) {
+        return `https://njump.me/${donor.links.nostr}`;
+    }
+    if (donor.links.github) {
+        return `https://github.com/${donor.links.github}`;
+    }
+    
+    return null;
+};
+
+const primaryLink = getPrimaryLink();
 ---
 
 <div
@@ -36,17 +65,38 @@ const avatarSrc = satoshiAvatar;
 >
     <div class="relative mb-4 overflow-hidden rounded-lg w-full max-w-[200px]">
         <span class="absolute inset-0 -mt-12 h-400 w-1/2 translate-x-[250%] rotate-12 bg-white opacity-20 group-hover:transition-all group-hover:duration-300 ease-out group-hover:translate-x-[-250%] z-10" />
-        <Image
-            src={avatarSrc}
-            alt={donor.displayName}
-            width={400}
-            height={400}
-            quality={80}
-            format="webp"
-            class="w-full h-auto aspect-square object-cover rounded-lg transition-all duration-500 ease-in-out"
-            loading="lazy"
-            decoding="async"
-        />
+        {primaryLink ? (
+            <a
+                href={primaryLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visit ${donor.displayName}'s profile`}
+            >
+                <Image
+                    src={avatarSrc}
+                    alt={donor.displayName}
+                    width={400}
+                    height={400}
+                    quality={80}
+                    format="webp"
+                    class="w-full h-auto aspect-square object-cover rounded-lg transition-all duration-500 ease-in-out"
+                    loading="lazy"
+                    decoding="async"
+                />
+            </a>
+        ) : (
+            <Image
+                src={avatarSrc}
+                alt={donor.displayName}
+                width={400}
+                height={400}
+                quality={80}
+                format="webp"
+                class="w-full h-auto aspect-square object-cover rounded-lg transition-all duration-500 ease-in-out"
+                loading="lazy"
+                decoding="async"
+            />
+        )}
     </div>
     
     <div class="flex flex-col space-y-3 items-center">
@@ -54,7 +104,7 @@ const avatarSrc = satoshiAvatar;
             <h3 class="text-lg font-semibold text-headline transition-colors duration-300 group-hover:text-primary">
                 {donor.displayName}
             </h3>
-            {donor.message && (
+            {showMessage && donor.message && (
                 <p class="text-sm text-body-base opacity-80 italic mt-1">
                     "{donor.message}"
                 </p>
@@ -62,7 +112,7 @@ const avatarSrc = satoshiAvatar;
         </div>
 
         {/* Social Links */}
-        {donor.links && (Object.keys(donor.links).length > 0) && (
+        {showSocials && donor.links && (Object.keys(donor.links).length > 0) && (
             <div class="flex items-center justify-center gap-3">
                 {donor.links.twitter && (
                     <a
@@ -110,11 +160,12 @@ const avatarSrc = satoshiAvatar;
         )}
 
         {/* Optional Block Height */}
-        {donor.blockHeight && (
+        {showBlockHeight && donor.blockHeight && (
             <p class="text-xs text-body-base opacity-60">
                 Added at block {donor.blockHeight.toLocaleString()}
             </p>
         )}
     </div>
 </div>
+
 

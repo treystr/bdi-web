@@ -1,0 +1,76 @@
+---
+import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
+import DonorGrid from '@components/sections/DonorGrid.astro';
+import Faqs from '@components/sections/Faqs.astro';
+import { supporterFaqs } from '@data/supporter-faqs';
+import genesisDonorsData from '@data/genesis-donors.json';
+
+const seoTitle = "Thanks for Your Support";
+const seoDescription = "Recognizing the generous supporters who help build DC's circular Bitcoin economy through the Bitcoin District Initiative.";
+
+const pageHeaderContent = {
+    title: "Thanks for Your Support",
+    description: "We are grateful for our community, builders, and donors helping grow DC’s Bitcoin circular economy."
+};
+
+const genesisDonorGridContent = {
+    eyebrow: "FOUNDING SUPPORTERS",
+    title: "Genesis Donors 🧡",
+    description: "Our very first supporters from the community who believed in our vision before it had momentum."
+};
+
+const faqsContent = {
+    eyebrow: "QUESTIONS",
+    title: "Supporter FAQ",
+    faqs: supporterFaqs.faqs
+};
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader 
+        title={pageHeaderContent.title} 
+        description={pageHeaderContent.description} 
+        background="base" 
+    />
+    
+    <!-- Introduction -->
+    <section class="py-xxsmall bg-background-base">
+        <div class="site-container--content mx-auto px-4">
+            <div class="max-w-4xl mx-auto prose prose-lg">
+                <div data-aos="fade-up">
+                    <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90 mb-6">
+                        The Bitcoin District Initiative exists because of people who believe in grassroots Bitcoin education and economic freedom. Every donation — large or small — helps us teach, onboard, and connect our community here in Washington, DC. This page honors those supporters who wish to be recognized for their contributions to the mission.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <DonorGrid 
+        content={genesisDonorGridContent}
+        donorsData={genesisDonorsData}
+        background="light"
+        padding="base"
+        showBlockHeight={false}
+    />
+
+    <!-- FAQ Section -->
+    <Faqs 
+        content={faqsContent}
+        background="base"
+        padding="base"
+    />
+
+    <!-- Footer Disclaimer -->
+    <section class="py-small bg-background-light">
+        <div class="site-container--content mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <p class="text-xs text-body-base opacity-60 leading-relaxed">
+                    Recognition on this page is optional and does not imply endorsement of any individual's views or activities. The Bitcoin District Initiative reserves the right to edit or remove listings to uphold its mission and nonprofit policies. All donations are final and tax-deductible to the extent allowed by law.
+                </p>
+            </div>
+        </div>
+    </section>
+</Layout>
+
