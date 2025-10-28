@@ -1,0 +1,110 @@
+---
+import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
+import CtaBanner from '@components/sections/CtaBanner.astro';
+import GenesisDonorGrid from '@components/sections/GenesisDonorGrid.astro';
+import Faqs from '@components/sections/Faqs.astro';
+import { genesisFaqs } from '@data/genesis-faqs';
+
+const seoTitle = "Our Genesis Story";
+const seoDescription = "How the Bitcoin District Initiative began — and the first supporters who helped build DC's circular Bitcoin economy.";
+
+const pageHeaderContent = {
+    title: "Our Genesis Supporters",
+    description: "How the Bitcoin District Initiative began — and the first supporters who helped build DC's circular Bitcoin economy."
+};
+
+const zapriteDonateUrl = "https://pay.zaprite.com/pl_X67Haulmz3";
+
+const donateCta = {
+    eyebrow: "SUPPORT THE MISSION",
+    title: "Become a Genesis Donor",
+    description: "Donate 100,000 sats to help grow the Bitcoin District Initiative. Recognition on our site is optional and privacy-respecting.",
+    button: {
+        text: "Donate 100k sats",
+        link: zapriteDonateUrl,
+        variant: "primary" as const,
+        target: "_blank" as const
+    }
+};
+
+const donorGridContent = {
+    eyebrow: "FOUNDING SUPPORTERS",
+    title: "Genesis Donors",
+    description: "The first supporters — our Genesis Donors — believed in our vision before it had momentum."
+};
+
+const faqsContent = {
+    eyebrow: "QUESTIONS",
+    title: "Genesis Donor FAQ",
+    faqs: genesisFaqs.faqs
+};
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader 
+        title={pageHeaderContent.title} 
+        description={pageHeaderContent.description} 
+        background="base" 
+    />
+    
+    <!-- The Genesis Story -->
+    <section class="py-base bg-background-alt">
+        <div class="site-container--content mx-auto px-4">
+            <div class="max-w-4xl mx-auto prose prose-lg">
+                <div data-aos="fade-up">
+                    <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90 mb-6">
+                        It began with a few Bitcoiners meeting in Washington, DC — talking, learning, and imagining what it would look like if people actually used Bitcoin in everyday life. What started as casual meetups grew into a movement to build something real: a circular economy born from the community, not imposed from above.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="100" class="hidden md:block">
+                    <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90 mb-6">
+                        We realized that adoption only lasts when it grows organically — through trust, education, and local connection. So we set out to be the change we wanted to see, helping neighbors and small businesses discover how Bitcoin can strengthen independence and economic freedom right here in the Nation's Capital.
+                    </p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90 mb-8">
+                        This page honors those first supporters—the Genesis Donors—who believed in the mission before it had momentum, before there were results to show. They helped us take the first step. Now, we invite you to join them.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Donate CTA -->
+    <CtaBanner 
+        content={donateCta}
+        variant="full-width"
+        background="dark"
+        padding="base"
+        buttonSize="xl"
+    />
+
+    <!-- Genesis Donors Grid -->
+    <GenesisDonorGrid 
+        content={donorGridContent}
+        background="base"
+        padding="large"
+    />
+
+    <!-- FAQ Section -->
+    <Faqs 
+        content={faqsContent}
+        background="light"
+        padding="large"
+    />
+
+    <!-- Footer Disclaimer -->
+    <section class="py-small bg-background">
+        <div class="site-container--content mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <p class="text-xs text-body-base opacity-60 leading-relaxed">
+                    Recognition on this page is optional and does not imply endorsement of any individual's views or activities. The Bitcoin District Initiative reserves the right to edit or remove listings to uphold its mission and nonprofit policies. All donations are final and tax-deductible to the extent allowed by law.
+                </p>
+            </div>
+        </div>
+    </section>
+</Layout>
+

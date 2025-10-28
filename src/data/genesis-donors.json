@@ -1,0 +1,16 @@
+[
+
+    {
+        "id": "gd_0001",
+        "displayName": "Trey",
+        "message": "Be the change!",
+        "links": {
+          "twitter": "trey21m",
+          "nostr": "npub15a3ttwms2psgn6909vglyll6art4rytr3mrt65hsc32zsrpe82rq25uhm5"
+        },
+        "badges": ["100k-sats"],
+        "blockHeight": 921197
+      }
+
+]
+

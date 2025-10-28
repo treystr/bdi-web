@@ -1,0 +1,87 @@
+---
+import { getPaddingClass, getBackgroundColor, getHeadlineColor, getTextColor } from '@utils/styleUtils';
+import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
+import Eyebrow from '@components/ui/Eyebrow.astro';
+import GenesisDonorCard from '@components/ui/GenesisDonorCard.astro';
+import donorsData from '@data/genesis-donors.json';
+
+export interface Props {
+    content: {
+        eyebrow?: string;
+        title: string;
+        description?: string;
+    };
+    background?: ThemeColor;
+    padding?: PaddingSize;
+    paddingTop?: PaddingSize;
+    paddingBottom?: PaddingSize;
+}
+
+const {
+    content: { eyebrow, title, description },
+    background = 'base'
+} = Astro.props;
+
+const bgColor = getBackgroundColor(background);
+const paddingClass = getPaddingClass({ 
+    padding: Astro.props.padding,
+    paddingTop: Astro.props.paddingTop,
+    paddingBottom: Astro.props.paddingBottom 
+});
+
+const headlineColor = getHeadlineColor(background);
+const textColor = getTextColor(background);
+
+const donors = donorsData;
+const hasDonors = donors.length > 0;
+---
+
+<section class:list={["relative", bgColor, paddingClass]}>
+    <div class="site-container--content px-4">
+        {/* Section Header */}
+        <div class="max-w-3xl mx-auto text-center mb-12">
+            {eyebrow && (
+                <Eyebrow 
+                    text={eyebrow} 
+                    background={background} 
+                />
+            )}
+            {title && (
+                <h2 
+                    data-aos="fade-up" 
+                    class:list={["text-3xl font-bold mb-4", headlineColor]}
+                >
+                    {title}
+                </h2>
+            )}
+            {description && (
+                <p 
+                    data-aos="fade-up" 
+                    data-aos-delay="100"
+                    class:list={["text-lg", textColor]}
+                >
+                    {description}
+                </p>
+            )}
+        </div>
+        
+        {/* Donor Grid or Empty State */}
+        {hasDonors ? (
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                {donors.map((donor, index) => (
+                    <GenesisDonorCard donor={donor} index={index} />
+                ))}
+            </div>
+        ) : (
+            <div 
+                class="max-w-2xl mx-auto text-center py-12"
+                data-aos="fade-up"
+            >
+                <p class:list={["text-xl italic", textColor, "opacity-70"]}>
+                    The Genesis has begun — be among the first to support this mission.
+                </p>
+            </div>
+        )}
+    </div>
+</section>
+
