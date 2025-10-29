@@ -44,7 +44,7 @@ const getPrimaryLink = () => {
         return `https://x.com/${donor.links.twitter}`;
     }
     if (donor.links.nostr) {
-        return `https://njump.me/${donor.links.nostr}`;
+        return `https://primal.net/p/${donor.links.nostr}`;
     }
     if (donor.links.github) {
         return `https://github.com/${donor.links.github}`;
@@ -126,7 +126,7 @@ const primaryLink = getPrimaryLink();
                 )}
                 {donor.links.nostr && (
                     <a
-                        href={`https://njump.me/${donor.links.nostr}`}
+                        href={`https://primal.net/p/${donor.links.nostr}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-body-base hover:text-primary transition-colors"
