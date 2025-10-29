@@ -3,6 +3,7 @@ import { getPaddingClass, getBackgroundColor, getHeadlineColor, getTextColor } f
 import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
 import Eyebrow from '@components/ui/Eyebrow.astro';
 import DonorCard from '@components/ui/DonorCard.astro';
+import Button from '@components/ui/Button.astro';
 
 interface Donor {
     id: string;
@@ -24,6 +25,13 @@ export interface Props {
         eyebrow?: string;
         title: string;
         description?: string;
+        button?: {
+            text: string;
+            href: string;
+            variant?: 'primary' | 'secondary' | 'accent' | 'ghostLight' | 'ghostDark';
+            size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+            target?: string;
+        };
     };
     donorsData: Donor[];
     background?: ThemeColor;
@@ -37,7 +45,7 @@ export interface Props {
 }
 
 const {
-    content: { eyebrow, title, description },
+    content: { eyebrow, title, description, button },
     donorsData,
     background = 'base',
     maxDonors,
@@ -101,6 +109,22 @@ const hasDonors = donors.length > 0;
                 >
                     {description}
                 </p>
+            )}
+            {button && (
+                <div 
+                    class="mt-6"
+                    data-aos="fade-up"
+                    data-aos-delay="200"
+                >
+                    <Button
+                        href={button.href}
+                        variant={button.variant || 'primary'}
+                        size={button.size || 'md'}
+                        target={button.target || '_self'}
+                    >
+                        {button.text}
+                    </Button>
+                </div>
             )}
         </div>
         

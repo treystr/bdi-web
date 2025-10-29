@@ -17,7 +17,13 @@ const pageHeaderContent = {
 const genesisDonorGridContent = {
     eyebrow: "FOUNDING SUPPORTERS",
     title: "Genesis Donors 🧡",
-    description: "Our very first supporters from the community who believed in our vision before it had momentum."
+    description: "Our very first supporters from the community who believed in our vision before it had momentum.",
+    button: {
+        text: "Donate",
+        href: "https://pay.zaprite.com/pl_XhRWxrwyGa",
+        variant: "primary" as const,
+        target: "_blank"
+    }
 };
 
 const faqsContent = {
@@ -26,7 +32,7 @@ const faqsContent = {
 };
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
+<Layout title={seoTitle} description={seoDescription} image="/og/og-thanks.jpg">
     <PageHeader 
         title={pageHeaderContent.title} 
         description={pageHeaderContent.description} 
