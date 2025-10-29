@@ -2,13 +2,14 @@
 import { Image } from 'astro:assets';
 import { Github, Feather } from 'lucide-astro';
 import X from '@components/icons/X.astro';
-import satoshiAvatar from '@assets/images/donors/satoshi.png';
+import { getDonorAvatar } from '@utils/donorImages';
 
 interface Props {
     donor: {
         id: string;
         displayName: string;
         avatarUrl?: string;
+        image?: string;
         message?: string;
         links?: {
             twitter?: string;
@@ -33,9 +34,7 @@ const {
     showBlockHeight = true
 } = Astro.props;
 
-// Note: avatarUrl in JSON should be ignored - we'll always use satoshi.png as placeholder
-// Custom avatars can be added by importing them in this component and mapping by donor ID
-const avatarSrc = satoshiAvatar;
+const avatarSrc = getDonorAvatar(donor.image);
 
 // Get first available link in priority order: twitter → nostr → github
 const getPrimaryLink = () => {
