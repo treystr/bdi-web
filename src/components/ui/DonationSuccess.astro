@@ -1,0 +1,195 @@
+---
+// DonationSuccess.astro - Celebration animation component for donation success
+---
+
+<!-- Donation Success Popup Modal -->
+<div 
+    id="donation-success-modal" 
+    class="donation-success-modal fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-500 ease-out"
+    role="dialog"
+    aria-labelledby="donation-success-title"
+    aria-describedby="donation-success-description"
+    aria-hidden="true"
+>
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative bg-white rounded-2xl shadow-2xl border border-white/20 p-8 max-w-md w-full mx-4 transform scale-95 transition-transform duration-500 ease-out">
+        <!-- Success Icon -->
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                <i class="fas fa-heart text-2xl text-green-600" aria-hidden="true"></i>
+            </div>
+            <h2 id="donation-success-title" class="text-2xl font-bold text-gray-900 mb-2">
+                Thank You! 🧡
+            </h2>
+            <p id="donation-success-description" class="text-gray-600 text-base leading-relaxed">
+                Your generous donation helps build DC's Bitcoin circular economy. We're grateful for your support!
+            </p>
+        </div>
+        
+        <!-- Close Button (hidden, auto-dismisses) -->
+        <button 
+            id="close-donation-modal"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Close celebration message"
+        >
+            <i class="fas fa-times text-lg" aria-hidden="true"></i>
+        </button>
+    </div>
+</div>
+
+<style>
+    .donation-success-modal.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    
+    .donation-success-modal.show > div:last-child {
+        transform: scale(1);
+    }
+    
+    /* Ensure modal appears above all other content */
+    .donation-success-modal {
+        z-index: 9999;
+    }
+</style>
+
+<script>
+    import confetti from 'canvas-confetti';
+    
+    // Function to get URL parameters
+    function getQueryParam(param: string): string | null {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+    
+    // Function to create confetti animation
+    function launchConfetti() {
+        // Create multiple bursts for a more celebratory effect
+        const duration = 8000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
+        
+        function randomInRange(min: number, max: number) {
+            return Math.random() * (max - min) + min;
+        }
+        
+        // First burst
+        confetti({
+            ...defaults,
+            particleCount: 50,
+            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+        });
+        
+        // Second burst
+        confetti({
+            ...defaults,
+            particleCount: 50,
+            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+        });
+        
+        // Continue with smaller bursts
+        const interval = setInterval(() => {
+            const timeLeft = animationEnd - Date.now();
+            
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                return;
+            }
+            
+            const particleCount = 30 * (timeLeft / duration);
+            
+            confetti({
+                ...defaults,
+                particleCount,
+                origin: { x: Math.random(), y: Math.random() - 0.2 }
+            });
+        }, 250);
+    }
+    
+    // Function to show the success modal
+    function showSuccessModal(donationType: string) {
+        const modal = document.getElementById('donation-success-modal');
+        const title = document.getElementById('donation-success-title');
+        const description = document.getElementById('donation-success-description');
+        
+        if (!modal || !title || !description) return;
+        
+        // Customize message based on donation type
+        let customTitle = 'Thank You! 🧡';
+        let customDescription = 'Your generous donation helps build DC\'s Bitcoin circular economy. We\'re grateful for your support!';
+        
+        if (donationType === 'genesis') {
+            customTitle = 'Welcome, Genesis Donor! 🧡';
+            customDescription = 'You\'re now part of our founding supporters! Your early belief in our mission means everything to us.';
+        } else if (donationType === 'monthly') {
+            customTitle = 'Thank You for Your Commitment! 🧡';
+            customDescription = 'Your recurring support provides the foundation for our ongoing work in the Bitcoin community.';
+        } else if (donationType === 'one-time') {
+            customTitle = 'Thank You for Your Support! 🧡';
+            customDescription = 'Every donation makes a difference in building DC\'s Bitcoin circular economy.';
+        }
+        
+        title.textContent = customTitle;
+        description.textContent = customDescription;
+        
+        // Show modal
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+        
+        // Launch confetti
+        launchConfetti();
+        
+        // Auto-dismiss after 4 seconds
+        setTimeout(() => {
+            hideSuccessModal();
+        }, 4000);
+    }
+    
+    // Function to hide the success modal
+    function hideSuccessModal() {
+        const modal = document.getElementById('donation-success-modal');
+        if (!modal) return;
+        
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        // Check for donation parameter
+        const donationType = getQueryParam('donation');
+        
+        if (donationType) {
+            // Small delay to ensure page is fully loaded
+            setTimeout(() => {
+                showSuccessModal(donationType);
+            }, 500);
+        }
+        
+        // Add close button functionality
+        const closeButton = document.getElementById('close-donation-modal');
+        if (closeButton) {
+            closeButton.addEventListener('click', hideSuccessModal);
+        }
+        
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideSuccessModal();
+            }
+        });
+        
+        // Close on backdrop click
+        const modal = document.getElementById('donation-success-modal');
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    hideSuccessModal();
+                }
+            });
+        }
+    });
+</script>

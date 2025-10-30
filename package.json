@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "aos": "^2.3.4",
+        "canvas-confetti": "^1.9.4",
         "chart.js": "^4.5.1",
         "date-fns": "^4.1.0"
     },
@@ -21,6 +22,7 @@
         "@fortawesome/fontawesome-free": "^6.7.2",
         "@tailwindcss/vite": "^4.0.14",
         "@types/aos": "^3.0.7",
+        "@types/canvas-confetti": "^1.9.0",
         "astro": "^5.5.3",
         "lucide-astro": "^0.483.0",
         "prettier": "^3.5.3",

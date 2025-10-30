@@ -3,6 +3,7 @@ import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
 import DonorGrid from '@components/sections/DonorGrid.astro';
 import Faqs from '@components/sections/Faqs.astro';
+import DonationSuccess from '@components/ui/DonationSuccess.astro';
 import { supporterFaqs } from '@data/supporter-faqs';
 import genesisDonorsData from '@data/genesis-donors.json';
 
@@ -33,6 +34,9 @@ const faqsContent = {
 ---
 
 <Layout title={seoTitle} description={seoDescription} image="/og/og-thanks.jpg">
+    <!-- Donation Success Animation Component -->
+    <DonationSuccess />
+    
     <PageHeader 
         title={pageHeaderContent.title} 
         description={pageHeaderContent.description} 
