@@ -32,6 +32,18 @@ const heroDonate = {
         }
     ]
 }
+
+// Geyser support CTA
+const geyserContent = {
+    title: "Prefer Geyser? Support us there.",
+    button: {
+        text: "Support on Geyser",
+        link: "https://geyser.fund/project/bitcoindc",
+        variant: "secondary" as const,
+        target: "_blank" as const
+    },
+    description: "Geyser is a popular crowdfunding platform powered by Bitcoin."
+}
 ---
 
 <Layout title={seoTitle} description={seoDescription}>
@@ -74,4 +86,13 @@ const heroDonate = {
             </div>
         </div>
     </section>
+    
+    <!-- Geyser Support CTA (compact) -->
+    <CtaBanner 
+        content={geyserContent}
+        variant="contained"
+        background="light"
+        padding="xsmall"
+        buttonSize="lg"
+    />
 </Layout>
