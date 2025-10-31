@@ -1,18 +1,7 @@
 [
 
-    {
-        "id": "gd_0001",
-        "displayName": "Trey",
-        "message": "Be the change!",
-        "image": "trey.png",
-        "links": {
-          "twitter": "trey21m",
-          "nostr": "npub15a3ttwms2psgn6909vglyll6art4rytr3mrt65hsc32zsrpe82rq25uhm5"
-        },
-        "blockHeight": 902556
-      },
       {
-        "id": "gd_0002",
+        "id": "gd_0001",
         "displayName": "Mauricio",
         "message": "Seek truth",
         "image": "mauricio.png",
@@ -21,6 +10,15 @@
           "nostr": "npub10htqtrkhcztsel8e3zka259npr4s2gx8mfaj676hvmu9vt0c7hyqu0smgf"
         },
         "blockHeight": 917054
+      },
+      {
+        "id": "gd_0002",
+        "displayName": "TimSmig",        
+        "image": "timsmig.png",
+        "links": {
+          "twitter": "timsmig"
+        },
+        "blockHeight": 920121
       }
 
 ]
