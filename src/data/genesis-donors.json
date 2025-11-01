@@ -1,7 +1,7 @@
 [
 
       {
-        "id": "gd_0001",
+        "rank": 50,
         "displayName": "Mauricio",
         "message": "Seek truth",
         "image": "mauricio.png",
@@ -12,13 +12,22 @@
         "blockHeight": 917054
       },
       {
-        "id": "gd_0002",
+        "rank": 200,
         "displayName": "TimSmig",        
         "image": "timsmig.png",
         "links": {
           "twitter": "timsmig"
         },
         "blockHeight": 920121
+      },
+      {
+        "rank": 25,
+        "displayName": "Secure Sovereign",        
+        "image": "secsov.png",
+        "links": {
+          "twitter": "secsovereign"
+        },
+        "blockHeight": 921687
       }
 
 ]
