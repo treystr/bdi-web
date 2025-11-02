@@ -18,19 +18,16 @@ const { Content } = await render(entry);
 // Fetch survey data from GitHub
 let surveyData = null;
 let surveyError = null;
-let surveyCount = 18; // Fallback count
+let surveyCount = 50; // Fallback count
 
 try {
     const response = await fetch('https://raw.githubusercontent.com/treystr/bdi-data/main/survey/results.json');
     if (response.ok) {
         const data = await response.json();
         surveyData = data.data;
-        // Calculate total survey count from the data
-        if (surveyData && surveyData.length > 0) {
-            const firstQuestion = surveyData[0];
-            if (firstQuestion && firstQuestion.data) {
-                surveyCount = firstQuestion.data.reduce((total: number, item: any) => total + item.count, 0);
-            }
+        // Use the total count from the API response
+        if (data.count) {
+            surveyCount = data.count;
         }
     } else {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
