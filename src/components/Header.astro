@@ -2,7 +2,7 @@
 import { headerMenu, type MenuItem } from '@data/menu';
 import { headerSetting } from '@data/config';
 import Logo from '@components/Logo.astro';
-import { Menu, X, ChevronDown, Plus } from 'lucide-astro';
+import { Menu, X, ChevronDown, Plus, PlusCircle, ArrowRightCircle } from 'lucide-astro';
 import Button from '@components/ui/Button.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
@@ -39,25 +39,19 @@ const isCurrentPage = (link: string) => {
         transform: translateY(0);
     }
     
-    /* Desktop navigation hover accent line */
-    .nav-item-with-accent {
+    /* Desktop navigation - removed hover accent line */
+    .nav-item {
         position: relative;
     }
     
-    .nav-item-with-accent::after {
-        content: '';
-        position: absolute;
-        bottom: -4px;
-        left: 50%;
-        width: 0;
-        height: 2px;
-        background-color: var(--color-secondary);
-        transition: all 0.3s ease;
-        transform: translateX(-50%);
+    /* Remove outline on click while maintaining accessibility */
+    .nav-item a:focus {
+        outline: none;
     }
     
-    .nav-item-with-accent:hover::after {
-        width: 100%;
+    .nav-item a:focus-visible {
+        outline: 2px solid var(--color-nav-text-active);
+        outline-offset: 2px;
     }
 
     /* Ensure mobile menu elements are always accessible */
@@ -69,12 +63,12 @@ const isCurrentPage = (link: string) => {
     .mobile-menu {
         z-index: 90 !important;
         position: fixed !important;
-        top: 0 !important;
+        top: 80px !important; /* Start below header */
         left: 0 !important;
         right: 0 !important;
         bottom: 0 !important;
         width: 100vw !important;
-        height: 100vh !important;
+        height: calc(100vh - 80px) !important;
     }
     
     /* Ensure mobile menu displays properly */
@@ -96,8 +90,32 @@ const isCurrentPage = (link: string) => {
     }
     
     /* Mobile menu Plus icon rotation */
-    .mobile-submenu-button.expanded .lucide-plus {
+    .mobile-submenu-button.expanded .lucide-plus-circle {
         transform: rotate(45deg);
+    }
+    
+    /* Mobile submenu separators */
+    .mobile-submenu-item {
+        border-bottom: 1px solid #d1d5db;
+    }
+    
+    .mobile-submenu-item:last-child {
+        border-bottom: none;
+    }
+    
+    /* Desktop submenu styling */
+    .desktop-submenu {
+        border: 1px solid #d1d5db;
+        border-radius: 0;
+        background-color: white;
+    }
+    
+    .desktop-submenu-item {
+        border-bottom: 1px solid #d1d5db;
+    }
+    
+    .desktop-submenu-item:last-child {
+        border-bottom: none;
     }
     
     /* Mobile menu close button styling */
@@ -111,6 +129,15 @@ const isCurrentPage = (link: string) => {
     .mobile-menu-close:hover {
         background: rgba(0, 0, 0, 0.2) !important;
         transform: scale(1.05);
+    }
+    
+    /* Top-level mobile menu item separators */
+    .mobile-menu-item {
+        border-bottom: 1px solid #d1d5db;
+    }
+    
+    .mobile-menu-item:last-child {
+        border-bottom: none;
     }
     
     /* Ensure proper mobile menu positioning */
@@ -128,18 +155,48 @@ const isCurrentPage = (link: string) => {
 <header class="fixed top-0 z-50 w-full left-0 bg-white border-b border-primary" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
     <div class="site-container--content mx-auto px-4">
         <div class="flex justify-between items-center py-4">
-            <Logo variant="header" />
+            <div class="flex items-center gap-2">
+                {/* Mobile Menu Button */}
+                <button
+                    class="mobile-menu-button relative z-[100] p-2 border-none cursor-pointer bg-transparent lg:hidden"
+                    aria-label="Toggle Menu"
+                    aria-expanded="false"
+                >
+                    <span class="menu-icon block">
+                        <Menu size={24} class="text-body-base" />
+                    </span>
+                    <span class="close-icon hidden">
+                        <X size={24} class="text-body-base" />
+                    </span>
+                </button>
+                
+                
+                <Logo variant="header" />
+            </div>
             <nav class="relative flex items-center gap-2 lg:gap-8" aria-label="Site Navigation">
+                {/* Mobile Initiatives Link - Always visible on mobile */}
+                <a
+                    href="/initiatives"
+                    class:list={[
+                        'lg:hidden text-small font-medium rounded-md px-2 py-1',
+                        isCurrentPage('/initiatives')
+                            ? 'text-nav-text-current font-semibold'
+                            : 'text-nav-text hover:text-nav-text-hover',
+                    ]}
+                    aria-current={isCurrentPage('/initiatives') ? 'page' : undefined}
+                >
+                    Initiatives
+                </a>
                 {/* Desktop Menu */}
                 <ul class="hidden lg:flex lg:gap-8 items-center">
                     {
                         headerMenu.filter(item => !item.mobileOnly).map((item, index) => (
-                            <li class="relative group">
+                            <li class="relative group nav-item">
                                 <div class="flex items-center gap-1">
                                     <a
                                         href={item.link}
                                         class:list={[
-                                            'text-small font-medium rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-nav-text-active nav-item-with-accent',
+                                            'text-small font-medium rounded-md px-2 py-1',
                                             isCurrentPage(item.link)
                                                 ? 'text-nav-text-current font-semibold'
                                                 : 'text-nav-text hover:text-nav-text-hover',
@@ -167,16 +224,16 @@ const isCurrentPage = (link: string) => {
                                 {item.children && (
                                     <ul
                                         class:list={[
-                                            'submenu absolute mt-2 bg-nav-submenu-bg border-black border rounded-md min-w-[200px] transition-all duration-200 opacity-0 invisible overflow-hidden z-50',
+                                            'submenu desktop-submenu absolute mt-2 min-w-[200px] transition-all duration-200 opacity-0 invisible overflow-hidden z-50',
                                             index === headerMenu.length - 1 ? 'right-0' : 'left-0',
                                         ]}
                                     >
-                                        {item.children.map((child) => (
-                                            <li>
+                                        {item.children.map((child, childIndex) => (
+                                            <li class="desktop-submenu-item">
                                                 <a
                                                     href={child.link}
                                                     class:list={[
-                                                        'block px-4 text-small py-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-nav-text-active',
+                                                        'block px-4 text-small py-2',
                                                         isCurrentPage(child.link)
                                                             ? 'text-nav-text-current font-semibold'
                                                             : 'text-nav-text hover:text-nav-text-hover',
@@ -195,20 +252,9 @@ const isCurrentPage = (link: string) => {
                 </ul>
 
                 <Button href={ctaButton.link} variant="primary" class="!hidden lg:!inline-flex">{ctaButton.name}</Button>
-
-                {/* Mobile Menu Button */}
-                <button
-                    class="mobile-menu-button relative z-[100] p-2 border-none cursor-pointer bg-transparent lg:hidden"
-                    aria-label="Toggle Menu"
-                    aria-expanded="false"
-                >
-                    <span class="menu-icon block">
-                        <Menu size={24} class="text-body-base" />
-                    </span>
-                    <span class="close-icon hidden">
-                        <X size={24} class="text-white" />
-                    </span>
-                </button>
+                
+                {/* Mobile donate button - always visible on mobile */}
+                <Button href={ctaButton.link} variant="primary" class="lg:!hidden bg-primary text-white hover:bg-primary-light">{ctaButton.name}</Button>
             </nav>
         </div>
     </div>
@@ -216,22 +262,15 @@ const isCurrentPage = (link: string) => {
 
 {/* Mobile Menu Panel - Outside header to avoid transform conflicts */}
 <div
-    class="mobile-menu fixed inset-0 z-[90] px-8 pt-24 bg-white lg:hidden mobile-menu-closed opacity-0 scale-95 transform transition-all duration-300 ease-in-out overflow-y-auto flex flex-col"
+    class="mobile-menu fixed z-[90] px-8 pt-8 bg-white lg:hidden mobile-menu-closed opacity-0 scale-95 transform transition-all duration-300 ease-in-out overflow-y-auto flex flex-col"
 >
-    {/* Mobile Menu Close Button */}
-    <button
-        class="mobile-menu-close absolute top-6 right-6 z-[100] p-2 rounded-md text-black hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-black transition-colors duration-200"
-        aria-label="Close Menu"
-    >
-        <X size={24} class="text-black" />
-    </button>
 
     {/* Main content area */}
     <div class="flex-1">
         <ul class="flex flex-col gap-4">
             {
-                headerMenu.map((item) => (
-                    <li>
+                headerMenu.map((item, itemIndex) => (
+                    <li class="mobile-menu-item">
                         <div class="text-black">
                             <div class="flex items-center justify-between">
                                 <a
@@ -246,7 +285,7 @@ const isCurrentPage = (link: string) => {
                                 >
                                     {item.name}
                                 </a>
-                                {item.children && (
+                                {item.children ? (
                                     <button
                                         class:list={[
                                             'mobile-submenu-button p-2 -mr-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black',
@@ -257,32 +296,51 @@ const isCurrentPage = (link: string) => {
                                         aria-label={`Toggle ${item.name} submenu`}
                                         aria-expanded="false"
                                     >
-                                        <Plus
-                                            size={16}
+                                        <PlusCircle
+                                            size={20}
                                             class="transform transition-transform duration-200"
                                         />
                                     </button>
+                                ) : (
+                                    <ArrowRightCircle
+                                        size={20}
+                                        class:list={[
+                                            isCurrentPage(item.link)
+                                                ? 'text-primary'
+                                                : 'text-black hover:text-primary',
+                                        ]}
+                                    />
                                 )}
                             </div>
                             {item.children && (
                                 <ul class="mobile-submenu ml-4 mt-2 space-y-2 hidden" role="menu">
-                                    {item.children.map((child) => (
-                                        <li role="none">
-                                            <a
-                                                href={child.link}
-                                                class:list={[
-                                                    'block py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-black',
-                                                    isCurrentPage(child.link)
-                                                        ? 'text-primary font-semibold'
-                                                        : 'text-black hover:text-primary',
-                                                ]}
-                                                role="menuitem"
-                                                aria-current={
-                                                    isCurrentPage(child.link) ? 'page' : undefined
-                                                }
-                                            >
-                                                {child.name}
-                                            </a>
+                                    {item.children.map((child, childIndex) => (
+                                        <li class="mobile-submenu-item" role="none">
+                                            <div class="flex items-center justify-between">
+                                                <a
+                                                    href={child.link}
+                                                    class:list={[
+                                                        'block py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black flex-1',
+                                                        isCurrentPage(child.link)
+                                                            ? 'text-primary font-semibold'
+                                                            : 'text-black hover:text-primary',
+                                                    ]}
+                                                    role="menuitem"
+                                                    aria-current={
+                                                        isCurrentPage(child.link) ? 'page' : undefined
+                                                    }
+                                                >
+                                                    {child.name}
+                                                </a>
+                                                <ArrowRightCircle
+                                                    size={16}
+                                                    class:list={[
+                                                        isCurrentPage(child.link)
+                                                            ? 'text-primary'
+                                                            : 'text-black hover:text-primary',
+                                                    ]}
+                                                />
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
@@ -293,10 +351,6 @@ const isCurrentPage = (link: string) => {
             }
         </ul>
 
-        {/* Updated mobile CTA button styling */}
-        <div class="mt-8">
-            <Button href={ctaButton.link} variant="ghostLight">{ctaButton.name} </Button>
-        </div>
     </div>
 
     {/* Logo image - positioned at the bottom */}
@@ -470,7 +524,7 @@ const isCurrentPage = (link: string) => {
     document.querySelectorAll('.mobile-submenu-button').forEach((button) => {
         button.addEventListener('click', () => {
             const submenu = button.parentElement?.nextElementSibling as HTMLElement;
-            const plusIcon = button.querySelector('svg');
+            const plusIcon = button.querySelector('.lucide-plus-circle');
 
             // Toggle submenu
             if (submenu) {
@@ -498,6 +552,8 @@ const isCurrentPage = (link: string) => {
         menuIcon?.classList.remove('hidden');
         closeIcon?.classList.add('hidden');
         
+        // Hide mobile-specific elements
+        
         // Start the closing animation using theme utility classes
         mobileMenu.classList.add('opacity-0', 'scale-95');
         mobileMenu.classList.remove('opacity-100', 'scale-100');
@@ -519,6 +575,8 @@ const isCurrentPage = (link: string) => {
         mobileMenu.classList.remove('mobile-menu-closed');
         mobileMenu.classList.add('mobile-menu-open');
         mobileMenuButton?.setAttribute('aria-expanded', 'true');
+        
+        // Show mobile-specific elements
         
         // Force a reflow to ensure the menu is visible before animating
         (mobileMenu as HTMLElement).offsetHeight;
@@ -545,10 +603,11 @@ const isCurrentPage = (link: string) => {
         }
     });
 
-    // Mobile menu close button click handler
+    // Mobile menu close button click handlers
     mobileMenuClose?.addEventListener('click', () => {
         closeMobileMenu();
     });
+    
 
     // Close mobile menu when clicking outside or on menu links
     document.addEventListener('click', (e) => {
