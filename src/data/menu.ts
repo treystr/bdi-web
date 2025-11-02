@@ -10,11 +10,17 @@ export interface MenuItem {
 
 export const headerMenu: MenuItem[] = [
     // { name: 'Theme Info', link: '/theme-info' },
-    { name: 'About', link: '/about' },
     { name: 'Initiatives', link: '/initiatives' },
     { name: 'Resources', link: '/resources' },
-    { name: 'Transparency', link: '/transparency' },
-    { name: 'FAQ', link: '/faq' },
+    { 
+      name: 'About Us', 
+      link: '/about',
+      showArrow: true,
+      children: [
+          { name: 'Transparency', link: '/transparency' },
+          { name: 'FAQ', link: '/faq' }
+      ]
+  },
     { name: 'Join Bitcoin District', link: 'https://bitcoindistrict.org', mobileOnly: true }
 ];
 

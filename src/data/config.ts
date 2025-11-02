@@ -34,7 +34,7 @@ export const themeSetting = {
 }
 
 export const headerSetting = {
-  headerMode: 'fixed' // 'fixed' or 'transition'
+  headerMode: 'transition' // 'fixed' or 'transition'
 }
 
 export const layoutSetting = {

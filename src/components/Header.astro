@@ -2,7 +2,7 @@
 import { headerMenu, type MenuItem } from '@data/menu';
 import { headerSetting } from '@data/config';
 import Logo from '@components/Logo.astro';
-import { Menu, X, ChevronDown } from 'lucide-astro';
+import { Menu, X, ChevronDown, Plus } from 'lucide-astro';
 import Button from '@components/ui/Button.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
@@ -31,8 +31,35 @@ const isCurrentPage = (link: string) => {
 ---
 
 <style>
-    /* Fixed header - no transition animations needed */
+    header {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
     
+    header[data-header-mode="transition"] {
+        transform: translateY(0);
+    }
+    
+    /* Desktop navigation hover accent line */
+    .nav-item-with-accent {
+        position: relative;
+    }
+    
+    .nav-item-with-accent::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background-color: var(--color-secondary);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+    
+    .nav-item-with-accent:hover::after {
+        width: 100%;
+    }
+
     /* Ensure mobile menu elements are always accessible */
     .mobile-menu-button {
         position: relative !important;
@@ -63,21 +90,26 @@ const isCurrentPage = (link: string) => {
     
     /* Mobile menu text styling */
     .mobile-menu a {
-        color: white;
+        color: var(--color-body-base);
         font-size: 1.125rem;
         font-weight: 500;
+    }
+    
+    /* Mobile menu Plus icon rotation */
+    .mobile-submenu-button.expanded .lucide-plus {
+        transform: rotate(45deg);
     }
     
     /* Mobile menu close button styling */
     .mobile-menu-close {
         z-index: 100 !important;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.1);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(0, 0, 0, 0.2);
     }
     
     .mobile-menu-close:hover {
-        background: rgba(255, 255, 255, 0.2) !important;
+        background: rgba(0, 0, 0, 0.2) !important;
         transform: scale(1.05);
     }
     
@@ -93,7 +125,7 @@ const isCurrentPage = (link: string) => {
     }
 </style>
 
-<header class="fixed top-0 z-50 w-full left-0 bg-white border-b border-gray-200" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
+<header class="fixed top-0 z-50 w-full left-0 bg-white border-b border-primary" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
     <div class="site-container--content mx-auto px-4">
         <div class="flex justify-between items-center py-4">
             <Logo variant="header" />
@@ -107,7 +139,7 @@ const isCurrentPage = (link: string) => {
                                     <a
                                         href={item.link}
                                         class:list={[
-                                            'text-small font-medium rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-nav-text-active',
+                                            'text-small font-medium rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-nav-text-active nav-item-with-accent',
                                             isCurrentPage(item.link)
                                                 ? 'text-nav-text-current font-semibold'
                                                 : 'text-nav-text hover:text-nav-text-hover',
@@ -184,14 +216,14 @@ const isCurrentPage = (link: string) => {
 
 {/* Mobile Menu Panel - Outside header to avoid transform conflicts */}
 <div
-    class="mobile-menu fixed inset-0 z-[90] px-8 pt-24 bg-primary lg:hidden mobile-menu-closed opacity-0 scale-95 transform transition-all duration-300 ease-in-out overflow-y-auto flex flex-col"
+    class="mobile-menu fixed inset-0 z-[90] px-8 pt-24 bg-white lg:hidden mobile-menu-closed opacity-0 scale-95 transform transition-all duration-300 ease-in-out overflow-y-auto flex flex-col"
 >
     {/* Mobile Menu Close Button */}
     <button
-        class="mobile-menu-close absolute top-6 right-6 z-[100] p-2 rounded-md text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white transition-colors duration-200"
+        class="mobile-menu-close absolute top-6 right-6 z-[100] p-2 rounded-md text-black hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-black transition-colors duration-200"
         aria-label="Close Menu"
     >
-        <X size={24} class="text-white" />
+        <X size={24} class="text-black" />
     </button>
 
     {/* Main content area */}
@@ -200,15 +232,15 @@ const isCurrentPage = (link: string) => {
             {
                 headerMenu.map((item) => (
                     <li>
-                        <div class="text-white">
+                        <div class="text-black">
                             <div class="flex items-center justify-between">
                                 <a
                                     href={item.link}
                                     class:list={[
-                                        'py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-nav-mobile-text-active',
+                                        'py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-black text-black hover:text-primary',
                                         isCurrentPage(item.link)
-                                            ? 'text-nav-mobile-text-current font-semibold'
-                                            : 'text-nav-mobile-text hover:text-nav-mobile-text-hover',
+                                            ? 'text-primary font-semibold'
+                                            : 'text-black hover:text-primary',
                                     ]}
                                     aria-current={isCurrentPage(item.link) ? 'page' : undefined}
                                 >
@@ -217,15 +249,15 @@ const isCurrentPage = (link: string) => {
                                 {item.children && (
                                     <button
                                         class:list={[
-                                            'mobile-submenu-button p-2 -mr-2 rounded-md focus:outline-none focus:ring-2 focus:ring-nav-mobile-text-active',
+                                            'mobile-submenu-button p-2 -mr-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black',
                                             isCurrentPage(item.link)
-                                                ? 'text-nav-mobile-text-current'
-                                                : 'text-nav-mobile-text hover:text-nav-mobile-text-hover',
+                                                ? 'text-primary'
+                                                : 'text-black hover:text-primary',
                                         ]}
                                         aria-label={`Toggle ${item.name} submenu`}
                                         aria-expanded="false"
                                     >
-                                        <ChevronDown
+                                        <Plus
                                             size={16}
                                             class="transform transition-transform duration-200"
                                         />
@@ -239,10 +271,10 @@ const isCurrentPage = (link: string) => {
                                             <a
                                                 href={child.link}
                                                 class:list={[
-                                                    'block py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-nav-mobile-text-active',
+                                                    'block py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-black',
                                                     isCurrentPage(child.link)
-                                                        ? 'text-nav-mobile-text-current font-semibold'
-                                                        : 'text-nav-mobile-text hover:text-nav-mobile-text-hover',
+                                                        ? 'text-primary font-semibold'
+                                                        : 'text-black hover:text-primary',
                                                 ]}
                                                 role="menuitem"
                                                 aria-current={
@@ -274,7 +306,55 @@ const isCurrentPage = (link: string) => {
 </div>
 
 <script>
-    // Mobile menu functionality only - no scroll behavior for fixed header
+    // Header scroll behavior - slides up on scroll down
+    const header = document.querySelector('header') as HTMLElement;
+    const headerMode = header?.getAttribute('data-header-mode');
+    let isHidden = false;
+
+    if (headerMode === 'transition') {
+        let lastScrollY = 0;
+        let ticking = false;
+        const scrollThreshold = 8;
+        const hideThreshold = 100;
+
+        function updateHeader() {
+            const currentScrollY = Math.max(0, window.scrollY);
+            const scrollDirection = currentScrollY - lastScrollY;
+            const scrollDistance = Math.abs(scrollDirection);
+            
+            // Only trigger visibility changes if we've scrolled enough
+            if (scrollDistance > scrollThreshold) {
+                if (scrollDirection > 0 && currentScrollY > hideThreshold && !isHidden) {
+                    // Scrolling down past threshold - slide header up
+                    isHidden = true;
+                    header.style.transform = 'translateY(-100%)';
+                } else if (scrollDirection < 0 && isHidden) {
+                    // Scrolling up while hidden - slide header down
+                    isHidden = false;
+                    header.style.transform = 'translateY(0)';
+                }
+                
+                lastScrollY = currentScrollY;
+            }
+            
+            // Always show header when at the very top
+            if (currentScrollY <= 10 && isHidden) {
+                isHidden = false;
+                header.style.transform = 'translateY(0)';
+            }
+            
+            ticking = false;
+        }
+
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+    }
 
     // Desktop Menu
     const desktopMenuItems = document.querySelectorAll('.group');
@@ -390,12 +470,12 @@ const isCurrentPage = (link: string) => {
     document.querySelectorAll('.mobile-submenu-button').forEach((button) => {
         button.addEventListener('click', () => {
             const submenu = button.parentElement?.nextElementSibling as HTMLElement;
-            const chevron = button.querySelector('svg');
+            const plusIcon = button.querySelector('svg');
 
             // Toggle submenu
             if (submenu) {
                 submenu.classList.toggle('hidden');
-                chevron?.classList.toggle('rotate-180');
+                button.classList.toggle('expanded');
                 const isExpanded = submenu.classList.contains('hidden') ? 'false' : 'true';
                 button.setAttribute('aria-expanded', isExpanded);
             }
