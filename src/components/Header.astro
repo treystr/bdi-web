@@ -31,15 +31,7 @@ const isCurrentPage = (link: string) => {
 ---
 
 <style>
-    header {
-        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-                    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    header[data-header-mode="transition"] {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    /* Fixed header - no transition animations needed */
     
     /* Ensure mobile menu elements are always accessible */
     .mobile-menu-button {
@@ -101,13 +93,9 @@ const isCurrentPage = (link: string) => {
     }
 </style>
 
-<header class="fixed top-0 z-50 w-full left-0" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
-    <div class="site-container--content mx-auto px-4 mt-4">
-        <div class={`flex justify-between items-center py-4 rounded-lg px-4 border transition-all duration-300 ${
-            overlayMode 
-                ? 'header-overlay-transparent border-white/20' 
-                : 'header-solid bg-white border-black'
-        }`}>
+<header class="fixed top-0 z-50 w-full left-0 bg-white border-b border-gray-200" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
+    <div class="site-container--content mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
             <Logo variant="header" />
             <nav class="relative flex items-center gap-2 lg:gap-8" aria-label="Site Navigation">
                 {/* Desktop Menu */}
@@ -286,109 +274,7 @@ const isCurrentPage = (link: string) => {
 </div>
 
 <script>
-    // Header scroll behavior
-    const header = document.querySelector('header') as HTMLElement;
-    const headerMode = header?.getAttribute('data-header-mode');
-    const overlayMode = header?.getAttribute('data-overlay-mode') === 'true';
-    const headerInner = header?.querySelector('div > div') as HTMLElement;
-    let isHidden = false; // Move to global scope for mobile menu access
-
-    if (headerMode === 'transition') {
-        let lastScrollY = 0;
-        let ticking = false;
-        let scrollTimeout: number | null = null;
-        const scrollThreshold = 8; // Increased threshold for better stability
-        const hideThreshold = 100; // Scroll position to start hiding header
-        const showThreshold = 50; // How much to scroll up before showing header
-
-        function updateHeader() {
-            const currentScrollY = Math.max(0, window.scrollY); // Prevent negative values
-            const scrollDirection = currentScrollY - lastScrollY;
-            const scrollDistance = Math.abs(scrollDirection);
-            
-            // Handle overlay mode background transitions
-            if (overlayMode && headerInner) {
-                if (currentScrollY > 50) {
-                    // Scrolled down - make header more opaque
-                    headerInner.classList.remove('header-overlay-transparent');
-                    headerInner.classList.add('header-overlay');
-                } else {
-                    // At top - keep transparent
-                    headerInner.classList.remove('header-overlay');
-                    headerInner.classList.add('header-overlay-transparent');
-                }
-            }
-            
-            // Only trigger visibility changes if we've scrolled enough
-            if (scrollDistance > scrollThreshold) {
-                if (scrollDirection > 0 && currentScrollY > hideThreshold && !isHidden) {
-                    // Scrolling down past threshold - hide header
-                    isHidden = true;
-                    header.style.transform = 'translateY(-100%)';
-                    header.style.opacity = '0';
-                } else if (scrollDirection < 0 && isHidden) {
-                    // Scrolling up while hidden - show header after sufficient upward scroll
-                    const scrolledUpEnough = lastScrollY - currentScrollY > showThreshold;
-                    if (scrolledUpEnough || currentScrollY <= hideThreshold) {
-                        isHidden = false;
-                        header.style.transform = 'translateY(0)';
-                        header.style.opacity = '1';
-                    }
-                }
-                
-                lastScrollY = currentScrollY;
-            }
-            
-            // Always show header when at the very top
-            if (currentScrollY <= 10 && isHidden) {
-                isHidden = false;
-                header.style.transform = 'translateY(0)';
-                header.style.opacity = '1';
-            }
-            
-            ticking = false;
-        }
-
-        function onScroll() {
-            // Clear any existing timeout
-            if (scrollTimeout) {
-                clearTimeout(scrollTimeout);
-            }
-            
-            if (!ticking) {
-                requestAnimationFrame(updateHeader);
-                ticking = true;
-            }
-            
-            // Set a timeout to ensure header is visible when scrolling stops
-            scrollTimeout = window.setTimeout(() => {
-                if (window.scrollY <= hideThreshold && isHidden) {
-                    isHidden = false;
-                    header.style.transform = 'translateY(0)';
-                    header.style.opacity = '1';
-                }
-            }, 150);
-        }
-
-        window.addEventListener('scroll', onScroll, { passive: true });
-        
-        // Handle window resize to reset header position
-        window.addEventListener('resize', () => {
-            if (!isHidden) {
-                header.style.transform = 'translateY(0)';
-                header.style.opacity = '1';
-            }
-        });
-        
-        // Handle page visibility change (e.g., tab switching)
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden && window.scrollY <= hideThreshold && isHidden) {
-                isHidden = false;
-                header.style.transform = 'translateY(0)';
-                header.style.opacity = '1';
-            }
-        });
-    }
+    // Mobile menu functionality only - no scroll behavior for fixed header
 
     // Desktop Menu
     const desktopMenuItems = document.querySelectorAll('.group');

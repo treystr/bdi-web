@@ -420,7 +420,7 @@
         --color-nav-text-active: var(--color-primary);
         --color-nav-text-current: var(--color-primary);
         --color-nav-submenu-bg: var(--color-background-light);
-        --color-header-logo: #ffffff;
+        --color-header-logo: var(--color-body-base);
         --color-footer-logo: var(--color-primary);
     }
 
