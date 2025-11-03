@@ -7,7 +7,6 @@ targetDate: "2025-12-31"
 status: "active"
 goalAmount: 0
 currentAmount: 0
-featured: false
 hero:
   image: null
   overlayOpacity: 0.7

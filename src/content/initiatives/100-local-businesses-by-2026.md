@@ -1,7 +1,7 @@
 ---
 title: "100 Businesses Accepting BTC by 2026"
 shortDescription: "Onboarding 100 DC-area businesses by the end of 2026, building a thriving circular economy in the nation's capital."
-cardImage: "../../assets/images/collage_square.jpg"
+cardImage: "../../assets/images/905381-lemonade.jpg"
 startDate: "2025-07-12"
 targetDate: "2026-12-31"
 status: "active"
