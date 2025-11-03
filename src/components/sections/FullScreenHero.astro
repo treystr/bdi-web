@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Button from '@components/ui/Button.astro';
-import FeaturedInitiativeCard from '@components/ui/FeaturedInitiativeCard.astro';
+import InitiativeCard from '@components/initiatives/InitiativeCard.astro';
 import HeroStats from '@components/initiatives/HeroStats.astro';
 import SimpleProgressStats from '@components/initiatives/SimpleProgressStats.astro';
 import defaultHeroImage from '@assets/images/hero/default.jpg';
@@ -11,6 +11,7 @@ interface Initiative {
     data: {
         title: string;
         shortDescription: string;
+        cardImage: any;
         goalAmount: number;
         currentAmount: number;
         startDate: Date;
@@ -134,8 +135,22 @@ const alignmentClasses = {
         {/* Featured Content at Bottom */}
         {content.featuredContent && (
             <div class="pb-16 sm:pb-20 px-4">
-                <div class="site-container--hero mx-auto">
-                    <FeaturedInitiativeCard initiative={content.featuredContent} />
+                <div class="site-container--hero mx-auto max-w-2xl">
+                    <InitiativeCard
+                        title={content.featuredContent.data.title}
+                        description={content.featuredContent.data.shortDescription}
+                        imageSrc={content.featuredContent.data.cardImage}
+                        imageAlt={`${content.featuredContent.data.title} initiative`}
+                        href={`/initiatives/${content.featuredContent.id}`}
+                        variant="featured"
+                        badge={{ text: 'Featured Initiative', color: 'accent' }}
+                        showTargetDate={!!content.featuredContent.data.targetDate}
+                        targetDate={content.featuredContent.data.targetDate ? String(content.featuredContent.data.targetDate) : undefined}
+                        progressData={{
+                            goalAmount: content.featuredContent.data.goalAmount,
+                            currentAmount: content.featuredContent.data.currentAmount
+                        }}
+                    />
                 </div>
             </div>
         )}

@@ -1,29 +1,23 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { getCollection } from 'astro:content';
 import PageHeader from '@components/sections/PageHeader.astro';
+import InitiativeCards from '@components/sections/InitiativeCards.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import heroImage from '@assets/images/hero/hero-bizgrid.jpg';
-import InitiativeCard from '@components/initiatives/InitiativeCard.astro';
 import { donateCta } from '@data/donateCta';
 
-const initiativesEntries = await getCollection('initiatives');
-
-// Sort by featured first, then by start date (newest first)
-const sortedInitiatives = [...initiativesEntries].sort((a, b) => {
-    if (a.data.featured && !b.data.featured) return -1;
-    if (!a.data.featured && b.data.featured) return 1;
-    const aDate = new Date(a.data.startDate).getTime();
-    const bDate = new Date(b.data.startDate).getTime();
-    return bDate - aDate;
-});
-
-// Separate active and completed initiatives
-const activeInitiatives = sortedInitiatives.filter(entry => entry.data.status === 'active');
-const completedInitiatives = sortedInitiatives.filter(entry => entry.data.status === 'completed');
-
-const seoTitle = "Our Initiatives"
+const seoTitle = "Our Initiatives";
 const seoDescription = "Discover how the Bitcoin District Initiative builds a Bitcoin circular economy in Washington, DC through education, business adoption, and community outreach.";
+
+const activeInitiativesSection = {
+    headline: "Active Initiatives",
+    description: "These are the active projects driving our mission to build a Bitcoin circular economy in the Nation's Capital by bringing Bitcoin to Main Street DC.",
+};
+
+const completedInitiativesSection = {
+    headline: "Completed Initiatives",
+    description: "Take a look at initiatives we've successfully completed.",
+};
 ---
 
 <Layout title={seoTitle} description={seoDescription} image={heroImage.src}>
@@ -33,65 +27,27 @@ const seoDescription = "Discover how the Bitcoin District Initiative builds a Bi
         background="base" 
     />
 
-    <section class="py-xsmall">
-        <div class="site-container--content px-8">
-            <!-- Active Initiatives -->
-            {activeInitiatives.length > 0 && (
-                <div class="mb-20">
-                    <div class="grid gap-8 md:grid-cols-2">
-                        {activeInitiatives.map((entry) => (
-                            <InitiativeCard
-                                title={entry.data.title}
-                                imageSrc={entry.data.cardImage.src}
-                                description={entry.data.shortDescription}
-                                date={String(entry.data.startDate)}
-                                href={`/initiatives/${entry.id}`}
-                                showDate={false}
-                            />
-                        ))}
-                    </div>
-                </div>
-            )}
+    <!-- Active Initiatives -->
+    <InitiativeCards
+        content={activeInitiativesSection}
+        statusFilter="active"
+        background="base"
+        padding="base"
+    />
 
-            <!-- Completed Initiatives -->
-            {completedInitiatives.length > 0 && (
-                <div class="mt-20">
-                    <h2 class="text-2xl font-bold mb-8 pb-4 border-b-2 border-body-base/20">Completed Initiatives</h2>
-                    <div class="grid gap-8 md:grid-cols-2">
-                        {completedInitiatives.map((entry) => (
-                            <InitiativeCard
-                                title={entry.data.title}
-                                imageSrc={entry.data.cardImage.src}
-                                description={entry.data.shortDescription}
-                                date={String(entry.data.startDate)}
-                                href={`/initiatives/${entry.id}`}
-                                badgeText="Completed"
-                                showDate={false}
-                            />
-                        ))}
-                    </div>
-                </div>
-            )}
-
-            <!-- Empty State (if no initiatives exist) -->
-            {activeInitiatives.length === 0 && completedInitiatives.length === 0 && (
-                <div class="text-center py-20">
-                    <h2 class="text-2xl font-bold mb-4">Coming Soon</h2>
-                    <p class="text-body-base/70 max-w-2xl mx-auto">
-                        We're currently planning our flagship initiatives. Check back soon to see 
-                        how we're making an impact in DC communities through Bitcoin education and adoption.
-                    </p>
-                </div>
-            )}
-        </div>
-    </section>
+    <!-- Completed Initiatives
+    <InitiativeCards
+        content={completedInitiativesSection}
+        statusFilter="completed"
+        background="light"
+        padding="base"
+    /> -->
 
     <!-- Donate CTA -->
     <CtaBanner
         content={donateCta}
         variant="contained"
-        background="light"
+        background="base"
         padding="large"
     />
 </Layout>
-

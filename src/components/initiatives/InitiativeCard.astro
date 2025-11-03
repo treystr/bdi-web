@@ -1,107 +1,223 @@
 ---
 import Button from '@components/ui/Button.astro';
-interface Props {
-    // Existing props (kept for backward compatibility)
-    number?: number;
-    date: string;
-    blockHeight?: number;
-    businessName?: string;
-    businessWebsite?: string;
-    photoUrl?: string;
-    description: string;
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
-    // New generic props for reuse
-    title?: string;
-    imageSrc?: string;
-    href?: string; // internal link
-    badgeText?: string; // optional badge overlay (e.g., Completed)
-    showDate?: boolean; // whether to render the date (default true)
+interface Badge {
+    text: string;
+    color?: 'primary' | 'accent' | 'success' | 'warning';
 }
 
-const { number, date, blockHeight, businessName, businessWebsite, photoUrl, description, title, imageSrc, href, badgeText, showDate = true } = Astro.props as Props;
+interface ProgressData {
+    goalAmount: number;
+    currentAmount: number;
+}
 
-const formattedDate = showDate && date
+interface Props {
+    // Core props
+    title: string;
+    description: string;
+    imageSrc: string | ImageMetadata;
+    imageAlt?: string;
+    
+    // Navigation
+    href?: string;
+    externalLink?: string; // For external links (e.g., business websites)
+    
+    // Styling variants
+    variant?: 'standard' | 'featured';
+    
+    // Badge overlay
+    badge?: Badge;
+    
+    // Button controls
+    showButton?: boolean;
+    buttonText?: string;
+    
+    // Date display
+    date?: string;
+    showDate?: boolean;
+    targetDate?: string;
+    showTargetDate?: boolean;
+    
+    // Featured card extras
+    progressData?: ProgressData;
+    
+    // Business onboarding specific
+    number?: number; // Sequential number for business cards
+    blockHeight?: number; // Bitcoin block height
+}
+
+const {
+    title,
+    description,
+    imageSrc,
+    imageAlt,
+    href,
+    externalLink,
+    variant = 'standard',
+    badge,
+    showButton = true,
+    buttonText = 'Learn More',
+    date,
+    showDate = false,
+    targetDate,
+    showTargetDate = false,
+    progressData,
+    number,
+    blockHeight,
+} = Astro.props;
+
+// Format dates
+const formattedDate = date && showDate
     ? new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(date))
-    : '';
+    : null;
 
-// Title and image resolution with fallbacks for backward compatibility
-const cardTitle = (title ?? businessName) as string;
-const resolvedImageSrc = (imageSrc ?? photoUrl ?? '/images/placeholder-business.jpg') as string;
+const formattedTargetDate = targetDate && showTargetDate
+    ? new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(new Date(targetDate))
+    : null;
 
-// Format block height without commas
-const formattedBlockHeight = typeof blockHeight === 'number' ? blockHeight.toString() : '';
+// Calculate progress percentage for featured cards
+const progressPercent = progressData && progressData.goalAmount > 0
+    ? Math.round((progressData.currentAmount / progressData.goalAmount) * 100)
+    : 0;
 
-// No preview: show full description on card
+// Format block height
+const formattedBlockHeight = typeof blockHeight === 'number' ? blockHeight.toString() : null;
+
+// Determine badge color class
+const badgeColorClass = badge?.color === 'accent' ? 'badge-accent'
+    : badge?.color === 'success' ? 'badge-success'
+    : badge?.color === 'warning' ? 'badge-warning'
+    : 'badge-primary';
+
+// Resolve alt text
+const resolvedAlt = imageAlt || title;
+
+// Determine the link to use (href takes precedence over externalLink)
+const cardLink = href || externalLink;
+const isExternalLink = !href && !!externalLink;
 ---
 
-<article class="initiative-card" data-aos="fade-up">
-    <!-- Card Header -->
-    <div class="card-header">
-        {typeof number !== 'undefined' && <div class="card-number">{number}</div>}
-        <h3 class="card-business-name">
-            {href ? (
-                <a href={href}>
-                    {cardTitle}
-                </a>
-            ) : businessWebsite ? (
-                <a href={businessWebsite} target="_blank" rel="noopener noreferrer">
-                    {cardTitle}
-                    <svg class="external-link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                        <polyline points="15 3 21 3 21 9"></polyline>
-                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                    </svg>
-                </a>
-            ) : (
-                <span>{cardTitle}</span>
-            )}
-        </h3>
-    </div>
-
+<article class:list={['initiative-card', { 'initiative-card--featured': variant === 'featured' }]} data-aos="fade-up">
     <!-- Card Image -->
-    {href ? (
-        <a href={href} class="card-image-link">
+    <div class="card-image-wrapper">
+        {cardLink ? (
+            <a href={cardLink} class="card-image-link" target={isExternalLink ? '_blank' : '_self'} rel={isExternalLink ? 'noopener noreferrer' : undefined}>
+                <div class="card-image">
+                    {typeof imageSrc === 'string' ? (
+                        <img src={imageSrc} alt={resolvedAlt} loading="lazy" />
+                    ) : (
+                        <Image src={imageSrc} alt={resolvedAlt} loading="lazy" class="image-component" />
+                    )}
+                </div>
+            </a>
+        ) : (
             <div class="card-image">
-                <img src={resolvedImageSrc} alt={cardTitle} loading="lazy" />
-                {badgeText && (
-                    <div class="card-badge">{badgeText}</div>
+                {typeof imageSrc === 'string' ? (
+                    <img src={imageSrc} alt={resolvedAlt} loading="lazy" />
+                ) : (
+                    <Image src={imageSrc} alt={resolvedAlt} loading="lazy" class="image-component" />
                 )}
             </div>
-        </a>
-    ) : (
-        <div class="card-image">
-            <img src={resolvedImageSrc} alt={cardTitle} loading="lazy" />
-            {badgeText && (
-                <div class="card-badge">{badgeText}</div>
-            )}
-        </div>
-    )}
-
-    <!-- Card Footer -->
-    <div class="card-footer">
-        <div class="card-meta">
-            {showDate && (
-                <time datetime={date} class="card-date">
-                    {formattedDate}
-                </time>
-            )}
-            {typeof blockHeight === 'number' && (
-                <div class="card-block-height">
-                    Block #{formattedBlockHeight}
-                </div>
-            )}
-        </div>
+        )}
         
-        <div class="card-description" data-full-description={description}>
-            <p class="description-full">{description}</p>
-            {href && (
-                <div class="learn-more-wrapper">
-                    <Button href={href} variant="primary">
-                        Learn More
-                    </Button>
-                </div>
+        <!-- Badge Overlay -->
+        {badge && (
+            <div class:list={['card-badge', badgeColorClass]}>
+                {badge.text}
+            </div>
+        )}
+    </div>
+
+    <!-- Card Content -->
+    <div class="card-content">
+        <!-- Number (for business cards) -->
+        {typeof number !== 'undefined' && (
+            <div class="card-number">{number}</div>
+        )}
+        
+        <!-- Title -->
+        <h3 class="card-title">
+            {cardLink ? (
+                <a href={cardLink} class="card-title-link" target={isExternalLink ? '_blank' : '_self'} rel={isExternalLink ? 'noopener noreferrer' : undefined}>
+                    {title}
+                    {isExternalLink && (
+                        <svg class="external-link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    )}
+                </a>
+            ) : (
+                <span>{title}</span>
             )}
-        </div>
+        </h3>
+
+        <!-- Date Info -->
+        {(formattedDate || formattedTargetDate || formattedBlockHeight) && (
+            <div class="card-dates">
+                {formattedDate && (
+                    <time datetime={date} class="card-date">
+                        {formattedDate}
+                    </time>
+                )}
+                {formattedTargetDate && (
+                    <div class="card-target-date">
+                        <svg class="icon-calendar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Target: {formattedTargetDate}</span>
+                    </div>
+                )}
+                {formattedBlockHeight && (
+                    <div class="card-block-height">
+                        Block #{formattedBlockHeight}
+                    </div>
+                )}
+            </div>
+        )}
+
+        <!-- Description -->
+        <p class="card-description">
+            {description}
+        </p>
+
+        <!-- Progress Bar (Featured variant only) -->
+        {variant === 'featured' && progressData && progressData.goalAmount > 0 && (
+            <div class="card-progress">
+                <div class="progress-labels">
+                    <span class="progress-label">Funding Progress</span>
+                    <span class="progress-amount">
+                        ${progressData.currentAmount.toLocaleString()} / ${progressData.goalAmount.toLocaleString()}
+                    </span>
+                </div>
+                <div class="progress-bar-container">
+                    <div 
+                        class="progress-bar-fill"
+                        style={`width: ${progressPercent}%`}
+                    />
+                </div>
+                <p class="progress-percent">
+                    {progressPercent}% funded
+                </p>
+            </div>
+        )}
+
+        <!-- Button -->
+        {showButton && href && (
+            <div class="card-button-wrapper">
+                <Button href={href} variant="primary" size="md">
+                    {buttonText}
+                    <svg class="button-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </Button>
+            </div>
+        )}
+        
+        {/* Note: For external links (business cards), typically no button is shown */}
     </div>
 </article>
 
@@ -111,7 +227,7 @@ const formattedBlockHeight = typeof blockHeight === 'number' ? blockHeight.toStr
         border-radius: 16px;
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         background: var(--color-base);
         display: flex;
         flex-direction: column;
@@ -121,50 +237,124 @@ const formattedBlockHeight = typeof blockHeight === 'number' ? blockHeight.toStr
     .initiative-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        border-color: rgba(var(--color-accent-rgb), 0.3);
     }
 
-    /* Card Header */
-    .card-header {
-        padding: 1.25rem 1.5rem 1rem;
-        border-bottom: 1px solid rgba(var(--color-body-base-rgb), 0.08);
-        background: rgba(var(--color-accent-rgb), 0.02);
+    /* Featured variant styling */
+    .initiative-card--featured {
+        border-color: rgba(var(--color-accent-rgb), 0.2);
+    }
+
+    .initiative-card--featured:hover {
+        border-color: rgba(var(--color-accent-rgb), 0.5);
+    }
+
+    /* Card Image */
+    .card-image-wrapper {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .card-image-link {
+        display: block;
+    }
+
+    .card-image {
+        aspect-ratio: 3 / 2;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .card-image img,
+    .card-image :global(.image-component) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .initiative-card:hover .card-image img,
+    .initiative-card:hover .card-image :global(.image-component) {
+        transform: scale(1.05);
+    }
+
+    /* Badge Overlay */
+    .card-badge {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        border-radius: 9999px;
+        line-height: 1.2;
+        z-index: 10;
+    }
+
+    .badge-primary {
+        background: rgba(var(--color-primary-rgb), 0.9);
+        color: white;
+    }
+
+    .badge-accent {
+        background: rgba(var(--color-accent-rgb), 0.9);
+        color: white;
+    }
+
+    .badge-success {
+        background: rgba(16, 185, 129, 0.9);
+        color: white;
+    }
+
+    .badge-warning {
+        background: rgba(245, 158, 11, 0.9);
+        color: white;
+    }
+
+    /* Card Content */
+    .card-content {
+        padding: 1.5rem;
         display: flex;
-        align-items: center;
+        flex-direction: column;
         gap: 1rem;
+        flex: 1;
     }
 
+    /* Number (for business cards) */
     .card-number {
         font-size: 1.5rem;
         font-weight: 800;
         color: var(--color-accent);
-        flex-shrink: 0;
-        width: 2.5rem;
         text-align: center;
         background: rgba(var(--color-accent-rgb), 0.1);
         border-radius: 8px;
-        padding: 0.25rem 0;
+        padding: 0.5rem;
+        width: fit-content;
+        min-width: 3rem;
+        margin-bottom: 0.5rem;
     }
 
-    .card-business-name {
-        font-size: 1.25rem;
+    /* Title */
+    .card-title {
+        font-size: 1.375rem;
         font-weight: 700;
         margin: 0;
-        color: var(--color-body-base);
         line-height: 1.3;
-        flex: 1;
+        color: var(--color-accent);
     }
 
-    .card-business-name a {
+    .card-title-link {
         color: inherit;
         text-decoration: none;
+        transition: color 0.2s ease;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        transition: color 0.2s ease;
     }
 
-    .card-business-name a:hover {
-        color: var(--color-accent);
+    .card-title-link:hover {
+        color: var(--color-primary);
     }
 
     .external-link-icon {
@@ -173,64 +363,32 @@ const formattedBlockHeight = typeof blockHeight === 'number' ? blockHeight.toStr
         transition: opacity 0.2s ease;
     }
 
-    .card-business-name a:hover .external-link-icon {
+    .card-title-link:hover .external-link-icon {
         opacity: 1;
     }
 
-    /* Card Image */
-    .card-image {
-        aspect-ratio: 3 / 2;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .card-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.3s ease;
-    }
-
-    .initiative-card:hover .card-image img {
-        transform: scale(1.02);
-    }
-
-    .card-badge {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        font-weight: 700;
-        background: rgba(16, 185, 129, 0.15);
-        color: #059669;
-        border-radius: 9999px;
-        line-height: 1;
-    }
-
-    /* Card Footer */
-    .card-footer {
-        padding: 1.25rem 1.5rem;
-        background: var(--color-base);
-        flex: 1;
+    /* Dates */
+    .card-dates {
         display: flex;
         flex-direction: column;
-    }
-
-    .card-meta {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        flex-wrap: wrap;
         gap: 0.5rem;
+        font-size: 0.875rem;
     }
 
     .card-date {
-        font-size: 0.875rem;
         font-weight: 600;
         color: var(--color-accent);
+    }
+
+    .card-target-date {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        color: rgba(var(--color-body-base-rgb), 0.7);
+    }
+
+    .icon-calendar {
+        flex-shrink: 0;
     }
 
     .card-block-height {
@@ -240,53 +398,100 @@ const formattedBlockHeight = typeof blockHeight === 'number' ? blockHeight.toStr
         background: rgba(var(--color-body-base-rgb), 0.05);
         padding: 0.25rem 0.5rem;
         border-radius: 4px;
+        width: fit-content;
     }
 
+    /* Description */
     .card-description {
-        margin: 0;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-    }
-
-    .card-description .description-full {
         font-size: 0.9375rem;
         line-height: 1.6;
         color: rgba(var(--color-body-base-rgb), 0.8);
-        margin: 0 0 0.75rem 0;
-        transition: opacity 0.3s ease;
-        flex-shrink: 0;
+        margin: 0;
+        flex: 1;
     }
 
-    .learn-more-wrapper {
+    /* Progress Bar (Featured cards) */
+    .card-progress {
+        margin-top: 0.5rem;
+    }
+
+    .progress-labels {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        gap: 1rem;
+    }
+
+    .progress-label {
+        font-weight: 600;
+        color: var(--color-body-base);
+    }
+
+    .progress-amount {
+        color: rgba(var(--color-body-base-rgb), 0.7);
+        font-size: 0.8125rem;
+    }
+
+    .progress-bar-container {
+        width: 100%;
+        background: rgba(var(--color-body-base-rgb), 0.1);
+        border-radius: 9999px;
+        height: 0.75rem;
+        overflow: hidden;
+    }
+
+    .progress-bar-fill {
+        background: var(--color-accent);
+        height: 100%;
+        border-radius: 9999px;
+        transition: width 0.5s ease;
+    }
+
+    .progress-percent {
+        font-size: 0.75rem;
+        color: rgba(var(--color-body-base-rgb), 0.6);
+        margin: 0.375rem 0 0;
+    }
+
+    /* Button */
+    .card-button-wrapper {
         margin-top: auto;
-        align-self: flex-start;
+        padding-top: 0.5rem;
+    }
+
+    .button-arrow {
+        display: inline-block;
+        margin-left: 0.25rem;
+        transition: transform 0.2s ease;
+    }
+
+    .card-button-wrapper :global(a:hover) .button-arrow {
+        transform: translateX(2px);
     }
 
     /* Mobile Responsiveness */
     @media (max-width: 768px) {
-        .card-header {
-            padding: 1rem 1.25rem 0.75rem;
+        .card-content {
+            padding: 1.25rem;
         }
 
         .card-number {
             font-size: 1.25rem;
-            width: 2rem;
+            min-width: 2.5rem;
+            padding: 0.375rem;
         }
 
-        .card-business-name {
-            font-size: 1.125rem;
+        .card-title {
+            font-size: 1.25rem;
         }
 
-        .card-image {
-            aspect-ratio: 4 / 3;
-        }
-
-        .card-footer {
-            padding: 1rem 1.25rem;
+        .card-badge {
+            top: 0.75rem;
+            left: 0.75rem;
+            padding: 0.25rem 0.625rem;
+            font-size: 0.6875rem;
         }
     }
 </style>
-
-<!-- No client-side script needed since description is always fully shown. -->
