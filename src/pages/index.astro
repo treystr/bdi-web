@@ -1,9 +1,12 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import FullScreenHero from '@components/sections/FullScreenHero.astro';
+import SplitPanel from '@components/sections/SplitPanel.astro';
 import InitiativeCards from '@components/sections/InitiativeCards.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import heroImage from '../assets/images/hero/hero-bizgrid.jpg';
+import bitcoinAcceptedImage from '../assets/images/market_general.jpg';
+import savingFutureImage from '../assets/images/wethepeople.jpg';
 
 const seoTitle = "Home";
 const seoDescription = "Our Initiative is building a grassroots Bitcoin circular economy in Washington, DC through education, business adoption, and community outreach.";
@@ -40,7 +43,7 @@ const initiativesSection = {
 const joinDistrictSection = {
     eyebrow: "MEET THE COMMUNITY",
     title: "Join Bitcoin District",
-    description: "Bitcoin District is the grassroots Bitcoin community in Washington, DC—an organic, social group built around meetups, learning, and human connections. If you want to get involved, start by joining the community—come to a meetup, learn together, and be part of what’s growing here in DC. The Bitcoin District Initiative grew out of this very community!",
+    description: "Bitcoin District is the grassroots Bitcoin community in Washington, DC—an organic, social group built around meetups, learning, and human connections. If you want to get involved, start by joining the community—come to a meetup, learn together, and be part of what's growing here in DC. The Bitcoin District Initiative grew out of this very community!",
     button: {
         text: "Visit BitcoinDistrict.org",
         link: "https://bitcoindistrict.org",
@@ -49,10 +52,42 @@ const joinDistrictSection = {
     }
 }
 
+const bitcoinAcceptedSection = {
+    headline: "Bitcoin Accepted Here",
+    description: "It's never been easier for a business to accept Bitcoin from their customers. Tap into the local Bitcoin community by posting a Bitcoin Accepted Here sign in your shop!",
+    image: {
+        src: bitcoinAcceptedImage,
+        alt: "Local business accepting Bitcoin"
+    }
+};
+
+const savingFutureSection = {
+    headline: "Saving for the Future",
+    description: "Unlike the dollar, Bitcoin's purchasing power grows over time due to its fixed supply and increasing demand. While dollars are relatively stable in the short term, they lose value over time.",
+    image: {
+        src: savingFutureImage,
+        alt: "Bitcoin savings concept"
+    }
+};
+
 ---
 
 <Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
     <FullScreenHero content={heroContent} />
+    <SplitPanel 
+        content={bitcoinAcceptedSection} 
+        imagePosition="left" 
+        background="base" 
+        padding="large" 
+        imageAspect="4/3"
+    />
+    <SplitPanel 
+        content={savingFutureSection} 
+        imagePosition="right" 
+        background="light" 
+        padding="large" 
+        imageAspect="4/3"
+    />
     <InitiativeCards content={initiativesSection} background="light" padding="base" />
     <CtaBanner 
         content={joinDistrictSection} 
