@@ -24,6 +24,14 @@
     "description": "The Big Chef, a small sandwich and crêpe shop in DC's Bloomingdale neighborhood, made its first Bitcoin Lightning sale during a quick hands-on onboarding. Now proudly displaying \"Bitcoin Accepted Here,\" the owner joins local businesses exploring Bitcoin as a new way to serve their community."
   },
   {
+    "date": "2025-10-15",
+    "block_height": 919198,
+    "business_name": "Compass Coffee",
+    "business_website": "https://compasscoffee.com",
+    "photo_url": "/media/onboarding/compasscoffee.jpg",
+    "description": "Compass Coffee, a longtime friend of DC's Bitcoin community, partnered with Square to enable the first-ever Square terminal to accept Bitcoin payments in the wild. Local Bitcoiners gathered across its cafés to celebrate, make Lightning payments, and mark a milestone for everyday Bitcoin use in the Nation's Capital."
+  },
+  {
     "date": "2025-10-29",
     "block_height": 921350,
     "business_name": "Plant Magic Bottle Shop",
