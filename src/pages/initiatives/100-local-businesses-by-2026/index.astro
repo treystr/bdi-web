@@ -1,7 +1,6 @@
 ---
 import { getEntry, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
-import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import InitiativeCardsGrid from '@components/initiatives/InitiativeCardsGrid.astro';
 import onboardingData from '@data/onboarding.json';
@@ -15,31 +14,26 @@ if (!entry) {
 
 const { Content } = await render(entry);
 
-// Calculate stats
-const sortedEntries = [...onboardingData].sort((a, b) => 
-    new Date(a.date).getTime() - new Date(b.date).getTime()
-);
-
-const total = sortedEntries.length;
 
 // Use SEO data from frontmatter if available
 const seoTitle = entry.data.seo?.title || entry.data.title;
 const seoDescription = entry.data.seo?.description || entry.data.shortDescription;
 
-// Hero content
-const heroContent = {
-    title: entry.data.title,
-    backgroundImage: heroImage,
+// Split Panel content
+const splitPanelContent: {
+    eyebrow: string;
+    headline: string;
+    description: string;
+    image: { src: any; alt: string };
+    buttons?: { text: string; link: string; variant?: string }[];
+} = {
+    eyebrow: "Kickoff Initiative",
+    headline: entry.data.title,
     description: entry.data.shortDescription,
-    overlayOpacity: 0.85,
-    contentPosition: 'center' as const,
-    textAlign: 'center' as const,
-    ...(entry.data.hero?.image && { backgroundImage: entry.data.hero.image }),
-    simpleStatsContent: {
-        count: total,
-        goal: 100,
-        label: "Businesses Accepting Bitcoin"
-    }
+    image: {
+        src: heroImage,
+        alt: "Bitcoin businesses initiative"
+    },
 };
 
 // Donate CTA
@@ -69,8 +63,49 @@ const statusStyles = {
 };
 ---
 
-<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
-    <FullScreenHero content={heroContent} />
+<Layout title={seoTitle} description={seoDescription}>
+    {/* Custom Full-Width Split Section */}
+    <section class="relative bg-background-base mt-18">
+        <div class="grid md:grid-cols-2 items-center">
+            {/* Content Side */}
+            <div class="flex items-center justify-center py-12 md:py-16 px-8 md:px-12 lg:px-16">
+                <div class="max-w-md w-full">
+                    <div class="text-eyebrow font-medium mb-3 uppercase tracking-wider text-xs" data-aos="fade-up">
+                        {splitPanelContent.eyebrow}
+                    </div>
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-headline mb-4 leading-tight" data-aos="fade-up" data-aos-delay="100">
+                        {splitPanelContent.headline}
+                    </h1>
+                    <p class="text-body-base text-base md:text-lg opacity-80 mb-6 leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+                        {splitPanelContent.description}
+                    </p>
+                    {splitPanelContent.buttons && splitPanelContent.buttons.length > 0 && (
+                        <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="300">
+                            {splitPanelContent.buttons.map((button: any) => (
+                                <a 
+                                    href={button.link}
+                                    class="inline-flex items-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
+                                >
+                                    {button.text}
+                                </a>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Image Side - Full Width to Edge */}
+            <div class="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
+                <img 
+                    src={splitPanelContent.image.src.src}
+                    alt={splitPanelContent.image.alt}
+                    class="w-full h-full object-cover"
+                    data-aos="fade-left"
+                    data-aos-delay="200"
+                />
+            </div>
+        </div>
+    </section>
 
     {/* Main Content */}
     <article class="site-container--article mx-auto px-4 prose prose-lg mt-8 mb-16">
