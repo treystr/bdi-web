@@ -10,6 +10,7 @@ export interface MenuItem {
 
 export const headerMenu: MenuItem[] = [
     // { name: 'Theme Info', link: '/theme-info' },
+    { name: 'Why Bitcoin?', link: '/why' },
     { name: 'Initiatives', link: '/initiatives' },
     { name: 'Resources', link: '/resources' },
     { 
