@@ -1,5 +1,5 @@
 ---
-import InitiativeCard from './InitiativeCard.astro';
+import BusinessCard from './BusinessCard.astro';
 import MilestoneFlag from './MilestoneFlag.astro';
 import onboardingData from '@data/onboarding.json';
 import { getBackgroundColor } from '@utils/styleUtils';
@@ -37,17 +37,15 @@ const bgColor = getBackgroundColor(background);
                 const businessNumber = index + 1; // Generate sequential number based on block height order
                 
                 return (
-                    <InitiativeCard
-                        title={entry.business_name}
+                    <BusinessCard
+                        number={businessNumber}
+                        businessName={entry.business_name}
                         description={entry.description}
                         imageSrc={entry.photo_url || '/images/placeholder-business.jpg'}
                         imageAlt={`${entry.business_name} storefront`}
-                        externalLink={entry.business_website}
-                        number={businessNumber}
+                        websiteUrl={entry.business_website}
                         date={entry.date}
-                        showDate={true}
                         blockHeight={entry.block_height}
-                        showButton={false}
                     />
                 );
             })}

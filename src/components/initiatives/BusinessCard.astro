@@ -1,0 +1,384 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+    number: number;
+    businessName: string;
+    description: string;
+    imageSrc: string | ImageMetadata;
+    imageAlt?: string;
+    date: string;
+    blockHeight: number;
+    websiteUrl: string;
+}
+
+const {
+    number,
+    businessName,
+    description,
+    imageSrc,
+    imageAlt,
+    date,
+    blockHeight,
+    websiteUrl,
+} = Astro.props;
+
+// Format date
+const formattedDate = new Intl.DateTimeFormat('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+}).format(new Date(date));
+
+// Format block height
+const formattedBlockHeight = blockHeight.toLocaleString();
+
+// Resolve alt text
+const resolvedAlt = imageAlt || `${businessName} storefront`;
+
+// Generate unique ID for this card
+const cardId = `business-card-${number}`;
+---
+
+<article class="business-card" data-aos="fade-up">
+    <!-- Card Image with Number Badge -->
+    <div class="card-image-wrapper">
+        <a 
+            href={websiteUrl} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="card-image-link"
+            aria-label={`Visit ${businessName} website`}
+        >
+            <div class="card-image">
+                {typeof imageSrc === 'string' ? (
+                    <img src={imageSrc} alt={resolvedAlt} loading="lazy" />
+                ) : (
+                    <Image src={imageSrc} alt={resolvedAlt} loading="lazy" class="image-component" />
+                )}
+            </div>
+        </a>
+        
+        <!-- Number Badge Overlay -->
+        <div class="card-number-badge">
+            {number}
+        </div>
+    </div>
+
+    <!-- Card Content -->
+    <div class="card-content">
+        <!-- Title with External Link -->
+        <h3 class="card-title">
+            <a 
+                href={websiteUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="card-title-link"
+            >
+                {businessName}
+                <svg class="external-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+        </h3>
+
+        <!-- Metadata Line -->
+        <div class="card-metadata">
+            <time datetime={date}>{formattedDate}</time>
+            <span class="metadata-separator">•</span>
+            <span class="block-height">Block #{formattedBlockHeight}</span>
+        </div>
+
+        <!-- Description with Read More -->
+        <div class="card-description-wrapper">
+            <p class="card-description" id={`desc-${cardId}`}>
+                {description}
+            </p>
+            <button 
+                class="read-more-btn" 
+                data-card-id={cardId}
+                aria-expanded="false"
+                aria-controls={`desc-${cardId}`}
+            >
+                Read more
+            </button>
+        </div>
+    </div>
+</article>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const readMoreButtons = document.querySelectorAll<HTMLButtonElement>('.read-more-btn');
+        
+        readMoreButtons.forEach(button => {
+            const cardId = button.getAttribute('data-card-id');
+            const description = document.getElementById(`desc-${cardId}`);
+            
+            if (!description) return;
+            
+            // Check if description is truncated and needs a button
+            const lineHeight = parseInt(window.getComputedStyle(description).lineHeight);
+            const maxHeight = lineHeight * 3; // 3 lines
+            
+            if (description.scrollHeight <= maxHeight + 5) {
+                // Description fits in 3 lines, hide button
+                (button as HTMLElement).style.display = 'none';
+            } else {
+                // Description is truncated, show button
+                (button as HTMLElement).style.display = 'inline-flex';
+            }
+            
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isExpanded = description.classList.contains('expanded');
+                
+                if (isExpanded) {
+                    description.classList.remove('expanded');
+                    button.textContent = 'Read more';
+                    button.setAttribute('aria-expanded', 'false');
+                } else {
+                    description.classList.add('expanded');
+                    button.textContent = 'Show less';
+                    button.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    .business-card {
+        border: 1px solid rgba(var(--color-body-base-rgb), 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        background: var(--color-base);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .business-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        border-color: rgba(var(--color-accent-rgb), 0.25);
+    }
+
+    /* Card Image */
+    .card-image-wrapper {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .card-image-link {
+        display: block;
+    }
+
+    .card-image {
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        position: relative;
+        background: rgba(var(--color-body-base-rgb), 0.05);
+    }
+
+    .card-image img,
+    .card-image :global(.image-component) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .business-card:hover .card-image img,
+    .business-card:hover .card-image :global(.image-component) {
+        transform: scale(1.05);
+    }
+
+    /* Number Badge Overlay */
+    .card-number-badge {
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        background: rgba(var(--color-accent-rgb), 0.95);
+        color: white;
+        font-size: 1.125rem;
+        font-weight: 800;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        transition: transform 0.2s ease;
+    }
+
+    .business-card:hover .card-number-badge {
+        transform: scale(1.1);
+    }
+
+    /* Card Content */
+    .card-content {
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        flex: 1;
+    }
+
+    /* Title */
+    .card-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1.3;
+        color: var(--color-accent);
+    }
+
+    .card-title-link {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+    }
+
+    .card-title-link:hover {
+        color: var(--color-primary);
+    }
+
+    .external-link-icon {
+        flex-shrink: 0;
+        opacity: 0.5;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .card-title-link:hover .external-link-icon {
+        opacity: 1;
+        transform: translateX(2px) translateY(-2px);
+    }
+
+    /* Metadata Line */
+    .card-metadata {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        color: rgba(var(--color-body-base-rgb), 0.6);
+        line-height: 1.2;
+    }
+
+    .card-metadata time {
+        font-weight: 500;
+    }
+
+    .metadata-separator {
+        opacity: 0.5;
+    }
+
+    .block-height {
+        font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace;
+        font-size: 0.6875rem;
+        background: rgba(var(--color-body-base-rgb), 0.06);
+        padding: 0.125rem 0.375rem;
+        border-radius: 3px;
+    }
+
+    /* Description with Read More */
+    .card-description-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .card-description {
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: rgba(var(--color-body-base-rgb), 0.8);
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .card-description.expanded {
+        display: block;
+        -webkit-line-clamp: unset;
+    }
+
+    .read-more-btn {
+        background: none;
+        border: none;
+        color: var(--color-primary);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0;
+        align-self: flex-start;
+        transition: color 0.2s ease, transform 0.2s ease;
+        display: none; /* Hidden by default, shown by JS if needed */
+    }
+
+    .read-more-btn:hover {
+        color: var(--color-accent);
+        transform: translateX(2px);
+    }
+
+    .read-more-btn:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+        border-radius: 2px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .card-content {
+            padding: 1rem;
+            gap: 0.625rem;
+        }
+
+        .card-number-badge {
+            width: 2.25rem;
+            height: 2.25rem;
+            font-size: 1rem;
+            top: 0.625rem;
+            left: 0.625rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+        }
+
+        .card-metadata {
+            font-size: 0.6875rem;
+            gap: 0.375rem;
+        }
+
+        .block-height {
+            font-size: 0.625rem;
+        }
+
+        .card-description {
+            font-size: 0.8125rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .card-image {
+            aspect-ratio: 16 / 9;
+        }
+    }
+</style>
+
