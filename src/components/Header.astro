@@ -34,7 +34,7 @@ const isCurrentPage = (link: string) => {
     header {
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-sizing: border-box;
-        overflow: hidden;
+        overflow: visible;
     }
     
     header[data-header-mode="transition"] {
@@ -226,7 +226,7 @@ const isCurrentPage = (link: string) => {
                                 {item.children && (
                                     <ul
                                         class:list={[
-                                            'submenu desktop-submenu absolute mt-2 min-w-[200px] transition-all duration-200 opacity-0 invisible overflow-hidden z-50',
+                                            'submenu desktop-submenu absolute mt-2 min-w-[200px] transition-all duration-200 opacity-0 invisible overflow-hidden z-[9999]',
                                             index === headerMenu.length - 1 ? 'right-0' : 'left-0',
                                         ]}
                                     >
