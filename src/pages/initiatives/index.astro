@@ -9,11 +9,6 @@ import { donateCta } from '@data/donateCta';
 const seoTitle = "Our Initiatives";
 const seoDescription = "Discover how the Bitcoin District Initiative builds a Bitcoin circular economy in Washington, DC through education, business adoption, and community outreach.";
 
-const activeInitiativesSection = {
-    headline: "Active Initiatives",
-    description: "These are the active projects driving our mission to build a Bitcoin circular economy in the Nation's Capital by bringing Bitcoin to Main Street DC.",
-};
-
 const completedInitiativesSection = {
     headline: "Completed Initiatives",
     description: "Take a look at initiatives we've successfully completed.",
@@ -29,7 +24,6 @@ const completedInitiativesSection = {
 
     <!-- Active Initiatives -->
     <InitiativeCards
-        content={activeInitiativesSection}
         statusFilter="active"
         background="base"
         padding="base"

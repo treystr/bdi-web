@@ -7,12 +7,12 @@ import { getCollection } from 'astro:content';
 
 interface Content {
     eyebrow?: string;
-    headline: string;
+    headline?: string;
     description?: string;
 }
 
 export interface Props {
-    content: Content;
+    content?: Content;
     // Layout props
     background?: ThemeColor;
     paddingTop?: PaddingSize;
@@ -49,7 +49,7 @@ const {
     showButtons = true,
 } = Astro.props;
 
-const { eyebrow, headline, description } = content;
+const { eyebrow, headline, description } = content || {};
 
 // Get initiatives from content collection
 const initiativesEntries = await getCollection('initiatives');
@@ -121,22 +121,26 @@ function getBadge(initiative: any) {
 <section class:list={['relative', bgColor, paddingClass]}>
     <div class="container mx-auto px-4">
         <!-- Header Content -->
-        <div class="text-center mb-12 md:mb-16">
-            {eyebrow && (
-                <Eyebrow 
-                    text={eyebrow} 
-                    background={background} 
-                />
-            )}
-            <h2 class:list={['text-3xl md:text-4xl lg:text-5xl font-bold mb-6', textColor]}>
-                {headline}
-            </h2>
-            {description && (
-                <p class:list={['text-lg md:text-xl leading-relaxed max-w-3xl mx-auto', textColor, 'opacity-90']}>
-                    {description}
-                </p>
-            )}
-        </div>
+        {(eyebrow || headline || description) && (
+            <div class="text-center mb-12 md:mb-16">
+                {eyebrow && (
+                    <Eyebrow 
+                        text={eyebrow} 
+                        background={background} 
+                    />
+                )}
+                {headline && (
+                    <h2 class:list={['text-3xl md:text-4xl lg:text-5xl font-bold mb-6', textColor]}>
+                        {headline}
+                    </h2>
+                )}
+                {description && (
+                    <p class:list={['text-lg md:text-xl leading-relaxed max-w-3xl mx-auto', textColor, 'opacity-90']}>
+                        {description}
+                    </p>
+                )}
+            </div>
+        )}
 
         <!-- Initiative Cards Grid -->
         {displayedInitiatives.length > 0 ? (
