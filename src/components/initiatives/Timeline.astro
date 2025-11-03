@@ -9,7 +9,7 @@ const sortedEntries = [...onboardingData].sort((a, b) =>
 );
 
 // Milestone markers to show
-const milestones = [5, 21, 50, 75, 100];
+const milestones = [21, 50, 75, 100];
 ---
 
 <section class="timeline-section" aria-label="Business onboarding timeline">
@@ -107,6 +107,27 @@ const milestones = [5, 21, 50, 75, 100];
     .timeline-list {
         position: relative;
         padding: 2rem 0;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* Central timeline line for desktop */
+    .timeline-list::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(180deg, 
+            transparent 0%, 
+            rgba(var(--color-accent-rgb), 0.2) 10%, 
+            rgba(var(--color-accent-rgb), 0.3) 50%,
+            rgba(var(--color-accent-rgb), 0.2) 90%,
+            transparent 100%
+        );
+        transform: translateX(-50%);
+        z-index: 1;
     }
 
     .timeline-continuation {
@@ -160,6 +181,10 @@ const milestones = [5, 21, 50, 75, 100];
 
         .timeline-subtitle {
             font-size: 1rem;
+        }
+
+        .timeline-list::before {
+            display: none;
         }
 
         .continuation-content {
