@@ -1,7 +1,7 @@
 ---
-title: "100 Local Businesses by 2026"
-shortDescription: "Onboarding 100 DC-area businesses by the end of 2026, building a thriving circular economy in the nation's capital. Bitcoin works best when ownership is distributed, when it circulates through local hands."
-cardImage: "../../assets/images/905381-lemonade.jpg"
+title: "100 Businesses Accepting BTC by 2026"
+shortDescription: "Onboarding 100 DC-area businesses by the end of 2026, building a thriving circular economy in the nation's capital."
+cardImage: "../../assets/images/collage_square.jpg"
 startDate: "2025-07-12"
 targetDate: "2026-12-31"
 status: "active"
@@ -12,7 +12,7 @@ hero:
   image: null
   overlayOpacity: 0.7
 seo:
-  title: "100 Local Businesses by 2026 – Bitcoin District Initiative"
-  description: "Help us onboard 100 local businesses to accept Bitcoin in Washington, DC by the end of 2026. Support our mission to build a thriving Bitcoin circular economy in the nation's capital."
+  title: "100 Local Businesses Accepting BTC by 2026"
+  description: "We're helping onboard 100 local businesses to accept Bitcoin in the DMV by the end of 2026. Support our mission to build a thriving Bitcoin circular economy in the nation's capital."
 ---
 

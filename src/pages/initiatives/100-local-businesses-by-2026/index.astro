@@ -3,7 +3,7 @@ import { getEntry, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import InitiativeCardsGrid from '@components/initiatives/InitiativeCardsGrid.astro';
-import heroImage from '@assets/images/hero/hero-bizgrid.jpg';
+import heroImage from '@assets/images/collage_square.jpg';
 
 // Get the initiative entry
 const entry = await getEntry('initiatives', '100-local-businesses-by-2026');
@@ -105,13 +105,13 @@ const donateCta = {
     </article>
 
     {/* Initiative Cards Grid */}
-    <InitiativeCardsGrid />
+    <InitiativeCardsGrid background="light" />
 
     {/* Donate CTA */}
     <CtaBanner
         content={donateCta}
         variant="contained"
-        background="light"
+        background="dark"
         padding="large"
     />
 

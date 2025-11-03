@@ -2,6 +2,14 @@
 import InitiativeCard from './InitiativeCard.astro';
 import MilestoneFlag from './MilestoneFlag.astro';
 import onboardingData from '@data/onboarding.json';
+import { getBackgroundColor } from '@utils/styleUtils';
+import type { ThemeColor } from '@utils/styleUtils';
+
+export interface Props {
+    background?: ThemeColor;
+}
+
+const { background = 'base' } = Astro.props;
 
 // Sort by block height ascending (earliest blocks first)
 const sortedEntries = [...onboardingData].sort((a, b) => 
@@ -10,9 +18,11 @@ const sortedEntries = [...onboardingData].sort((a, b) =>
 
 // Milestone markers to show
 const milestones = [21, 50, 75, 100];
+
+const bgColor = getBackgroundColor(background);
 ---
 
-<section class="initiative-cards-section" aria-label="Business onboarding grid">
+<section class:list={["initiative-cards-section", bgColor]} aria-label="Business onboarding grid">
     <div class="initiative-cards-container">
         <div class="initiative-cards-header-section">
             <h2 class="initiative-cards-title">Proof of Work: Building the DC Bitcoin Economy</h2>
@@ -70,7 +80,6 @@ const milestones = [21, 50, 75, 100];
 <style>
     .initiative-cards-section {
         padding: 3rem 0;
-        background: var(--color-base);
     }
 
     .initiative-cards-container {
