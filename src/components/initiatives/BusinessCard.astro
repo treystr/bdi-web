@@ -31,8 +31,8 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
     day: 'numeric' 
 }).format(new Date(date));
 
-// Format block height
-const formattedBlockHeight = blockHeight.toLocaleString();
+// Format block height (no thousands separators)
+const formattedBlockHeight = String(blockHeight);
 
 // Resolve alt text
 const resolvedAlt = imageAlt || `${businessName} storefront`;
