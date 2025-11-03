@@ -1,0 +1,86 @@
+---
+import { getPaddingClass, getBackgroundColor, getTextColor } from '@utils/styleUtils';
+import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
+
+interface Props {
+    title?: string;
+    description?: string;
+    topBackground?: ThemeColor;
+    bottomBackground?: ThemeColor;
+    padding?: PaddingSize;
+    paddingTop?: PaddingSize;
+    paddingBottom?: PaddingSize;
+}
+
+const {
+    title = 'Know that your purchase supports a Bitcoin circular economy',
+    description = 'Bitcoin District Initiative works to help local businesses accept Bitcoin. Every purchase at these merchants helps build a thriving circular economy, strengthens local commerce, and proves Bitcoin\'s value as peer-to-peer electronic cash.',
+    topBackground = 'dark',
+    bottomBackground = 'dark',
+    padding,
+    paddingTop,
+    paddingBottom,
+} = Astro.props;
+
+const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
+const topBgColor = getBackgroundColor(topBackground);
+const topTextColor = getTextColor(topBackground);
+const bottomBgColor = getBackgroundColor(bottomBackground);
+---
+
+<section class="relative overflow-visible">
+    <!-- Top Section with Headline and start of Map -->
+    <div class:list={['relative', topBgColor, 'pt-large', 'pb-large']}>
+        <div class="site-container--content px-4">
+            <!-- Headline -->
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class:list={['text-h2 mb-6', topTextColor]}>
+                    {title}
+                </h2>
+                <p class:list={['text-lg opacity-90 max-w-3xl mx-auto', topTextColor]}>
+                    {description}
+                </p>
+            </div>
+
+            <!-- Map Card (extends into bottom section) -->
+            <div 
+                class="relative z-10 max-w-5xl mx-auto overflow-hidden rounded-lg shadow-2xl border-4 border-white map-card-container mb-[-350px]"
+                data-aos="fade-up"
+                data-aos-delay="100"
+                style="height: 600px;"
+            >
+                <iframe
+                    id="btcmap-iframe"
+                    src="https://btcmap.org/map?lat=38.9072&long=-77.0369#12/38.9072/-77.0369"
+                    style="width: 100%; height: 100%; border: 0; display: block;"
+                    title="Bitcoin Merchants Map - Washington DC"
+                    loading="lazy"
+                    allow="geolocation"
+                ></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Background Section (overlaps with map) -->
+    <div class:list={['relative', bottomBgColor, paddingClass]}>
+        <div class="site-container--content px-4">
+            <!-- Map Attribution/Info (now in bottom section) -->
+            <div class="text-center mt-[0px] mb-6 opacity-75 map-attribution">
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .map-card-container {
+            height: 400px !important;
+            margin-bottom: -250px !important;
+        }
+        .map-attribution {
+            margin-top: 270px !important;
+        }
+    }
+</style>

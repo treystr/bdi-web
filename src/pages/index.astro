@@ -4,9 +4,10 @@ import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import SplitPanel from '@components/sections/SplitPanel.astro';
 import InitiativeCards from '@components/sections/InitiativeCards.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
+import MerchantMap from '@components/sections/MerchantMap.astro';
 import heroImage from '../assets/images/hero/hero-bizgrid.jpg';
-import bitcoinAcceptedImage from '../assets/images/market_general.jpg';
-import savingFutureImage from '../assets/images/wethepeople.jpg';
+import bitcoinAcceptedImage from '../assets/images/bitcoinacceptedheremarket.jpg';
+import savingFutureImage from '../assets/images/btcvsusd.jpg';
 
 const seoTitle = "Home";
 const seoDescription = "Our Initiative is building a grassroots Bitcoin circular economy in Washington, DC through education, business adoption, and community outreach.";
@@ -63,7 +64,7 @@ const bitcoinAcceptedSection = {
 
 const savingFutureSection = {
     headline: "Saving for the Future",
-    description: "Unlike the dollar, Bitcoin's purchasing power grows over time due to its fixed supply and increasing demand. While dollars are relatively stable in the short term, they lose value over time.",
+    description: "When your business accepts Bitcoin, you’re not just adding a new payment option—you’re opening the door to future possibilities. Bitcoin’s fixed supply and growing global use give it long-term strength, allowing businesses that understand it to build new options for growth, savings, and collateral. Whether you convert to dollars right away or keep a portion in Bitcoin, learning how it works today prepares your business for the economy of tomorrow.",
     image: {
         src: savingFutureImage,
         alt: "Bitcoin savings concept"
@@ -89,10 +90,17 @@ const savingFutureSection = {
         imageAspect="4/3"
     />
     <InitiativeCards content={initiativesSection} background="light" padding="base" />
+    <MerchantMap 
+        title="Put Your Business on the BTC Map"
+        description="Put your business on the map—literally. When you accept Bitcoin, you join a community of forward-thinking DC merchants strengthening local commerce and economic freedom. The BTC Map makes it easy for Bitcoiners to find and support your business."
+        topBackground="dark" 
+        bottomBackground="light"
+        padding="large"
+    />
     <CtaBanner 
         content={joinDistrictSection} 
-        background="dark" 
-        padding="large" 
+        background="light" 
+        padding="small" 
         variant="full-width" 
     />
 </Layout>
