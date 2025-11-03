@@ -45,6 +45,11 @@ This project uses the Titan Core Astro theme, which provides a set of pre-built 
 - Avoid hardcoding styles; instead, use the theme's provided classes.
 - If the theme switcher is not needed, remove it by editing `src/layouts/Layout.astro` (remove `ThemeSwitcher` import and component).
 
+## Design Layout Inspiration
+- When designing new components to display content across teh site, use this website for inspiration: https://www.charitywater.org/
+- Adhere to Astro best practices and the styling (colors, etc) established in the current theme, but when designing the layouts for beautiful content, reference this site for inspiration.
+- We want to make sure businesses that land at our website are greeted with a beautiful view of what our nonprofit is doing in the community.
+
 ## Page Creation
 - When creating new pages, look at existing pages in `src/pages/` to understand the structure and component usage.
 - Use the Layout components appropriately (e.g., wrap pages with `Layout.astro`).
