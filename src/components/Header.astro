@@ -2,7 +2,7 @@
 import { headerMenu, type MenuItem } from '@data/menu';
 import { headerSetting } from '@data/config';
 import Logo from '@components/Logo.astro';
-import { Menu, X, ChevronDown, Plus, PlusCircle, ArrowRightCircle } from 'lucide-astro';
+import { Menu, X, ChevronDown, Plus, PlusCircle, ArrowRightCircle, HandHeart } from 'lucide-astro';
 import Button from '@components/ui/Button.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
@@ -73,6 +73,13 @@ const isCurrentPage = (link: string) => {
         height: calc(100vh - 80px) !important;
     }
     
+    /* Mobile logo centering */
+    .mobile-logo-wrapper {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
     /* Ensure mobile menu displays properly */
     .mobile-menu.mobile-menu-open {
         visibility: visible !important;
@@ -141,54 +148,36 @@ const isCurrentPage = (link: string) => {
     .mobile-menu-item:last-child {
         border-bottom: none;
     }
-    
-    /* Ensure proper mobile menu positioning */
-    @media (max-width: 1023px) {
-        .mobile-menu {
-            z-index: 90 !important;
-        }
-        
-        .mobile-menu-button, .mobile-menu-close {
-            z-index: 100 !important;
-        }
-    }
 </style>
 
 <header class="fixed top-0 z-50 w-full left-0 bg-white border-b border-primary" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
     <div class="site-container--content mx-auto px-4">
-        <div class="flex justify-between items-center py-4">
-            <div class="flex items-center gap-2">
-                {/* Mobile Menu Button */}
-                <button
-                    class="mobile-menu-button relative z-[100] p-2 border-none cursor-pointer bg-transparent lg:hidden"
-                    aria-label="Toggle Menu"
-                    aria-expanded="false"
-                >
-                    <span class="menu-icon block">
-                        <Menu size={24} class="text-body-base" />
-                    </span>
-                    <span class="close-icon hidden">
-                        <X size={24} class="text-body-base" />
-                    </span>
-                </button>
-                
-                
+        <div class="flex justify-between items-center py-4 relative">
+            {/* Mobile Menu Button - Left */}
+            <button
+                class="mobile-menu-button relative z-[100] p-2 border-none cursor-pointer bg-transparent lg:hidden"
+                aria-label="Toggle Menu"
+                aria-expanded="false"
+            >
+                <span class="menu-icon block">
+                    <Menu size={24} class="text-primary" />
+                </span>
+                <span class="close-icon hidden">
+                    <X size={24} class="text-primary" />
+                </span>
+            </button>
+            
+            {/* Mobile Logo - Center (2x size) */}
+            <div class="mobile-logo-wrapper lg:hidden scale-[2]">
                 <Logo variant="header" />
             </div>
+            
+            {/* Desktop Logo - Left */}
+            <div class="hidden lg:block">
+                <Logo variant="header" />
+            </div>
+            
             <nav class="relative flex items-center gap-2 lg:gap-8" aria-label="Site Navigation">
-                {/* Mobile Initiatives Link - Always visible on mobile */}
-                <a
-                    href="/initiatives"
-                    class:list={[
-                        'lg:hidden text-small font-medium rounded-md px-2 py-1',
-                        isCurrentPage('/initiatives')
-                            ? 'text-nav-text-current font-semibold'
-                            : 'text-nav-text hover:text-nav-text-hover',
-                    ]}
-                    aria-current={isCurrentPage('/initiatives') ? 'page' : undefined}
-                >
-                    Initiatives
-                </a>
                 {/* Desktop Menu */}
                 <ul class="hidden lg:flex lg:gap-8 items-center">
                     {
@@ -255,8 +244,14 @@ const isCurrentPage = (link: string) => {
 
                 <Button href={ctaButton.link} variant="primary" class="!hidden lg:!inline-flex">{ctaButton.name}</Button>
                 
-                {/* Mobile donate button - always visible on mobile */}
-                <Button href={ctaButton.link} variant="primary" class="lg:!hidden bg-primary text-white hover:bg-primary-light">{ctaButton.name}</Button>
+                {/* Mobile giving icon - always visible on mobile */}
+                <a 
+                    href={ctaButton.link} 
+                    class="lg:hidden p-2 text-primary hover:text-primary-light transition-colors duration-200"
+                    aria-label="Donate - Support our cause"
+                >
+                    <HandHeart size={28} />
+                </a>
             </nav>
         </div>
     </div>
@@ -538,12 +533,23 @@ const isCurrentPage = (link: string) => {
         });
     });
 
-    // Mobile menu toggle with scroll lock
+    // Mobile menu toggle with scroll lock - Cache DOM elements
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const mobileMenu = document.querySelector('.mobile-menu');
     const mobileMenuClose = document.querySelector('.mobile-menu-close');
     const menuIcon = document.querySelector('.menu-icon');
     const closeIcon = document.querySelector('.close-icon');
+
+    // Function to update menu icon state
+    function updateMenuIcon(isOpen: boolean) {
+        if (isOpen) {
+            menuIcon?.classList.add('hidden');
+            closeIcon?.classList.remove('hidden');
+        } else {
+            menuIcon?.classList.remove('hidden');
+            closeIcon?.classList.add('hidden');
+        }
+    }
 
     // Function to close mobile menu
     function closeMobileMenu() {
@@ -551,12 +557,9 @@ const isCurrentPage = (link: string) => {
         
         // Update ARIA and icon states immediately
         mobileMenuButton?.setAttribute('aria-expanded', 'false');
-        menuIcon?.classList.remove('hidden');
-        closeIcon?.classList.add('hidden');
+        updateMenuIcon(false);
         
-        // Hide mobile-specific elements
-        
-        // Start the closing animation using theme utility classes
+        // Start the closing animation
         mobileMenu.classList.add('opacity-0', 'scale-95');
         mobileMenu.classList.remove('opacity-100', 'scale-100');
         
@@ -578,20 +581,17 @@ const isCurrentPage = (link: string) => {
         mobileMenu.classList.add('mobile-menu-open');
         mobileMenuButton?.setAttribute('aria-expanded', 'true');
         
-        // Show mobile-specific elements
-        
         // Force a reflow to ensure the menu is visible before animating
         (mobileMenu as HTMLElement).offsetHeight;
         
-        // Start the opening animation using theme utility classes
+        // Start the opening animation
         requestAnimationFrame(() => {
             mobileMenu?.classList.remove('opacity-0', 'scale-95');
             mobileMenu?.classList.add('opacity-100', 'scale-100');
         });
         
         // Update icon states
-        menuIcon?.classList.add('hidden');
-        closeIcon?.classList.remove('hidden');
+        updateMenuIcon(true);
     }
 
     // Mobile menu button click handler
