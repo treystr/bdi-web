@@ -17,7 +17,7 @@ const pageHeaderContent = {
     <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
 
     <!-- Our Mission Section -->
-    <section class="py-xxsmall bg-background">
+    <section class="py-xxsmall bg-background-light">
         <div class="site-container--content mx-auto px-4">
             <h2 class="text-headline mb-4" data-aos="fade-up">Our Mission</h2>
             <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90 max-w-4xl" data-aos="fade-up" data-aos-delay="100">
@@ -36,8 +36,8 @@ const pageHeaderContent = {
         </div>
     </section>
 
-    <TeamGrid padding="xxsmall" align="left" title="Board of Directors" description="Board members are not compensated for their board member duties and do not benefit from donations." memberType="bod" />
-    <TeamGrid padding="xxsmall" title="Advisors" memberType="advisor" />
-    <TeamGrid padding="xxsmall" title="Volunteers" memberType="volunteer" />
+    <TeamGrid padding="xxsmall" align="left" title="Board of Directors" description="Board members are not compensated for their board member duties and do not benefit from donations." memberType="bod" background="light" />
+    <TeamGrid padding="xxsmall" title="Advisors" memberType="advisor" background="base" />
+    <TeamGrid padding="xxsmall" title="Volunteers" memberType="volunteer" background="light" />
     
 </Layout>

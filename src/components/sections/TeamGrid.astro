@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import { getPaddingClass } from '@utils/styleUtils';
-import type { PaddingSize } from '@utils/styleUtils';
+import { getPaddingClass, getBackgroundColor } from '@utils/styleUtils';
+import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
 import { Image } from 'astro:assets';
 
 interface Props {
@@ -12,10 +12,12 @@ interface Props {
     title?: string;
     description?: string;
     align?: 'left' | 'center' | 'right';
+    background?: ThemeColor;
 }
 
-const { padding, paddingTop, paddingBottom, memberType, title, description, align = 'left' } = Astro.props as Props;
+const { padding, paddingTop, paddingBottom, memberType, title, description, align = 'left', background = 'base' } = Astro.props as Props;
 const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
+const bgColor = getBackgroundColor(background);
 
 // Determine grid alignment classes
 const getAlignmentClasses = (align: string) => {
@@ -56,7 +58,7 @@ const teamMembers = await getCollection('team', ({ data }) => {
 const sortedTeamMembers = teamMembers.sort((a, b) => a.data.order - b.data.order);
 ---
 
-<section class:list={['relative', paddingClass]}>
+<section class:list={['relative', bgColor, paddingClass]}>
     <div class="site-container--content mx-auto px-4">
         {title && (
             <div class:list={[textAlignmentClass, 'mb-10']}>
