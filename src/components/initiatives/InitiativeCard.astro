@@ -1,63 +1,51 @@
 ---
+import Button from '@components/ui/Button.astro';
 interface Props {
+    // Existing props (kept for backward compatibility)
     number?: number;
     date: string;
-    blockHeight: number;
-    businessName: string;
+    blockHeight?: number;
+    businessName?: string;
     businessWebsite?: string;
-    photoUrl: string;
+    photoUrl?: string;
     description: string;
+
+    // New generic props for reuse
+    title?: string;
+    imageSrc?: string;
+    href?: string; // internal link
+    badgeText?: string; // optional badge overlay (e.g., Completed)
+    showDate?: boolean; // whether to render the date (default true)
 }
 
-const { number, date, blockHeight, businessName, businessWebsite, photoUrl, description } = Astro.props;
+const { number, date, blockHeight, businessName, businessWebsite, photoUrl, description, title, imageSrc, href, badgeText, showDate = true } = Astro.props as Props;
 
-const formattedDate = new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-}).format(new Date(date));
+const formattedDate = showDate && date
+    ? new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(date))
+    : '';
 
-// Fallback image if photo doesn't exist
-const imageSrc = photoUrl || '/images/placeholder-business.jpg';
+// Title and image resolution with fallbacks for backward compatibility
+const cardTitle = (title ?? businessName) as string;
+const resolvedImageSrc = (imageSrc ?? photoUrl ?? '/images/placeholder-business.jpg') as string;
 
 // Format block height without commas
-const formattedBlockHeight = blockHeight.toString();
+const formattedBlockHeight = typeof blockHeight === 'number' ? blockHeight.toString() : '';
 
-// Get first sentence or first line of description for preview
-const getFirstLine = (text: string) => {
-    // Split by sentence first, then by length if sentence is too long
-    const sentences = text.split(/[.!?]+/);
-    const firstSentence = sentences[0]?.trim();
-    
-    if (firstSentence && firstSentence.length <= 120) {
-        return firstSentence + (sentences.length > 1 ? '...' : '');
-    }
-    
-    // If first sentence is too long, truncate at word boundary
-    if (firstSentence && firstSentence.length > 120) {
-        const words = firstSentence.split(' ');
-        let truncated = '';
-        for (const word of words) {
-            if ((truncated + ' ' + word).length > 120) break;
-            truncated += (truncated ? ' ' : '') + word;
-        }
-        return truncated + '...';
-    }
-    
-    return text;
-};
-
-const firstLine = getFirstLine(description);
+// No preview: show full description on card
 ---
 
 <article class="initiative-card" data-aos="fade-up">
     <!-- Card Header -->
     <div class="card-header">
-        <div class="card-number">{number}</div>
+        {typeof number !== 'undefined' && <div class="card-number">{number}</div>}
         <h3 class="card-business-name">
-            {businessWebsite ? (
+            {href ? (
+                <a href={href}>
+                    {cardTitle}
+                </a>
+            ) : businessWebsite ? (
                 <a href={businessWebsite} target="_blank" rel="noopener noreferrer">
-                    {businessName}
+                    {cardTitle}
                     <svg class="external-link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                         <polyline points="15 3 21 3 21 9"></polyline>
@@ -65,38 +53,53 @@ const firstLine = getFirstLine(description);
                     </svg>
                 </a>
             ) : (
-                <span>{businessName}</span>
+                <span>{cardTitle}</span>
             )}
         </h3>
     </div>
 
     <!-- Card Image -->
-    <div class="card-image">
-        <img src={imageSrc} alt={`${businessName} - Bitcoin onboarding`} loading="lazy" />
-    </div>
+    {href ? (
+        <a href={href} class="card-image-link">
+            <div class="card-image">
+                <img src={resolvedImageSrc} alt={cardTitle} loading="lazy" />
+                {badgeText && (
+                    <div class="card-badge">{badgeText}</div>
+                )}
+            </div>
+        </a>
+    ) : (
+        <div class="card-image">
+            <img src={resolvedImageSrc} alt={cardTitle} loading="lazy" />
+            {badgeText && (
+                <div class="card-badge">{badgeText}</div>
+            )}
+        </div>
+    )}
 
     <!-- Card Footer -->
     <div class="card-footer">
         <div class="card-meta">
-            <time datetime={date} class="card-date">
-                {formattedDate}
-            </time>
-            <div class="card-block-height">
-                Block #{formattedBlockHeight}
-            </div>
+            {showDate && (
+                <time datetime={date} class="card-date">
+                    {formattedDate}
+                </time>
+            )}
+            {typeof blockHeight === 'number' && (
+                <div class="card-block-height">
+                    Block #{formattedBlockHeight}
+                </div>
+            )}
         </div>
         
         <div class="card-description" data-full-description={description}>
-            <p class="description-preview">{firstLine}</p>
-            <p class="description-full" style="display: none;">{description}</p>
-            {firstLine !== description && (
-                <button class="expand-btn" type="button" aria-expanded="false" aria-label="Expand description">
-                    <span class="expand-text">Read more</span>
-                    <span class="collapse-text" style="display: none;">Read less</span>
-                    <svg class="expand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </button>
+            <p class="description-full">{description}</p>
+            {href && (
+                <div class="learn-more-wrapper">
+                    <Button href={href} variant="primary">
+                        Learn More
+                    </Button>
+                </div>
             )}
         </div>
     </div>
@@ -193,6 +196,19 @@ const firstLine = getFirstLine(description);
         transform: scale(1.02);
     }
 
+    .card-badge {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        background: rgba(16, 185, 129, 0.15);
+        color: #059669;
+        border-radius: 9999px;
+        line-height: 1;
+    }
+
     /* Card Footer */
     .card-footer {
         padding: 1.25rem 1.5rem;
@@ -229,43 +245,23 @@ const firstLine = getFirstLine(description);
     .card-description {
         margin: 0;
         flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
     }
 
-    .card-description .description-preview,
     .card-description .description-full {
         font-size: 0.9375rem;
         line-height: 1.6;
         color: rgba(var(--color-body-base-rgb), 0.8);
         margin: 0 0 0.75rem 0;
         transition: opacity 0.3s ease;
-    }
-
-    .expand-btn {
-        background: none;
-        border: none;
-        color: var(--color-accent);
-        font-size: 0.875rem;
-        font-weight: 600;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-        padding: 0;
-        transition: color 0.2s ease;
-        margin-top: auto;
-    }
-
-    .expand-btn:hover {
-        color: var(--color-accent-dark, var(--color-accent));
-    }
-
-    .expand-icon {
-        transition: transform 0.2s ease;
         flex-shrink: 0;
     }
 
-    .expand-btn.expanded .expand-icon {
-        transform: rotate(180deg);
+    .learn-more-wrapper {
+        margin-top: auto;
+        align-self: flex-start;
     }
 
     /* Mobile Responsiveness */
@@ -293,44 +289,4 @@ const firstLine = getFirstLine(description);
     }
 </style>
 
-<script>
-    // Handle expand/collapse functionality for descriptions
-    document.addEventListener('DOMContentLoaded', () => {
-        const expandBtns = document.querySelectorAll('.expand-btn');
-        
-        expandBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const description = btn.closest('.card-description') as HTMLElement;
-                
-                if (!description) return;
-                
-                const preview = description.querySelector('.description-preview') as HTMLElement;
-                const full = description.querySelector('.description-full') as HTMLElement;
-                const expandText = btn.querySelector('.expand-text') as HTMLElement;
-                const collapseText = btn.querySelector('.collapse-text') as HTMLElement;
-                
-                if (!preview || !full || !expandText || !collapseText) return;
-                
-                const isExpanded = btn.classList.contains('expanded');
-                
-                if (isExpanded) {
-                    // Collapse
-                    preview.style.display = 'block';
-                    full.style.display = 'none';
-                    expandText.style.display = 'inline';
-                    collapseText.style.display = 'none';
-                    btn.classList.remove('expanded');
-                    btn.setAttribute('aria-expanded', 'false');
-                } else {
-                    // Expand
-                    preview.style.display = 'none';
-                    full.style.display = 'block';
-                    expandText.style.display = 'none';
-                    collapseText.style.display = 'inline';
-                    btn.classList.add('expanded');
-                    btn.setAttribute('aria-expanded', 'true');
-                }
-            });
-        });
-    });
-</script>
+<!-- No client-side script needed since description is always fully shown. -->

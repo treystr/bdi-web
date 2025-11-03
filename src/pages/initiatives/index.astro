@@ -4,14 +4,13 @@ import { getCollection } from 'astro:content';
 import PageHeader from '@components/sections/PageHeader.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import heroImage from '@assets/images/hero/hero-bizgrid.jpg';
+import InitiativeCard from '@components/initiatives/InitiativeCard.astro';
+import { donateCta } from '@data/donateCta';
 
 const initiativesEntries = await getCollection('initiatives');
 
-console.log('Total initiatives loaded:', initiativesEntries.length);
-console.log('Initiative IDs:', initiativesEntries.map(e => e.id));
-
 // Sort by featured first, then by start date (newest first)
-const sortedInitiatives = initiativesEntries.sort((a, b) => {
+const sortedInitiatives = [...initiativesEntries].sort((a, b) => {
     if (a.data.featured && !b.data.featured) return -1;
     if (!a.data.featured && b.data.featured) return 1;
     const aDate = new Date(a.data.startDate).getTime();
@@ -22,25 +21,6 @@ const sortedInitiatives = initiativesEntries.sort((a, b) => {
 // Separate active and completed initiatives
 const activeInitiatives = sortedInitiatives.filter(entry => entry.data.status === 'active');
 const completedInitiatives = sortedInitiatives.filter(entry => entry.data.status === 'completed');
-
-// CTA to donate
-const donateCta = {
-    //eyebrow: "SUPPORT OUR WORK",
-    title: "Support our Work",
-    // description: "Every dollar you contribute directly funds these mission-critical programs. Your donation helps us expand our reach, serve more communities, and create lasting impact.",
-    buttons: [
-        {
-            text: "Donate Now",
-            link: "/donate",
-            variant: "primary" as const
-        },
-        {
-            text: "Contact Us",
-            link: "/contact",
-            variant: "secondary" as const
-        }
-    ]
-};
 
 const seoTitle = "Our Initiatives"
 const seoDescription = "Discover how the Bitcoin District Initiative builds a Bitcoin circular economy in Washington, DC through education, business adoption, and community outreach.";
@@ -59,35 +39,16 @@ const seoDescription = "Discover how the Bitcoin District Initiative builds a Bi
             {activeInitiatives.length > 0 && (
                 <div class="mb-20">
                     <div class="grid gap-8 md:grid-cols-2">
-                        {activeInitiatives.map((entry) => {
-                            return (
-                                <article class="bg-base border border-body-base/10 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:border-accent/30">
-                                    {/* Image on top - clickable */}
-                                    <a href={`/initiatives/${entry.id}`} class="block">
-                                        <div class="relative bg-gray-50">
-                                            <img 
-                                                src={entry.data.cardImage.src} 
-                                                alt={entry.data.title} 
-                                                class="w-full h-auto object-contain hover:scale-105 transition-transform duration-300"
-                                            />
-                                        </div>
-                                    </a>
-                                    
-                                    {/* Content below */}
-                                    <div class="p-6">
-                                        <a href={`/initiatives/${entry.id}`} class="group">
-                                            <h3 class="text-2xl font-bold mb-4 group-hover:text-accent transition-colors">
-                                                {entry.data.title}
-                                            </h3>
-                                        </a>
-                                        
-                                        <p class="text-body-base/70 text-sm leading-relaxed">
-                                            {entry.data.shortDescription}
-                                        </p>
-                                    </div>
-                                </article>
-                            );
-                        })}
+                        {activeInitiatives.map((entry) => (
+                            <InitiativeCard
+                                title={entry.data.title}
+                                imageSrc={entry.data.cardImage.src}
+                                description={entry.data.shortDescription}
+                                date={String(entry.data.startDate)}
+                                href={`/initiatives/${entry.id}`}
+                                showDate={false}
+                            />
+                        ))}
                     </div>
                 </div>
             )}
@@ -97,41 +58,17 @@ const seoDescription = "Discover how the Bitcoin District Initiative builds a Bi
                 <div class="mt-20">
                     <h2 class="text-2xl font-bold mb-8 pb-4 border-b-2 border-body-base/20">Completed Initiatives</h2>
                     <div class="grid gap-8 md:grid-cols-2">
-                        {completedInitiatives.map((entry) => {
-                            return (
-                                <article class="bg-base border border-body-base/10 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:border-accent/30">
-                                    {/* Image on top - clickable */}
-                                    <a href={`/initiatives/${entry.id}`} class="block">
-                                        <div class="relative bg-gray-50">
-                                            <img 
-                                                src={entry.data.cardImage.src} 
-                                                alt={entry.data.title} 
-                                                class="w-full h-auto object-contain hover:scale-105 transition-transform duration-300"
-                                            />
-                                            {/* Completed badge overlay */}
-                                            <div class="absolute top-4 left-4">
-                                                <span class="inline-block px-3 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full">
-                                                    Completed
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    
-                                    {/* Content below */}
-                                    <div class="p-6">
-                                        <a href={`/initiatives/${entry.id}`} class="group">
-                                            <h3 class="text-2xl font-bold mb-4 group-hover:text-accent transition-colors">
-                                                {entry.data.title}
-                                            </h3>
-                                        </a>
-                                        
-                                        <p class="text-body-base/70 text-sm leading-relaxed">
-                                            {entry.data.shortDescription}
-                                        </p>
-                                    </div>
-                                </article>
-                            );
-                        })}
+                        {completedInitiatives.map((entry) => (
+                            <InitiativeCard
+                                title={entry.data.title}
+                                imageSrc={entry.data.cardImage.src}
+                                description={entry.data.shortDescription}
+                                date={String(entry.data.startDate)}
+                                href={`/initiatives/${entry.id}`}
+                                badgeText="Completed"
+                                showDate={false}
+                            />
+                        ))}
                     </div>
                 </div>
             )}
