@@ -3,7 +3,7 @@ import { getEntry, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
-import Timeline from '@components/initiatives/Timeline.astro';
+import InitiativeCardsGrid from '@components/initiatives/InitiativeCardsGrid.astro';
 import onboardingData from '@data/onboarding.json';
 import heroImage from '@assets/images/hero/hero-bizgrid.jpg';
 
@@ -77,8 +77,8 @@ const statusStyles = {
         <Content />
     </article>
 
-    {/* Timeline */}
-    <Timeline />
+    {/* Initiative Cards Grid */}
+    <InitiativeCardsGrid />
 
     {/* Donate CTA */}
     <CtaBanner

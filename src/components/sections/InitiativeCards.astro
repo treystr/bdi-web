@@ -4,8 +4,7 @@ import Eyebrow from '@components/ui/Eyebrow.astro';
 import { getPaddingClass, getBackgroundColor, getTextColor } from '@utils/styleUtils';
 import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
 import { Image } from 'astro:assets';
-import { getActiveInitiatives, getSortedInitiatives } from '@data/initiatives';
-import type { Initiative } from '@data/initiatives';
+import { getCollection } from 'astro:content';
 
 interface Content {
     eyebrow?: string;
@@ -39,20 +38,24 @@ const {
 
 const { eyebrow, headline, description } = content;
 
-// Get initiatives from data file
-let activeInitiatives = getActiveInitiatives();
+// Get initiatives from content collection
+const initiativesEntries = await getCollection('initiatives');
+
+// Sort by featured first, then by start date (newest first)
+const sortedInitiatives = initiativesEntries.sort((a, b) => {
+    if (a.data.featured && !b.data.featured) return -1;
+    if (!a.data.featured && b.data.featured) return 1;
+    const aDate = new Date(a.data.startDate).getTime();
+    const bDate = new Date(b.data.startDate).getTime();
+    return bDate - aDate;
+});
+
+// Filter for active initiatives
+let activeInitiatives = sortedInitiatives.filter(entry => entry.data.status === 'active');
 
 // Optionally filter for featured only
 if (showFeaturedOnly) {
-    activeInitiatives = activeInitiatives.filter(init => init.featured);
-}
-
-// Sort initiatives
-activeInitiatives = getSortedInitiatives().filter(init => init.status === 'active');
-
-// Apply featured filter after sorting if needed
-if (showFeaturedOnly) {
-    activeInitiatives = activeInitiatives.filter(init => init.featured);
+    activeInitiatives = activeInitiatives.filter(entry => entry.data.featured);
 }
 
 // Limit number of cards if specified
@@ -88,17 +91,16 @@ const textColor = getTextColor(background);
         <!-- Initiative Cards Grid -->
         {activeInitiatives.length > 0 ? (
             <div class="grid gap-8 md:grid-cols-2 lg:gap-12">
-                {activeInitiatives.map((initiative, index) => {
-                    const targetDate = initiative.targetDate 
+                {activeInitiatives.map((entry, index) => {
+                    const targetDate = entry.data.targetDate 
                         ? new Intl.DateTimeFormat('en-US', {
                             year: 'numeric',
                             month: 'long',
-                        }).format(initiative.targetDate)
+                        }).format(new Date(entry.data.targetDate))
                         : null;
 
-
                     // Use the cardImage from the initiative data
-                    const cardImage = initiative.cardImage;
+                    const cardImage = entry.data.cardImage;
 
                     return (
                         <article 
@@ -110,7 +112,7 @@ const textColor = getTextColor(background);
                             <div class="relative aspect-[16/9] overflow-hidden">
                                 <Image
                                     src={cardImage}
-                                    alt={`${initiative.title} initiative`}
+                                    alt={`${entry.data.title} initiative`}
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     loading="lazy"
                                 />
@@ -118,7 +120,7 @@ const textColor = getTextColor(background);
                                 
                                 <!-- Status Badge -->
                                 <div class="absolute top-4 left-4">
-                                    {initiative.featured ? (
+                                    {entry.data.featured ? (
                                         <span class="inline-block px-3 py-1 text-xs font-semibold bg-accent text-white rounded-full">
                                             Featured Initiative
                                         </span>
@@ -135,16 +137,16 @@ const textColor = getTextColor(background);
                                 <!-- Title -->
                                 <h3 class="text-xl md:text-2xl font-bold mb-4">
                                     <a 
-                                        href={`/initiatives/${initiative.slug}`}
+                                        href={`/initiatives/${entry.id}`}
                                         class="group-hover:text-accent transition-colors hover:text-accent"
                                     >
-                                        {initiative.title}
+                                        {entry.data.title}
                                     </a>
                                 </h3>
                                 
                                 <!-- Description -->
                                 <p class="text-body-base/80 leading-relaxed mb-6">
-                                    {initiative.shortDescription}
+                                    {entry.data.shortDescription}
                                 </p>
 
                                 <!-- Timeline Info -->
@@ -157,11 +159,10 @@ const textColor = getTextColor(background);
                                     </div>
                                 )}
 
-
                                 <!-- CTA Button -->
                                 <div class="flex justify-start">
                                     <Button
-                                        href={`/initiatives/${initiative.slug}`}
+                                        href={`/initiatives/${entry.id}`}
                                         variant="primary"
                                         size="md"
                                         target="_self"

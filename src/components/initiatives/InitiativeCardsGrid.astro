@@ -1,0 +1,224 @@
+---
+import InitiativeCard from './InitiativeCard.astro';
+import MilestoneFlag from './MilestoneFlag.astro';
+import onboardingData from '@data/onboarding.json';
+
+// Sort by block height ascending (earliest blocks first)
+const sortedEntries = [...onboardingData].sort((a, b) => 
+    a.block_height - b.block_height
+);
+
+// Milestone markers to show
+const milestones = [21, 50, 75, 100];
+---
+
+<section class="initiative-cards-section" aria-label="Business onboarding grid">
+    <div class="initiative-cards-container">
+        <div class="initiative-cards-header-section">
+            <h2 class="initiative-cards-title">Proof of Work: Building the DC Bitcoin Economy</h2>
+            <p class="initiative-cards-subtitle">
+                Meet the DC businesses leading the way toward a thriving local Bitcoin economy.
+            </p>            
+        </div>
+
+        <!-- Initiative Cards Grid -->
+        <div class="initiative-cards-grid">
+            {sortedEntries.map((entry, index) => {
+                const businessNumber = index + 1; // Generate sequential number based on block height order
+                
+                return (
+                    <InitiativeCard
+                        number={businessNumber}
+                        date={entry.date}
+                        blockHeight={entry.block_height}
+                        businessName={entry.business_name}
+                        businessWebsite={entry.business_website}
+                        photoUrl={entry.photo_url}
+                        description={entry.description}
+                    />
+                );
+            })}
+        </div>
+
+        <!-- Milestone Markers -->
+        {milestones.filter(milestone => 
+            milestone <= sortedEntries.length && milestone !== sortedEntries.length
+        ).map(milestone => (
+            <div class="milestone-marker" data-aos="fade-up">
+                <MilestoneFlag value={milestone} />
+            </div>
+        ))}
+
+        <!-- Show "To Be Continued" message if we haven't reached 100 yet -->
+        {sortedEntries.length < 100 && (
+            <div class="initiative-cards-continuation">
+                <div class="continuation-content">
+                    <div class="continuation-icon">🚀</div>
+                    <div class="continuation-text">
+                        <h3>The Journey Continues...</h3>
+                        <p>
+                            We're actively onboarding more businesses every week. 
+                            Check back regularly to see our progress toward 100 local businesses by 2026!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        )}
+    </div>
+</section>
+
+<style>
+    .initiative-cards-section {
+        padding: 3rem 0;
+        background: var(--color-base);
+    }
+
+    .initiative-cards-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .initiative-cards-header-section {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 4rem;
+    }
+
+    .initiative-cards-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: var(--color-body-base);
+    }
+
+    .initiative-cards-subtitle {
+        font-size: 1.125rem;
+        color: rgba(var(--color-body-base-rgb), 0.7);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* Grid Layout */
+    .initiative-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    /* Milestone Markers */
+    .milestone-marker {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+    }
+
+    /* Continuation Section */
+    .initiative-cards-continuation {
+        margin-top: 4rem;
+        padding: 2rem;
+    }
+
+    .continuation-content {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        background: linear-gradient(135deg, rgba(var(--color-accent-rgb), 0.1) 0%, rgba(var(--color-accent-rgb), 0.05) 100%);
+        border: 2px dashed rgba(var(--color-accent-rgb), 0.3);
+        border-radius: 12px;
+        padding: 2.5rem 2rem;
+    }
+
+    .continuation-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .continuation-text h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--color-body-base);
+    }
+
+    .continuation-text p {
+        font-size: 1rem;
+        color: rgba(var(--color-body-base-rgb), 0.8);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .initiative-cards-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .initiative-cards-section {
+            padding: 2rem 0;
+        }
+
+        .initiative-cards-container {
+            padding: 0 0.75rem;
+        }
+
+        .initiative-cards-header-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .initiative-cards-title {
+            font-size: 2rem;
+        }
+
+        .initiative-cards-subtitle {
+            font-size: 1rem;
+        }
+
+        .initiative-cards-grid {
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .initiative-cards-continuation {
+            margin-top: 2.5rem;
+            padding: 1rem;
+        }
+
+        .continuation-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .continuation-icon {
+            font-size: 3rem;
+        }
+
+        .continuation-text h3 {
+            font-size: 1.25rem;
+        }
+
+        .continuation-text p {
+            font-size: 0.9375rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .initiative-cards-grid {
+            gap: 1rem;
+        }
+    }
+</style>
