@@ -1,8 +1,10 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
+import SplitPanel from '@components/sections/SplitPanel.astro';
 import FeatureList from '@components/sections/FeatureList.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
+import btcVideo from '@assets/videos/btc_vid.mp4';
 
 const seoTitle = "Why Bitcoin";
 const seoDescription = "Learn why Bitcoin is more than just a payment method—it's a new kind of money built for the digital age, offering merchants lower costs, faster payments, and economic freedom.";
@@ -10,6 +12,18 @@ const seoDescription = "Learn why Bitcoin is more than just a payment method—i
 const pageHeaderContent = {
     title: "Why Bitcoin?",
     description: "Bitcoin is more than just a payment method — it's a new kind of money built for the digital age. While the U.S. dollar loses purchasing power every year, Bitcoin's fixed supply of 21 million coins makes it scarce, durable, and deflationary. Over time, each satoshi you save represents a growing claim on global value, not a shrinking one."
+};
+
+const digitalGoldContent = {
+    headline: "Digital Gold with a Fixed Supply",
+    description: "Bitcoin is akin to digital gold, but with a fixed supply that cannot be changed. Just like miners extract gold from the earth, Bitcoin miners solve complex mathematical puzzles to secure the network and release new bitcoins — but unlike gold, we know exactly how many will ever exist: 21 million. This scarcity makes Bitcoin uniquely valuable in a world where traditional currencies can be printed endlessly.",
+    video: {
+        src: btcVideo,
+        autoplay: true,
+        loop: true,
+        muted: true,
+        controls: false
+    }
 };
 
 const merchantBenefits = {
@@ -71,6 +85,15 @@ const ctaContent = {
 
 <Layout title={seoTitle} description={seoDescription}>
     <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
+
+    <!-- Digital Gold Section -->
+    <SplitPanel 
+        content={digitalGoldContent}
+        imagePosition="right"
+        background="base"
+        padding="small"
+        imageAspect="16/9"
+    />
 
     <!-- Merchant Benefits -->
     <FeatureList 

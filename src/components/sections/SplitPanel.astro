@@ -10,9 +10,17 @@ interface Content {
     headline: string;
     subheadline?: string;
     description?: string;
-    image: {
+    image?: {
         src: string | any;
         alt?: string;
+    };
+    video?: {
+        src: string | any;
+        type?: string;
+        autoplay?: boolean;
+        loop?: boolean;
+        muted?: boolean;
+        controls?: boolean;
     };
     buttons?: {
         text: string;
@@ -54,8 +62,9 @@ const {
     hideContentOnMobile = false,
 } = Astro.props;
 
-const { eyebrow, headline, subheadline, description, image, buttons = [] } = content;
-const { src, alt = '' } = image;
+const { eyebrow, headline, subheadline, description, image, video, buttons = [] } = content;
+const hasVideo = video !== undefined;
+const hasImage = image !== undefined;
 
 const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
 const bgColor = getBackgroundColor(background);
@@ -129,7 +138,7 @@ const objectFitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover
                 }
             </div>
 
-            {/* Image Side - Renders second for mobile */}
+            {/* Media Side - Renders second for mobile */}
             <div
                 class:list={[
                     "relative overflow-hidden rounded-[var(--border-radius-base)] border border-black",
@@ -142,15 +151,30 @@ const objectFitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover
                 data-aos="fade-up"
                 data-aos-delay="100"
             >
-                <Image
-                    {src}
-                    {alt}
-                    width={800}
-                    height={600}
-                    class:list={["w-full h-full", objectFitClass]}
-                    quality={80}
-                    format="webp"
-                />
+                {hasVideo && video && (
+                    <video
+                        class:list={["w-full h-full", objectFitClass]}
+                        autoplay={video.autoplay !== false}
+                        loop={video.loop !== false}
+                        muted={video.muted !== false}
+                        controls={video.controls || false}
+                        playsinline
+                        src={video.src.src || video.src}
+                    >
+                        Your browser does not support the video tag.
+                    </video>
+                )}
+                {hasImage && image && (
+                    <Image
+                        src={image.src}
+                        alt={image.alt || ''}
+                        width={800}
+                        height={600}
+                        class:list={["w-full h-full", objectFitClass]}
+                        quality={80}
+                        format="webp"
+                    />
+                )}
             </div>
         </div>
     </div>
