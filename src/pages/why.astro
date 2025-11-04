@@ -86,20 +86,20 @@ const ctaContent = {
 <Layout title={seoTitle} description={seoDescription}>
     <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
 
-    <!-- Digital Gold Section -->
-    <SplitPanel 
-        content={digitalGoldContent}
-        imagePosition="right"
-        background="base"
-        padding="small"
-        imageAspect="16/9"
-    />
-
     <!-- Merchant Benefits -->
     <FeatureList 
         content={merchantBenefits}
         background="base"
         padding="small"
+    />
+
+    <!-- Digital Gold Section -->
+    <SplitPanel 
+    content={digitalGoldContent}
+    imagePosition="right"
+    background="base"
+    padding="small"
+    imageAspect="16/9"
     />
 
     <!-- CTA Section -->
