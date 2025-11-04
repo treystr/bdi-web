@@ -25,6 +25,7 @@ const blog = defineCollection({
             publishDate: z.string().transform(parseDate),
             publish: z.boolean().optional(),
             categories: z.array(z.enum(categoryNames as [string, ...string[]])),
+            tags: z.array(z.string()).optional(),
             seo: z
                 .object({
                     title: z.string().optional(),

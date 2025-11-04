@@ -1,10 +1,11 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import FullScreenHero from '@components/sections/FullScreenHero.astro';
+import Hero from '@components/sections/Hero.astro';
 import SplitPanel from '@components/sections/SplitPanel.astro';
 import InitiativeCards from '@components/sections/InitiativeCards.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import MerchantMap from '@components/sections/MerchantMap.astro';
+import BlogPostCarousel from '@components/sections/BlogPostCarousel.astro';
 import heroImage from '../assets/images/hero/hero-bizgrid.jpg';
 import bitcoinAcceptedImage from '../assets/images/bitcoinacceptedheremarket.jpg';
 import savingFutureImage from '../assets/images/btcvsusd.jpg';
@@ -15,14 +16,14 @@ const seoDescription = "Our Initiative is building a grassroots Bitcoin circular
 const heroContent = {
     title: "Building a Bitcoin Circular Economy in the Nation's Capital",
     description: "The Bitcoin District Initiative is a 501(c)(3) tax-exempt not-for-profit organization dedicated to advancing grassroots Bitcoin adoption in Washington, DC.",
-    overlayOpacity: 0.79,
-    
+    overlayOpacity: 0.7,
+    height: "large" as const, // 65vh for modern balanced look
+    layout: "offset-left" as const,
     buttons: [
         {
             text: "Our Initiatives",
             link: "/initiatives",
-            target: "_self",
-            hideOnDesktop: true
+            target: "_self"
         },
         {
             text: "Donate",
@@ -64,17 +65,28 @@ const bitcoinAcceptedSection = {
 
 const savingFutureSection = {
     headline: "Saving for the Future",
-    description: "When your business accepts Bitcoin, you’re not just adding a new payment option—you’re opening the door to future possibilities. Bitcoin’s fixed supply and growing global use give it long-term strength, allowing businesses that understand it to build new options for growth, savings, and collateral. Whether you convert to dollars right away or keep a portion in Bitcoin, learning how it works today prepares your business for the economy of tomorrow.",
+    description: "When your business accepts Bitcoin, you're not just adding a new payment option—you're opening the door to future possibilities. Bitcoin's fixed supply and growing global use give it long-term strength, allowing businesses that understand it to build new options for growth, savings, and collateral. Whether you convert to dollars right away or keep a portion in Bitcoin, learning how it works today prepares your business for the economy of tomorrow.",
     image: {
         src: savingFutureImage,
         alt: "Bitcoin savings concept"
     }
 };
 
+const blogCarouselContent = {
+    eyebrow: "Latest Updates",
+    title: "Ready to Learn More?",
+    description: "Bitcoin can be confusing. We're here to help you cut through the noise. Check out our blog for the latest news and insights.",
+    button: {
+        text: "View All Posts",
+        link: "/blog",
+        variant: "primary" as const
+    }
+};
+
 ---
 
-<Layout title={seoTitle} description={seoDescription} fullscreenHero={true}>
-    <FullScreenHero content={heroContent} />
+<Layout title={seoTitle} description={seoDescription}>
+    <Hero content={heroContent} />
     <SplitPanel 
         content={bitcoinAcceptedSection} 
         imagePosition="left" 
@@ -89,13 +101,23 @@ const savingFutureSection = {
         padding="large" 
         imageAspect="4/3"
     />
-    <InitiativeCards content={initiativesSection} background="light" padding="base" />
+    <InitiativeCards content={initiativesSection} background="light" padding="small" />
+    <BlogPostCarousel 
+        content={blogCarouselContent}
+        background="base"
+        padding="small"
+        showFeatured={true}
+        fallbackToAll={true}
+        minPosts={3}
+        showLatest={true}
+        limit={8}
+    />
     <MerchantMap 
         title="Put Your Business on the BTC Map"
-        description="Put your business on the map—literally. When you accept Bitcoin, you join a community of forward-thinking DC merchants strengthening local commerce and economic freedom. The BTC Map makes it easy for Bitcoiners to find and support your business."
+        description="Let's put your business on the map-- literally! When you accept Bitcoin, you join a community of forward-thinking DC merchants strengthening local commerce and economic freedom. The BTC Map makes it easy for Bitcoiners to find and support your business."
         topBackground="dark" 
         bottomBackground="light"
-        padding="large"
+        padding="base"
     />
     <CtaBanner 
         content={joinDistrictSection} 

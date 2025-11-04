@@ -1,0 +1,404 @@
+---
+import { Image } from 'astro:assets';
+import Button from '@components/ui/Button.astro';
+import Eyebrow from '@components/ui/Eyebrow.astro';
+import HeroStats from '@components/initiatives/HeroStats.astro';
+import SimpleProgressStats from '@components/initiatives/SimpleProgressStats.astro';
+import defaultHeroImage from '@assets/images/hero/default.jpg';
+
+// TypeScript Interfaces
+interface ButtonConfig {
+    text: string;
+    link: string;
+    variant?: 'primary' | 'secondary' | 'ghostLight' | 'ghostDark';
+    target?: string;
+}
+
+interface SplitContent {
+    image: any;
+    imageAlt: string;
+    imagePosition?: 'left' | 'right';
+    imageAspect?: 'square' | '4/3' | '16/9' | '3/2';
+}
+
+interface StatsContent {
+    goal2025: number;
+    date2025: string;
+    goal2026: number;
+    date2026: string;
+    count: number;
+    total: number;
+    mtd: number;
+    neededPerMonth: number;
+}
+
+interface SimpleStatsContent {
+    count: number;
+    goal: number;
+    label?: string;
+}
+
+interface HeroContent {
+    // Core content
+    title: string;
+    description?: string;
+    eyebrow?: string;
+    
+    // Layout controls
+    height?: 'half' | 'large' | 'xlarge'; // 50vh, 65vh, 75vh
+    layout?: 'split' | 'centered' | 'offset-left' | 'offset-right';
+    
+    // Background options
+    backgroundImage?: any;
+    backgroundVideo?: { 
+        src: string; 
+        poster?: any;
+        type?: string; // e.g., 'video/mp4'
+    };
+    overlayOpacity?: number; // 0-1
+    
+    // Content positioning
+    contentPosition?: 'top' | 'center' | 'bottom';
+    textAlign?: 'left' | 'center' | 'right';
+    
+    // CTAs
+    buttons?: ButtonConfig[];
+    
+    // Split panel specific
+    splitContent?: SplitContent;
+    
+    // Optional additional content
+    statsContent?: StatsContent;
+    simpleStatsContent?: SimpleStatsContent;
+}
+
+interface Props {
+    content: HeroContent;
+}
+
+const { content } = Astro.props;
+
+// Defaults
+const height = content.height ?? 'large';
+const layout = content.layout ?? 'centered';
+const opacity = content.overlayOpacity ?? 0.7;
+const contentPosition = content.contentPosition ?? 'center';
+const textAlign = content.textAlign ?? 'center';
+const backgroundImage = content.backgroundImage ?? defaultHeroImage;
+
+// Height classes - using min-height for better responsiveness
+const heightClasses = {
+    half: 'min-h-[50vh]',
+    large: 'min-h-[65vh]',
+    xlarge: 'min-h-[75vh]'
+};
+
+// Position classes for content
+const positionClasses = {
+    top: 'items-start justify-center pt-32 md:pt-40',
+    center: 'items-center justify-center',
+    bottom: 'items-end justify-center pb-16 md:pb-24'
+};
+
+// Text alignment classes
+const alignmentClasses = {
+    left: 'text-left',
+    center: 'text-center',
+    right: 'text-right'
+};
+
+// Layout-specific classes
+const isOffsetLayout = layout === 'offset-left' || layout === 'offset-right';
+const isSplitLayout = layout === 'split';
+
+// For split and offset layouts, determine text alignment based on position
+let effectiveTextAlign = textAlign;
+if (isSplitLayout && content.splitContent) {
+    effectiveTextAlign = content.splitContent.imagePosition === 'left' ? 'left' : 'left';
+} else if (isOffsetLayout) {
+    effectiveTextAlign = layout === 'offset-left' ? 'left' : 'right';
+}
+
+// Aspect ratio for split images
+const aspectRatioMap = {
+    'square': 'aspect-square',
+    '4/3': 'aspect-[4/3]',
+    '16/9': 'aspect-video',
+    '3/2': 'aspect-[3/2]'
+};
+const splitImageAspect = content.splitContent?.imageAspect ?? '4/3';
+---
+
+<section class={`hero-section header-offset relative w-full overflow-hidden ${heightClasses[height]}`}>
+    {/* Background Media */}
+    <div class="absolute inset-0 w-full h-full">
+        {content.backgroundVideo ? (
+            <video
+                class="w-full h-full object-cover"
+                autoplay
+                loop
+                muted
+                playsinline
+                poster={content.backgroundVideo.poster ? content.backgroundVideo.poster.src : undefined}
+            >
+                <source src={content.backgroundVideo.src} type={content.backgroundVideo.type || 'video/mp4'} />
+            </video>
+        ) : (
+            <Image
+                src={backgroundImage}
+                alt=""
+                width={1920}
+                height={1080}
+                class="w-full h-full object-cover"
+                quality={80}
+                format="webp"
+                loading="eager"
+                decoding="async"
+            />
+        )}
+    </div>
+    
+    {/* Overlay */}
+    <div
+        class="hero-overlay absolute inset-0 w-full h-full"
+        style={`opacity: ${opacity};`}
+    ></div>
+
+    {/* Content Container */}
+    <div class={`relative z-10 w-full h-full flex flex-col ${positionClasses[contentPosition]}`}>
+        {/* Main Hero Content */}
+        {isSplitLayout && content.splitContent ? (
+            /* Split Layout */
+            <div class="w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+                <div class="site-container--content mx-auto">
+                    <div class={`grid gap-8 md:gap-12 lg:gap-16 items-center ${content.splitContent.imagePosition === 'left' ? 'md:grid-cols-[1fr_1.2fr]' : 'md:grid-cols-[1.2fr_1fr]'}`}>
+                        {/* Image - Left Position */}
+                        {content.splitContent.imagePosition === 'left' && (
+                            <div 
+                                class={`relative overflow-hidden rounded-[var(--border-radius-base)] border-2 border-white/20 ${aspectRatioMap[splitImageAspect]}`}
+                                data-aos="fade-right"
+                            >
+                                <Image
+                                    src={content.splitContent.image}
+                                    alt={content.splitContent.imageAlt}
+                                    width={800}
+                                    height={600}
+                                    class="w-full h-full object-cover"
+                                    quality={80}
+                                    format="webp"
+                                />
+                            </div>
+                        )}
+
+                        {/* Text Content */}
+                        <div class={alignmentClasses[effectiveTextAlign]}>
+                            {content.eyebrow && (
+                                <div class="eyebrow-text text-white/90 text-sm font-semibold uppercase tracking-wider mb-3" data-aos="fade-up">
+                                    {content.eyebrow}
+                                </div>
+                            )}
+                            <h1 class="text-white hero-title mb-4 sm:mb-6" data-aos="fade-up" data-aos-delay="100">
+                                {content.title}
+                            </h1>
+                            
+                            {content.description && (
+                                <p class="text-white text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 opacity-90" data-aos="fade-up" data-aos-delay="200">
+                                    {content.description}
+                                </p>
+                            )}
+                            
+                            {content.buttons && content.buttons.length > 0 && (
+                                <div class={`flex flex-wrap gap-3 sm:gap-4 ${effectiveTextAlign === 'center' ? 'justify-center' : effectiveTextAlign === 'right' ? 'justify-end' : 'justify-start'}`} data-aos="fade-up" data-aos-delay="300">
+                                    {content.buttons.map((button) => (
+                                        <Button
+                                            href={button.link}
+                                            target={button.target || '_self'}
+                                            variant={button.variant || 'primary'}
+                                        >
+                                            {button.text}
+                                        </Button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Image - Right Position */}
+                        {content.splitContent.imagePosition === 'right' && (
+                            <div 
+                                class={`relative overflow-hidden rounded-[var(--border-radius-base)] border-2 border-white/20 ${aspectRatioMap[splitImageAspect]}`}
+                                data-aos="fade-left"
+                            >
+                                <Image
+                                    src={content.splitContent.image}
+                                    alt={content.splitContent.imageAlt}
+                                    width={800}
+                                    height={600}
+                                    class="w-full h-full object-cover"
+                                    quality={80}
+                                    format="webp"
+                                />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        ) : (
+            /* Centered and Offset Layouts */
+            <div class={`w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16 ${isOffsetLayout ? 'flex' : ''} ${layout === 'offset-left' ? 'justify-start' : layout === 'offset-right' ? 'justify-end' : ''}`}>
+                <div class={`${isOffsetLayout ? 'max-w-2xl' : 'site-container--hero'} ${!isOffsetLayout ? 'mx-auto' : ''} ${alignmentClasses[effectiveTextAlign]}`}>
+                    {content.eyebrow && (
+                        <div class="eyebrow-text text-white/90 text-sm font-semibold uppercase tracking-wider mb-3" data-aos="fade-up">
+                            {content.eyebrow}
+                        </div>
+                    )}
+                    <h1 class="text-white hero-title mb-4 sm:mb-6" data-aos="fade-up" data-aos-delay="100">
+                        {content.title}
+                    </h1>
+                    
+                    {content.description && (
+                        <p class={`text-white text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 opacity-90 max-w-4xl ${effectiveTextAlign === 'center' ? 'mx-auto' : ''}`} data-aos="fade-up" data-aos-delay="200">
+                            {content.description}
+                        </p>
+                    )}
+                    
+                    {content.buttons && content.buttons.length > 0 && (
+                        <div class={`flex flex-wrap gap-3 sm:gap-4 ${effectiveTextAlign === 'center' ? 'justify-center' : effectiveTextAlign === 'right' ? 'justify-end' : 'justify-start'}`} data-aos="fade-up" data-aos-delay="300">
+                            {content.buttons.map((button) => (
+                                <Button
+                                    href={button.link}
+                                    target={button.target || '_self'}
+                                    variant={button.variant || 'primary'}
+                                >
+                                    {button.text}
+                                </Button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
+        )}
+
+        {/* Stats Content at Bottom */}
+        {content.statsContent && (
+            <div class="pb-12 sm:pb-16 px-4">
+                <div class="site-container--hero mx-auto">
+                    <HeroStats 
+                        goal2025={content.statsContent.goal2025}
+                        date2025={content.statsContent.date2025}
+                        goal2026={content.statsContent.goal2026}
+                        date2026={content.statsContent.date2026}
+                        count={content.statsContent.count}
+                        total={content.statsContent.total}
+                        mtd={content.statsContent.mtd}
+                        neededPerMonth={content.statsContent.neededPerMonth}
+                    />
+                </div>
+            </div>
+        )}
+
+        {/* Simple Stats Content at Bottom */}
+        {content.simpleStatsContent && (
+            <div class="pb-12 sm:pb-16 px-4">
+                <div class="site-container--hero mx-auto">
+                    <SimpleProgressStats 
+                        count={content.simpleStatsContent.count}
+                        goal={content.simpleStatsContent.goal}
+                        label={content.simpleStatsContent.label}
+                    />
+                </div>
+            </div>
+        )}
+    </div>
+</section>
+
+<style>
+    .hero-section {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Ensure text is readable on all backgrounds */
+    .hero-section h1,
+    .hero-section p,
+    .hero-section .eyebrow-text {
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Hero title responsive sizing */
+    .hero-title {
+        font-size: var(--text-hero-mobile);
+        line-height: 1.1;
+        font-weight: 700;
+    }
+    
+    @media (min-width: 768px) {
+        .hero-title {
+            font-size: var(--text-h1);
+            line-height: 1.2;
+        }
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 767px) {
+        .hero-section .site-container--hero,
+        .hero-section .site-container--content {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .hero-section h1 {
+            margin-bottom: 1rem;
+        }
+        
+        .hero-section p {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Stack split layout on mobile */
+        .hero-section .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    /* Video background optimization */
+    video {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+    
+    /* Ensure proper overlay blending */
+    .hero-overlay {
+        background: linear-gradient(
+            135deg,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.4) 50%,
+            rgba(0, 0, 0, 0.6) 100%
+        );
+    }
+    
+    /* Split layout responsive adjustments */
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .hero-section .grid {
+            gap: 2rem;
+        }
+    }
+    
+    /* Accessibility: Ensure sufficient contrast */
+    @media (prefers-reduced-motion: reduce) {
+        .hero-section * {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+    
+    /* Smooth transitions for interactive elements */
+    .hero-section button,
+    .hero-section a {
+        transition: all 0.3s ease;
+    }
+</style>
+
