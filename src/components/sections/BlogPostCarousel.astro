@@ -140,8 +140,8 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
                 </div>
             </div>
 
-            {/* Navigation */}
-            {filteredPosts.length > 1 && (
+            {/* Navigation - Only show on desktop with enough posts */}
+            {filteredPosts.length > 3 && (
                 <div class="blog-carousel-nav">
                     <button
                         class="blog-carousel-nav__button blog-carousel-nav__button--prev"
@@ -234,10 +234,17 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
 
     /* Navigation buttons */
     .blog-carousel-nav {
-        display: flex;
+        display: none; /* Hidden by default on mobile */
         justify-content: center;
         gap: 1rem;
         margin-bottom: 2rem;
+    }
+    
+    /* Show navigation on desktop only */
+    @media (min-width: 1024px) {
+        .blog-carousel-nav {
+            display: flex;
+        }
     }
 
     .blog-carousel-nav__button {

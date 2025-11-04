@@ -27,12 +27,6 @@ const heroContent = {
             link: "/initiatives",
             size: "xl" as const,
             target: "_self"
-        },
-        {
-            text: "Donate",
-            link: "/donate",
-            size: "xl" as const,
-            target: "_self"
         }
     ],
     backgroundImage: heroImage,
@@ -105,10 +99,10 @@ const blogCarouselContent = {
         padding="large" 
         imageAspect="4/3"
     />
-    <InitiativeCards content={initiativesSection} background="light" padding="small" />
+    <InitiativeCards content={initiativesSection} background="base" padding="small" />
     <BlogPostCarousel 
         content={blogCarouselContent}
-        background="base"
+        background="light"
         padding="small"
         showFeatured={true}
         fallbackToAll={true}

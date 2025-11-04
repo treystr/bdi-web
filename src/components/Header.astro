@@ -89,12 +89,45 @@ const isCurrentPage = (link: string) => {
         height: calc(100vh - 114px) !important;
     }
     
-    /* Mobile logo centering */
+    /* Mobile logo centering - combine transforms to avoid sub-pixel rendering issues */
     .mobile-logo-wrapper {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        pointer-events: none;
+        transform-origin: center center;
+        will-change: transform;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Responsive scaling with proper centering */
+    @media (max-width: 639px) {
+        .mobile-logo-wrapper {
+            transform: translateX(-50%) scale(1.8);
+        }
+    }
+    
+    @media (min-width: 640px) and (max-width: 767px) {
+        .mobile-logo-wrapper {
+            transform: translateX(-50%) scale(1.6);
+        }
+    }
+    
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .mobile-logo-wrapper {
+            transform: translateX(-50%) scale(1.4);
+        }
+    }
+    
+    /* Enable pointer events on logo link inside wrapper */
+    .mobile-logo-wrapper a {
+        pointer-events: auto;
+    }
+    
+    /* Ensure desktop logo link is clickable */
+    .absolute.left-1\/2 a {
+        pointer-events: auto;
     }
     
     
@@ -172,9 +205,9 @@ const isCurrentPage = (link: string) => {
 <header class="fixed top-0 z-50 w-full left-0 bg-white border-b border-primary" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
     <div class="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-6 lg:px-8">
         <div class="flex justify-between items-center py-3 md:py-4 relative">
-            {/* Mobile Menu Button - Left */}
+            {/* Mobile Menu Button - Left - Fixed width for centering */}
             <button
-                class="mobile-menu-button relative z-[100] p-2 border-none cursor-pointer bg-transparent lg:hidden"
+                class="mobile-menu-button relative z-[100] p-2 border-none cursor-pointer bg-transparent lg:hidden w-12 h-12 flex items-center justify-center flex-shrink-0"
                 aria-label="Toggle Menu"
                 aria-expanded="false"
             >
@@ -186,8 +219,8 @@ const isCurrentPage = (link: string) => {
                 </span>
             </button>
             
-            {/* Mobile Logo - Center (scaled for prominence) */}
-            <div class="mobile-logo-wrapper lg:hidden scale-[1.8] sm:scale-[1.6] md:scale-[1.4]">
+            {/* Mobile Logo - Center (scaled for prominence via CSS) */}
+            <div class="mobile-logo-wrapper lg:hidden">
                 <Logo variant="header" />
             </div>
             
@@ -260,7 +293,7 @@ const isCurrentPage = (link: string) => {
                 </nav>
 
                 {/* Center: Logo (responsive scaling - icon-only until 2xl) */}
-                <div class="absolute left-1/2 transform -translate-x-1/2 scale-100 xl:scale-[1.1] 2xl:scale-[1.15] pointer-events-none transition-transform duration-300">
+                <div class="absolute left-1/2 transform -translate-x-1/2 scale-100 xl:scale-[1.1] 2xl:scale-[1.15] transition-transform duration-300">
                     <Logo variant="header" />
                 </div>
 
@@ -289,13 +322,13 @@ const isCurrentPage = (link: string) => {
             </div>
             </div>
             
-            {/* Mobile giving icon - always visible on mobile */}
+            {/* Mobile giving icon - always visible on mobile - Fixed width for centering */}
             <a 
                 href={ctaButton.link} 
-                class="lg:hidden p-2 text-primary hover:text-primary-light transition-colors duration-200"
+                class="lg:hidden p-2 text-primary hover:text-primary-light transition-colors duration-200 w-12 h-12 flex items-center justify-center flex-shrink-0"
                 aria-label="Donate - Support our cause"
             >
-                <HandHeart size={28} />
+                <HandHeart size={24} />
             </a>
         </div>
     </div>
@@ -314,74 +347,76 @@ const isCurrentPage = (link: string) => {
                     <li class="mobile-menu-item">
                         <div class="text-black">
                             <div class="flex items-center justify-between">
-                                <a
-                                    href={item.link}
-                                    class:list={[
-                                        'py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-black text-black hover:text-primary',
-                                        isCurrentPage(item.link)
-                                            ? 'text-primary font-semibold'
-                                            : 'text-black hover:text-primary',
-                                    ]}
-                                    aria-current={isCurrentPage(item.link) ? 'page' : undefined}
-                                >
-                                    {item.name}
-                                </a>
                                 {item.children ? (
-                                    <button
-                                        class:list={[
-                                            'mobile-submenu-button p-2 -mr-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black',
-                                            isCurrentPage(item.link)
-                                                ? 'text-primary'
-                                                : 'text-black hover:text-primary',
-                                        ]}
-                                        aria-label={`Toggle ${item.name} submenu`}
-                                        aria-expanded="false"
-                                    >
-                                        <PlusCircle
-                                            size={20}
-                                            class="transform transition-transform duration-200"
-                                        />
-                                    </button>
+                                    <>
+                                        <a
+                                            href={item.link}
+                                            class:list={[
+                                                'py-1 rounded-md focus:outline-none text-black hover:text-primary flex-1',
+                                                isCurrentPage(item.link)
+                                                    ? 'text-primary font-semibold'
+                                                    : 'text-black hover:text-primary',
+                                            ]}
+                                            aria-current={isCurrentPage(item.link) ? 'page' : undefined}
+                                        >
+                                            {item.name}
+                                        </a>
+                                        <button
+                                            class:list={[
+                                                'mobile-submenu-button p-2 -mr-2 rounded-md focus:outline-none',
+                                                isCurrentPage(item.link)
+                                                    ? 'text-primary'
+                                                    : 'text-black hover:text-primary',
+                                            ]}
+                                            aria-label={`Toggle ${item.name} submenu`}
+                                            aria-expanded="false"
+                                        >
+                                            <PlusCircle
+                                                size={20}
+                                                class="transform transition-transform duration-200"
+                                            />
+                                        </button>
+                                    </>
                                 ) : (
-                                    <ArrowRightCircle
-                                        size={20}
+                                    <a
+                                        href={item.link}
                                         class:list={[
+                                            'py-1 rounded-md focus:outline-none text-black hover:text-primary flex items-center justify-between w-full',
                                             isCurrentPage(item.link)
-                                                ? 'text-primary'
+                                                ? 'text-primary font-semibold'
                                                 : 'text-black hover:text-primary',
                                         ]}
-                                    />
+                                        aria-current={isCurrentPage(item.link) ? 'page' : undefined}
+                                    >
+                                        <span>{item.name}</span>
+                                        <ArrowRightCircle
+                                            size={20}
+                                        />
+                                    </a>
                                 )}
                             </div>
                             {item.children && (
                                 <ul class="mobile-submenu ml-4 mt-2 space-y-2 hidden" role="menu">
                                     {item.children.map((child, childIndex) => (
                                         <li class="mobile-submenu-item" role="none">
-                                            <div class="flex items-center justify-between">
-                                                <a
-                                                    href={child.link}
-                                                    class:list={[
-                                                        'block py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-black flex-1',
-                                                        isCurrentPage(child.link)
-                                                            ? 'text-primary font-semibold'
-                                                            : 'text-black hover:text-primary',
-                                                    ]}
-                                                    role="menuitem"
-                                                    aria-current={
-                                                        isCurrentPage(child.link) ? 'page' : undefined
-                                                    }
-                                                >
-                                                    {child.name}
-                                                </a>
+                                            <a
+                                                href={child.link}
+                                                class:list={[
+                                                    'flex items-center justify-between py-2 rounded-md focus:outline-none w-full',
+                                                    isCurrentPage(child.link)
+                                                        ? 'text-primary font-semibold'
+                                                        : 'text-black hover:text-primary',
+                                                ]}
+                                                role="menuitem"
+                                                aria-current={
+                                                    isCurrentPage(child.link) ? 'page' : undefined
+                                                }
+                                            >
+                                                <span>{child.name}</span>
                                                 <ArrowRightCircle
                                                     size={16}
-                                                    class:list={[
-                                                        isCurrentPage(child.link)
-                                                            ? 'text-primary'
-                                                            : 'text-black hover:text-primary',
-                                                    ]}
                                                 />
-                                            </div>
+                                            </a>
                                         </li>
                                     ))}
                                 </ul>
