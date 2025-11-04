@@ -11,6 +11,7 @@ interface ButtonConfig {
     text: string;
     link: string;
     variant?: 'primary' | 'secondary' | 'ghostLight' | 'ghostDark';
+    size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
     target?: string;
 }
 
@@ -141,8 +142,9 @@ const gradientColors = {
 };
 
 // Text color based on gradient background (for readability)
+// Mobile: always white (no gradient), Desktop: adaptive (gradient present)
 const textColorClass = shouldShowGradient 
-    ? (background === 'dark' ? 'text-white' : 'text-body-base')
+    ? (background === 'dark' ? 'text-white' : 'text-white md:text-body-base')
     : 'text-white'; // Default white for non-gradient layouts
 ---
 
@@ -227,7 +229,7 @@ const textColorClass = shouldShowGradient
                             </h1>
                             
                             {content.description && (
-                                <p class="text-white text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 opacity-90" data-aos="fade-up" data-aos-delay="200">
+                                <p class="text-white text-lg sm:text-xl md:text-2xl leading-relaxed mb-6 sm:mb-8 opacity-90" data-aos="fade-up" data-aos-delay="200">
                                     {content.description}
                                 </p>
                             )}
@@ -239,6 +241,7 @@ const textColorClass = shouldShowGradient
                                             href={button.link}
                                             target={button.target || '_self'}
                                             variant={button.variant || 'primary'}
+                                            size={button.size || 'md'}
                                         >
                                             {button.text}
                                         </Button>
@@ -281,7 +284,7 @@ const textColorClass = shouldShowGradient
                     </h1>
                     
                     {content.description && (
-                        <p class={`${textColorClass} text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 opacity-90 max-w-4xl ${effectiveTextAlign === 'center' ? 'mx-auto' : ''}`} data-aos="fade-up" data-aos-delay="200">
+                        <p class={`${textColorClass} text-lg sm:text-xl md:text-2xl leading-relaxed mb-6 sm:mb-8 opacity-90 max-w-4xl ${effectiveTextAlign === 'center' ? 'mx-auto' : ''}`} data-aos="fade-up" data-aos-delay="200">
                             {content.description}
                         </p>
                     )}
@@ -293,6 +296,7 @@ const textColorClass = shouldShowGradient
                                     href={button.link}
                                     target={button.target || '_self'}
                                     variant={button.variant || 'primary'}
+                                    size={button.size || 'md'}
                                 >
                                     {button.text}
                                 </Button>
@@ -397,12 +401,7 @@ const textColorClass = shouldShowGradient
     
     /* Ensure proper overlay blending */
     .hero-overlay {
-        background: linear-gradient(
-            135deg,
-            rgba(0, 0, 0, 0.6) 0%,
-            rgba(0, 0, 0, 0.4) 50%,
-            rgba(0, 0, 0, 0.6) 100%
-        );
+        background: rgb(0, 0, 0);
     }
     
     /* Split layout responsive adjustments */

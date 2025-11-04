@@ -6,7 +6,7 @@ import InitiativeCards from '@components/sections/InitiativeCards.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import MerchantMap from '@components/sections/MerchantMap.astro';
 import BlogPostCarousel from '@components/sections/BlogPostCarousel.astro';
-import heroImage from '../assets/images/hero/hero-bizgrid.jpg';
+import heroImage from '../assets/images/hero/hero-market.jpg';
 import bitcoinAcceptedImage from '../assets/images/bitcoinacceptedheremarket.jpg';
 import savingFutureImage from '../assets/images/btcvsusd.jpg';
 
@@ -16,7 +16,7 @@ const seoDescription = "Our Initiative is building a grassroots Bitcoin circular
 const heroContent = {
     title: "Building a Bitcoin Circular Economy in the Nation's Capital",
     description: "The Bitcoin District Initiative is a 501(c)(3) tax-exempt not-for-profit organization dedicated to advancing grassroots Bitcoin adoption in Washington, DC.",
-    overlayOpacity: 0.9, // Lighter overlay since gradient adds coverage
+    overlayOpacity: 0.60, // Lighter overlay since gradient adds coverage
     height: "large" as const, // 65vh for modern balanced look
     layout: "centered" as const,
     background: "base" as const, // Gradient color for text readability
@@ -25,11 +25,13 @@ const heroContent = {
         {
             text: "Our Initiatives",
             link: "/initiatives",
+            size: "xl" as const,
             target: "_self"
         },
         {
             text: "Donate",
             link: "/donate",
+            size: "xl" as const,
             target: "_self"
         }
     ],
