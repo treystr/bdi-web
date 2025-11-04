@@ -3,29 +3,38 @@ import { siteConfig } from '@data/config';
 import { Github, Linkedin, Mail, Instagram, Feather } from 'lucide-astro';
 import X from '@components/icons/X.astro';
 
+type SocialIconType = 'x' | 'instagram' | 'github' | 'linkedin' | 'mail' | 'nostr';
+
 interface Props {
   iconSize?: number;
   gap?: string;
   colorClass?: string;
   hoverColorClass?: string;
+  visibleIcons?: SocialIconType[];
 }
 
 const { 
   iconSize = 20, 
   gap = 'gap-6',
   colorClass = 'text-body-dark',
-  hoverColorClass = 'hover:text-white'
+  hoverColorClass = 'hover:text-white',
+  visibleIcons
 } = Astro.props;
 
 const iconProps = { 
   size: iconSize, 
   class: `${colorClass} ${hoverColorClass} transition-colors` 
 };
+
+// Filter social links based on visibleIcons prop
+const displayedLinks = visibleIcons 
+  ? siteConfig.socialLinks.filter(link => visibleIcons.includes(link.icon as SocialIconType))
+  : siteConfig.socialLinks;
 ---
 
 <nav aria-label="Social media links">
   <ul class={`flex justify-center items-center ${gap}`}>
-    {siteConfig.socialLinks.map(link => (
+    {displayedLinks.map(link => (
       <li>
         <a 
           href={link.url} 

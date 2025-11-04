@@ -1,11 +1,10 @@
 ---
 import { headerMenu, type MenuItem } from '@data/menu';
-import { headerSetting, siteConfig } from '@data/config';
+import { headerSetting } from '@data/config';
 import Logo from '@components/Logo.astro';
-import { Menu, X, ChevronDown, Plus, PlusCircle, ArrowRightCircle, HandHeart, Instagram, Linkedin, Github, Mail, Feather } from 'lucide-astro';
+import { Menu, X, ChevronDown, Plus, PlusCircle, ArrowRightCircle, HandHeart } from 'lucide-astro';
 import Button from '@components/ui/Button.astro';
 import SocialBar from '@components/ui/SocialBar.astro';
-import XIcon from '@components/icons/X.astro';
 
 interface Props {
     overlayMode?: boolean;
@@ -264,25 +263,14 @@ const isCurrentPage = (link: string) => {
 
             {/* Right: Social Icons + Donate Button */}
             <div class="flex items-center gap-4">
-                {/* Social Icons */}
-                <div class="flex items-center gap-3">
-                    {siteConfig.socialLinks.map((link) => (
-                        <a
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`Follow us on ${link.icon}`}
-                            class="text-nav-text hover:text-nav-text-hover transition-colors duration-200"
-                        >
-                            {link.icon === 'x' && <XIcon size={20} class="text-nav-text hover:text-nav-text-hover transition-colors duration-200" />}
-                            {link.icon === 'instagram' && <Instagram size={20} />}
-                            {link.icon === 'github' && <Github size={20} />}
-                            {link.icon === 'linkedin' && <Linkedin size={20} />}
-                            {link.icon === 'mail' && <Mail size={20} />}
-                            {link.icon === 'nostr' && <Feather size={20} />}
-                        </a>
-                    ))}
-                </div>
+                {/* Social Icons - Only showing X and Instagram */}
+                <SocialBar 
+                    iconSize={20} 
+                    gap="gap-3" 
+                    colorClass="text-nav-text" 
+                    hoverColorClass="hover:text-nav-text-hover"
+                    visibleIcons={['x', 'instagram']}
+                />
                 
                 {/* Donate Button */}
                 <Button href={ctaButton.link} variant="primary">{ctaButton.name}</Button>
