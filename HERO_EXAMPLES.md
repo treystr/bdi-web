@@ -79,7 +79,7 @@ const heroContent = {
 
 ---
 
-## 3. Offset Layout (Left Aligned)
+## 3. Offset Layout with Gradient (Left Aligned)
 
 ```astro
 ---
@@ -92,8 +92,9 @@ const heroContent = {
     description: "Have questions? Want to get involved? We'd love to hear from you.",
     height: "half", // 50vh - compact
     layout: "offset-left",
+    background: "light", // Gradient color for text readability (auto-enabled for offset)
     backgroundImage: contactBg,
-    overlayOpacity: 0.75,
+    overlayOpacity: 0.3, // Lighter since gradient provides coverage
     textAlign: "left",
     contentPosition: "center",
     buttons: [
@@ -102,7 +103,8 @@ const heroContent = {
             link: "#contact-form",
             variant: "primary"
         }
-    ]
+    ],
+    // showGradient: false, // Optional: disable automatic gradient
 };
 ---
 
@@ -110,6 +112,12 @@ const heroContent = {
 ```
 
 **Use for**: Contact pages, forms, asymmetric designs
+
+**New Feature**: Offset layouts now automatically show a gradient overlay that:
+- Provides solid background color behind text for readability
+- Gradually fades to transparent to reveal the hero image
+- Color matches the `background` prop (`base`/`light`/`dark`)
+- Can be disabled with `showGradient: false`
 
 ---
 
@@ -276,6 +284,34 @@ const heroContent = {
 - **0.5-0.6**: Light overlay, let background shine through
 - **0.7-0.8**: Balanced (recommended for most cases)
 - **0.8-0.9**: Heavy overlay for better text contrast
+- **0.3-0.4**: Lighter overlay when using gradient (offset layouts)
+
+## Gradient Overlay (New Feature)
+
+**Automatic for Offset Layouts** - Provides text readability while showcasing hero image
+
+### How It Works
+- **Automatically enabled** for `offset-left` and `offset-right` layouts
+- Creates solid-to-transparent gradient behind text
+- Extends ~200px beyond text content for depth
+- Direction follows layout (left→right for offset-left, right←left for offset-right)
+
+### Configuration
+
+```astro
+background: "base" | "light" | "dark"  // Required: Gradient color
+showGradient: true | false             // Optional: Override auto-enable (default: auto)
+```
+
+### Color Options
+- **`base`**: Light blue-white (`rgb(248, 249, 255)`)
+- **`light`**: Lighter blue (`rgb(238, 241, 255)`)  
+- **`dark`**: Dark navy (`rgb(26, 31, 60)`)
+
+### Best Practices
+- Use lighter `overlayOpacity` (0.3-0.4) with gradient enabled
+- Match `background` to your page theme for consistency
+- Disable with `showGradient: false` if image is already high-contrast
 
 ## Migration from FullScreenHero
 

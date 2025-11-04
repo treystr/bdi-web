@@ -16,9 +16,11 @@ const seoDescription = "Our Initiative is building a grassroots Bitcoin circular
 const heroContent = {
     title: "Building a Bitcoin Circular Economy in the Nation's Capital",
     description: "The Bitcoin District Initiative is a 501(c)(3) tax-exempt not-for-profit organization dedicated to advancing grassroots Bitcoin adoption in Washington, DC.",
-    overlayOpacity: 0.7,
+    overlayOpacity: 0.9, // Lighter overlay since gradient adds coverage
     height: "large" as const, // 65vh for modern balanced look
-    layout: "offset-left" as const,
+    layout: "centered" as const,
+    background: "base" as const, // Gradient color for text readability
+    gradientOverlay: false,
     buttons: [
         {
             text: "Our Initiatives",

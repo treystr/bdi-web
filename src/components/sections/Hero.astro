@@ -56,6 +56,8 @@ interface HeroContent {
         type?: string; // e.g., 'video/mp4'
     };
     overlayOpacity?: number; // 0-1
+    background?: 'base' | 'light' | 'dark'; // For gradient color
+    showGradient?: boolean; // Optional override (undefined = auto for offset)
     
     // Content positioning
     contentPosition?: 'top' | 'center' | 'bottom';
@@ -127,6 +129,21 @@ const aspectRatioMap = {
     '3/2': 'aspect-[3/2]'
 };
 const splitImageAspect = content.splitContent?.imageAspect ?? '4/3';
+
+// Gradient overlay for offset layouts
+const background = content.background ?? 'base';
+const shouldShowGradient = content.showGradient !== false && isOffsetLayout;
+
+const gradientColors = {
+    'base': 'rgb(248, 249, 255)', // --color-background
+    'light': 'rgb(238, 241, 255)', // --color-background-light
+    'dark': 'rgb(26, 31, 60)' // --color-background-dark
+};
+
+// Text color based on gradient background (for readability)
+const textColorClass = shouldShowGradient 
+    ? (background === 'dark' ? 'text-white' : 'text-body-base')
+    : 'text-white'; // Default white for non-gradient layouts
 ---
 
 <section class={`hero-section header-offset relative w-full overflow-hidden ${heightClasses[height]}`}>
@@ -163,6 +180,14 @@ const splitImageAspect = content.splitContent?.imageAspect ?? '4/3';
         class="hero-overlay absolute inset-0 w-full h-full"
         style={`opacity: ${opacity};`}
     ></div>
+
+    {/* Gradient Overlay for Offset Layouts (hidden on mobile) */}
+    {shouldShowGradient && (
+        <div 
+            class={`hidden md:block absolute inset-y-0 ${layout === 'offset-left' ? 'left-0' : 'right-0'} w-[1096px] pointer-events-none z-[5]`}
+            style={`background: linear-gradient(to ${layout === 'offset-left' ? 'right' : 'left'}, ${gradientColors[background]} 0%, ${gradientColors[background]} 40%, transparent 100%);`}
+        ></div>
+    )}
 
     {/* Content Container */}
     <div class={`relative z-10 w-full h-full flex flex-col ${positionClasses[contentPosition]}`}>
@@ -244,19 +269,19 @@ const splitImageAspect = content.splitContent?.imageAspect ?? '4/3';
             </div>
         ) : (
             /* Centered and Offset Layouts */
-            <div class={`w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16 ${isOffsetLayout ? 'flex' : ''} ${layout === 'offset-left' ? 'justify-start' : layout === 'offset-right' ? 'justify-end' : ''}`}>
-                <div class={`${isOffsetLayout ? 'max-w-2xl' : 'site-container--hero'} ${!isOffsetLayout ? 'mx-auto' : ''} ${alignmentClasses[effectiveTextAlign]}`}>
+            <div class={`w-full ${isOffsetLayout ? 'pl-12 md:pl-16 lg:pl-20 pr-4' : 'px-4'} sm:px-6 lg:px-8 py-12 md:py-16 ${isOffsetLayout ? 'flex' : ''} ${layout === 'offset-left' ? 'justify-start' : layout === 'offset-right' ? 'justify-end' : ''}`}>
+                <div class={`${isOffsetLayout ? 'max-w-4xl' : 'site-container--hero'} ${!isOffsetLayout ? 'mx-auto' : ''} ${alignmentClasses[effectiveTextAlign]}`}>
                     {content.eyebrow && (
-                        <div class="eyebrow-text text-white/90 text-sm font-semibold uppercase tracking-wider mb-3" data-aos="fade-up">
+                        <div class={`eyebrow-text ${textColorClass}/90 text-sm font-semibold uppercase tracking-wider mb-3`} data-aos="fade-up">
                             {content.eyebrow}
                         </div>
                     )}
-                    <h1 class="text-white hero-title mb-4 sm:mb-6" data-aos="fade-up" data-aos-delay="100">
+                    <h1 class={`${textColorClass} hero-title mb-4 sm:mb-6`} data-aos="fade-up" data-aos-delay="100">
                         {content.title}
                     </h1>
                     
                     {content.description && (
-                        <p class={`text-white text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 opacity-90 max-w-4xl ${effectiveTextAlign === 'center' ? 'mx-auto' : ''}`} data-aos="fade-up" data-aos-delay="200">
+                        <p class={`${textColorClass} text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 opacity-90 max-w-4xl ${effectiveTextAlign === 'center' ? 'mx-auto' : ''}`} data-aos="fade-up" data-aos-delay="200">
                             {content.description}
                         </p>
                     )}
