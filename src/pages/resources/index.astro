@@ -2,6 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
 import BlogPost from '@components/blog/BlogPost.astro';
+import TabSwitcher from '@components/ui/TabSwitcher.astro';
 import { getCollection } from 'astro:content';
 import { getCategoryBySlug } from '@data/categories';
 
@@ -38,6 +39,13 @@ const onboardingPosts = allPosts
     .filter(post => post.data.categories?.includes('Onboarding'))
     .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
     .slice(0, 6);
+
+// Tab configuration
+const tabs = [
+    { id: 'businesses', label: 'For Businesses', icon: '🏢' },
+    { id: 'onboarding', label: 'For Onboarding', icon: '🤝' },
+    { id: 'learners', label: 'For Learners', icon: '📚' }
+];
 ---
 
 <Layout title={seoTitle} description={seoDescription}>
@@ -47,139 +55,178 @@ const onboardingPosts = allPosts
         background="base" 
     />
 
-    <!-- For Businesses Section -->
-    <section class="py-xsmall bg-background-light">
-        <div class="site-container--content mx-auto px-4">
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold mb-3" data-aos="fade-up">
-                    For Businesses
-                </h2>
-                <p class="text-body-base/80 text-lg mb-6 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
-                    {businessCategory?.description || 'Resources for businesses accepting Bitcoin'}
-                </p>
+    <TabSwitcher tabs={tabs} defaultTab="businesses" />
+
+    <!-- Tab Panels Container -->
+    <div class="tab-panels-container">
+        <!-- For Businesses Panel -->
+        <section 
+            class="tab-panel py-xsmall bg-background" 
+            data-tab-panel="businesses"
+            role="tabpanel"
+            id="panel-businesses"
+            aria-labelledby="tab-businesses"
+        >
+            <div class="site-container--content mx-auto px-4">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-3" data-aos="fade-up">
+                        For Businesses
+                    </h2>
+                    <p class="text-body-base/80 text-lg mb-6 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
+                        {businessCategory?.description || 'Resources for businesses accepting Bitcoin'}
+                    </p>
+                </div>
+
+                {businessPosts.length > 0 ? (
+                    <>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                            {businessPosts.map((post, index) => (
+                                <BlogPost
+                                    title={post.data.title}
+                                    excerpt={post.data.excerpt}
+                                    featuredImage={post.data.featuredImage || ''}
+                                    publishDate={post.data.publishDate}
+                                    categories={post.data.categories || []}
+                                    slug={post.id}
+                                    index={index}
+                                />
+                            ))}
+                        </div>
+                        <div class="text-center" data-aos="fade-up">
+                            <a 
+                                href="/category/merchants" 
+                                class="btn btn-secondary inline-flex items-center gap-2"
+                            >
+                                View All Business Resources
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </>
+                ) : (
+                    <p class="text-body-base/60 italic">No business resources available yet. Check back soon!</p>
+                )}
             </div>
+        </section>
 
-            {businessPosts.length > 0 ? (
-                <>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                        {businessPosts.map((post, index) => (
-                            <BlogPost
-                                title={post.data.title}
-                                excerpt={post.data.excerpt}
-                                featuredImage={post.data.featuredImage || ''}
-                                publishDate={post.data.publishDate}
-                                categories={post.data.categories || []}
-                                slug={post.id}
-                                index={index}
-                            />
-                        ))}
-                    </div>
-                    <div class="text-center" data-aos="fade-up">
-                        <a 
-                            href="/category/merchants" 
-                            class="btn btn-secondary inline-flex items-center gap-2"
-                        >
-                            View All Business Resources
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </>
-            ) : (
-                <p class="text-body-base/60 italic">No business resources available yet. Check back soon!</p>
-            )}
-        </div>
-    </section>
+        <!-- For Onboarding Panel -->
+        <section 
+            class="tab-panel py-xsmall bg-background hidden" 
+            data-tab-panel="onboarding"
+            role="tabpanel"
+            id="panel-onboarding"
+            aria-labelledby="tab-onboarding"
+        >
+            <div class="site-container--content mx-auto px-4">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-3" data-aos="fade-up">
+                        For Onboarding
+                    </h2>
+                    <p class="text-body-base/80 text-lg mb-6 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
+                        {onboardingCategory?.description || 'Resources for volunteers onboarding businesses'}
+                    </p>
+                </div>
 
-    <!-- For Onboarding Section -->
-    <section class="py-xsmall bg-background">
-        <div class="site-container--content mx-auto px-4">
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold mb-3" data-aos="fade-up">
-                    For Onboarding
-                </h2>
-                <p class="text-body-base/80 text-lg mb-6 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
-                    {onboardingCategory?.description || 'Resources for volunteers onboarding businesses'}
-                </p>
+                {onboardingPosts.length > 0 ? (
+                    <>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                            {onboardingPosts.map((post, index) => (
+                                <BlogPost
+                                    title={post.data.title}
+                                    excerpt={post.data.excerpt}
+                                    featuredImage={post.data.featuredImage || ''}
+                                    publishDate={post.data.publishDate}
+                                    categories={post.data.categories || []}
+                                    slug={post.id}
+                                    index={index}
+                                />
+                            ))}
+                        </div>
+                        <div class="text-center" data-aos="fade-up">
+                            <a 
+                                href="/category/onboarding" 
+                                class="btn btn-secondary inline-flex items-center gap-2"
+                            >
+                                View All Onboarding Resources
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </>
+                ) : (
+                    <p class="text-body-base/60 italic">No onboarding resources available yet. Check back soon!</p>
+                )}
             </div>
+        </section>
 
-            {onboardingPosts.length > 0 ? (
-                <>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                        {onboardingPosts.map((post, index) => (
-                            <BlogPost
-                                title={post.data.title}
-                                excerpt={post.data.excerpt}
-                                featuredImage={post.data.featuredImage || ''}
-                                publishDate={post.data.publishDate}
-                                categories={post.data.categories || []}
-                                slug={post.id}
-                                index={index}
-                            />
-                        ))}
-                    </div>
-                    <div class="text-center" data-aos="fade-up">
-                        <a 
-                            href="/category/onboarding" 
-                            class="btn btn-secondary inline-flex items-center gap-2"
-                        >
-                            View All Onboarding Resources
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </>
-            ) : (
-                <p class="text-body-base/60 italic">No onboarding resources available yet. Check back soon!</p>
-            )}
-        </div>
-    </section>
+        <!-- For Learners Panel -->
+        <section 
+            class="tab-panel py-xsmall bg-background hidden" 
+            data-tab-panel="learners"
+            role="tabpanel"
+            id="panel-learners"
+            aria-labelledby="tab-learners"
+        >
+            <div class="site-container--content mx-auto px-4">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-3" data-aos="fade-up">
+                        For Learners
+                    </h2>
+                    <p class="text-body-base/80 text-lg mb-6 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
+                        {individualCategory?.description || 'Resources for learning about Bitcoin'}
+                    </p>
+                </div>
 
-    <!-- For Learners Section -->
-    <section class="py-xsmall bg-background-light">
-        <div class="site-container--content mx-auto px-4">
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold mb-3" data-aos="fade-up">
-                    For Learners
-                </h2>
-                <p class="text-body-base/80 text-lg mb-6 max-w-3xl" data-aos="fade-up" data-aos-delay="100">
-                    {individualCategory?.description || 'Resources for learning about Bitcoin'}
-                </p>
+                {individualPosts.length > 0 ? (
+                    <>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                            {individualPosts.map((post, index) => (
+                                <BlogPost
+                                    title={post.data.title}
+                                    excerpt={post.data.excerpt}
+                                    featuredImage={post.data.featuredImage || ''}
+                                    publishDate={post.data.publishDate}
+                                    categories={post.data.categories || []}
+                                    slug={post.id}
+                                    index={index}
+                                />
+                            ))}
+                        </div>
+                        <div class="text-center" data-aos="fade-up">
+                            <a 
+                                href="/category/individuals" 
+                                class="btn btn-secondary inline-flex items-center gap-2"
+                            >
+                                View All Learning Resources
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </>
+                ) : (
+                    <p class="text-body-base/60 italic">No learning resources available yet. Check back soon!</p>
+                )}
             </div>
-
-            {individualPosts.length > 0 ? (
-                <>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                        {individualPosts.map((post, index) => (
-                            <BlogPost
-                                title={post.data.title}
-                                excerpt={post.data.excerpt}
-                                featuredImage={post.data.featuredImage || ''}
-                                publishDate={post.data.publishDate}
-                                categories={post.data.categories || []}
-                                slug={post.id}
-                                index={index}
-                            />
-                        ))}
-                    </div>
-                    <div class="text-center" data-aos="fade-up">
-                        <a 
-                            href="/category/individuals" 
-                            class="btn btn-secondary inline-flex items-center gap-2"
-                        >
-                            View All Learning Resources
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </>
-            ) : (
-                <p class="text-body-base/60 italic">No learning resources available yet. Check back soon!</p>
-            )}
-        </div>
-    </section>
+        </section>
+    </div>
 </Layout>
+
+<style>
+    .tab-panels-container {
+        min-height: 500px;
+    }
+
+    .tab-panel {
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .tab-panel.hidden {
+        display: none;
+        opacity: 0;
+    }
+</style>
 
