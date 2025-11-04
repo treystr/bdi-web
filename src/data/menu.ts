@@ -32,7 +32,7 @@ export const footerMenu = [
 //  { name: 'Transparency', link: '/transparency' },
 //  { name: 'FAQ', link: '/faq' },
   { name: 'Blog', link: '/blog' },
-  { name: 'Join Bitcoin District', link: 'https://bitcoindistrict.org' },
+  //{ name: 'Join Bitcoin District', link: 'https://bitcoindistrict.org' },
   { name: 'Contact Us', link: '/contact' }
 ];
 

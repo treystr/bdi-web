@@ -5,6 +5,7 @@ publishDate: "2025-10-18"
 featuredImage: "./images/square_test_compass.jpg"
 publish: true
 categories: ["Businesses"]
+tags: ["featured"]
 
 seo:
   title: "Square's Bitcoin Update for Small Businesses"

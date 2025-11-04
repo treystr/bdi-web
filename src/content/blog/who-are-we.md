@@ -1,6 +1,6 @@
 ---
 title: "What is the Bitcoin District Initiative?"
-excerpt: "Learn what the Bitcoin District Initiative is—and how it’s helping build a Bitcoin circular economy in Washington, DC."
+excerpt: "Learn what the Bitcoin District Initiative is—and how it's helping build a Bitcoin circular economy in Washington, DC."
 featuredImage: "@assets/images/hero/hero-bizgrid.jpg"
 publishDate: "2025-07-11"
 publish: true

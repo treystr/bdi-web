@@ -1,0 +1,383 @@
+---
+import { getCollection } from 'astro:content';
+import BlogPostCard from '@components/blog/BlogPostCard.astro';
+import Eyebrow from '@components/ui/Eyebrow.astro';
+import Button from '@components/ui/Button.astro';
+import { ChevronLeft, ChevronRight } from 'lucide-astro';
+import { getPaddingClass, getBackgroundColor, getTextColor } from '@utils/styleUtils';
+import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
+
+export interface Props {
+    content?: {
+        eyebrow?: string;
+        title?: string;
+        description?: string;
+        button?: {
+            text: string;
+            link: string;
+            variant?: 'primary' | 'secondary' | 'ghostLight' | 'ghostDark';
+        };
+    };
+    background?: ThemeColor;
+    padding?: PaddingSize;
+    paddingTop?: PaddingSize;
+    paddingBottom?: PaddingSize;
+    showFeatured?: boolean;
+    fallbackToAll?: boolean;
+    minPosts?: number;
+    showLatest?: boolean;
+    limit?: number;
+    filterByCategory?: string;
+    filterByTag?: string;
+}
+
+const {
+    content,
+    background = 'base',
+    showFeatured = false,
+    fallbackToAll = true,
+    minPosts = 3,
+    showLatest = true,
+    limit = 12,
+    filterByCategory,
+    filterByTag,
+} = Astro.props;
+
+// Get background and text colors
+const bgColor = getBackgroundColor(background);
+const textColor = getTextColor(background);
+const paddingClass = getPaddingClass({
+    padding: Astro.props.padding,
+    paddingTop: Astro.props.paddingTop,
+    paddingBottom: Astro.props.paddingBottom,
+});
+
+// Fetch all published posts
+const allPosts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.DEV || data.publish !== false;
+});
+
+// Filter posts based on props
+let filteredPosts = allPosts;
+
+// Filter by category if specified
+if (filterByCategory) {
+    filteredPosts = filteredPosts.filter((post) =>
+        post.data.categories?.includes(filterByCategory)
+    );
+}
+
+// Filter by tag if specified
+if (filterByTag) {
+    filteredPosts = filteredPosts.filter((post) =>
+        post.data.tags?.includes(filterByTag)
+    );
+}
+
+// Handle featured posts logic
+if (showFeatured) {
+    const featuredPosts = filteredPosts.filter((post) =>
+        post.data.tags?.includes('featured')
+    );
+    
+    // If we have enough featured posts, use only those
+    if (featuredPosts.length >= minPosts) {
+        filteredPosts = featuredPosts;
+    } else if (!fallbackToAll) {
+        // If not enough featured and fallback disabled, use what we have
+        filteredPosts = featuredPosts;
+    }
+    // Otherwise, keep all filtered posts (fallback behavior)
+}
+
+// Sort by latest if specified
+if (showLatest) {
+    filteredPosts = filteredPosts.sort(
+        (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+    );
+}
+
+// Limit the number of posts
+filteredPosts = filteredPosts.slice(0, limit);
+
+// Generate unique ID for this carousel instance
+const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+{filteredPosts.length > 0 && (
+    <section class:list={['blog-carousel-section', bgColor, paddingClass]}>
+        <div class="blog-carousel-container">
+            {/* Header */}
+            {(content?.title || content?.description) && (
+                <div class="blog-carousel-header">
+                    {content?.eyebrow && <Eyebrow text={content.eyebrow} background={background} />}
+                    {content?.title && (
+                        <h2 class:list={['blog-carousel-title', textColor]} data-aos="fade-up">
+                            {content.title}
+                        </h2>
+                    )}
+                    {content?.description && (
+                        <p class:list={['blog-carousel-description', textColor]} data-aos="fade-up" data-aos-delay="100">
+                            {content.description}
+                        </p>
+                    )}
+                </div>
+            )}
+
+            {/* Carousel */}
+            <div class="blog-carousel-wrapper" data-aos="fade-up" data-aos-delay="200">
+                <div class="blog-carousel-track" id={carouselId} data-carousel-track>
+                    {filteredPosts.map((post) => (
+                        <div class="blog-carousel-slide">
+                            <BlogPostCard
+                                title={post.data.title}
+                                featuredImage={post.data.featuredImage}
+                                slug={post.id}
+                                publishDate={post.data.publishDate}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Navigation */}
+            {filteredPosts.length > 1 && (
+                <div class="blog-carousel-nav">
+                    <button
+                        class="blog-carousel-nav__button blog-carousel-nav__button--prev"
+                        data-carousel-prev
+                        data-carousel-id={carouselId}
+                        aria-label="Previous posts"
+                    >
+                        <ChevronLeft size={24} />
+                    </button>
+                    <button
+                        class="blog-carousel-nav__button blog-carousel-nav__button--next"
+                        data-carousel-next
+                        data-carousel-id={carouselId}
+                        aria-label="Next posts"
+                    >
+                        <ChevronRight size={24} />
+                    </button>
+                </div>
+            )}
+
+            {/* Optional button */}
+            {content?.button && (
+                <div class="blog-carousel-footer" data-aos="fade-up" data-aos-delay="300">
+                    <Button href={content.button.link} variant={content.button.variant || 'primary'}>
+                        {content.button.text}
+                    </Button>
+                </div>
+            )}
+        </div>
+    </section>
+)}
+
+<style>
+    .blog-carousel-section {
+        position: relative;
+        width: 100%;
+    }
+
+    .blog-carousel-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .blog-carousel-header {
+        max-width: 42rem;
+        margin-bottom: 3rem;
+    }
+
+    .blog-carousel-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+    }
+
+    .blog-carousel-description {
+        font-size: 1.125rem;
+        line-height: 1.7;
+        opacity: 0.9;
+    }
+
+    .blog-carousel-wrapper {
+        position: relative;
+        margin-bottom: 3rem;
+    }
+
+    .blog-carousel-track {
+        display: flex;
+        gap: 1.5rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 0.5rem 0;
+    }
+
+    .blog-carousel-track::-webkit-scrollbar {
+        display: none;
+    }
+
+    .blog-carousel-slide {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        width: calc(100% - 2rem);
+        max-width: 500px;
+    }
+
+    /* Navigation buttons */
+    .blog-carousel-nav {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .blog-carousel-nav__button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        border: 2px solid var(--color-primary);
+        background: white;
+        color: var(--color-primary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .blog-carousel-nav__button:hover:not(:disabled) {
+        background: var(--color-primary);
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .blog-carousel-nav__button:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+    .blog-carousel-footer {
+        text-align: center;
+    }
+
+    /* Responsive breakpoints */
+    
+    /* Mobile: 1 card + 40% peek */
+    @media (max-width: 767px) {
+        .blog-carousel-slide {
+            width: calc(100% - 35%);
+        }
+        
+        .blog-carousel-title {
+            font-size: 2rem;
+        }
+    }
+
+    /* Tablet: 2 cards + peek */
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .blog-carousel-slide {
+            width: calc(50% - 1rem);
+        }
+    }
+
+    /* Desktop: 3 cards + peek */
+    @media (min-width: 1024px) {
+        .blog-carousel-slide {
+            width: calc(33.333% - 1rem);
+        }
+    }
+
+    /* Large desktop: cap at 4 cards */
+    @media (min-width: 1400px) {
+        .blog-carousel-slide {
+            width: calc(25% - 1.125rem);
+            max-width: 350px;
+        }
+    }
+</style>
+
+<script>
+    function initCarousel(carouselId: string) {
+        const track = document.getElementById(carouselId);
+        if (!track) return;
+
+        const prevButton = document.querySelector(
+            `[data-carousel-prev][data-carousel-id="${carouselId}"]`
+        ) as HTMLButtonElement;
+        const nextButton = document.querySelector(
+            `[data-carousel-next][data-carousel-id="${carouselId}"]`
+        ) as HTMLButtonElement;
+
+        if (!prevButton || !nextButton) return;
+
+        // Update button states based on scroll position
+        function updateButtonStates() {
+            if (!track) return;
+            const isAtStart = track.scrollLeft <= 10;
+            const isAtEnd = track.scrollLeft >= track.scrollWidth - track.clientWidth - 10;
+
+            prevButton.disabled = isAtStart;
+            nextButton.disabled = isAtEnd;
+        }
+
+        // Scroll to next/prev
+        function scrollNext() {
+            if (!track) return;
+            const slideWidth = track.querySelector('.blog-carousel-slide')?.clientWidth || 0;
+            const gap = 24; // 1.5rem
+            track.scrollBy({ left: slideWidth + gap, behavior: 'smooth' });
+        }
+
+        function scrollPrev() {
+            if (!track) return;
+            const slideWidth = track.querySelector('.blog-carousel-slide')?.clientWidth || 0;
+            const gap = 24; // 1.5rem
+            track.scrollBy({ left: -(slideWidth + gap), behavior: 'smooth' });
+        }
+
+        // Event listeners
+        prevButton.addEventListener('click', scrollPrev);
+        nextButton.addEventListener('click', scrollNext);
+        track.addEventListener('scroll', updateButtonStates);
+
+        // Initialize button states
+        updateButtonStates();
+
+        // Update on window resize
+        let resizeTimeout: ReturnType<typeof setTimeout>;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(updateButtonStates, 100);
+        });
+    }
+
+    // Initialize all carousels on the page
+    document.addEventListener('DOMContentLoaded', () => {
+        const carousels = document.querySelectorAll('[data-carousel-track]');
+        carousels.forEach((carousel) => {
+            if (carousel.id) {
+                initCarousel(carousel.id);
+            }
+        });
+    });
+
+    // Re-initialize after view transitions (if using Astro view transitions)
+    document.addEventListener('astro:page-load', () => {
+        const carousels = document.querySelectorAll('[data-carousel-track]');
+        carousels.forEach((carousel) => {
+            if (carousel.id) {
+                initCarousel(carousel.id);
+            }
+        });
+    });
+</script>
+

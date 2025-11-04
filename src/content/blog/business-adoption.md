@@ -5,6 +5,7 @@ featuredImage: "./images/lemonade.jpg"
 publishDate: "2025-08-26"
 publish: true
 categories: ["Initiatives"]
+tags: ["featured"]
 
 seo:
   title: "Bitcoin Local Business Adoption in DC"

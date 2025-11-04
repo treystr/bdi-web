@@ -1,10 +1,11 @@
 ---
-title: "Why We’re a Bitcoin-Only Nonprofit"
-excerpt: "Bitcoin isn’t one of many options—it’s the only open, decentralized, and incorruptible foundation for freedom technology. Here’s why we stand by it."
+title: "Why We're a Bitcoin-Only Nonprofit"
+excerpt: "Bitcoin isn't one of many options—it's the only open, decentralized, and incorruptible foundation for freedom technology. Here's why we stand by it."
 publishDate: "2025-10-20"
 featuredImage: "./images/btc_blackhole.jpg"
 publish: true
 categories: ["Learn"]
+tags: ["featured"]
 
 seo:
   title: "Why We're a Bitcoin-Only Nonprofit"
