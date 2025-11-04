@@ -1,22 +1,28 @@
 ---
 import Layout from "@layouts/Layout.astro"
 import PageHeader from "@components/sections/PageHeader.astro"
-import CtaBanner from "@components/sections/CtaBanner.astro"
+import SplitPanel from "@components/sections/SplitPanel.astro"
+import mapPinImage from "@assets/images/map_pin.jpg"
+import geyserImage from "@assets/images/geyser.jpg"
 
 const seoTitle = "Support Our Mission"
 const seoDescription = "Support the Bitcoin District Initiative's mission to build a Bitcoin circular economy in Washington, DC. Your tax-deductible donation funds education and business adoption."
 
 const pageHeaderContent = {
     title: "Support Our Mission",
-    description: "Help Transform the Nation's Capital into a Bitcoin Circular Economy"
+    description: "If you like our proof-of-work and want to see more of it, please support us with a donation in fiat or Bitcoin. Every sat goes a long way to ensuring we can continue to reach and educate new people, businesses and organizations across the DMV."
 };
 
 const zapriteDonateUrl = "https://pay.zaprite.com/pl_1DjlHBRtHC"
 
-// Primary CTA
+// Primary Donation Split Panel
 const heroDonate = {
-    title: "Make Your Tax-Deductible Donation",
+    headline: "Help us turn DC into a Bitcoin hub with a tax-deductible donation.",
     description: "For a tax receipt, please include your name and email when donating through Zaprite.",
+    image: {
+        src: mapPinImage,
+        alt: "Washington DC map with Bitcoin District location"
+    },
     buttons: [
         {
             text: "Donate Now",
@@ -33,29 +39,35 @@ const heroDonate = {
     ]
 }
 
-// Geyser support CTA
+// Geyser support Split Panel
 const geyserContent = {
-    title: "Prefer Geyser? Support us there.",
-    button: {
-        text: "Support on Geyser",
-        link: "https://geyser.fund/project/bitcoindc",
-        variant: "secondary" as const,
-        target: "_blank" as const
+    headline: "Find us on Geyser.",
+    description: "Geyser is a popular crowdfunding platform powered by Bitcoin.",
+    image: {
+        src: geyserImage,
+        alt: "Geyser crowdfunding platform"
     },
-    description: "Geyser is a popular crowdfunding platform powered by Bitcoin."
+    buttons: [
+        {
+            text: "Support us on Geyser",
+            link: "https://geyser.fund/project/bitcoindc",
+            variant: "primary" as const,
+            target: "_blank" as const
+        }
+    ]
 }
 ---
 
 <Layout title={seoTitle} description={seoDescription}>
     <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
     
-    <!-- Primary Donation CTA -->
-    <CtaBanner 
+    <!-- Primary Donation Split Panel -->
+    <SplitPanel 
         content={heroDonate}
-        variant="full-width"
-        background="dark"
-        padding="xsmall"
-        buttonSize="xxl"
+        imagePosition="right"
+        imageAspect="4/3"
+        background="light"
+        padding="base"
     />
 
     <!-- Mission & Impact Section -->
@@ -87,12 +99,13 @@ const geyserContent = {
         </div>
     </section>
     
-    <!-- Geyser Support CTA (compact) -->
-    <CtaBanner 
+    <!-- Geyser Support Split Panel -->
+    <SplitPanel 
         content={geyserContent}
-        variant="contained"
-        background="dark"
-        padding="xsmall"
-        buttonSize="lg"
+        imagePosition="left"
+        imageAspect="4/3"
+        background="light"
+        padding="base"
+        hideImageOnMobile={true}
     />
 </Layout>

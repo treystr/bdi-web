@@ -33,6 +33,9 @@ export interface Props {
     // Image display props
     imageAspect?: 'square' | '4/3' | '16/9' | '3/2';
     imageFit?: 'cover' | 'contain';
+    // Mobile visibility props
+    hideImageOnMobile?: boolean;
+    hideContentOnMobile?: boolean;
 }
 
 const {
@@ -46,6 +49,9 @@ const {
     // Image display props
     imageAspect = '4/3',
     imageFit = 'cover',
+    // Mobile visibility props
+    hideImageOnMobile = false,
+    hideContentOnMobile = false,
 } = Astro.props;
 
 const { eyebrow, headline, subheadline, description, image, buttons = [] } = content;
@@ -74,28 +80,18 @@ const objectFitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover
             class:list={[
                 'grid gap-16 items-center',
                 'md:grid-cols-2',
-                imagePosition === 'left' ? 'md:grid-cols-[1fr_1fr]' : '',
             ]}
         >
-            {/* Image Side */}
-            {
-                imagePosition === 'left' && (
-                    <div class:list={["relative overflow-hidden rounded-[var(--border-radius-base)] border border-black", aspectClass]}>
-                        <Image
-                            {src}
-                            {alt}
-                            width={800}
-                            height={600}
-                            class:list={["w-full h-full", objectFitClass]}
-                            quality={80}
-                            format="webp"
-                        />
-                    </div>
-                )
-            }
-
-            {/* Content Side */}
-            <div class:list={[textColor]}>
+            {/* Content Side - Always renders first for mobile */}
+            <div
+                class:list={[
+                    textColor,
+                    // Mobile visibility
+                    hideContentOnMobile ? 'hidden md:block' : '',
+                    // Desktop ordering: left=order-1, right=order-2
+                    imagePosition === 'left' ? 'md:order-2' : 'md:order-1',
+                ]}
+            >
                 {eyebrow && <Eyebrow text={eyebrow} background={background} />}
                 <h2 class={textColor} data-aos="fade-up">{headline}</h2>
                 {
@@ -133,26 +129,30 @@ const objectFitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover
                 }
             </div>
 
-            {/* Image Side (right position) */}
-            {
-                imagePosition === 'right' && (
-                    <div
-                        class:list={["relative overflow-hidden rounded-[var(--border-radius-base)] border border-black", aspectClass]}
-                        data-aos="fade-up"
-                        data-aos-delay="100"
-                    >
-                        <Image
-                            {src}
-                            {alt}
-                            width={800}
-                            height={600}
-                            class:list={["w-full h-full", objectFitClass]}
-                            quality={80}
-                            format="webp"
-                        />
-                    </div>
-                )
-            }
+            {/* Image Side - Renders second for mobile */}
+            <div
+                class:list={[
+                    "relative overflow-hidden rounded-[var(--border-radius-base)] border border-black",
+                    aspectClass,
+                    // Mobile visibility
+                    hideImageOnMobile ? 'hidden md:block' : '',
+                    // Desktop ordering: left=order-1, right=order-2
+                    imagePosition === 'left' ? 'md:order-1' : 'md:order-2',
+                ]}
+                data-aos="fade-up"
+                data-aos-delay="100"
+            >
+                <Image
+                    {src}
+                    {alt}
+                    width={800}
+                    height={600}
+                    class:list={["w-full h-full", objectFitClass]}
+                    quality={80}
+                    format="webp"
+                />
+            </div>
         </div>
     </div>
 </section>
+
