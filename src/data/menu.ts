@@ -8,6 +8,13 @@ export interface MenuItem {
     mobileOnly?: boolean;
 }
 
+export interface SocialLink {
+    name: string;
+    url: string;
+    icon: 'instagram' | 'twitter';
+    ariaLabel: string;
+}
+
 export const headerMenu: MenuItem[] = [
     // { name: 'Theme Info', link: '/theme-info' },
     { name: 'Why Bitcoin?', link: '/why' },
@@ -23,6 +30,21 @@ export const headerMenu: MenuItem[] = [
       ]
   },
     { name: 'Join Bitcoin District', link: 'https://bitcoindistrict.org', mobileOnly: true }
+];
+
+export const socialLinks: SocialLink[] = [
+    {
+        name: 'Instagram',
+        url: 'https://instagram.com/btcdistrict',
+        icon: 'instagram',
+        ariaLabel: 'Follow us on Instagram'
+    },
+    {
+        name: 'X',
+        url: 'https://x.com/btcdistrict',
+        icon: 'twitter',
+        ariaLabel: 'Follow us on X (formerly Twitter)'
+    }
 ];
 
 export const footerMenu = [

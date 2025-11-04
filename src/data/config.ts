@@ -44,3 +44,13 @@ export const layoutSetting = {
     article: '800px'
   }
 }
+
+export const announcementBarSetting = {
+  enabled: true,
+  text: 'GOT QUESTIONS? JUST ASK!',
+  link: '/contact',
+  showOnPages: ['/', '/index'], // Pages to show the announcement bar on (empty array = all pages)
+  backgroundColor: 'bg-primary', // Use theme primary color (orange)
+  textColor: 'text-white',
+  dismissible: false // Future feature: allow users to dismiss
+}

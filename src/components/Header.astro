@@ -1,8 +1,8 @@
 ---
-import { headerMenu, type MenuItem } from '@data/menu';
+import { headerMenu, socialLinks, type MenuItem } from '@data/menu';
 import { headerSetting } from '@data/config';
 import Logo from '@components/Logo.astro';
-import { Menu, X, ChevronDown, Plus, PlusCircle, ArrowRightCircle, HandHeart } from 'lucide-astro';
+import { Menu, X, ChevronDown, Plus, PlusCircle, ArrowRightCircle, HandHeart, Instagram, Twitter } from 'lucide-astro';
 import Button from '@components/ui/Button.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
@@ -41,6 +41,17 @@ const isCurrentPage = (link: string) => {
         transform: translateY(0);
     }
     
+    /* Adjust header position when announcement bar is present */
+    body.has-announcement-bar header {
+        top: 38px; /* Height of announcement bar (py-2 = 8px top + 8px bottom + ~22px text height) */
+    }
+    
+    @media (max-width: 640px) {
+        body.has-announcement-bar header {
+            top: 34px; /* Slightly smaller on mobile due to smaller text */
+        }
+    }
+    
     /* Desktop navigation - removed hover accent line */
     .nav-item {
         position: relative;
@@ -71,6 +82,12 @@ const isCurrentPage = (link: string) => {
         bottom: 0 !important;
         width: 100vw !important;
         height: calc(100vh - 80px) !important;
+    }
+    
+    /* Adjust mobile menu when announcement bar is present */
+    body.has-announcement-bar .mobile-menu {
+        top: 114px !important; /* 80px header + 34px announcement bar */
+        height: calc(100vh - 114px) !important;
     }
     
     /* Mobile logo centering */
@@ -151,7 +168,7 @@ const isCurrentPage = (link: string) => {
 </style>
 
 <header class="fixed top-0 z-50 w-full left-0 bg-white border-b border-primary" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
-    <div class="site-container--content mx-auto px-4">
+    <div class="w-full mx-auto px-6 lg:px-8">
         <div class="flex justify-between items-center py-4 relative">
             {/* Mobile Menu Button - Left */}
             <button
@@ -172,87 +189,110 @@ const isCurrentPage = (link: string) => {
                 <Logo variant="header" />
             </div>
             
-            {/* Desktop Logo - Left */}
-            <div class="hidden lg:block">
-                <Logo variant="header" />
-            </div>
-            
-            <nav class="relative flex items-center gap-2 lg:gap-8" aria-label="Site Navigation">
-                {/* Desktop Menu */}
-                <ul class="hidden lg:flex lg:gap-8 items-center">
-                    {
-                        headerMenu.filter(item => !item.mobileOnly).map((item, index) => (
-                            <li class="relative group nav-item">
-                                <div class="flex items-center gap-1">
-                                    <a
-                                        href={item.link}
-                                        class:list={[
-                                            'text-small font-medium rounded-md px-2 py-1',
-                                            isCurrentPage(item.link)
-                                                ? 'text-nav-text-current font-semibold'
-                                                : 'text-nav-text hover:text-nav-text-hover',
-                                        ]}
-                                        aria-current={isCurrentPage(item.link) ? 'page' : undefined}
-                                    >
-                                        {item.name}
-                                        {item.children && item.showArrow && (
-                                            <ChevronDown
-                                                size={16}
-                                                class="transform transition-transform inline-block ml-1"
-                                                aria-hidden="true"
+            {/* Desktop Layout: Left Nav, Center Logo, Right Social/CTA */}
+            <div class="hidden lg:flex lg:items-center lg:justify-between lg:w-full">
+                {/* Left: Page Navigation */}
+                <nav class="flex items-center" aria-label="Site Navigation">
+                    <ul class="flex gap-6 items-center">
+                        {
+                            headerMenu.filter(item => !item.mobileOnly).map((item, index) => (
+                                <li class="relative group nav-item">
+                                    <div class="flex items-center gap-1">
+                                        <a
+                                            href={item.link}
+                                            class:list={[
+                                                'text-small font-medium rounded-md px-2 py-1',
+                                                isCurrentPage(item.link)
+                                                    ? 'text-nav-text-current font-semibold'
+                                                    : 'text-nav-text hover:text-nav-text-hover',
+                                            ]}
+                                            aria-current={isCurrentPage(item.link) ? 'page' : undefined}
+                                        >
+                                            {item.name}
+                                            {item.children && item.showArrow && (
+                                                <ChevronDown
+                                                    size={16}
+                                                    class="transform transition-transform inline-block ml-1"
+                                                    aria-hidden="true"
+                                                />
+                                            )}
+                                        </a>
+                                        {item.children && (
+                                            <button
+                                                type="button"
+                                                class="sr-only"
+                                                aria-expanded="false"
+                                                aria-label={item.name}
                                             />
                                         )}
-                                    </a>
+                                    </div>
                                     {item.children && (
-                                        <button
-                                            type="button"
-                                            class="sr-only"
-                                            aria-expanded="false"
-                                            aria-label={item.name}
-                                        />
+                                        <ul
+                                            class:list={[
+                                                'submenu desktop-submenu absolute mt-2 min-w-[200px] transition-all duration-200 opacity-0 invisible overflow-hidden z-[9999]',
+                                                index === headerMenu.filter(item => !item.mobileOnly).length - 1 ? 'right-0' : 'left-0',
+                                            ]}
+                                        >
+                                            {item.children.map((child, childIndex) => (
+                                                <li class="desktop-submenu-item">
+                                                    <a
+                                                        href={child.link}
+                                                        class:list={[
+                                                            'block px-4 text-small py-2',
+                                                            isCurrentPage(child.link)
+                                                                ? 'text-nav-text-current font-semibold'
+                                                                : 'text-nav-text hover:text-nav-text-hover',
+                                                        ]}
+                                                        aria-current={isCurrentPage(child.link) ? 'page' : undefined}
+                                                    >
+                                                        {child.name}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
                                     )}
-                                </div>
-                                {item.children && (
-                                    <ul
-                                        class:list={[
-                                            'submenu desktop-submenu absolute mt-2 min-w-[200px] transition-all duration-200 opacity-0 invisible overflow-hidden z-[9999]',
-                                            index === headerMenu.length - 1 ? 'right-0' : 'left-0',
-                                        ]}
-                                    >
-                                        {item.children.map((child, childIndex) => (
-                                            <li class="desktop-submenu-item">
-                                                <a
-                                                    href={child.link}
-                                                    class:list={[
-                                                        'block px-4 text-small py-2',
-                                                        isCurrentPage(child.link)
-                                                            ? 'text-nav-text-current font-semibold'
-                                                            : 'text-nav-text hover:text-nav-text-hover',
-                                                    ]}
-                                                    aria-current={isCurrentPage(child.link) ? 'page' : undefined}
-                                                >
-                                                    {child.name}
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </li>
-                        ))
-                    }
-                </ul>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </nav>
 
-                <Button href={ctaButton.link} variant="primary" class="!hidden lg:!inline-flex">{ctaButton.name}</Button>
-                
-                {/* Mobile giving icon - always visible on mobile */}
-                <a 
-                    href={ctaButton.link} 
-                    class="lg:hidden p-2 text-primary hover:text-primary-light transition-colors duration-200"
-                    aria-label="Donate - Support our cause"
-                >
-                    <HandHeart size={28} />
-                </a>
-            </nav>
+                {/* Center: Logo (20% larger) */}
+                <div class="absolute left-1/2 transform -translate-x-1/2 scale-[1.2]">
+                    <Logo variant="header" />
+                </div>
+
+                {/* Right: Social Icons + Donate Button */}
+                <div class="flex items-center gap-4">
+                    {/* Social Icons */}
+                    <div class="flex items-center gap-3">
+                        {socialLinks.map((social) => (
+                            <a
+                                href={social.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={social.ariaLabel}
+                                class="text-nav-text hover:text-nav-text-hover transition-colors duration-200"
+                            >
+                                {social.icon === 'instagram' && <Instagram size={20} />}
+                                {social.icon === 'twitter' && <Twitter size={20} />}
+                            </a>
+                        ))}
+                    </div>
+                    
+                    {/* Donate Button */}
+                    <Button href={ctaButton.link} variant="primary">{ctaButton.name}</Button>
+                </div>
+            </div>
+            
+            {/* Mobile giving icon - always visible on mobile */}
+            <a 
+                href={ctaButton.link} 
+                class="lg:hidden p-2 text-primary hover:text-primary-light transition-colors duration-200"
+                aria-label="Donate - Support our cause"
+            >
+                <HandHeart size={28} />
+            </a>
         </div>
     </div>
 </header>

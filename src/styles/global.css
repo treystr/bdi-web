@@ -615,6 +615,17 @@ body {
     @apply pt-24;
 }
 
+/* Add extra padding when announcement bar is present */
+body.has-announcement-bar .header-offset {
+    @apply pt-[7.5rem]; /* 96px (pt-24) + 24px (announcement bar) = 120px / 16 = 7.5rem */
+}
+
+@media (max-width: 640px) {
+    body.has-announcement-bar .header-offset {
+        @apply pt-[7.125rem]; /* Slightly less on mobile due to smaller announcement bar */
+    }
+}
+
 .hero-background {
     background: 
         linear-gradient(
