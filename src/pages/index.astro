@@ -7,6 +7,7 @@ import CtaBanner from '@components/sections/CtaBanner.astro';
 import MerchantMap from '@components/sections/MerchantMap.astro';
 import BlogPostCarousel from '@components/sections/BlogPostCarousel.astro';
 import heroImage from '../assets/images/hero/hero-market.jpg';
+import understandingBitcoinImage from '../assets/images/studybtc_compass.jpg';
 import bitcoinAcceptedImage from '../assets/images/bitcoinacceptedheremarket.jpg';
 import savingFutureImage from '../assets/images/btcvsusd.jpg';
 
@@ -14,8 +15,8 @@ const seoTitle = "Home";
 const seoDescription = "Our Initiative is building a grassroots Bitcoin circular economy in Washington, DC through education, business adoption, and community outreach.";
 
 const heroContent = {
-    title: "Building a Bitcoin Circular Economy in the Nation's Capital",
-    description: "The Bitcoin District Initiative is a 501(c)(3) tax-exempt not-for-profit organization dedicated to advancing grassroots Bitcoin adoption in Washington, DC.",
+    title: "Step into the future of local commerce by embracing Bitcoin",
+    description: "Join a growing community of DC merchants embracing Bitcoin and connecting with new customers. Discover how this new form of payment and savings can add value to your business and help you stay ahead of the curve.",
     overlayOpacity: 0.60, // Lighter overlay since gradient adds coverage
     height: "large" as const, // 65vh for modern balanced look
     layout: "centered" as const,
@@ -39,6 +40,16 @@ const initiativesSection = {
     headline: "Kickoff Projects",
     description: "We're getting out into the community to engage with local businesses to help them understand Bitcoin and how to accept it.",
 }
+
+const understandingBitcoinSection = {
+    eyebrow: "THE BITCOIN DISTRICT INITIATIVE",
+    headline: "Understanding Bitcoin",
+    description: "There’s a lot of noise out there about \"crypto & digital assets\", and it’s easy to get lost in it. The Bitcoin District Initiative helps people and businesses in Washington, DC understand how Bitcoin is special and why it matters. We focus on education, not hype, making it simple to learn, ask questions, and reach a growing community of customers who want to transact with Bitcoin.",
+    image: {
+        src: understandingBitcoinImage,
+        alt: "Understanding Bitcoin and monetary sovereignty"
+    }
+};
 
 const joinDistrictSection = {
     eyebrow: "MEET THE COMMUNITY",
@@ -85,6 +96,13 @@ const blogCarouselContent = {
 
 <Layout title={seoTitle} description={seoDescription}>
     <Hero content={heroContent} />
+    <SplitPanel 
+        content={understandingBitcoinSection} 
+        imagePosition="right" 
+        background="light" 
+        padding="large" 
+        imageAspect="4/3"
+    />
     <SplitPanel 
         content={bitcoinAcceptedSection} 
         imagePosition="left" 
