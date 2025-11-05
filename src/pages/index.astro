@@ -53,8 +53,8 @@ const joinDistrictSection = {
 }
 
 const bitcoinAcceptedSection = {
-    headline: "Bitcoin Accepted Here",
-    description: "It's never been easier for a business to accept Bitcoin from their customers. Tap into the local Bitcoin community by posting a Bitcoin Accepted Here sign in your shop!",
+    headline: "Bitcoin Accepted in DC",
+    description: "Accepting Bitcoin helps your business reach a growing local network of customers who prefer paying directly and supporting merchants who do the same. It’s simple to start — no chargebacks, lower fees, and payments that settle instantly. Post a Bitcoin Accepted Here sign and show your place is part of DC’s emerging Bitcoin economy.",
     image: {
         src: bitcoinAcceptedImage,
         alt: "Local business accepting Bitcoin"
@@ -62,11 +62,11 @@ const bitcoinAcceptedSection = {
 };
 
 const savingFutureSection = {
-    headline: "Saving for the Future",
-    description: "When your business accepts Bitcoin, you're not just adding a new payment option—you're opening the door to future possibilities. Bitcoin's fixed supply and growing global use give it long-term strength, allowing businesses that understand it to build new options for growth, savings, and collateral. Whether you convert to dollars right away or keep a portion in Bitcoin, learning how it works today prepares your business for the economy of tomorrow.",
+    headline: "Build Real Wealth",
+    description: "When you save a portion of your earnings in Bitcoin, it becomes a modern, inflation-resistant reserve for your business. With a fixed supply of 21 million, Bitcoin helps preserve purchasing power and create future optionality for your business — whether for reinvestment, covering slow months, or for using it as collateral for a loan.",
     image: {
         src: savingFutureImage,
-        alt: "Bitcoin savings concept"
+        alt: "Bitcoin grows while dollars lose value"
     }
 };
 
@@ -100,16 +100,6 @@ const blogCarouselContent = {
         imageAspect="4/3"
     />
     <InitiativeCards content={initiativesSection} background="base" padding="small" />
-    <BlogPostCarousel 
-        content={blogCarouselContent}
-        background="light"
-        padding="small"
-        showFeatured={true}
-        fallbackToAll={true}
-        minPosts={3}
-        showLatest={true}
-        limit={8}
-    />
     <MerchantMap 
         title="Put Your Business on the BTC Map"
         description="Let's put your business on the map-- literally! When you accept Bitcoin, you join a community of forward-thinking DC merchants strengthening local commerce and economic freedom. The BTC Map makes it easy for Bitcoiners to find and support your business."
@@ -117,6 +107,16 @@ const blogCarouselContent = {
         bottomBackground="light"
         padding="base"
     />
+    <BlogPostCarousel 
+    content={blogCarouselContent}
+    background="light"
+    padding="small"
+    showFeatured={true}
+    fallbackToAll={true}
+    minPosts={3}
+    showLatest={true}
+    limit={8}
+/>
     <CtaBanner 
         content={joinDistrictSection} 
         background="light" 
