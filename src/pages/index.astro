@@ -15,8 +15,8 @@ const seoTitle = "Home";
 const seoDescription = "Our Initiative is building a grassroots Bitcoin circular economy in Washington, DC through education, business adoption, and community outreach.";
 
 const heroContent = {
-    title: "Step into the future of local commerce by embracing Bitcoin",
-    description: "Join a growing community of DC merchants embracing Bitcoin and connecting with new customers. Discover how this new form of payment and savings can add value to your business and help you stay ahead of the curve.",
+    title: "Bitcoin Is Working — Right Here in DC",
+    description: "Join a growing network of DC residents and businesses using Bitcoin every day. We’ll help you accept payments, save securely, and use Bitcoin with confidence through local workshops and one-on-one support.",
     overlayOpacity: 0.60, // Lighter overlay since gradient adds coverage
     height: "large" as const, // 65vh for modern balanced look
     layout: "centered" as const,
@@ -24,8 +24,8 @@ const heroContent = {
     gradientOverlay: false,
     buttons: [
         {
-            text: "Our Initiatives",
-            link: "/initiatives",
+            text: "Get Started",
+            link: "/contact",
             size: "xl" as const,
             target: "_self"
         }
@@ -38,13 +38,13 @@ const heroContent = {
 const initiativesSection = {
     eyebrow: "Our Impact",
     headline: "Kickoff Projects",
-    description: "We're getting out into the community to engage with local businesses to help them understand Bitcoin and how to accept it.",
+    description: "We’re working block by block across DC — hosting workshops, onboarding merchants, and building real connections that make Bitcoin part of daily life.",
 }
 
 const understandingBitcoinSection = {
     eyebrow: "THE BITCOIN DISTRICT INITIATIVE",
     headline: "Understanding Bitcoin",
-    description: "There’s a lot of noise out there about \"crypto & digital assets\", and it’s easy to get lost in it. The Bitcoin District Initiative helps people and businesses in Washington, DC understand how Bitcoin is special and why it matters. We focus on education, not hype, making it simple to learn, ask questions, and reach a growing community of customers who want to transact with Bitcoin.",
+    description: "There’s a lot of noise about “crypto” today. The Bitcoin District Initiative helps DC residents and businesses understand why Bitcoin is different — and why it matters. Our focus is clear education and practical learning so you can ask questions, build confidence, and connect with customers who use Bitcoin.",
     image: {
         src: understandingBitcoinImage,
         alt: "Understanding Bitcoin and monetary sovereignty"
@@ -54,7 +54,7 @@ const understandingBitcoinSection = {
 const joinDistrictSection = {
     eyebrow: "MEET THE COMMUNITY",
     title: "Join Bitcoin District",
-    description: "Bitcoin District is the grassroots Bitcoin community in Washington, DC—an organic, social group built around meetups, learning, and human connections. If you want to get involved, start by joining the community—come to a meetup, learn together, and be part of what's growing here in DC. The Bitcoin District Initiative grew out of this very community!",
+    description: "Bitcoin District started as a group of friends and small business owners learning together. Today, it’s a citywide community of merchants, educators, and neighbors helping each other use Bitcoin in everyday life. Come to a meetup, learn from peers, and share your experience",
     button: {
         text: "Visit BitcoinDistrict.org",
         link: "https://bitcoindistrict.org",
@@ -64,8 +64,8 @@ const joinDistrictSection = {
 }
 
 const bitcoinAcceptedSection = {
-    headline: "Bitcoin Accepted in DC",
-    description: "Accepting Bitcoin helps your business reach a growing local network of customers who prefer paying directly and supporting merchants who do the same. It’s simple to start — no chargebacks, lower fees, and payments that settle instantly. Post a Bitcoin Accepted Here sign and show your place is part of DC’s emerging Bitcoin economy.",
+    headline: "Why Bitcoin for Your Business?",
+    description: "Credit card fees, chargebacks, and inflation cost small businesses thousands each year. With Bitcoin, you get instant payments that can’t be reversed or frozen — and you keep more of what you earn. Want help setting it up? We’ll walk you through every step.",
     image: {
         src: bitcoinAcceptedImage,
         alt: "Local business accepting Bitcoin"
@@ -74,7 +74,7 @@ const bitcoinAcceptedSection = {
 
 const savingFutureSection = {
     headline: "Build Real Wealth",
-    description: "When you save a portion of your earnings in Bitcoin, it becomes a modern, inflation-resistant reserve for your business. With a fixed supply of 21 million, Bitcoin helps preserve purchasing power and create future optionality for your business — whether for reinvestment, covering slow months, or for using it as collateral for a loan.",
+    description: "Saving a portion of your earnings in Bitcoin gives your business a reserve that holds value over time. With a fixed supply of 21 million, Bitcoin helps preserve purchasing power and gives you flexibility — whether reinvesting, covering slow months, or preparing for new opportunities.",
     image: {
         src: savingFutureImage,
         alt: "Bitcoin grows while dollars lose value"
@@ -84,7 +84,7 @@ const savingFutureSection = {
 const blogCarouselContent = {
     eyebrow: "Latest Updates",
     title: "Ready to Learn More?",
-    description: "Bitcoin can be confusing. We're here to help you cut through the noise. Check out our blog for the latest news and insights.",
+    description: "Bitcoin can be confusing — we’re here to make it simple. Explore our latest guides and community stories to learn at your own pace.",
     button: {
         text: "View All Posts",
         link: "/blog",
@@ -109,7 +109,13 @@ const blogCarouselContent = {
         background="base" 
         padding="large" 
         imageAspect="4/3"
-    />
+    >
+        <ul class="mt-6 space-y-3 text-base opacity-90">
+            <li>✔ Keep more of what you earn</li>
+            <li>✔ Accept payments instantly, worldwide</li>
+            <li>✔ Protect your business from rising costs</li>
+        </ul>
+    </SplitPanel>
     <SplitPanel 
         content={savingFutureSection} 
         imagePosition="right" 
@@ -120,7 +126,7 @@ const blogCarouselContent = {
     <InitiativeCards content={initiativesSection} background="base" padding="small" />
     <MerchantMap 
         title="Put Your Business on the BTC Map"
-        description="Let's put your business on the map-- literally! When you accept Bitcoin, you join a community of forward-thinking DC merchants strengthening local commerce and economic freedom. The BTC Map makes it easy for Bitcoiners to find and support your business."
+        description="Put your business on the map — literally. Joining DC’s Bitcoin merchants means joining a network that values local commerce and economic freedom. The BTC Map helps customers find and support you right away."
         topBackground="dark" 
         bottomBackground="light"
         padding="base"
