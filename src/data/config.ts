@@ -54,3 +54,7 @@ export const announcementBarSetting = {
   textColor: 'text-white',
   dismissible: false // Future feature: allow users to dismiss
 }
+
+export const formspree = {
+  contactFormEndpoint: 'https://formspree.io/f/movpgkwr'
+}

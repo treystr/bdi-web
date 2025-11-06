@@ -2,6 +2,7 @@
 import Button from "@components/ui/Button.astro";
 import Input from "@components/ui/form/Input.astro";
 import Textarea from "@components/ui/form/Textarea.astro";
+import { formspree } from "@data/config";
 
 const formBackground = 'light';
 ---
@@ -86,7 +87,7 @@ interface ContactFormData {
 interface FormResponse {
   success: boolean;
   message?: string;
-  error?: string;
+  errors?: Array<{ field: string; message: string }>;
 }
 
 class ContactFormHandler {
@@ -123,14 +124,14 @@ class ContactFormHandler {
         return;
       }
 
-      // Submit directly to Google Forms
-      const success = await this.submitToGoogleForm(formData);
+      // Submit to Formspree
+      const result = await this.submitToFormspree(formData);
 
-      if (success) {
-        this.showStatus('Thanks for your message. We will response shortly!', 'success');
+      if (result.success) {
+        this.showStatus('Thanks for your message. We will respond shortly!', 'success');
         this.form.reset();
       } else {
-        this.showStatus('Failed to submit form. Please try again.', 'error');
+        this.showStatus(result.message || 'Failed to submit form. Please try again.', 'error');
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -194,44 +195,44 @@ class ContactFormHandler {
     }
   }
 
-  private async submitToGoogleForm(formData: ContactFormData): Promise<boolean> {
+  private async submitToFormspree(formData: ContactFormData): Promise<FormResponse> {
     try {
-      const formId = '1FAIpQLSf9wUIYF3-9bMJK3EoHvPHNJsGbgd_6ipR8_I7PNsEyWFUyVA';
-      const entries = {
-        name: 'entry.2053111584',
-        email: 'entry.1784549577',
-        phone: 'entry.849479955',
-        organization: 'entry.366023573',
-        message: 'entry.496949466'
-      };
+      const endpoint = 'https://formspree.io/f/movpgkwr';
       
-      const baseUrl = `https://docs.google.com/forms/d/e/${formId}/formResponse`;
-      
-      // Create FormData object
+      // Create FormData object with all form fields
       const submitData = new FormData();
-      submitData.append(entries.name, formData.name);
-      submitData.append(entries.email, formData.email);
+      submitData.append('name', formData.name);
+      submitData.append('email', formData.email);
       if (formData.phone) {
-        submitData.append(entries.phone, formData.phone);
+        submitData.append('phone', formData.phone);
       }
       if (formData.organization) {
-        submitData.append(entries.organization, formData.organization);
+        submitData.append('organization', formData.organization);
       }
-      submitData.append(entries.message, formData.message);
+      submitData.append('message', formData.message);
 
-      // Submit to Google Forms
-      await fetch(baseUrl, {
+      // Submit to Formspree
+      const response = await fetch(endpoint, {
         method: 'POST',
         body: submitData,
-        mode: 'no-cors' // Required for Google Forms submission
+        headers: {
+          'Accept': 'application/json'
+        }
       });
 
-      // Google Forms returns a CORS error but the submission still works
-      // Since we can't read the response due to no-cors mode, we assume success
-      return true;
+      if (response.ok) {
+        return { success: true };
+      } else {
+        const data = await response.json();
+        if (data.errors && Array.isArray(data.errors)) {
+          const errorMessages = data.errors.map((error: { message: string }) => error.message).join(', ');
+          return { success: false, message: errorMessages };
+        }
+        return { success: false, message: 'Oops! There was a problem submitting your form' };
+      }
     } catch (error) {
-      console.error('Error submitting to Google Form:', error);
-      return false;
+      console.error('Error submitting to Formspree:', error);
+      return { success: false, message: 'Network error. Please try again.' };
     }
   }
 }
