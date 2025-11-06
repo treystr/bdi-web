@@ -57,5 +57,5 @@ export const announcementBarSetting = {
 
 export const formspree = {
   contactFormEndpoint: 'https://formspree.io/f/movpgkwr',
-  turnstileSiteKey: '0x4AAAAAAB_cSTEZdSmbr_8j'
+  recaptchaSiteKey: '6LfucgQsAAAAAL82ooj_hFKMPs0ki9BaY1hxMlcl'
 }

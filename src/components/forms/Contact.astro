@@ -63,8 +63,8 @@ const formBackground = 'light';
     <!-- Status Message -->
     <div id="form-status" class="hidden p-3 rounded-md" role="alert"></div>
 
-    <!-- Cloudflare Turnstile CAPTCHA -->
-    <div class="cf-turnstile" data-sitekey={formspree.turnstileSiteKey} data-theme="auto"></div>
+    <!-- Google reCAPTCHA v2 -->
+    <div class="g-recaptcha" data-sitekey={formspree.recaptchaSiteKey}></div>
 
     <div class="mt-6">
         <button 
@@ -78,7 +78,7 @@ const formBackground = 'light';
     </div>
 </form>
 
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
 interface ContactFormData {
@@ -99,7 +99,6 @@ class ContactFormHandler {
   private form: HTMLFormElement;
   private submitBtn: HTMLButtonElement;
   private statusEl: HTMLDivElement;
-  private turnstileWidgetId: string | null = null;
 
   constructor() {
     this.form = document.getElementById('contact-form') as HTMLFormElement;
@@ -121,9 +120,9 @@ class ContactFormHandler {
     this.setSubmitting(true);
 
     try {
-      // Get Turnstile token
-      const turnstileToken = this.getTurnstileToken();
-      if (!turnstileToken) {
+      // Get reCAPTCHA token
+      const recaptchaToken = this.getRecaptchaToken();
+      if (!recaptchaToken) {
         this.showStatus('Please complete the CAPTCHA verification.', 'error');
         this.setSubmitting(false);
         return;
@@ -138,21 +137,21 @@ class ContactFormHandler {
         return;
       }
 
-      // Submit to Formspree with Turnstile token
-      const result = await this.submitToFormspree(formData, turnstileToken);
+      // Submit to Formspree with reCAPTCHA token
+      const result = await this.submitToFormspree(formData, recaptchaToken);
 
       if (result.success) {
         this.showStatus('Thanks for your message. We will respond shortly!', 'success');
         this.form.reset();
-        this.resetTurnstile();
+        this.resetRecaptcha();
       } else {
         this.showStatus(result.message || 'Failed to submit form. Please try again.', 'error');
-        this.resetTurnstile();
+        this.resetRecaptcha();
       }
     } catch (error) {
       console.error('Form submission error:', error);
       this.showStatus('Network error. Please check your connection and try again.', 'error');
-      this.resetTurnstile();
+      this.resetRecaptcha();
     } finally {
       this.setSubmitting(false);
     }
@@ -212,22 +211,19 @@ class ContactFormHandler {
     }
   }
 
-  private getTurnstileToken(): string | null {
-    const turnstileResponse = this.form.querySelector('[name="cf-turnstile-response"]') as HTMLInputElement;
-    return turnstileResponse ? turnstileResponse.value : null;
+  private getRecaptchaToken(): string | null {
+    const recaptchaResponse = this.form.querySelector('[name="g-recaptcha-response"]') as HTMLInputElement;
+    return recaptchaResponse ? recaptchaResponse.value : null;
   }
 
-  private resetTurnstile(): void {
-    // Turnstile API provides a reset method
-    if (typeof (window as any).turnstile !== 'undefined') {
-      const turnstileWidget = this.form.querySelector('.cf-turnstile');
-      if (turnstileWidget) {
-        (window as any).turnstile.reset(turnstileWidget);
-      }
+  private resetRecaptcha(): void {
+    // reCAPTCHA API provides a reset method
+    if (typeof (window as any).grecaptcha !== 'undefined') {
+      (window as any).grecaptcha.reset();
     }
   }
 
-  private async submitToFormspree(formData: ContactFormData, turnstileToken: string): Promise<FormResponse> {
+  private async submitToFormspree(formData: ContactFormData, recaptchaToken: string): Promise<FormResponse> {
     try {
       const endpoint = 'https://formspree.io/f/movpgkwr';
       
@@ -243,8 +239,8 @@ class ContactFormHandler {
       }
       submitData.append('message', formData.message);
       
-      // Add Turnstile token for Formspree verification
-      submitData.append('cf-turnstile-response', turnstileToken);
+      // Add reCAPTCHA token for Formspree verification
+      submitData.append('g-recaptcha-response', recaptchaToken);
 
       // Submit to Formspree
       const response = await fetch(endpoint, {
