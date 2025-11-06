@@ -6,7 +6,7 @@ import { formspree } from "@data/config";
 
 const formBackground = 'light';
 ---
-<form id="contact-form" class="space-y-6 bg-white p-6 rounded-lg">
+<form id="contact-form" class="space-y-6 bg-white p-6 rounded-lg" data-recaptcha-key={formspree.recaptchaSiteKey}>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Input
             label="Name"
@@ -63,9 +63,6 @@ const formBackground = 'light';
     <!-- Status Message -->
     <div id="form-status" class="hidden p-3 rounded-md" role="alert"></div>
 
-    <!-- Google reCAPTCHA v2 -->
-    <div class="g-recaptcha" data-sitekey={formspree.recaptchaSiteKey}></div>
-
     <div class="mt-6">
         <button 
             type="submit" 
@@ -77,8 +74,6 @@ const formBackground = 'light';
         </button>
     </div>
 </form>
-
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
 interface ContactFormData {
@@ -107,6 +102,18 @@ class ContactFormHandler {
     
     if (this.form) {
       this.form.addEventListener('submit', this.handleSubmit.bind(this));
+      this.loadRecaptchaScript();
+    }
+  }
+
+  private loadRecaptchaScript(): void {
+    const siteKey = this.form.dataset.recaptchaKey;
+    if (siteKey) {
+      const script = document.createElement('script');
+      script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
     }
   }
 
@@ -120,20 +127,21 @@ class ContactFormHandler {
     this.setSubmitting(true);
 
     try {
-      // Get reCAPTCHA token
-      const recaptchaToken = this.getRecaptchaToken();
-      if (!recaptchaToken) {
-        this.showStatus('Please complete the CAPTCHA verification.', 'error');
-        this.setSubmitting(false);
-        return;
-      }
-
       // Collect form data
       const formData = this.collectFormData();
       
       // Validate form data
       if (!this.validateFormData(formData)) {
         this.showStatus('Please fill in all required fields correctly.', 'error');
+        this.setSubmitting(false);
+        return;
+      }
+
+      // Execute reCAPTCHA v3 to get token
+      const recaptchaToken = await this.executeRecaptcha();
+      if (!recaptchaToken) {
+        this.showStatus('CAPTCHA verification failed. Please try again.', 'error');
+        this.setSubmitting(false);
         return;
       }
 
@@ -143,15 +151,12 @@ class ContactFormHandler {
       if (result.success) {
         this.showStatus('Thanks for your message. We will respond shortly!', 'success');
         this.form.reset();
-        this.resetRecaptcha();
       } else {
         this.showStatus(result.message || 'Failed to submit form. Please try again.', 'error');
-        this.resetRecaptcha();
       }
     } catch (error) {
       console.error('Form submission error:', error);
       this.showStatus('Network error. Please check your connection and try again.', 'error');
-      this.resetRecaptcha();
     } finally {
       this.setSubmitting(false);
     }
@@ -211,15 +216,27 @@ class ContactFormHandler {
     }
   }
 
-  private getRecaptchaToken(): string | null {
-    const recaptchaResponse = this.form.querySelector('[name="g-recaptcha-response"]') as HTMLInputElement;
-    return recaptchaResponse ? recaptchaResponse.value : null;
-  }
+  private async executeRecaptcha(): Promise<string | null> {
+    try {
+      // Wait for grecaptcha to be ready
+      if (typeof (window as any).grecaptcha === 'undefined') {
+        console.error('reCAPTCHA not loaded');
+        return null;
+      }
 
-  private resetRecaptcha(): void {
-    // reCAPTCHA API provides a reset method
-    if (typeof (window as any).grecaptcha !== 'undefined') {
-      (window as any).grecaptcha.reset();
+      // Get site key from form data attribute
+      const siteKey = this.form.dataset.recaptchaKey;
+      if (!siteKey) {
+        console.error('reCAPTCHA site key not found');
+        return null;
+      }
+
+      // Execute reCAPTCHA v3 with action 'submit'
+      const token = await (window as any).grecaptcha.execute(siteKey, { action: 'submit' });
+      return token;
+    } catch (error) {
+      console.error('reCAPTCHA execution error:', error);
+      return null;
     }
   }
 
