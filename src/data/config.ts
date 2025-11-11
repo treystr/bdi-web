@@ -2,7 +2,7 @@ export const siteConfig = {
   companyName: 'Bitcoin District Initiative',
   siteUrl: 'https://bitcoindistrictinitiative.org',
   Socials: {
-      xSocial: 'https://x.com/btcd_init',
+      xSocial: 'https://x.com/BTCDCInitiative',
       Github: 'https://github.com/',
       Instagram: 'https://www.instagram.com/bitcoindistrictinitiative/',
       LinkedIn: 'https://www.linkedin.com/company/bitcoindistrictinitiative',
@@ -11,7 +11,7 @@ export const siteConfig = {
       Location: 'Washington, DC',
   },
   socialLinks: [
-    { icon: 'x', url: 'https://x.com/btcd_init' },
+    { icon: 'x', url: 'https://x.com/BTCDCInitiative' },
     { icon: 'instagram', url: 'https://www.instagram.com/btcdistrict/' },
     { icon: 'nostr', url: 'https://primal.net/p/nprofile1qqsgw7yl3m62uc0ffjl3ly5m8cqve63lprjdpkweejtemkl04r3vevsgzv27k' },
     { icon: 'linkedin', url: 'https://www.linkedin.com/company/bitcoindistrictinitiative' },
