@@ -1,9 +1,9 @@
 ---
 import { getEntry, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import InitiativeCardsGrid from '@components/initiatives/InitiativeCardsGrid.astro';
-import heroImage from '@assets/images/market_general.jpg';
 
 // Get the initiative entry
 const entry = await getEntry('initiatives', '100-local-businesses-by-2026');
@@ -13,26 +13,14 @@ if (!entry) {
 
 const { Content } = await render(entry);
 
-
 // Use SEO data from frontmatter if available
 const seoTitle = entry.data.seo?.title || entry.data.title;
 const seoDescription = entry.data.seo?.description || entry.data.shortDescription;
 
-// Split Panel content
-const splitPanelContent: {
-    eyebrow: string;
-    headline: string;
-    description: string;
-    image: { src: any; alt: string };
-    buttons?: { text: string; link: string; variant?: string }[];
-} = {
-    eyebrow: "Kickoff Initiative",
-    headline: entry.data.title,
-    description: entry.data.shortDescription,
-    image: {
-        src: heroImage,
-        alt: "Bitcoin businesses initiative"
-    },
+// Page header content
+const pageHeaderContent = {
+    title: entry.data.title,
+    description: entry.data.shortDescription
 };
 
 // Donate CTA
@@ -56,48 +44,11 @@ const donateCta = {
 ---
 
 <Layout title={seoTitle} description={seoDescription}>
-    {/* Custom Full-Width Split Section */}
-    <section class="relative bg-background-base mt-18">
-        <div class="grid md:grid-cols-2 items-center">
-            {/* Content Side */}
-            <div class="flex items-center justify-center py-12 md:py-16 px-8 md:px-12 lg:px-16">
-                <div class="max-w-md w-full">
-                    <div class="text-eyebrow font-medium mb-3 uppercase tracking-wider text-xs" data-aos="fade-up">
-                        {splitPanelContent.eyebrow}
-                    </div>
-                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-headline mb-4 leading-tight" data-aos="fade-up" data-aos-delay="100">
-                        {splitPanelContent.headline}
-                    </h1>
-                    <p class="text-body-base text-base md:text-lg opacity-80 mb-6 leading-relaxed" data-aos="fade-up" data-aos-delay="200">
-                        {splitPanelContent.description}
-                    </p>
-                    {splitPanelContent.buttons && splitPanelContent.buttons.length > 0 && (
-                        <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="300">
-                            {splitPanelContent.buttons.map((button: any) => (
-                                <a 
-                                    href={button.link}
-                                    class="inline-flex items-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
-                                >
-                                    {button.text}
-                                </a>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            {/* Image Side - Full Width to Edge */}
-            <div class="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
-                <img 
-                    src={splitPanelContent.image.src.src}
-                    alt={splitPanelContent.image.alt}
-                    class="w-full h-full object-cover"
-                    data-aos="fade-left"
-                    data-aos-delay="200"
-                />
-            </div>
-        </div>
-    </section>
+    <PageHeader 
+        title={pageHeaderContent.title} 
+        description={pageHeaderContent.description} 
+        background="base" 
+    />
 
     {/* Main Content */}
     <article class="site-container--article mx-auto px-4 prose prose-lg mt-8 mb-16">

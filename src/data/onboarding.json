@@ -38,5 +38,13 @@
     "business_website": "https://www.instagram.com/sipplantmagic/",
     "photo_url": "/media/onboarding/plantmagic.jpg",
     "description": "DC’s first clean, non-alcoholic bottle shop — offering functional beverages, dealcoholized wines, and plant-powered tonics with CBD, kava, cacao, and matcha. Located in Union Market, Plant Magic brings mindful drinking and community connection to the heart of the city — now accepting Bitcoin."
+  },
+  {
+    "date": "2025-11-12",
+    "block_height": 923314,
+    "business_name": "Cafe U",
+    "business_website": "https://www.instagram.com/cafeu.dc/",
+    "photo_url": "/media/onboarding/cafeu.jpg",
+    "description": "Cafe U is a cozy U Street hangout with friendly staff and standout bagels—now accepting Bitcoin through Square. I popped in to say hi, mentioned the feature, the owner set it up, and I came back the next day to make their first Lightning payment. Grab a Humpty Hump or The Lox and pay with Bitcoin."
   }
 ]
