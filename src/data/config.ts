@@ -13,6 +13,7 @@ export const siteConfig = {
   socialLinks: [
     { icon: 'x', url: 'https://x.com/BTCDCInitiative' },
     { icon: 'instagram', url: 'https://www.instagram.com/btcdistrict/' },
+    { icon: 'tiktok', url: 'https://tiktok.com/@bitcoindistrict' },
     { icon: 'nostr', url: 'https://primal.net/p/nprofile1qqsgw7yl3m62uc0ffjl3ly5m8cqve63lprjdpkweejtemkl04r3vevsgzv27k' },
     { icon: 'linkedin', url: 'https://www.linkedin.com/company/bitcoindistrictinitiative' },
   ]
