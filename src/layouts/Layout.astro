@@ -32,8 +32,62 @@ interface Props {
 
 const { title, description, image, footerCta, canonicalUrl, fullscreenHero } = Astro.props;
 
-const pageTitle = title ? `${title} ${Separator} ${SiteName}` : SiteName;
-const pageDescription = description || defaultDescription || '';
+/**
+ * SEO Metadata Truncation Utilities
+ * 
+ * SEO Best Practices:
+ * - Page titles: Maximum 70 characters (580 pixels) total
+ * - Meta descriptions: Maximum 160 characters (1000 pixels)
+ * 
+ * Title format: "{pageTitle} | Bitcoin District Initiative"
+ * Site name suffix: 32 characters (" | Bitcoin District Initiative")
+ * Max page title portion: ~38 characters (to stay under 70 total)
+ */
+
+// Truncate title to ensure total length ≤70 chars (accounting for site name suffix)
+function truncateTitle(pageTitle: string, maxLength: number = 38): string {
+	if (pageTitle.length <= maxLength) return pageTitle;
+	
+	// Try to truncate at word boundary
+	const truncated = pageTitle.substring(0, maxLength);
+	const lastSpace = truncated.lastIndexOf(' ');
+	
+	if (lastSpace > maxLength * 0.7) {
+		// If we found a space reasonably close to the end, cut there
+		return truncated.substring(0, lastSpace) + '...';
+	}
+	
+	// Otherwise, cut at maxLength
+	return truncated + '...';
+}
+
+// Truncate description to max 160 chars, preserving word boundaries
+function truncateDescription(desc: string, maxLength: number = 160): string {
+	if (desc.length <= maxLength) return desc;
+	
+	// Try to truncate at word boundary
+	const truncated = desc.substring(0, maxLength);
+	const lastSpace = truncated.lastIndexOf(' ');
+	
+	if (lastSpace > maxLength * 0.7) {
+		// If we found a space reasonably close to the end, cut there
+		return truncated.substring(0, lastSpace) + '...';
+	}
+	
+	// Otherwise, cut at maxLength
+	return truncated + '...';
+}
+
+// Build page title with truncation
+const siteNameSuffix = ` ${Separator} ${SiteName}`; // 32 characters
+const maxPageTitleLength = 38; // Leaves room for 32-char suffix to stay under 70 total
+const rawPageTitle = title || '';
+const truncatedPageTitle = rawPageTitle ? truncateTitle(rawPageTitle, maxPageTitleLength) : '';
+const pageTitle = truncatedPageTitle ? `${truncatedPageTitle}${siteNameSuffix}` : SiteName;
+
+// Build page description with truncation
+const rawDescription = description || defaultDescription || '';
+const pageDescription = truncateDescription(rawDescription, 160);
 const pageImage = image || defaultOgImage || '';
 const canonicalPath = canonicalUrl || Astro.url.pathname;
 const fullCanonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();

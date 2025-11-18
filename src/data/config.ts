@@ -22,7 +22,7 @@ export const siteConfig = {
 export const SEO = {
   Separator: '|',
   SiteName: 'Bitcoin District Initiative',
-  defaultDescription: 'The Bitcoin District Initiative is a 501(c)(3) nonprofit building a grassroots Bitcoin circular economy in Washington, DC through education and business adoption.',
+  defaultDescription: 'A 501(c)(3) nonprofit building a grassroots Bitcoin circular economy in Washington, DC through education and business adoption.',
   defaultOgImage: '/og-default.jpg',
 };
   
