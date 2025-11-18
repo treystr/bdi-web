@@ -46,5 +46,21 @@
     "business_website": "https://www.instagram.com/cafeu.dc/",
     "photo_url": "/media/onboarding/cafeu.jpg",
     "description": "Cafe U is a cozy U Street hangout with friendly staff and standout bagels—now accepting Bitcoin through Square. I popped in to say hi, mentioned the feature, the owner set it up, and I came back the next day to make their first Lightning payment. Grab a Humpty Hump or The Lox and pay with Bitcoin."
+  },
+  {
+    "date": "2025-11-14",
+    "block_height": 923629,
+    "business_name": "Tropic Burger",
+    "business_website": "https://www.tropicburger.com/",
+    "photo_url": "/media/onboarding/tropicburger.jpg",
+    "description": "At 1st and M NE in NoMa, Tropic Burger serves Venezuelan style burgers with fresh ingredients, double fried fries, and a bright green sauce. Fast, friendly, and they might be the first DC food truck to accept Bitcoin through Square."
+  },
+  {
+    "date": "2025-11-17",
+    "block_height": 924047,
+    "business_name": "Johnny's Gourmet Deli & Subs",
+    "business_website": "http://johnnysgourmetdeliandsubs.com/",
+    "photo_url": "/media/onboarding/johnnydeli.jpg",
+    "description": "Tucked away in the back of a wine shop, Johnny’s Gourmet Deli & Subs is truly a hidden gem. Bread baked daily, fresh mozzarella, and every sandwich is crafted with care. Open seven days for breakfast and lunch and now taking Bitcoin after Johnny made his first Lightning sale with Square."
   }
 ]
