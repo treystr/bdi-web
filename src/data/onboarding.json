@@ -62,5 +62,21 @@
     "business_website": "http://johnnysgourmetdeliandsubs.com/",
     "photo_url": "/media/onboarding/johnnydeli.jpg",
     "description": "Tucked away in the back of a wine shop, Johnny’s Gourmet Deli & Subs is truly a hidden gem. Bread baked daily, fresh mozzarella, and every sandwich is crafted with care. Open seven days for breakfast and lunch and now taking Bitcoin after Johnny made his first Lightning sale with Square."
+  },
+  {
+    "date": "2025-11-20",
+    "block_height": 924452,
+    "business_name": "Sweet Lemon Cafe",
+    "business_website": "https://cafe-sweetlemon.com/",
+    "photo_url": "/media/onboarding/sweetlemon.jpg",
+    "description": "Woman owned cafe on Massachusetts Ave NE from Belarusian owner Aksana Tran. A popular stop for Hill staffers, it serves house made breakfast, specialty drinks, and fresh, incredibly delicious pastries."
+  },
+  {
+    "date": "2025-11-22",
+    "block_height": 924733,
+    "business_name": "ABOVEGROUND",
+    "business_website": "https://abovegrounddc.com",
+    "photo_url": "/media/onboarding/aboveground.jpg",
+    "description": "At Union Market, Chef Nicholas Joseph Martino brings British classics inspired by his time with Marco Pierre White. He was excited to accept Bitcoin and turned it on the moment we asked. Proper fish and chips, pies, and a lively Pub Shop."
   }
 ]
