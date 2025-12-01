@@ -14,7 +14,7 @@ export const headerMenu: MenuItem[] = [
     { name: 'Initiatives', link: '/initiatives' },
     { name: 'Resources', link: '/resources' },
     { 
-      name: 'About Us', 
+      name: 'About', 
       link: '/about',
       showArrow: true,
       children: [

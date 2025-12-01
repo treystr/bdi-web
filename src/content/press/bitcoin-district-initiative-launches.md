@@ -4,7 +4,6 @@ excerpt: "Through partnerships with PubKey and its local community, the Initiati
 publishDate: "2025-12-01"
 featuredImage: "./images/press.png"
 publish: true
-categories: ["Press"]
 
 seo:
   title: "Bitcoin District Initiative Launches to Build Bitcoin Circular Economy in DC"

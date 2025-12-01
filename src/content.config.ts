@@ -113,4 +113,23 @@ const initiatives = defineCollection({
         }),
 });
 
-export const collections = { blog, team, legal, docs, initiatives };
+const press = defineCollection({
+    loader: glob({ base: './src/content/press', pattern: '**/*.md' }),
+    schema: ({ image }) =>
+        z.object({
+            title: z.string(),
+            excerpt: z.string(),
+            featuredImage: image().optional(),
+            publishDate: z.string().transform(parseDate),
+            publish: z.boolean().optional(),
+            seo: z
+                .object({
+                    title: z.string().optional(),
+                    description: z.string().optional(),
+                    image: z.string().optional(),
+                })
+                .optional(),
+        }),
+});
+
+export const collections = { blog, team, legal, docs, initiatives, press };
