@@ -299,14 +299,14 @@ const isCurrentPage = (link: string) => {
 
             {/* Right: Social Icons + Donate Button */}
             <div class="flex items-center gap-2 xl:gap-3 2xl:gap-4 flex-shrink-0">
-                {/* Social Icons - Only showing X, Instagram, and Calendar, hidden until more space */}
+                {/* Social Icons - Filtered by location, hidden until more space */}
                 <div class="hidden xl:flex">
                     <SocialBar 
                         iconSize={20} 
                         gap="gap-3" 
                         colorClass="text-nav-text" 
                         hoverColorClass="hover:text-nav-text-hover"
-                        visibleIcons={['x', 'instagram', 'calendar']}
+                        location="header"
                     />
                 </div>
                 
@@ -431,7 +431,13 @@ const isCurrentPage = (link: string) => {
 
     {/* Social Bar - positioned at the bottom */}
     <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <SocialBar iconSize={24} gap="gap-8" colorClass="text-primary" hoverColorClass="hover:text-primary-light" />
+        <SocialBar 
+            iconSize={24} 
+            gap="gap-8" 
+            colorClass="text-primary" 
+            hoverColorClass="hover:text-primary-light"
+            location="header"
+        />
     </div>
 </div>
 

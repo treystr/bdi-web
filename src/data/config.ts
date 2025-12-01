@@ -1,3 +1,14 @@
+// Type definitions for social links
+export type SocialIconType = 'x' | 'instagram' | 'github' | 'linkedin' | 'mail' | 'nostr' | 'tiktok' | 'calendar';
+export type SocialLocation = 'header' | 'footer' | 'all';
+
+export interface SocialLink {
+  icon: SocialIconType;
+  url: string;
+  enabled: boolean;
+  visibleIn: SocialLocation[];
+}
+
 export const siteConfig = {
   companyName: 'Bitcoin District Initiative',
   siteUrl: 'https://bitcoindistrictinitiative.org',
@@ -11,14 +22,62 @@ export const siteConfig = {
       Location: 'Washington, DC',
   },
   socialLinks: [
-    { icon: 'x', url: 'https://x.com/BTCDCInitiative' },
-    { icon: 'instagram', url: 'https://www.instagram.com/btcdistrict/' },
-    { icon: 'tiktok', url: 'https://tiktok.com/@bitcoindistrict' },
-    { icon: 'nostr', url: 'https://primal.net/p/nprofile1qqsgw7yl3m62uc0ffjl3ly5m8cqve63lprjdpkweejtemkl04r3vevsgzv27k' },
-    { icon: 'linkedin', url: 'https://www.linkedin.com/company/bitcoindistrictinitiative' },
-    { icon: 'calendar', url: 'https://luma.com/bitcoindistrict?k=c' },
-  ]
+    { 
+      icon: 'x' as SocialIconType, 
+      url: 'https://x.com/BTCDCInitiative',
+      enabled: true,
+      visibleIn: ['header', 'footer'] as SocialLocation[]
+    },
+    { 
+      icon: 'instagram' as SocialIconType, 
+      url: 'https://www.instagram.com/btcdistrict/',
+      enabled: true,
+      visibleIn: ['header', 'footer'] as SocialLocation[]
+    },
+    { 
+      icon: 'tiktok' as SocialIconType, 
+      url: 'https://tiktok.com/@bitcoindistrict',
+      enabled: false,
+      visibleIn: ['footer'] as SocialLocation[]
+    },
+    { 
+      icon: 'nostr' as SocialIconType, 
+      url: 'https://primal.net/p/nprofile1qqsgw7yl3m62uc0ffjl3ly5m8cqve63lprjdpkweejtemkl04r3vevsgzv27k',
+      enabled: true,
+      visibleIn: ['footer'] as SocialLocation[]
+    },
+    { 
+      icon: 'linkedin' as SocialIconType, 
+      url: 'https://www.linkedin.com/company/bitcoindistrictinitiative',
+      enabled: true,
+      visibleIn: ['footer'] as SocialLocation[]
+    },
+    { 
+      icon: 'calendar' as SocialIconType, 
+      url: 'https://luma.com/bitcoindistrict?k=c',
+      enabled: true,
+      visibleIn: ['header', 'footer'] as SocialLocation[]
+    },
+  ] as SocialLink[]
 };
+
+/**
+ * Get filtered social links for a specific location
+ * @param location - The location to filter by ('header', 'footer', or 'all')
+ * @returns Array of enabled social links visible in the specified location
+ */
+export function getSocialLinksByLocation(location: SocialLocation): SocialLink[] {
+  return siteConfig.socialLinks.filter(link => {
+    // Must be enabled globally
+    if (!link.enabled) return false;
+    
+    // If location is 'all', return all enabled links
+    if (location === 'all') return true;
+    
+    // Check if link is visible in the specified location
+    return link.visibleIn.includes(location) || link.visibleIn.includes('all');
+  });
+}
 
 export const SEO = {
   Separator: '|',
