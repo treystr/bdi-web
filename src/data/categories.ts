@@ -40,6 +40,11 @@ export const categories: Category[] = [
     slug: 'onboarding',
     description: 'Resources for volunteers onboarding businesses'
   },
+  {
+    name: 'Press',
+    slug: 'press',
+    description: 'Press releases and publications'
+  },
   
 ];
 

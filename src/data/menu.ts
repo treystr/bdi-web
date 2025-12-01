@@ -19,7 +19,8 @@ export const headerMenu: MenuItem[] = [
       showArrow: true,
       children: [
           { name: 'Transparency', link: '/transparency' },
-          { name: 'FAQ', link: '/faq' }
+          { name: 'FAQ', link: '/faq' },
+          { name: 'Press', link: '/press' }
       ]
   },
     { name: 'Join Bitcoin District', link: 'https://bitcoindistrict.org', mobileOnly: true }
