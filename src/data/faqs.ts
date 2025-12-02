@@ -15,7 +15,7 @@ export const faqLists: Record<string, FaqList> = {
             {
                 question: "What is the Bitcoin District Initiative?",
                 answer:
-                    "The Bitcoin District Initiative is a not-for-profit building a Bitcoin circular economy in the Nation's Capital. "
+                    "The Bitcoin District Initiative is a 501(c)(3) nonprofit organization that grew out of the grassroots Bitcoin District community in Washington, DC. We're organized and mission-driven, turning community energy into action through education, outreach, and local business onboarding to build a real Bitcoin circular economy in the Nation's Capital."
             },
             {
                 question: "How can I get involved with the Bitcoin District Initiative?",
