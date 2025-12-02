@@ -122,6 +122,7 @@ const press = defineCollection({
             featuredImage: image().optional(),
             publishDate: z.string().transform(parseDate),
             publish: z.boolean().optional(),
+            type: z.enum(['press-release', 'in-the-news']).optional(),
             seo: z
                 .object({
                     title: z.string().optional(),

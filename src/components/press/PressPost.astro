@@ -1,6 +1,8 @@
 ---
 import Date from '../ui/Date.astro';
 import { Image } from 'astro:assets';
+import { Megaphone, Newspaper } from 'lucide-astro';
+import { format } from 'date-fns';
 
 interface Props {
     title: string;
@@ -9,49 +11,94 @@ interface Props {
     publishDate: Date;
     slug?: string;
     index: number;
+    type?: 'press-release' | 'in-the-news';
 }
 
-const { title, excerpt, featuredImage, publishDate, slug, index } = Astro.props;
+const { title, excerpt, featuredImage, publishDate, slug, index, type } = Astro.props;
+
+// Format date for mobile (short format)
+const shortDate = format(publishDate, 'MMM d, yyyy');
+
+// Get type label and icon
+const typeLabel = type === 'press-release' ? 'Press Release' : type === 'in-the-news' ? 'In the News' : '';
+const TypeIcon = type === 'press-release' ? Megaphone : type === 'in-the-news' ? Newspaper : null;
 ---
 
 <a
     href={`/press/${slug}`}
-    class="group flex flex-col h-full overflow-hidden bg-white rounded-lg border border-black transition-all duration-300 hover:border-primary"
+    class="group press-post-item flex flex-col h-full overflow-hidden bg-white transition-all duration-300 hover:border-primary"
     data-aos="fade-up"
     data-aos-delay={index * 100}
+    data-filter-item
+    data-filter-type={type || ''}
 >
-    <div
-        class="relative aspect-[16/9] overflow-hidden border-black border-b group-hover:border-primary transition-colors duration-300"
-    >
-        {
-            featuredImage && (
-                <Image
-                    src={featuredImage}
-                    alt=""
-                    width={600}
-                    height={338}
-                    class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                />
-            )
-        }
-        <div class="absolute inset-0 bg-primary opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-    </div>
-
-    <div class="py-4 px-4 flex flex-col flex-grow relative">
-        {/* Date at the top */}
-        <div class="text-sm text-gray-600 mb-3 group-hover:text-primary/80 transition-colors duration-300">
-            <Date date={publishDate} />
+    {/* Desktop Card Layout */}
+    <div class="hidden md:flex flex-col h-full rounded-lg border border-black">
+        <div
+            class="relative aspect-[16/9] overflow-hidden border-black border-b group-hover:border-primary transition-colors duration-300"
+        >
+            {
+                featuredImage && (
+                    <Image
+                        src={featuredImage}
+                        alt=""
+                        width={600}
+                        height={338}
+                        class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                    />
+                )
+            }
+            <div class="absolute inset-0 bg-primary opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
         </div>
 
-        <h2 class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors duration-300">
-            {title}
-        </h2>
+        <div class="py-4 px-4 flex flex-col flex-grow relative">
+            {/* Type badge and Date */}
+            <div class="flex items-center justify-between mb-3">
+                {type && TypeIcon && (
+                    <span class="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-md">
+                        <TypeIcon size={14} class="text-primary" />
+                        <span>{typeLabel}</span>
+                    </span>
+                )}
+                <div class="text-sm text-gray-600 group-hover:text-primary/80 transition-colors duration-300">
+                    <Date date={publishDate} />
+                </div>
+            </div>
 
-        <p
-            class="mt-2 mb-8 text-body-base line-clamp-4 flex-grow text-small group-hover:text-gray-700 transition-colors duration-300"
-        >
-            {excerpt}
-        </p>
+            <h2 class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors duration-300">
+                {title}
+            </h2>
+
+            <p
+                class="mt-2 mb-8 text-body-base flex-grow text-small group-hover:text-gray-700 transition-colors duration-300"
+            >
+                {excerpt}
+            </p>
+        </div>
+    </div>
+
+    {/* Mobile Stacked Row Layout */}
+    <div class={`md:hidden flex items-center gap-3 py-6 px-6 w-full transition-colors duration-300 ${index % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-gray-50 hover:bg-gray-100'}`}>
+        {type && TypeIcon && (
+            <div class="flex-shrink-0 text-primary">
+                <TypeIcon size={20} class="text-primary" />
+            </div>
+        )}
+        <div class="flex-1 min-w-0">
+            <h2 class="text-base font-bold text-gray-900 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                {title}
+            </h2>
+            <time datetime={publishDate.toISOString()} class="text-xs text-gray-600 mt-1 block">
+                {shortDate}
+            </time>
+        </div>
     </div>
 </a>
+
+<style>
+    .press-post-item {
+        opacity: 1;
+        transition: opacity 0.2s ease-in-out;
+    }
+</style>
 

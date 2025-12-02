@@ -2,14 +2,15 @@
 import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
 import PressPost from '@components/press/PressPost.astro';
+import FilterButtons from '@components/ui/FilterButtons.astro';
 import { getCollection } from 'astro:content';
 
 const seoTitle = "Press";
-const seoDescription = "Press releases and publications from the Bitcoin District Initiative.";
+const seoDescription = "Official press releases from the Bitcoin District Initiative and highlights of our coverage in the news and media.";
 
 const pageHeaderContent = {
     title: "Press",
-    description: "Press releases and publications from the Bitcoin District Initiative."
+    description: "Official press releases from the Bitcoin District Initiative and highlights of our coverage in the news and media."
 };
 
 // Get all published press posts
@@ -20,6 +21,12 @@ const pressPosts = await getCollection('press', ({ data }) => {
 // Sort posts by date (newest first)
 const sortedPressPosts = pressPosts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
+// Filter configuration
+const filters = [
+    { id: 'all', label: 'All', value: null },
+    { id: 'press-release', label: 'Press Releases', value: 'press-release' },
+    { id: 'in-the-news', label: 'In the News', value: 'in-the-news' },
+];
 ---
 
 <Layout title={seoTitle} description={seoDescription}>
@@ -29,24 +36,49 @@ const sortedPressPosts = pressPosts.sort((a, b) => b.data.publishDate.valueOf() 
         background="base" 
     />
 
+    <FilterButtons 
+        filters={filters} 
+        defaultFilter="all"
+        filterTarget="[data-filter-item]"
+    />
+
     <section class="py-xsmall bg-background">
         <div class="site-container--content mx-auto px-4">
             {sortedPressPosts.length > 0 ? (
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {sortedPressPosts.map((post, index) => (
-                        <PressPost
-                            title={post.data.title}
-                            excerpt={post.data.excerpt}
-                            featuredImage={post.data.featuredImage}
-                            publishDate={post.data.publishDate}
-                            slug={post.id}
-                            index={index}
-                        />
-                    ))}
-                </div>
+                <>
+                    {/* Desktop Grid Layout */}
+                    <div class="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {sortedPressPosts.map((post, index) => (
+                            <PressPost
+                                title={post.data.title}
+                                excerpt={post.data.excerpt}
+                                featuredImage={post.data.featuredImage}
+                                publishDate={post.data.publishDate}
+                                slug={post.id}
+                                index={index}
+                                type={post.data.type}
+                            />
+                        ))}
+                    </div>
+                </>
             ) : (
                 <p class="text-body-base/60 italic">No press releases available yet. Check back soon!</p>
             )}
+        </div>
+
+        {/* Mobile Full-Width Stacked Layout */}
+        <div class="md:hidden">
+            {sortedPressPosts.length > 0 && sortedPressPosts.map((post, index) => (
+                <PressPost
+                    title={post.data.title}
+                    excerpt={post.data.excerpt}
+                    featuredImage={post.data.featuredImage}
+                    publishDate={post.data.publishDate}
+                    slug={post.id}
+                    index={index}
+                    type={post.data.type}
+                />
+            ))}
         </div>
     </section>
 </Layout>
