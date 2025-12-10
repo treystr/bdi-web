@@ -78,5 +78,13 @@
     "business_website": "https://abovegrounddc.com",
     "photo_url": "/media/onboarding/aboveground.jpg",
     "description": "At Union Market, Chef Nicholas Joseph Martino brings British classics inspired by his time with Marco Pierre White. He was excited to accept Bitcoin and turned it on the moment we asked. Proper fish and chips, pies, and a lively Pub Shop."
+  },
+  {
+    "date": "2025-12-08",
+    "block_height": 927014,
+    "business_name": "The Corn Factory",
+    "business_website": "https://thecornfactory.com/",
+    "photo_url": "/media/onboarding/corn_factory.jpg",
+    "description": "After reaching out on social media, the owner welcomed us to stop by L’Enfant Plaza for lunch once Bitcoin payments were enabled through Square. She is from Venezuela and her wife is from Mexico and together they blend both culinary traditions into their menu. She recommended the Carne Mechada Cachapas and it was exceptional. A simple exchange helped bring another local business into DC’s growing Bitcoin circular economy and we are glad to support them."
   }
 ]
