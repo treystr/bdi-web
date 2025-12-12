@@ -80,6 +80,14 @@
     "description": "At Union Market, Chef Nicholas Joseph Martino brings British classics inspired by his time with Marco Pierre White. He was excited to accept Bitcoin and turned it on the moment we asked. Proper fish and chips, pies, and a lively Pub Shop."
   },
   {
+    "date": "2025-12-04",
+    "block_height": 926452,
+    "business_name": "Kush",
+    "business_website": "https://www.abulaylakitchen.com/",
+    "photo_url": "/media/onboarding/kush.jpg",
+    "description": "At the Downtown DC Holiday Market, we stopped by the Kush food truck and asked the owner if he would be open to accepting Bitcoin. He was curious, said he would explore the option, and later messaged that he had enabled the feature through Square. We returned to make his first Bitcoin sale. He now proudly displays the new Square Bitcoin stickers on his truck, adding another local vendor to DC’s growing circular economy."
+  },
+  {
     "date": "2025-12-08",
     "block_height": 927014,
     "business_name": "The Corn Factory",
