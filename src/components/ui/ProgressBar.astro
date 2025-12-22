@@ -1,0 +1,235 @@
+---
+import type { LucideIcon } from 'lucide-astro';
+
+export interface Props {
+    current: number;
+    goal: number;
+    label?: string;
+    showBar?: boolean;
+    icon?: LucideIcon;
+    class?: string;
+}
+
+const {
+    current,
+    goal,
+    label,
+    showBar = true,
+    icon: Icon,
+    class: className = ''
+} = Astro.props;
+
+const progress = Math.min((current / goal) * 100, 100);
+const percentage = Math.round(progress);
+---
+
+<div class={`progress-bar-wrapper ${className}`}>
+    <div class="progress-content">
+        <!-- Optional Icon -->
+        {Icon && (
+            <div class="progress-icon-wrapper">
+                <Icon class="progress-icon" />
+            </div>
+        )}
+
+        <!-- Progress Stats -->
+        <div class="progress-stats">
+            <div class="progress-numbers">
+                <span class="progress-current">{current}</span>
+                <span class="progress-separator">/</span>
+                <span class="progress-goal">{goal}</span>
+            </div>
+            {label && (
+                <div class="progress-label">{label}</div>
+            )}
+        </div>
+
+        <!-- Progress Bar -->
+        {showBar && (
+            <div class="progress-bar-container">
+                <div 
+                    class="progress-bar-fill"
+                    style={`width: ${progress}%`}
+                    role="progressbar"
+                    aria-valuenow={current}
+                    aria-valuemin={0}
+                    aria-valuemax={goal}
+                    aria-label={`${label || 'Progress'}: ${current} of ${goal} (${percentage}%)`}
+                >
+                    {progress >= 6 && (
+                        <span class="progress-percentage">{percentage}%</span>
+                    )}
+                </div>
+            </div>
+        )}
+    </div>
+</div>
+
+<style>
+    .progress-bar-wrapper {
+        margin-top: 2rem;
+        width: 100%;
+    }
+
+    .progress-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .progress-icon-wrapper {
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .progress-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        color: var(--color-accent);
+    }
+
+    .progress-stats {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .progress-numbers {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .progress-current {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--color-accent);
+        line-height: 1;
+    }
+
+    .progress-separator {
+        font-size: 2rem;
+        font-weight: 600;
+        color: rgba(var(--color-body-base-rgb), 0.4);
+        line-height: 1;
+    }
+
+    .progress-goal {
+        font-size: 2rem;
+        font-weight: 600;
+        color: rgba(var(--color-body-base-rgb), 0.6);
+        line-height: 1;
+    }
+
+    .progress-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: rgba(var(--color-body-base-rgb), 0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .progress-bar-container {
+        width: 100%;
+        height: 1.5rem;
+        background: rgba(var(--color-body-base-rgb), 0.12);
+        border: 2px solid rgba(var(--color-body-base-rgb), 0.25);
+        border-radius: 9999px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 
+            inset 0 2px 6px rgba(0, 0, 0, 0.08),
+            0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .progress-bar-fill {
+        height: calc(100% - 2px);
+        margin: 1px;
+        background: linear-gradient(90deg, #f7931a 0%, #e6851a 100%);
+        border-radius: 9999px;
+        transition: width 0.8s ease-out;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 0.875rem;
+        position: relative;
+        box-shadow:
+            0 2px 12px rgba(247, 147, 26, 0.5),
+            0 1px 4px rgba(247, 147, 26, 0.3);
+        /* Ensure minimum width for very small progress to be visible */
+        min-width: 1.5rem;
+    }
+
+    .progress-percentage {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        white-space: nowrap;
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+        .progress-bar-wrapper {
+            margin-top: 1.5rem;
+        }
+
+        .progress-icon {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .progress-current {
+            font-size: 2.25rem;
+        }
+
+        .progress-separator {
+            font-size: 1.5rem;
+        }
+
+        .progress-goal {
+            font-size: 1.5rem;
+        }
+
+        .progress-label {
+            font-size: 0.75rem;
+        }
+
+        .progress-bar-container {
+            height: 1.125rem;
+            border-width: 1.5px;
+        }
+
+        .progress-bar-fill {
+            height: calc(100% - 1px);
+            margin: 0.5px;
+            padding-right: 0.625rem;
+            border-width: 0.5px;
+        }
+
+        .progress-percentage {
+            font-size: 0.625rem;
+        }
+    }
+
+    /* Hide percentage text on very small progress bars */
+    @media (max-width: 480px) {
+        .progress-bar-fill {
+            padding-right: 0.25rem;
+        }
+
+        .progress-percentage {
+            font-size: 0.5rem;
+        }
+    }
+</style>
+

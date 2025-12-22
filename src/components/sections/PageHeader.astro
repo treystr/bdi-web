@@ -1,11 +1,19 @@
 ---
+import ProgressBar from '@components/ui/ProgressBar.astro';
+
 interface Props {
     title: string;
     description?: string;
     background?: 'base' | 'light' | 'dark';
+    progress?: {
+        current: number;
+        goal: number;
+        label?: string;
+        showBar?: boolean;
+    };
 }
 
-const { title, description, background = 'base' } = Astro.props;
+const { title, description, background = 'base', progress } = Astro.props;
 
 // Background classes for theme consistency
 const backgroundClasses = {
@@ -25,6 +33,17 @@ const backgroundClasses = {
             <p class="page-header-description text-body-base text-lg md:text-xl opacity-80" data-aos="fade-up" data-aos-delay="100">
                 {description}
             </p>
+        )}
+        
+        {progress && (
+            <div data-aos="fade-up" data-aos-delay="200">
+                <ProgressBar 
+                    current={progress.current}
+                    goal={progress.goal}
+                    label={progress.label}
+                    showBar={progress.showBar}
+                />
+            </div>
         )}
     </div>
 </section>
