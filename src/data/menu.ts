@@ -12,7 +12,14 @@ export const headerMenu: MenuItem[] = [
     // { name: 'Theme Info', link: '/theme-info' },
     { name: 'Why Bitcoin?', link: '/why' },
     { name: 'Initiatives', link: '/initiatives' },
-    { name: 'Resources', link: '/resources' },
+    {
+        name: 'Resources',
+        link: '/resources',
+        showArrow: true,
+        children: [
+            { name: 'Events', link: 'https://luma.com/bitcoindistrict?k=c' }
+        ]
+    },
     { 
       name: 'About', 
       link: '/about',

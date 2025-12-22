@@ -1,9 +1,10 @@
 ---
 import BusinessCard from './BusinessCard.astro';
 import MilestoneFlag from './MilestoneFlag.astro';
-import onboardingData from '@data/onboarding.json';
+import merchantsData from '@data/merchants.json';
 import { getBackgroundColor } from '@utils/styleUtils';
 import type { ThemeColor } from '@utils/styleUtils';
+import type { ImageMetadata } from 'astro';
 
 export interface Props {
     background?: ThemeColor;
@@ -11,8 +12,25 @@ export interface Props {
 
 const { background = 'base' } = Astro.props;
 
+// Import all merchant images using import.meta.glob
+// This eagerly loads all images at build time for optimization
+const merchantImages = import.meta.glob<{ default: ImageMetadata }>(
+    '../../content/initiatives/images/merchants/*.{jpg,jpeg,png,webp}',
+    { eager: true }
+);
+
+// Create a mapping from filename to ImageMetadata
+const imageMap = new Map<string, ImageMetadata>();
+Object.entries(merchantImages).forEach(([path, image]) => {
+    // Extract filename from path (e.g., "../../content/initiatives/images/merchants/districtlemonade.jpg" -> "districtlemonade.jpg")
+    const filename = path.split('/').pop() || '';
+    if (filename) {
+        imageMap.set(filename, image.default);
+    }
+});
+
 // Sort by block height ascending (earliest blocks first)
-const sortedEntries = [...onboardingData].sort((a, b) => 
+const sortedEntries = [...merchantsData].sort((a, b) => 
     a.block_height - b.block_height
 );
 
@@ -36,12 +54,16 @@ const bgColor = getBackgroundColor(background);
             {sortedEntries.map((entry, index) => {
                 const businessNumber = index + 1; // Generate sequential number based on block height order
                 
+                // Get ImageMetadata for this merchant's photo, or fallback to placeholder string
+                const merchantImage = entry.photo_url ? imageMap.get(entry.photo_url) : undefined;
+                const imageSrc = merchantImage || '/images/placeholder-business.jpg';
+                
                 return (
                     <BusinessCard
                         number={businessNumber}
                         businessName={entry.business_name}
                         description={entry.description}
-                        imageSrc={entry.photo_url || '/images/placeholder-business.jpg'}
+                        imageSrc={imageSrc}
                         imageAlt={`${entry.business_name} storefront`}
                         websiteUrl={entry.business_website}
                         date={entry.date}

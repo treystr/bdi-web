@@ -28,6 +28,16 @@
           "twitter": "secsovereign"
         },
         "blockHeight": 921687
+      },
+      {
+        "rank": 20,
+        "displayName": "TKay",        
+        "image": "tkay.png",
+        "message": "Stay Sovereign",
+        "links": {
+          "nostr": "npub1nje4ghpkjsxe5thcd4gdt3agl2usxyxv3xxyx39ul3xgytl5009q87l02j"
+        },
+        "blockHeight": 928907
       }
 
 ]

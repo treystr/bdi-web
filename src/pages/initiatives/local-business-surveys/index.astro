@@ -5,7 +5,9 @@ import FullScreenHero from '@components/sections/FullScreenHero.astro';
 import BarChart from '@components/charts/BarChart.astro';
 import PieChart from '@components/charts/PieChart.astro';
 import Button from '@components/ui/Button.astro';
-import heroImage from "@assets/images/hero/hero-dupont.jpg"
+import { Image } from 'astro:assets';
+import heroImage from "@assets/images/hero/hero-dupont.jpg";
+import surveyImage from "../../../content/initiatives/images/smb_survey.jpg";
 
 // Get the initiative entry
 const entry = await getEntry('initiatives', 'local-business-surveys');
@@ -217,8 +219,8 @@ const statusStyles = {
                     
                     {/* Survey Image */}
                     <div class="mb-8">
-                        <img 
-                            src="/media/onboarding/smb_survey.jpg" 
+                        <Image 
+                            src={surveyImage}
                             alt="Bitcoin District Initiative Local Business Survey Form"
                             class="w-full max-w-lg mx-auto rounded-lg shadow-lg bg-white p-4"
                             loading="lazy"

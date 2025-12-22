@@ -273,14 +273,21 @@ const isCurrentPage = (link: string) => {
                                                     <a
                                                         href={child.link}
                                                         class:list={[
-                                                            'block px-4 text-small py-2',
+                                                            'flex items-center justify-between px-4 text-small py-2',
                                                             isCurrentPage(child.link)
                                                                 ? 'text-nav-text-current font-semibold'
                                                                 : 'text-nav-text hover:text-nav-text-hover',
                                                         ]}
                                                         aria-current={isCurrentPage(child.link) ? 'page' : undefined}
                                                     >
-                                                        {child.name}
+                                                        <span>{child.name}</span>
+                                                        {child.link.startsWith('http') && (
+                                                            <ArrowRightCircle
+                                                                size={16}
+                                                                class="ml-2 flex-shrink-0"
+                                                                aria-hidden="true"
+                                                            />
+                                                        )}
                                                     </a>
                                                 </li>
                                             ))}
