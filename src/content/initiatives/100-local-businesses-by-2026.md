@@ -16,3 +16,4 @@ seo:
   description: "We're helping onboard 100 local businesses to accept Bitcoin in the DMV by the end of 2026. Support our mission to build a thriving Bitcoin circular economy in the nation's capital."
 ---
 
+A thriving Bitcoin circular economy starts with local merchants. Our goal is to onboard 100 businesses in the Washington, DC area to accept Bitcoin by the end of 2026—creating a network where Bitcoiners can spend and merchants can earn in sound money.

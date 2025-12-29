@@ -3,6 +3,7 @@ import { getEntry, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
+import FeatureList from '@components/sections/FeatureList.astro';
 import InitiativeCardsGrid from '@components/initiatives/InitiativeCardsGrid.astro';
 import merchantsData from '@data/merchants.json';
 
@@ -27,6 +28,34 @@ const pageHeaderContent = {
         goal: 100,
         label: "Merchants Onboarded"
     }
+};
+
+// How We Support Merchants content
+const merchantSupportContent = {
+    title: "Supporting Merchants Every Step of the Way",
+    description: "Whether a business is brand new to Bitcoin or already accepting it, we're here to help them succeed. Our approach combines hands-on onboarding with ongoing community support.",
+    features: [
+        {
+            emoji: "🤝",
+            title: "Direct Merchant Onboarding",
+            description: "We work one-on-one with local businesses to help them start accepting Bitcoin. From choosing the right payment processor like Square to setting up a self-custody wallet, we guide merchants through every step of the process."
+        },
+        {
+            emoji: "🗺️",
+            title: "Welcoming Map-Listed Merchants",
+            description: "For businesses that have already enabled Bitcoin payments and appear on the BTC Map, we visit in person to introduce them to the local Bitcoin community, answer questions, and ensure they feel supported."
+        },
+        {
+            emoji: "🪧",
+            title: "Professional Signage",
+            description: "We provide merchants with high-quality \"Bitcoin Accepted Here\" signage to display in their windows and at checkout, helping attract Bitcoin-spending customers and signaling their participation in the circular economy."
+        },
+        {
+            emoji: "📚",
+            title: "Educational Resources",
+            description: "Every merchant receives educational materials covering Bitcoin basics, transaction tips, and best practices—empowering them to confidently serve Bitcoin customers and manage their payments."
+        }
+    ]
 };
 
 // Donate CTA
@@ -62,8 +91,17 @@ const donateCta = {
         <Content />
     </article>
 
+    {/* How We Support Merchants */}
+    <FeatureList 
+        content={merchantSupportContent}
+        background="light"
+        paddingTop="medium"
+        paddingBottom="large"
+        columns={2}
+    />
+
     {/* Initiative Cards Grid */}
-    <InitiativeCardsGrid background="light" />
+    <InitiativeCardsGrid background="base" />
 
     {/* Donate CTA */}
     <CtaBanner
