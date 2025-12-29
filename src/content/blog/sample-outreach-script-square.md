@@ -1,6 +1,6 @@
 ---
 title: "Sample Email for Local Square Businesses"
-excerpt: "A simple email script to help local businesses in your town understand and enable Bitcoin payments through Square."
+excerpt: "A simple email script for customers to help local businesses enable Bitcoin payments through Square."
 publishDate: "2025-10-20"
 featuredImage: "./images/square_barcode.jpg"
 publish: true
@@ -8,68 +8,55 @@ categories: ["Onboarding"]
 
 seo:
   title: "Sample Outreach Script for Local Businesses"
-  description: "A practical script and resource from [the Bitcoin District Initiative] (or [your local Bitcoin community]) to help [your city] businesses understand and enable Bitcoin payments through Square."
+  description: "A practical script to help local businesses understand and enable Bitcoin payments through Square."
 ---
 
-This guide offers a practical script and clear talking points for introducing [your city]-area business owners to **Bitcoin payments through Square** — now (or soon to be, depending on when you're reading this) available natively across Square’s point-of-sale platform.  
+This guide provides a short script for introducing local business owners to Bitcoin payments. Square now allows merchants to accept Bitcoin directly through the app they already use.
 
-Whether a business has already enabled the feature or is just curious about it, this approach keeps the focus where it belongs: on what matters to local merchants — saving money, serving more customers, and maintaining control over their money.
+This approach focuses on what matters to merchants: saving money, serving more customers, and using tools they already trust.
 
 ## Purpose
 
-This script is for community members who want to introduce local business owners to Bitcoin payments.  
+This script is for customers who want to help local shops start accepting Bitcoin. It is a simple way to suggest a tool that saves them money and attracts new customers.
 
-It’s not about selling or persuading.  
-It’s about education, conversation, and helping business owners see how Bitcoin can fit naturally into what they already do.
+## Subject: Square's New Payment Method
 
-## Sample Email
+> **Hi [Name],**
+>
+> I noticed you were a Square seller and wanted to ask if you would consider setting up a new payment method that lets customers like me pay with Bitcoin.
+> 
+> Square recently added native Bitcoin support to their app, and you can enable it in settings without any new hardware. Even if you do not want to hold any Bitcoin with your business, you can configure these payments to settle only in USD and still benefit from:
+>
+> * Zero processing fees (until at least 2027)
+> * Near-instant settlement
+> * No chargeback risk
+> 
+> I live in [your city] and love your shop. If you are interested, I would be happy to show you how the feature works or help you run a test transaction. I can also help get you listed on BTCmap.org and introduce you to the local Bitcoin community to bring more customers your way.
+> 
+> Let me know if you would like to chat about getting it started.
 
-> **Hi [Name],**  
->  
-> My name is [Your Name]. I’m part of a local nonprofit called **[the Bitcoin District Initiative] (or [your local Bitcoin community])** — we help [your city]-area businesses **make sense of Bitcoin and how it can be good for business.**  
->  
-> I noticed you use Square for payments. Square now supports Bitcoin payments, which means you can accept Bitcoin directly through the same Square app you already use — **you simply enable the feature in settings, with no new hardware and no disruption** to your current process.  
->  
-> If you’ve already turned it on, that’s fantastic — we love seeing more local businesses giving customers the choice to pay with Bitcoin. If not, it’s easy to enable whenever you’re ready.  
->  
-> One of the biggest benefits for merchants is **zero payment processing fees** (until at least 2027) — so you keep more of what you earn while offering customers another convenient way to pay.  
->  
-> We’re not selling anything — our role is simply to help business owners understand:  
-> * why Bitcoin is unique,  
-> * how simple Square has made it to accept, and  
-> * why some businesses choose to hold a portion as savings.  
->  
-> If you’re curious, we can walk you through how the Square feature works, help you enable or test it, and even list your shop on [BTCmap.org](https://btcmap.org) — a global directory of Bitcoin-friendly merchants.  
->  
-> Once it’s set up, **you can decide how to handle the Bitcoin you receive** — either hold it in your Square Bitcoin wallet or have it automatically converted to dollars. Many businesses start by converting everything, then later choose to hold a small portion once they’re more comfortable. We can help you understand both options when the time comes.  
->  
-> Bitcoin adoption is still early, but Square has made it simple for any neighborhood café or shop to participate. It’s an easy way to serve more customers and explore something new — using the tools you already trust.  
->  
-> Would you be open to a quick chat about how to get started or how to make the most of it?
+## Tips for Success
 
-## How to Use It
+**Keep it personal**
+Mention if you are a regular customer. This shows you are supporting their business.
 
-**✅ Lead with appreciation**  
-If you have a personal connection — like being a regular customer or knowing someone who works there — mention it. It builds trust right away.
+**Be brief**
+Business owners are busy. Keep your message short and to the point.
 
-**✅ Keep it conversational**  
-You’re starting a friendly conversation, not giving a presentation. Stay relaxed, natural, and respectful of their time.
+**Highlight the savings**
+Zero fees until 2027 is the most important part for most merchants.
 
-**✅ Emphasize ease and choice**  
-Square made Bitcoin acceptance as simple as enabling a feature in their existing app. No new equipment, no added risk, and flexible options for conversion.
+**Follow up in person**
+If you visit the shop, mention the email. A friendly face makes the suggestion more real.
 
-**✅ Leave the door open**  
-If they’re too busy, thank them and leave a card or follow up later. Curiosity often grows once they’ve had time to think about it.
+## Resources
 
-## Optional Follow-Up
+If they want to learn more, you can offer these:
 
-If they show interest, you can mention that **[the Bitcoin District Initiative] (or [your local Bitcoin community])** offers:
+* **Setup support:** Help them find the toggle in their Square settings.
+* **Signage:** Mention "Bitcoin Accepted Here" stickers or signs.
+* **Directory listings:** Offer to help list their business on Bitcoin maps.
 
-* **Free onboarding support** — help enabling or testing the Square feature.  
-* **“Bitcoin Accepted Here” signage** — digital and printed options.  
-* **Optional listings** — feature the business on your community website and on BTCmap.org so local Bitcoiners can find them.  
+## Final Note
 
-## Closing Thought
-
-Our mission isn’t to “sell Bitcoin.”  
-It’s to help local businesses **save on fees, serve more customers, and connect with the growing Bitcoin community** — all while keeping full control of their money.
+The goal is to help local businesses save on fees and connect with more customers. By using tools they already trust, they can explore Bitcoin with no added risk.

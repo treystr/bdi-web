@@ -2,7 +2,7 @@
 title: "The Art of Onboarding Businesses to Bitcoin"
 excerpt: "Onboarding a business to Bitcoin isn’t an event—it’s a process rooted in patience, respect, and learning."
 publishDate: "2025-10-19"
-featuredImage: "./images/loutrey.jpg"
+featuredImage: "./images/tropicburger.jpg"
 publish: true
 categories: ["Onboarding"]
 

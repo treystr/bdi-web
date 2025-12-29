@@ -27,6 +27,8 @@ export interface Props {
     paddingTop?: PaddingSize;
     paddingBottom?: PaddingSize;
     columns?: 1 | 2 | 3 | 4;
+    /** Hide description and features on mobile, showing only the title */
+    hideOnMobile?: boolean;
 }
 
 const {
@@ -38,7 +40,8 @@ const {
         features
     },
     background = 'base',
-    columns = 2
+    columns = 2,
+    hideOnMobile = false
 } = Astro.props;
 
 const bgColor = getBackgroundColor(background);
@@ -66,7 +69,7 @@ const paddingClass = getPaddingClass({
                     </h2>
                 )}
                 {description && (
-                    <p class:list={["mt-4", textColor, "opacity-90"]} data-aos="fade-up" data-aos-delay="100">
+                    <p class:list={["mt-4", textColor, "opacity-90", hideOnMobile && "hidden md:block"]} data-aos="fade-up" data-aos-delay="100">
                         {description}
                     </p>
                 )}
@@ -85,7 +88,8 @@ const paddingClass = getPaddingClass({
 
         <div 
             class:list={[
-                "grid gap-x-8 gap-y-12",
+                "gap-x-8 gap-y-12",
+                hideOnMobile ? "hidden md:grid" : "grid",
                 columns === 1 && "grid-cols-1",
                 columns === 2 && "grid-cols-1 md:grid-cols-2",
                 columns === 3 && "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",

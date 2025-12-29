@@ -1,0 +1,121 @@
+---
+import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
+import FeatureList from '@components/sections/FeatureList.astro';
+import CtaBanner from '@components/sections/CtaBanner.astro';
+
+const seoTitle = "Events";
+const seoDescription = "Join Bitcoin District community events, educational workshops, and meetups in Washington, DC. Learn about Bitcoin, connect with local enthusiasts, and grow with us.";
+
+const pageHeaderContent = {
+    title: "Events",
+    description: "Explore upcoming community gatherings, educational workshops, and Bitcoin meetups happening across Washington, DC."
+};
+
+const eventTypesContent = {
+    eyebrow: "Public Calendar",
+    title: "Bitcoin District Community Calendar",
+    description: "This is the official public calendar for Bitcoin District. Here you'll find all upcoming community events—from casual meetups and networking socials to hands-on educational workshops hosted by the Bitcoin District Initiative.",
+    features: [
+        {
+            emoji: "🤝",
+            title: "Community Meetups",
+            description: "Connect with fellow Bitcoiners, share experiences, and grow together."
+        },
+        {
+            emoji: "🎓",
+            title: "Educational Workshops",
+            description: "Learn Bitcoin fundamentals, security best practices, and practical skills."
+        },
+        {
+            emoji: "🏪",
+            title: "Merchant Events",
+            description: "Special events at local businesses that accept Bitcoin."
+        }
+    ]
+};
+
+const ctaContent = {
+    title: "Have an Idea for an Event?",
+    description: "Want to request a workshop, suggest a topic, or share ideas for future community events? We'd love to hear from you.",
+    button: {
+        text: "Get in Touch",
+        link: "/contact",
+        variant: "primary" as const
+    }
+};
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader 
+        title={pageHeaderContent.title} 
+        description={pageHeaderContent.description} 
+        background="base" 
+    />
+
+    <!-- Event Types Section using FeatureList (hidden on mobile) -->
+    <div class="hidden md:block">
+        <FeatureList 
+            content={eventTypesContent}
+            background="light"
+            padding="xsmall"
+            columns={3}
+        />
+    </div>
+
+    <!-- Calendar Embed Section -->
+    <section class="py-small bg-background">
+        <div class="site-container--content mx-auto px-4">
+            <div class="calendar-container" data-aos="fade-up">
+                <iframe
+                    src="https://luma.com/embed/calendar/cal-ol6GI4CPQzZXqlw/events?lt=light"
+                    class="luma-calendar"
+                    frameborder="0"
+                    allowfullscreen
+                    aria-hidden="false"
+                    tabindex="0"
+                    title="Bitcoin District Events Calendar"
+                    loading="lazy"
+                ></iframe>
+            </div>
+            <p class="calendar-note text-center mt-6 text-body-base/70 text-sm" data-aos="fade-up" data-aos-delay="100">
+                Can't see the calendar? <a href="https://luma.com/bitcoindistrict?k=c" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline font-medium">View events directly on Luma →</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- CTA Section using CtaBanner -->
+    <CtaBanner 
+        content={ctaContent}
+        background="light"
+        padding="xsmall"
+        variant="full-width"
+    />
+</Layout>
+
+<style>
+    .calendar-container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+        background: var(--color-background-light);
+    }
+
+    .luma-calendar {
+        width: 100%;
+        height: 700px;
+        border: 1px solid var(--color-border, #bfcbda88);
+        border-radius: 12px;
+        display: block;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+        .luma-calendar {
+            height: 500px;
+        }
+    }
+</style>

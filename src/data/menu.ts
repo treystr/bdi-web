@@ -17,7 +17,8 @@ export const headerMenu: MenuItem[] = [
         link: '/resources',
         showArrow: true,
         children: [
-            { name: 'Events', link: 'https://luma.com/bitcoindistrict?k=c' }
+            { name: 'Events', link: '/events' },
+            { name: 'Blog', link: '/blog' }
         ]
     },
     { 
