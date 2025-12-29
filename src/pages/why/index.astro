@@ -1,0 +1,113 @@
+---
+import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
+import SplitPanel from '@components/sections/SplitPanel.astro';
+import FeatureList from '@components/sections/FeatureList.astro';
+import CtaBanner from '@components/sections/CtaBanner.astro';
+import btcVideo from '@assets/videos/btc_vid.mp4';
+
+const seoTitle = "Why Bitcoin";
+const seoDescription = "Learn why Bitcoin is more than a payment method. It's a new kind of money built for the digital age, offering merchants lower costs, faster payments, and economic freedom.";
+
+const pageHeaderContent = {
+    title: "Why Bitcoin?",
+    description: "Bitcoin is more than just a payment method. It's a new kind of money built for the digital age. While the U.S. dollar loses purchasing power every year, Bitcoin's fixed supply of 21 million coins makes it scarce, durable, and deflationary. Over time, each satoshi you save represents a growing claim on global value, not a shrinking one."
+};
+
+const digitalGoldContent = {
+    headline: "Digital Gold with a Fixed Supply",
+    description: "Bitcoin is like digital gold, but with a supply that can never be changed. Just as miners extract gold from the earth, Bitcoin miners solve complex mathematical puzzles to secure the network and release new bitcoins. Unlike gold, we know exactly how many will ever exist: 21 million. This scarcity makes Bitcoin uniquely valuable in a world where traditional currencies can be printed without limit.",
+    video: {
+        src: btcVideo,
+        autoplay: true,
+        loop: true,
+        muted: true,
+        controls: false
+    }
+};
+
+const merchantBenefits = {
+    eyebrow: "FOR MERCHANTS",
+    title: "Why Merchants Are Saying \"Yes\" to Bitcoin",
+    description: "Accepting Bitcoin helps local businesses in Washington, DC and around the world operate with more freedom, efficiency, and integrity. Here's why more merchants are adding \"Bitcoin Accepted Here\" to their storefronts:",
+    features: [
+        {
+            emoji: "💸",
+            title: "Lower Costs",
+            description: "Credit cards take 2–3% of every sale and leave you vulnerable to chargebacks. With Bitcoin, transactions settle instantly, directly from customer to merchant. No middlemen, no disputes."
+        },
+        {
+            emoji: "⚡",
+            title: "Faster Payments",
+            description: "Using the Lightning Network, Bitcoin payments clear in seconds and are final. You get paid instantly, and your customers enjoy a smooth checkout experience."
+        },
+        {
+            emoji: "🧡",
+            title: "Loyal Customers",
+            description: "Bitcoin users go out of their way to support local Bitcoin-friendly shops. It's not just payment, it's community. Tap into a growing network of people who want to spend Bitcoin locally."
+        },
+        {
+            emoji: "🌍",
+            title: "Borderless Commerce",
+            description: "Accept payments from anyone, anywhere, without banks or payment processors. Bitcoin opens your doors to a global audience. This is especially valuable for tourism, hospitality, and e-commerce."
+        },
+        {
+            emoji: "🪙",
+            title: "Long-Term Value",
+            description: "While dollars lose value over time, Bitcoin's limited supply means it can hold and even grow in purchasing power. Saving part of your profits in Bitcoin preserves your hard work for the future."
+        },
+        {
+            emoji: "🧭",
+            title: "Independence and Innovation",
+            description: "Accepting Bitcoin signals that your business is forward-thinking, independent, and ready for the next generation of money. You're not just keeping up. You're leading."
+        },
+        {
+            emoji: "🤝",
+            title: "Local Support",
+            description: "The Bitcoin District Initiative helps DC merchants every step of the way. From wallet setup and Lightning integration to signage, staff training, and connecting you with the local Bitcoin community."
+        }
+    ]
+};
+
+const ctaContent = {
+    eyebrow: "GET STARTED",
+    title: "Join the Circular Economy",
+    description: "Bitcoin works best when it circulates, when businesses, individuals, and neighbors trade value directly, peer to peer. By accepting Bitcoin, you're helping build a grassroots circular economy right here in Washington, DC. One that strengthens local independence and economic freedom for everyone.",
+    button: {
+        text: "Get in Touch",
+        link: "/contact",
+        target: "_self" as const,
+        variant: "primary" as const
+    }
+};
+
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader title={pageHeaderContent.title} description={pageHeaderContent.description} background="base" />
+
+    <!-- Merchant Benefits -->
+    <FeatureList 
+        content={merchantBenefits}
+        background="base"
+        padding="small"
+    />
+
+    <!-- Digital Gold Section -->
+    <SplitPanel 
+        content={digitalGoldContent}
+        imagePosition="right"
+        background="base"
+        padding="small"
+        imageAspect="16/9"
+    />
+
+    <!-- CTA Section -->
+    <CtaBanner 
+        content={ctaContent}
+        background="dark"
+        padding="small"
+        variant="full-width"
+    />
+</Layout>
+
