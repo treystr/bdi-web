@@ -120,3 +120,11 @@ export const formspree = {
   contactFormEndpoint: 'https://formspree.io/f/movpgkwr',
   recaptchaSiteKey: '6LfucgQsAAAAAL82ooj_hFKMPs0ki9BaY1hxMlcl'
 }
+
+// Google Analytics configuration
+// Note: Analytics is automatically disabled in development mode (npm run dev)
+// It will only run in production builds, regardless of the enabled setting
+export const googleAnalytics = {
+  id: 'G-WJS960PW5M', // Google Analytics 4 (GA4) measurement ID
+  enabled: true // Set to false to disable Google Analytics
+}
