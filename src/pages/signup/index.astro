@@ -1,0 +1,42 @@
+---
+import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
+import MailchimpSignup from '@components/forms/MailchimpSignup.astro';
+
+const seoTitle = "Newsletter Signup";
+const seoDescription = "Stay connected with Bitcoin District Initiative. Subscribe to our newsletter for updates on events, community news, and Bitcoin education in Washington, DC.";
+
+const pageHeaderContent = {
+    title: "Stay Connected",
+    description: "Join our newsletter to receive updates on community events, educational workshops, and the latest news from Bitcoin District Initiative."
+};
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader 
+        title={pageHeaderContent.title} 
+        description={pageHeaderContent.description} 
+        background="base" 
+    />
+
+    <!-- Signup Form Section -->
+    <section class="py-small bg-background-light">
+        <div class="site-container--content mx-auto px-4">
+            <div class="max-w-2xl mx-auto" data-aos="fade-up">
+                <div class="bg-white p-8 rounded-lg shadow-sm border border-primary/10">
+                    <MailchimpSignup 
+                        size="large" 
+                        showLabels={true}
+                        background="light"
+                    />
+                </div>
+                
+                <p class="text-center mt-6 text-body-base/70 text-sm">
+                    By subscribing, you agree to receive emails from Bitcoin District Initiative. 
+                    You can unsubscribe at any time. We respect your privacy.
+                </p>
+            </div>
+        </div>
+    </section>
+</Layout>
+

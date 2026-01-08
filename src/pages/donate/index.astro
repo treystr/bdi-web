@@ -2,8 +2,8 @@
 import Layout from "@layouts/Layout.astro"
 import PageHeader from "@components/sections/PageHeader.astro"
 import SplitPanel from "@components/sections/SplitPanel.astro"
+import Button from "@components/ui/Button.astro"
 import mapPinImage from "@assets/images/map_pin.jpg"
-import geyserImage from "@assets/images/geyser.jpg"
 
 const seoTitle = "Support Our Mission"
 const seoDescription = "Support the Bitcoin District Initiative's mission to build a Bitcoin circular economy in DC. Your tax-deductible donation funds education and business adoption."
@@ -39,23 +39,27 @@ const heroDonate = {
     ]
 }
 
-// Geyser support Split Panel
-const geyserContent = {
-    headline: "Find us on Geyser.",
-    description: "Geyser is a popular crowdfunding platform powered by Bitcoin.",
-    image: {
-        src: geyserImage,
-        alt: "Geyser crowdfunding platform"
+// Other ways to donate options
+const otherDonationOptions = [
+    {
+        title: "Daffy",
+        description: "Donate through Daffy, a donor-advised fund platform. Lower your income taxes with a charitable deduction.",
+        link: "https://www.daffy.org/charities/392961184-bitcoin-district-initiative-washington-dc",
+        emoji: "💙"
     },
-    buttons: [
-        {
-            text: "Support us on Geyser",
-            link: "https://geyser.fund/project/bitcoindc",
-            variant: "primary" as const,
-            target: "_blank" as const
-        }
-    ]
-}
+    {
+        title: "DAF Direct",
+        description: "Make a donation directly from your donor-advised fund through DAF Direct's streamlined platform.",
+        link: "https://www.dafdirect.org/DAFDirect/daflink?_dafdirect_settings=MzkyOTYxMTg0XzIxMTFfNWNjMDFkYmItNGNmNy00MjZjLTkxMTctNGRlN2QxMzQxNDNm&designatedText=Qml0Y29pbiBFZHVjYXRpb24gYW5kIENvbW11bml0eSBPdXRyZWFjaCBpbiBEQw==&amountValue=",
+        emoji: "🎯"
+    },
+    {
+        title: "Geyser",
+        description: "Support us on Geyser, a popular crowdfunding platform powered by Bitcoin.",
+        link: "https://geyser.fund/project/bitcoindc",
+        emoji: "🌊"
+    }
+]
 ---
 
 <Layout title={seoTitle} description={seoDescription}>
@@ -69,78 +73,87 @@ const geyserContent = {
         background="light"
         padding="base"
     />
-
-    <!-- Tax Information Section -->
+    
+    <!-- Other Ways to Donate Section -->
     <section class="py-small bg-background-light">
         <div class="site-container--content mx-auto px-4">
-            <div class="max-w-4xl mx-auto">
-                <div data-aos="fade-up" class="p-8 bg-white rounded-lg border border-black">
-                    <h3 class="text-headline text-2xl md:text-3xl mb-6 text-center">Tax-Deductible Donations</h3>
-                    
-                    <div class="space-y-4 text-center mb-6">
-                        <p class="text-body-base text-base md:text-lg leading-relaxed">
-                            Bitcoin District Initiative is a <strong>501(c)(3) tax-exempt organization</strong> as recognized by the Internal Revenue Service (IRS).
-                        </p>
-                        
-                        <p class="text-body-base text-lg md:text-xl font-semibold">
-                            EIN: 39-2961184
-                        </p>
-                        
-                        <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90">
-                            All gifts and donations are <strong>tax-deductible</strong> to the extent allowed by law.
-                        </p>
-                    </div>
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-headline text-2xl md:text-3xl mb-4">Other Ways to Donate</h2>
+                    <p class="text-body-base text-base md:text-lg opacity-90 max-w-2xl mx-auto">
+                        Choose the donation method that works best for you. All donations are tax-deductible and help us build DC's Bitcoin circular economy.
+                    </p>
+                </div>
 
-                    <div class="flex flex-wrap gap-4 justify-center mt-8">
-                        <a href="/docs/501c3" class="text-primary hover:underline font-semibold flex items-center gap-1">
-                            View IRS Determination Letter →
-                        </a>
-                        <span class="text-body-base opacity-50">|</span>
-                        <a href="/transparency" class="text-primary hover:underline font-semibold flex items-center gap-1">
-                            Learn More About Our Transparency →
-                        </a>
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {otherDonationOptions.map((option, index) => (
+                        <div 
+                            class="bg-white rounded-lg border border-black p-6 flex flex-col h-full transition-all hover:shadow-lg"
+                            data-aos="fade-up"
+                            data-aos-delay={index * 100}
+                        >
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-12 h-12 rounded-full bg-background/50 border border-black/10 flex items-center justify-center flex-shrink-0">
+                                    <span role="img" aria-label={option.title} class="text-2xl">
+                                        {option.emoji}
+                                    </span>
+                                </div>
+                                <h3 class="text-headline text-xl font-semibold">
+                                    {option.title}
+                                </h3>
+                            </div>
+                            
+                            <p class="text-body-base text-base leading-relaxed opacity-90 mb-6 flex-grow">
+                                {option.description}
+                            </p>
+                            
+                            <Button
+                                href={option.link}
+                                variant="primary"
+                                target="_blank"
+                                class="w-full"
+                            >
+                                Donate via {option.title} →
+                            </Button>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Mission & Impact Section -->
-    <section class="py-small bg-background-alt">
-        <div class="site-container--content mx-auto px-4">
-            <div class="max-w-4xl mx-auto">
-                <div data-aos="fade-up" data-aos-delay="100">
-                    <h3 class="text-headline text-xl md:text-2xl mb-4">Why DC?</h3>
-                    <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90 mb-6">
-                        Because it's America's capital, a place that belongs to everyone. People from across the country and around the world come here to connect with the ideals that shaped our nation. When Bitcoin works as real money in DC, that message reaches far beyond the city itself.
-                    </p>
-                </div>
-
-                <div data-aos="fade-up" data-aos-delay="200">
-                    <h3 class="text-headline text-xl md:text-2xl mb-4">Your Donation Helps Us:</h3>
-                    <ul class="space-y-3 mb-6 text-body-base text-base md:text-lg leading-relaxed opacity-90 list-disc list-inside">
-                        <li>Meet local business owners where they are and help them understand and accept Bitcoin.</li>
-                        <li>Develop educational resources and host hands-on workshops on self-custody, Lightning, and privacy tools.</li>
-                        <li>Strengthen the network of Bitcoiners in DC, where education, trust, and shared purpose come together to advance sound money and human flourishing.</li>
-                    </ul>
-                </div>
-
-                <div data-aos="fade-up" data-aos-delay="300">
-                    <p class="text-body-base text-base md:text-lg leading-relaxed font-semibold mb-8">
-                        We're building a Bitcoin circular economy in Washington, DC. One business, one neighborhood, one block at a time.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+        <!-- Tax Information Section -->
+        <section class="py-small bg-background-light">
+            <div class="site-container--content mx-auto px-4">
+                <div class="max-w-4xl mx-auto">
+                    <div data-aos="fade-up" class="p-8 bg-white rounded-lg border border-black">
+                        <h3 class="text-headline text-2xl md:text-3xl mb-6 text-center">Tax-Deductible Donations</h3>
+                        
+                        <div class="space-y-4 text-center mb-6">
+                            <p class="text-body-base text-base md:text-lg leading-relaxed">
+                                Bitcoin District Initiative is a <strong>501(c)(3) tax-exempt organization</strong> as recognized by the Internal Revenue Service (IRS).
+                            </p>
+                            
+                            <p class="text-body-base text-lg md:text-xl font-semibold">
+                                EIN: 39-2961184
+                            </p>
+                            
+                            <p class="text-body-base text-base md:text-lg leading-relaxed opacity-90">
+                                All gifts and donations are <strong>tax-deductible</strong> to the extent allowed by law.
+                            </p>
+                        </div>
     
-    <!-- Geyser Support Split Panel -->
-    <SplitPanel 
-        content={geyserContent}
-        imagePosition="left"
-        imageAspect="4/3"
-        background="light"
-        padding="base"
-        hideImageOnMobile={true}
-    />
+                        <div class="flex flex-wrap gap-4 justify-center mt-8">
+                            <a href="/docs/501c3" class="text-primary hover:underline font-semibold flex items-center gap-1">
+                                View IRS Determination Letter →
+                            </a>
+                            <span class="text-body-base opacity-50">|</span>
+                            <a href="/transparency" class="text-primary hover:underline font-semibold flex items-center gap-1">
+                                Learn More About Our Transparency →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 </Layout>
