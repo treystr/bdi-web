@@ -1,7 +1,7 @@
 ---
 import Date from '../ui/Date.astro';
 import { Image } from 'astro:assets';
-import { Megaphone, Newspaper } from 'lucide-astro';
+import { Megaphone, Newspaper, CalendarDays } from 'lucide-astro';
 import { format } from 'date-fns';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
     publishDate: Date;
     slug?: string;
     index: number;
-    type?: 'press-release' | 'in-the-news';
+    type?: 'press-release' | 'in-the-news' | 'event';
 }
 
 type ImageMetadata = { src: string; width: number; height: number; format: string };
@@ -23,8 +23,8 @@ const isExternalImage = typeof featuredImage === 'string';
 const shortDate = format(publishDate, 'MMM d, yyyy');
 
 // Get type label and icon
-const typeLabel = type === 'press-release' ? 'Press Release' : type === 'in-the-news' ? 'In the News' : '';
-const TypeIcon = type === 'press-release' ? Megaphone : type === 'in-the-news' ? Newspaper : null;
+const typeLabel = type === 'press-release' ? 'Press Release' : type === 'in-the-news' ? 'In the News' : type === 'event' ? 'Event' : '';
+const TypeIcon = type === 'press-release' ? Megaphone : type === 'in-the-news' ? Newspaper : type === 'event' ? CalendarDays : null;
 ---
 
 <a

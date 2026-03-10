@@ -26,7 +26,7 @@ export interface PressItem {
         height?: number;
       }
     | null;
-  type: "press_release" | "in_the_news" | null;
+  type: "press_release" | "in_the_news" | "event" | null;
 }
 
 export interface Merchant {
@@ -202,9 +202,10 @@ export function slugify(text: string): string {
 
 export function normalizePressType(
   type: string | null
-): "press-release" | "in-the-news" | undefined {
+): "press-release" | "in-the-news" | "event" | undefined {
   if (type === "press_release") return "press-release";
   if (type === "in_the_news") return "in-the-news";
+  if (type === "event") return "event";
   return undefined;
 }
 
