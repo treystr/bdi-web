@@ -7,14 +7,17 @@ import { format } from 'date-fns';
 interface Props {
     title: string;
     excerpt: string;
-    featuredImage: any; // ImageMetadata from content collections
+    featuredImage: string | ImageMetadata | null;
     publishDate: Date;
     slug?: string;
     index: number;
     type?: 'press-release' | 'in-the-news';
 }
 
+type ImageMetadata = { src: string; width: number; height: number; format: string };
+
 const { title, excerpt, featuredImage, publishDate, slug, index, type } = Astro.props;
+const isExternalImage = typeof featuredImage === 'string';
 
 // Format date for mobile (short format)
 const shortDate = format(publishDate, 'MMM d, yyyy');
@@ -38,15 +41,24 @@ const TypeIcon = type === 'press-release' ? Megaphone : type === 'in-the-news' ?
             class="relative aspect-[16/9] overflow-hidden border-black border-b group-hover:border-primary transition-colors duration-300"
         >
             {
-                featuredImage && (
-                    <Image
+                featuredImage && isExternalImage ? (
+                    <img
                         src={featuredImage}
+                        alt=""
+                        width={600}
+                        height={338}
+                        loading="lazy"
+                        class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                    />
+                ) : featuredImage ? (
+                    <Image
+                        src={featuredImage as ImageMetadata}
                         alt=""
                         width={600}
                         height={338}
                         class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                     />
-                )
+                ) : null
             }
             <div class="absolute inset-0 bg-primary opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
         </div>

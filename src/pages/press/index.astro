@@ -1,9 +1,17 @@
 ---
+export const prerender = false;
+
 import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
 import PressPost from '@components/press/PressPost.astro';
 import FilterButtons from '@components/ui/FilterButtons.astro';
-import { getCollection } from 'astro:content';
+import {
+    getPress,
+    getPressSlug,
+    getPressImageUrl,
+    normalizePressType,
+    type PressItem,
+} from '@lib/directus';
 
 const seoTitle = "Press";
 const seoDescription = "Official press releases from the Bitcoin District Initiative and highlights of our coverage in the news and media.";
@@ -13,15 +21,10 @@ const pageHeaderContent = {
     description: "Official press releases from the Bitcoin District Initiative and highlights of our coverage in the news and media."
 };
 
-// Get all published press posts
-const pressPosts = await getCollection('press', ({ data }) => {
-    return import.meta.env.DEV || data.publish !== false;
-});
+const pressResult = await getPress();
+const pressItems: PressItem[] = pressResult.data ?? [];
+const cmsError = pressResult.error;
 
-// Sort posts by date (newest first)
-const sortedPressPosts = pressPosts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
-
-// Filter configuration
 const filters = [
     { id: 'all', label: 'All', value: null },
     { id: 'press-release', label: 'Press Releases', value: 'press-release' },
@@ -44,19 +47,23 @@ const filters = [
 
     <section class="py-xsmall bg-background">
         <div class="site-container--content mx-auto px-4">
-            {sortedPressPosts.length > 0 ? (
+            {cmsError ? (
+                <p class="text-body-base/60 italic">
+                    Press content is temporarily unavailable. Please check back soon.
+                </p>
+            ) : pressItems.length > 0 ? (
                 <>
                     {/* Desktop Grid Layout */}
                     <div class="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {sortedPressPosts.map((post, index) => (
+                        {pressItems.map((item, index) => (
                             <PressPost
-                                title={post.data.title}
-                                excerpt={post.data.excerpt}
-                                featuredImage={post.data.featuredImage}
-                                publishDate={post.data.publishDate}
-                                slug={post.id}
+                                title={item.Title}
+                                excerpt={item.Subtitle ?? ''}
+                                featuredImage={getPressImageUrl(item.Cover, 600)}
+                                publishDate={item.Date ? new Date(item.Date) : new Date()}
+                                slug={getPressSlug(item)}
                                 index={index}
-                                type={post.data.type}
+                                type={normalizePressType(item.type)}
                             />
                         ))}
                     </div>
@@ -67,19 +74,20 @@ const filters = [
         </div>
 
         {/* Mobile Full-Width Stacked Layout */}
-        <div class="md:hidden">
-            {sortedPressPosts.length > 0 && sortedPressPosts.map((post, index) => (
-                <PressPost
-                    title={post.data.title}
-                    excerpt={post.data.excerpt}
-                    featuredImage={post.data.featuredImage}
-                    publishDate={post.data.publishDate}
-                    slug={post.id}
-                    index={index}
-                    type={post.data.type}
-                />
-            ))}
-        </div>
+        {!cmsError && pressItems.length > 0 && (
+            <div class="md:hidden">
+                {pressItems.map((item, index) => (
+                    <PressPost
+                        title={item.Title}
+                        excerpt={item.Subtitle ?? ''}
+                        featuredImage={getPressImageUrl(item.Cover, 600)}
+                        publishDate={item.Date ? new Date(item.Date) : new Date()}
+                        slug={getPressSlug(item)}
+                        index={index}
+                        type={normalizePressType(item.type)}
+                    />
+                ))}
+            </div>
+        )}
     </section>
 </Layout>
-

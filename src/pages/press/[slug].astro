@@ -1,46 +1,36 @@
 ---
-import { getCollection, render } from 'astro:content';
+export const prerender = false;
+
 import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
-import Date from '@components/ui/Date.astro';
-import { Image } from 'astro:assets';
+import DateComponent from '@components/ui/Date.astro';
+import { getPressItem, getPressImageUrl, type PressItem } from '@lib/directus';
 
-export async function getStaticPaths() {
-    const pressPosts = await getCollection('press', ({ data }) => {
-        return import.meta.env.DEV || data.publish !== false;
-    });
-    return pressPosts.map((post) => ({
-        params: { slug: post.id },
-        props: { post },
-    }));
+const { slug } = Astro.params;
+
+const id = parseInt(slug?.split('-')[0] ?? '', 10);
+if (isNaN(id)) {
+    return Astro.redirect('/404');
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
-
-// Use SEO data from frontmatter if available, fallback to regular post data
-const seoTitle = post.data.seo?.title || post.data.title;
-const seoDescription = post.data.seo?.description || post.data.excerpt;
-
-// For SEO image, use the seo.image if provided, otherwise use the featured image
-let seoImage: string | undefined = post.data.seo?.image;
-
-// If seoImage is provided but not an absolute URL, make it absolute
-if (seoImage && !seoImage.startsWith('http')) {
-    seoImage = seoImage.startsWith('/') ? seoImage : `/${seoImage}`;
+const result = await getPressItem(id);
+if (result.error || !result.data) {
+    return Astro.redirect('/404');
 }
-// If no SEO image is specified, but we have a featured image, use its src property
-else if (!seoImage && post.data.featuredImage) {
-    // featuredImage is an ImageMetadata object from Astro's content collections
-    // We can use its src property directly, which Astro will process during build
-    seoImage = post.data.featuredImage.src;
-}
+
+const item: PressItem = result.data;
+const coverUrl = getPressImageUrl(item.Cover, 1200);
+const publishDate = item.Date ? new Date(item.Date) : null;
+
+const seoTitle = item.Title;
+const seoDescription = item.Subtitle ?? undefined;
+const seoImage = coverUrl ?? undefined;
 ---
 
 <Layout title={seoTitle} description={seoDescription} image={seoImage}>
     <PageHeader 
-        title={post.data.title} 
-        description={post.data.excerpt} 
+        title={item.Title} 
+        description={item.Subtitle ?? ''} 
         background="base" 
     />
 
@@ -54,29 +44,32 @@ else if (!seoImage && post.data.featuredImage) {
                     </svg>
                     All Press Releases
                 </a>
-                <div class="flex items-center gap-4 text-body-base/70">
-                    <Date date={post.data.publishDate} />
-                </div>
+                {publishDate && (
+                    <div class="flex items-center gap-4 text-body-base/70">
+                        <DateComponent date={publishDate} />
+                    </div>
+                )}
             </div>
         </div>
 
         {
-            post.data.featuredImage && (
-                <Image
-                    src={post.data.featuredImage}
+            coverUrl && (
+                <img
+                    src={coverUrl}
                     alt=""
                     width={1200}
                     height={675}
+                    loading="eager"
                     class="w-full h-auto rounded-lg border mb-12 border-black"
-                    quality={80}
-                    format="webp"
                 />
             )
         }
 
-        <div class="prose prose-lg max-w-none">
-            <Content />
-        </div>
+        {item.Content && (
+            <div class="prose prose-lg max-w-none">
+                <Fragment set:html={item.Content} />
+            </div>
+        )}
 
         <!-- Bottom navigation link -->
         <div class="mt-12 pt-8 border-t border-body-base/10">
@@ -89,4 +82,3 @@ else if (!seoImage && post.data.featuredImage) {
         </div>
     </article>
 </Layout>
-
