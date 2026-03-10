@@ -1,53 +1,73 @@
-name: Deploy to GitHub Pages
+name: Deploy BDI to Production
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
   push:
-    branches: [ main ]
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
+    branches: [main]
+    paths-ignore:
+      - 'README*.md'
+      - 'docs/**'
+      - '.cursor/**'
   workflow_dispatch:
 
-# Allow this job to clone the repo and create a page deployment
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+env:
+  DEPLOY_USER: deploy
+  DEPLOY_HOST: ${{ secrets.PRODUCTION_HOST }}
+  BDI_DEPLOY_PATH: /home/deploy/bdi-web/dist
 
 jobs:
-  build:
+  build-and-deploy:
+    name: Build & Deploy BDI Static Site
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-          
-      - name: Clean npm cache
-        run: npm cache clean --force
-        
+
       - name: Install dependencies
         run: npm ci
-        
-      - name: Build site
-        run: npm run build
-        
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Build static site
+        run: npm run build
+        env:
+          PUBLIC_SITE_URL: https://bitcoindistrictinitiative.org
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRODUCTION_SSH_KEY_DEPLOY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+            ./dist/ ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }}:${{ env.BDI_DEPLOY_PATH }}/
+
+      - name: Trigger Caddy reload on bd-web
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.BD_WEB_DEPLOY_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/BitcoinDistrict/bd-web/dispatches \
+            -d '{"event_type":"bdi-site-updated","client_payload":{"sha":"${{ github.sha }}"}}'
+
+      - name: Clean up SSH keys
+        if: always()
+        run: |
+          rm -f ~/.ssh/deploy_key
+
+      - name: Deployment summary
+        if: success()
+        run: |
+          echo "BDI static site deployed successfully!"
+          echo "Site: https://bitcoindistrictinitiative.org"
+          echo "Commit: ${{ github.sha }}"
+          echo "Caddy reload triggered on bd-web"
