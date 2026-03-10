@@ -1,6 +1,6 @@
 ---
 import { getSocialLinksByLocation, type SocialLocation, type SocialIconType } from '@data/config';
-import { Github, Linkedin, Mail, Instagram, Feather, Calendar } from 'lucide-astro';
+import { Github, Linkedin, Mail, Instagram, Feather, Calendar, Rss } from 'lucide-astro';
 import X from '@components/icons/X.astro';
 import Tiktok from '@components/icons/Tiktok.astro';
 
@@ -35,26 +35,29 @@ const displayedLinks = visibleIcons
 
 <nav aria-label="Social media links">
   <ul class={`flex justify-center items-center ${gap}`}>
-    {displayedLinks.map(link => (
-      <li>
-        <a 
-          href={link.url} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          aria-label={`Follow us on ${link.icon}`}
-          class={`inline-flex items-center justify-center ${colorClass} ${hoverColorClass} transition-colors`}
-        >
-          {link.icon === 'x' && <X size={iconSize} class={`${colorClass} ${hoverColorClass} transition-colors`} />}
-          {link.icon === 'instagram' && <Instagram {...iconProps} />}
-          {link.icon === 'github' && <Github {...iconProps} />}
-          {link.icon === 'linkedin' && <Linkedin {...iconProps} />}
-          {link.icon === 'mail' && <Mail {...iconProps} />}
-          {link.icon === 'nostr' && <Feather {...iconProps} />}
-          {link.icon === 'tiktok' && <Tiktok size={iconSize} class={`${colorClass} ${hoverColorClass} transition-colors`} />}
-          {link.icon === 'calendar' && <Calendar {...iconProps} />}
-        </a>
-      </li>
-    ))}
+    {displayedLinks.map(link => {
+      const isExternal = link.url.startsWith('http');
+      return (
+        <li>
+          <a 
+            href={link.url} 
+            {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            aria-label={link.icon === 'rss' ? 'RSS Feed' : `Follow us on ${link.icon}`}
+            class={`inline-flex items-center justify-center ${colorClass} ${hoverColorClass} transition-colors`}
+          >
+            {link.icon === 'x' && <X size={iconSize} class={`${colorClass} ${hoverColorClass} transition-colors`} />}
+            {link.icon === 'instagram' && <Instagram {...iconProps} />}
+            {link.icon === 'github' && <Github {...iconProps} />}
+            {link.icon === 'linkedin' && <Linkedin {...iconProps} />}
+            {link.icon === 'mail' && <Mail {...iconProps} />}
+            {link.icon === 'nostr' && <Feather {...iconProps} />}
+            {link.icon === 'tiktok' && <Tiktok size={iconSize} class={`${colorClass} ${hoverColorClass} transition-colors`} />}
+            {link.icon === 'calendar' && <Calendar {...iconProps} />}
+            {link.icon === 'rss' && <Rss {...iconProps} />}
+          </a>
+        </li>
+      );
+    })}
   </ul>
 </nav>
 

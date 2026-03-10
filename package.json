@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@astrojs/node": "^9.5.5",
+        "@astrojs/rss": "^4.0.17",
         "@directus/sdk": "^18.0.3",
         "aos": "^2.3.4",
         "canvas-confetti": "^1.9.4",

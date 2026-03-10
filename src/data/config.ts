@@ -1,5 +1,5 @@
 // Type definitions for social links
-export type SocialIconType = 'x' | 'instagram' | 'github' | 'linkedin' | 'mail' | 'nostr' | 'tiktok' | 'calendar';
+export type SocialIconType = 'x' | 'instagram' | 'github' | 'linkedin' | 'mail' | 'nostr' | 'tiktok' | 'calendar' | 'rss';
 export type SocialLocation = 'header' | 'footer' | 'all';
 
 export interface SocialLink {
@@ -57,6 +57,12 @@ export const siteConfig = {
       url: 'https://luma.com/bitcoindistrict?k=c',
       enabled: true,
       visibleIn: ['header', 'footer'] as SocialLocation[]
+    },
+    { 
+      icon: 'rss' as SocialIconType, 
+      url: '/rss.xml',
+      enabled: true,
+      visibleIn: ['footer'] as SocialLocation[]
     },
   ] as SocialLink[]
 };
