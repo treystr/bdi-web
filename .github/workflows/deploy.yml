@@ -12,31 +12,18 @@ on:
 env:
   DEPLOY_USER: deploy
   DEPLOY_HOST: ${{ secrets.PRODUCTION_HOST }}
-  BDI_DEPLOY_PATH: /home/deploy/bdi-web/dist
+  DEPLOY_PATH: /home/deploy/bd-web
+  BDI_SITE_PATH: /home/deploy/bdi-web
 
 jobs:
-  build-and-deploy:
-    name: Build & Deploy BDI Static Site
+  deploy:
+    name: Deploy BDI SSR Site
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build static site
-        run: npm run build
-        env:
-          PUBLIC_SITE_URL: https://bitcoindistrictinitiative.org
 
       - name: Configure SSH
         run: |
@@ -45,19 +32,60 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy to VPS
+      - name: Sync BDI source to server
         run: |
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
-            ./dist/ ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }}:${{ env.BDI_DEPLOY_PATH }}/
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'node_modules' \
+            --exclude 'dist' \
+            --exclude '.env' \
+            --exclude '.cursor' \
+            --exclude 'merchants_snapshot.json' \
+            ./ ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }}:${{ env.BDI_SITE_PATH }}/
 
-      - name: Trigger Caddy reload on bd-web
+      - name: Rebuild and restart BDI container
         run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.BD_WEB_DEPLOY_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/BitcoinDistrict/bd-web/dispatches \
-            -d '{"event_type":"bdi-site-updated","client_payload":{"sha":"${{ github.sha }}"}}'
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+            ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }} << 'ENDSSH'
+          set -e
+          cd ${{ env.DEPLOY_PATH }}
+
+          echo "Building BDI container..."
+          docker compose -f docker-compose.prod.yml build bdi-astro
+
+          echo "Restarting BDI container..."
+          docker compose -f docker-compose.prod.yml up -d --no-deps bdi-astro
+
+          echo "Waiting for BDI to be healthy..."
+          sleep 10
+
+          echo "Container status:"
+          docker compose -f docker-compose.prod.yml ps bdi-astro
+          ENDSSH
+
+      - name: Health check
+        run: |
+          sleep 5
+          MAX_RETRIES=6
+          RETRY_DELAY=10
+
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "Attempt $i/$MAX_RETRIES: Testing BDI site..."
+            STATUS=$(curl -L -s -o /dev/null -w "%{http_code}" --max-time 10 "https://bitcoindistrictinitiative.org/" 2>/dev/null || echo "000")
+            if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 400 ]; then
+              echo "BDI site is healthy (HTTP $STATUS)"
+              break
+            else
+              if [ $i -eq $MAX_RETRIES ]; then
+                echo "BDI site failed after $MAX_RETRIES attempts (HTTP $STATUS)"
+                exit 1
+              fi
+              echo "BDI site not ready (HTTP $STATUS), waiting ${RETRY_DELAY}s..."
+              sleep $RETRY_DELAY
+            fi
+          done
 
       - name: Clean up SSH keys
         if: always()
@@ -67,7 +95,6 @@ jobs:
       - name: Deployment summary
         if: success()
         run: |
-          echo "BDI static site deployed successfully!"
+          echo "BDI SSR site deployed successfully!"
           echo "Site: https://bitcoindistrictinitiative.org"
           echo "Commit: ${{ github.sha }}"
-          echo "Caddy reload triggered on bd-web"

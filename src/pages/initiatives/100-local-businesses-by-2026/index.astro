@@ -1,11 +1,18 @@
 ---
+export const prerender = false;
+
 import { getEntry, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import FeatureList from '@components/sections/FeatureList.astro';
 import InitiativeCardsGrid from '@components/initiatives/InitiativeCardsGrid.astro';
-import merchantsData from '@data/merchants.json';
+import { getMerchants, type Merchant } from '@lib/directus';
+
+// Fetch merchants from CMS
+const merchantResult = await getMerchants();
+const merchants: Merchant[] = merchantResult.data ?? [];
+const cmsError = merchantResult.error;
 
 // Get the initiative entry
 const entry = await getEntry('initiatives', '100-local-businesses-by-2026');
@@ -24,7 +31,7 @@ const pageHeaderContent = {
     title: entry.data.title,
     description: entry.data.shortDescription,
     progress: {
-        current: merchantsData.length,
+        current: merchants.length,
         goal: 100,
         label: "Merchants Onboarded"
     }
@@ -101,7 +108,7 @@ const donateCta = {
     />
 
     {/* Initiative Cards Grid */}
-    <InitiativeCardsGrid background="base" />
+    <InitiativeCardsGrid background="base" merchants={merchants} error={cmsError} />
 
     {/* Donate CTA */}
     <CtaBanner

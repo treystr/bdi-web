@@ -1,40 +1,42 @@
 ---
 import BusinessCard from './BusinessCard.astro';
 import MilestoneFlag from './MilestoneFlag.astro';
-import merchantsData from '@data/merchants.json';
+import { getMerchants, getDirectusUrl, type Merchant } from '@lib/directus';
 import { getBackgroundColor } from '@utils/styleUtils';
 import type { ThemeColor } from '@utils/styleUtils';
-import type { ImageMetadata } from 'astro';
 
 export interface Props {
     background?: ThemeColor;
+    merchants?: Merchant[];
+    error?: string | null;
 }
 
-const { background = 'base' } = Astro.props;
+const { background = 'base', merchants: propMerchants, error: propError } = Astro.props;
 
-// Import all merchant images using import.meta.glob
-// This eagerly loads all images at build time for optimization
-const merchantImages = import.meta.glob<{ default: ImageMetadata }>(
-    '../../content/initiatives/images/merchants/*.{jpg,jpeg,png,webp}',
-    { eager: true }
-);
+let sortedEntries: Merchant[] = [];
+let cmsError: string | null = propError ?? null;
 
-// Create a mapping from filename to ImageMetadata
-const imageMap = new Map<string, ImageMetadata>();
-Object.entries(merchantImages).forEach(([path, image]) => {
-    // Extract filename from path (e.g., "../../content/initiatives/images/merchants/districtlemonade.jpg" -> "districtlemonade.jpg")
-    const filename = path.split('/').pop() || '';
-    if (filename) {
-        imageMap.set(filename, image.default);
+if (propMerchants) {
+    sortedEntries = propMerchants;
+} else {
+    const result = await getMerchants();
+    if (result.error) {
+        cmsError = result.error;
+    } else {
+        sortedEntries = result.data ?? [];
     }
-});
+}
 
-// Sort by block height ascending (earliest blocks first)
-const sortedEntries = [...merchantsData].sort((a, b) => 
-    a.block_height - b.block_height
-);
+const DIRECTUS_URL = getDirectusUrl();
 
-// Milestone markers to show
+function getMerchantImageUrl(merchant: Merchant): string {
+    if (!merchant.Image_Primary) return '/images/placeholder-business.jpg';
+    const imageId = typeof merchant.Image_Primary === 'string'
+        ? merchant.Image_Primary
+        : merchant.Image_Primary.id;
+    return `${DIRECTUS_URL}/assets/${imageId}?format=webp&quality=80&width=800`;
+}
+
 const milestones = [21, 50, 75, 100];
 
 const bgColor = getBackgroundColor(background);
@@ -50,57 +52,67 @@ const bgColor = getBackgroundColor(background);
         </div>
 
         <!-- Initiative Cards Grid -->
-        <div class="initiative-cards-grid">
-            {sortedEntries.map((entry, index) => {
-                const businessNumber = index + 1; // Generate sequential number based on block height order
-                
-                // Get ImageMetadata for this merchant's photo, or fallback to placeholder string
-                const merchantImage = entry.photo_url ? imageMap.get(entry.photo_url) : undefined;
-                const imageSrc = merchantImage || '/images/placeholder-business.jpg';
-                
-                return (
-                    <BusinessCard
-                        number={businessNumber}
-                        businessName={entry.business_name}
-                        description={entry.description}
-                        imageSrc={imageSrc}
-                        imageAlt={`${entry.business_name} storefront`}
-                        websiteUrl={entry.business_website}
-                        date={entry.date}
-                        blockHeight={entry.block_height}
-                    />
-                );
-            })}
-        </div>
-
-        <!-- Milestone Markers -->
-        {milestones.filter(milestone => 
-            milestone <= sortedEntries.length && milestone !== sortedEntries.length
-        ).map(milestone => (
-            <div class="milestone-marker" data-aos="fade-up">
-                <MilestoneFlag value={milestone} />
+        {cmsError ? (
+            <div class="cms-error-message">
+                <p>Unable to load merchant data at this time. Please try again later.</p>
             </div>
-        ))}
+        ) : (
+            <>
+                <div class="initiative-cards-grid">
+                    {sortedEntries.map((entry, index) => {
+                        const businessNumber = index + 1;
+                        const imageSrc = getMerchantImageUrl(entry);
 
-        <!-- Show "To Be Continued" message if we haven't reached 100 yet -->
-        {sortedEntries.length < 100 && (
-            <div class="initiative-cards-continuation">
-                <div class="continuation-content">
-                    <div class="continuation-icon">🚀</div>
-                    <div class="continuation-text">
-                        <h3>The Journey Continues...</h3>
-                        <p>
-                            We're actively onboarding more businesses every week. 
-                            Check back regularly to see our progress toward 100 local businesses by 2026!
-                        </p>
-                    </div>
+                        return (
+                            <BusinessCard
+                                number={businessNumber}
+                                businessName={entry.Name}
+                                description={entry.Short_Description ?? ''}
+                                imageSrc={imageSrc}
+                                imageAlt={`${entry.Name} storefront`}
+                                websiteUrl={entry.website ?? '#'}
+                                date={entry.Onboard_Date ?? ''}
+                                blockHeight={entry.Onboard_Block ?? 0}
+                            />
+                        );
+                    })}
                 </div>
-            </div>
+
+                {milestones.filter(milestone => 
+                    milestone <= sortedEntries.length && milestone !== sortedEntries.length
+                ).map(milestone => (
+                    <div class="milestone-marker" data-aos="fade-up">
+                        <MilestoneFlag value={milestone} />
+                    </div>
+                ))}
+
+                {sortedEntries.length < 100 && (
+                    <div class="initiative-cards-continuation">
+                        <div class="continuation-content">
+                            <div class="continuation-icon">🚀</div>
+                            <div class="continuation-text">
+                                <h3>The Journey Continues...</h3>
+                                <p>
+                                    We're actively onboarding more businesses every week. 
+                                    Check back regularly to see our progress toward 100 local businesses by 2026!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </>
         )}
     </div>
 </section>
 
 <style>
+    .cms-error-message {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: rgba(var(--color-body-base-rgb), 0.6);
+        font-size: 1.125rem;
+    }
+
     .initiative-cards-section {
         padding: 3rem 0;
     }
