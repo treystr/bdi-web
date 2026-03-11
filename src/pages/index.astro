@@ -1,6 +1,8 @@
 ---
+export const prerender = false;
+
 import Layout from '@layouts/Layout.astro';
-import Hero from '@components/sections/Hero.astro';
+import PressHeroCarousel from '@components/sections/PressHeroCarousel.astro';
 import SplitPanel from '@components/sections/SplitPanel.astro';
 import InitiativeCards from '@components/sections/InitiativeCards.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
@@ -14,25 +16,15 @@ import savingFutureImage from '../assets/images/btcvsusd.jpg';
 const seoTitle = "Home";
 const seoDescription = "Our Initiative is building a grassroots Bitcoin circular economy in Washington, DC through education, business adoption, and community outreach.";
 
-const heroContent = {
+const pressHeroContent = {
     title: "Bitcoin Is Working — Right Here in DC",
-    description: "Join a growing network of DC residents and businesses using Bitcoin every day. We’ll help you accept payments, save securely, and use Bitcoin with confidence through local workshops and one-on-one support.",
-    overlayOpacity: 0.60, // Lighter overlay since gradient adds coverage
-    height: "large" as const, // 65vh for modern balanced look
-    layout: "centered" as const,
-    background: "base" as const, // Gradient color for text readability
-    gradientOverlay: false,
-    buttons: [
-        {
-            text: "Get Started",
-            link: "/contact",
-            size: "xl" as const,
-            target: "_self"
-        }
-    ],
-    backgroundImage: heroImage,
-    contentPosition: "center" as const,
-    textAlign: "center" as const
+    description: "Join a growing network of DC residents and businesses using Bitcoin every day.",
+    button: {
+        text: "Get Started",
+        link: "/contact",
+        variant: "primary" as const,
+        size: "xl" as const,
+    },
 }
 
 const initiativesSection = {
@@ -95,7 +87,12 @@ const blogCarouselContent = {
 ---
 
 <Layout title={seoTitle} description={seoDescription}>
-    <Hero content={heroContent} />
+    <PressHeroCarousel 
+        content={pressHeroContent}
+        fallbackImage={heroImage}
+        limit={6}
+        autoAdvanceMs={6000}
+    />
     <SplitPanel 
         content={understandingBitcoinSection} 
         imagePosition="right" 
