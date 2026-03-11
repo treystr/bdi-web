@@ -23,6 +23,7 @@ export interface Props {
     fallbackImage?: ImageMetadata;
     limit?: number;
     autoAdvanceMs?: number;
+    filterByType?: 'press_release' | 'in_the_news' | 'events';
 }
 
 type ImageMetadata = { src: string; width: number; height: number; format: string };
@@ -32,11 +33,15 @@ const {
     fallbackImage,
     limit = 6,
     autoAdvanceMs = 6000,
+    filterByType,
 } = Astro.props;
 
 const pressResult = await getPress();
 const allItems: PressItem[] = pressResult.data ?? [];
-const pressItems = allItems.filter(item => item.Cover).slice(0, limit);
+const pressItems = allItems
+    .filter(item => item.Cover)
+    .filter(item => !filterByType || item.type === filterByType)
+    .slice(0, limit);
 const hasPressItems = pressItems.length > 0;
 
 interface Slide {
@@ -400,6 +405,7 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
        ============================================= */
     .press-hero__mobile {
         position: relative;
+        padding-top: 80px;
     }
 
     .press-hero__mobile-slide {
