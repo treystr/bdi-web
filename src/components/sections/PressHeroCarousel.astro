@@ -137,25 +137,27 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
         </div>
     )}
 
-    <div class="press-hero__content" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);z-index:10;text-align:center;width:90%;max-width:48rem;">
-        {content?.title && (
-            <h1 class="press-hero__title" style="color:white;">{content.title}</h1>
-        )}
-        {content?.description && (
-            <p class="press-hero__description" style="color:rgba(255,255,255,0.9);">{content.description}</p>
-        )}
-        {content?.button && (
-            <div class="press-hero__cta">
-                <Button
-                    href={content.button.link}
-                    variant={content.button.variant || 'primary'}
-                    size={content.button.size || 'xl'}
-                >
-                    {content.button.text}
-                </Button>
-            </div>
-        )}
-    </div>
+    {!hasPressItems && (
+        <div class="press-hero__content" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);z-index:10;text-align:center;width:90%;max-width:48rem;">
+            {content?.title && (
+                <h1 class="press-hero__title" style="color:white;">{content.title}</h1>
+            )}
+            {content?.description && (
+                <p class="press-hero__description" style="color:rgba(255,255,255,0.9);">{content.description}</p>
+            )}
+            {content?.button && (
+                <div class="press-hero__cta">
+                    <Button
+                        href={content.button.link}
+                        variant={content.button.variant || 'primary'}
+                        size={content.button.size || 'xl'}
+                    >
+                        {content.button.text}
+                    </Button>
+                </div>
+            )}
+        </div>
+    )}
 
     {hasPressItems && slides.length > 1 && (
         <Fragment>
