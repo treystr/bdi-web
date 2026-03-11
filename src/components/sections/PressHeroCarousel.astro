@@ -70,6 +70,7 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
     data-press-hero
     data-auto-advance={autoAdvanceMs}
     aria-label="Press highlights"
+    style="position:relative;width:100%;height:100vh;height:100dvh;overflow:hidden;"
 >
     {hasPressItems && (
         <div class="press-hero__slides">
@@ -118,46 +119,43 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
     )}
 
     {!hasPressItems && (
-        <div class="press-hero__slides">
-            <div class="press-hero__slide is-active">
+        <div class="press-hero__slides" style="position:absolute;inset:0;">
+            <div class="press-hero__slide is-active" style="position:absolute;inset:0;opacity:1;">
                 {fallbackImage ? (
                     <img
                         src={fallbackImage.src}
                         alt=""
                         class="press-hero__image"
-                        width={fallbackImage.width}
-                        height={fallbackImage.height}
+                        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
                         loading="eager"
                     />
                 ) : (
-                    <div class="press-hero__image press-hero__image--placeholder" />
+                    <div class="press-hero__image press-hero__image--placeholder" style="position:absolute;inset:0;width:100%;height:100%;" />
                 )}
-                <div class="press-hero__overlay" />
+                <div class="press-hero__overlay" style="position:absolute;inset:0;z-index:1;" />
             </div>
         </div>
     )}
 
-    {content && (
-        <div class="press-hero__content">
-            {content.title && (
-                <h1 class="press-hero__title">{content.title}</h1>
-            )}
-            {content.description && (
-                <p class="press-hero__description">{content.description}</p>
-            )}
-            {content.button && (
-                <div class="press-hero__cta">
-                    <Button
-                        href={content.button.link}
-                        variant={content.button.variant || 'primary'}
-                        size={content.button.size || 'xl'}
-                    >
-                        {content.button.text}
-                    </Button>
-                </div>
-            )}
-        </div>
-    )}
+    <div class="press-hero__content" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);z-index:10;text-align:center;width:90%;max-width:48rem;">
+        {content?.title && (
+            <h1 class="press-hero__title" style="color:white;">{content.title}</h1>
+        )}
+        {content?.description && (
+            <p class="press-hero__description" style="color:rgba(255,255,255,0.9);">{content.description}</p>
+        )}
+        {content?.button && (
+            <div class="press-hero__cta">
+                <Button
+                    href={content.button.link}
+                    variant={content.button.variant || 'primary'}
+                    size={content.button.size || 'xl'}
+                >
+                    {content.button.text}
+                </Button>
+            </div>
+        )}
+    </div>
 
     {hasPressItems && slides.length > 1 && (
         <Fragment>
