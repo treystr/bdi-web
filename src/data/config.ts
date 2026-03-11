@@ -113,7 +113,7 @@ export const layoutSetting = {
 }
 
 export const announcementBarSetting = {
-  enabled: true,
+  enabled: false,
   text: 'GOT QUESTIONS? JUST ASK!',
   link: '/contact',
   showOnPages: ['/', '/index'], // Pages to show the announcement bar on (empty array = all pages)
