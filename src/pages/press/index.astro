@@ -13,12 +13,12 @@ import {
     type PressItem,
 } from '@lib/directus';
 
-const seoTitle = "Press";
-const seoDescription = "Official press releases from the Bitcoin District Initiative and highlights of our coverage in the news and media.";
+const seoTitle = "News";
+const seoDescription = "Official updates from the Bitcoin District Initiative, including press releases, media coverage, and events.";
 
 const pageHeaderContent = {
-    title: "Press",
-    description: "Official press releases from the Bitcoin District Initiative and highlights of our coverage in the news and media."
+    title: "News",
+    description: "Official updates from the Bitcoin District Initiative, including press releases, media coverage, and events."
 };
 
 const pressResult = await getPress();
@@ -50,7 +50,7 @@ const filters = [
         <div class="site-container--content mx-auto px-4">
             {cmsError ? (
                 <p class="text-body-base/60 italic">
-                    Press content is temporarily unavailable. Please check back soon.
+                    News content is temporarily unavailable. Please check back soon.
                 </p>
             ) : pressItems.length > 0 ? (
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 md:gap-6">
@@ -67,7 +67,7 @@ const filters = [
                         ))}
                     </div>
             ) : (
-                <p class="text-body-base/60 italic">No press releases available yet. Check back soon!</p>
+                <p class="text-body-base/60 italic">No news items are available yet. Check back soon!</p>
             )}
         </div>
     </section>

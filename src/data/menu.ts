@@ -28,7 +28,7 @@ export const headerMenu: MenuItem[] = [
       children: [
           { name: 'Transparency', link: '/transparency' },
           { name: 'FAQ', link: '/faq' },
-          { name: 'Press', link: '/press' }
+          { name: 'News', link: '/press' }
       ]
   },
     { name: 'Join Bitcoin District', link: 'https://bitcoindistrict.org', mobileOnly: true }
