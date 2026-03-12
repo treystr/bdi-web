@@ -140,6 +140,9 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
     {/* ===== MOBILE: card layout with full image + info below (hidden on desktop) ===== */}
     {hasPressItems && (
         <div class="press-hero__mobile">
+            <div class="press-hero__mobile-title-bar">
+                <span>Bitcoin District Initiative</span>
+            </div>
             {slides.map((slide, i) => (
                 <a
                     href={`/press/${slide.slug}`}
@@ -401,11 +404,27 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
 
     /* =============================================
        MOBILE LAYOUT  (<768 px)
-       Full-width image at natural ratio + info card
+       Full-viewport with title bar + image + info
        ============================================= */
     .press-hero__mobile {
         position: relative;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
         padding-top: 80px;
+    }
+
+    .press-hero__mobile-title-bar {
+        padding: 0.75rem 1.25rem;
+        text-align: center;
+        color: white;
+        font-weight: 600;
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+        background: #0a0a0a;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        flex-shrink: 0;
     }
 
     .press-hero__mobile-slide {
@@ -415,6 +434,8 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
         color: white;
         opacity: 0;
         transition: opacity 0.5s ease-in-out;
+        flex: 1;
+        min-height: 0;
     }
 
     .press-hero__mobile-slide.is-active {
@@ -425,7 +446,8 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
     .press-hero__mobile-image-wrap {
         position: relative;
         width: 100%;
-        aspect-ratio: 16 / 10;
+        flex: 1;
+        min-height: 0;
         overflow: hidden;
         background: #111;
     }
@@ -443,6 +465,7 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
         gap: 0.625rem;
         padding: 1.25rem 1.25rem 3.5rem;
         background: linear-gradient(to bottom, #111 0%, #0a0a0a 100%);
+        flex-shrink: 0;
     }
 
     .press-hero__mobile-title {
@@ -464,6 +487,10 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
 
     @media (min-width: 768px) {
         .press-hero__mobile {
+            display: none !important;
+        }
+
+        .press-hero__mobile-title-bar {
             display: none !important;
         }
     }
