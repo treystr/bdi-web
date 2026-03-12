@@ -30,25 +30,24 @@ const isCurrentPage = (link: string) => {
 ---
 
 <style>
+    :root {
+        --announcement-bar-height: 0px;
+        --header-height: 80px;
+        --header-stack-height: 80px;
+    }
+
     header {
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-sizing: border-box;
         overflow: visible;
     }
+
+    header[data-header-mode] {
+        top: var(--announcement-bar-height);
+    }
     
     header[data-header-mode="transition"] {
         transform: translateY(0);
-    }
-    
-    /* Adjust header position when announcement bar is present */
-    body.has-announcement-bar header {
-        top: 38px; /* Height of announcement bar (py-2 = 8px top + 8px bottom + ~22px text height) */
-    }
-    
-    @media (max-width: 640px) {
-        body.has-announcement-bar header {
-            top: 34px; /* Slightly smaller on mobile due to smaller text */
-        }
     }
     
     /* Desktop navigation - removed hover accent line */
@@ -75,61 +74,14 @@ const isCurrentPage = (link: string) => {
     .mobile-menu {
         z-index: 90 !important;
         position: fixed !important;
-        top: 80px !important; /* Start below header */
+        top: var(--header-stack-height, 80px) !important;
         left: 0 !important;
         right: 0 !important;
         bottom: 0 !important;
         width: 100vw !important;
-        height: calc(100vh - 80px) !important;
+        height: calc(100vh - var(--header-stack-height, 80px)) !important;
+        height: calc(100dvh - var(--header-stack-height, 80px)) !important;
     }
-    
-    /* Adjust mobile menu when announcement bar is present */
-    body.has-announcement-bar .mobile-menu {
-        top: 114px !important; /* 80px header + 34px announcement bar */
-        height: calc(100vh - 114px) !important;
-    }
-    
-    /* Mobile logo centering - combine transforms to avoid sub-pixel rendering issues */
-    .mobile-logo-wrapper {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        transform-origin: center center;
-        will-change: transform;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        -webkit-font-smoothing: antialiased;
-    }
-    
-    /* Responsive scaling with proper centering */
-    @media (max-width: 639px) {
-        .mobile-logo-wrapper {
-            transform: translateX(-50%) scale(1.8);
-        }
-    }
-    
-    @media (min-width: 640px) and (max-width: 767px) {
-        .mobile-logo-wrapper {
-            transform: translateX(-50%) scale(1.6);
-        }
-    }
-    
-    @media (min-width: 768px) and (max-width: 1023px) {
-        .mobile-logo-wrapper {
-            transform: translateX(-50%) scale(1.4);
-        }
-    }
-    
-    /* Enable pointer events on logo link inside wrapper */
-    .mobile-logo-wrapper a {
-        pointer-events: auto;
-    }
-    
-    /* Ensure desktop logo link is clickable */
-    .absolute.left-1\/2 a {
-        pointer-events: auto;
-    }
-    
     
     /* Ensure mobile menu displays properly */
     .mobile-menu.mobile-menu-open {
@@ -205,138 +157,137 @@ const isCurrentPage = (link: string) => {
 <header class="fixed top-0 z-50 w-full left-0 bg-white border-b border-primary" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
     <div class="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-6 lg:px-8">
         <div class="flex justify-between items-center py-3 md:py-4 relative">
-            {/* Mobile Menu Button - Left - Fixed width for centering */}
-            <button
-                class="mobile-menu-button relative z-[100] p-2 border-none cursor-pointer bg-transparent lg:hidden w-12 h-12 flex items-center justify-center flex-shrink-0"
-                aria-label="Toggle Menu"
-                aria-expanded="false"
-            >
-                <span class="menu-icon block">
-                    <Menu size={24} class="text-primary" />
-                </span>
-                <span class="close-icon hidden">
-                    <X size={24} class="text-primary" />
-                </span>
-            </button>
-            
-            {/* Mobile Logo - Center (scaled for prominence via CSS) */}
-            <div class="mobile-logo-wrapper lg:hidden">
+            {/* Mobile Logo - Left */}
+            <div class="lg:hidden flex-shrink-0">
                 <Logo variant="header" />
             </div>
             
-            {/* Desktop Layout: Left Nav, Center Logo, Right Social/CTA */}
-            <div class="hidden lg:flex lg:items-center lg:justify-between lg:w-full">
-                {/* Left: Page Navigation */}
-                <nav class="flex items-center flex-shrink min-w-0" aria-label="Site Navigation">
-                    <ul class="flex gap-2 lg:gap-3 xl:gap-4 2xl:gap-6 items-center">
-                        {
-                            headerMenu.filter(item => !item.mobileOnly).map((item, index) => (
-                                <li class="relative group nav-item">
-                                    <div class="flex items-center gap-1">
-                                        <a
-                                            href={item.link}
-                                            class:list={[
-                                                'text-sm lg:text-base font-medium rounded-md px-1.5 lg:px-2 py-1 whitespace-nowrap',
-                                                isCurrentPage(item.link)
-                                                    ? 'text-nav-text-current font-semibold'
-                                                    : 'text-nav-text hover:text-nav-text-hover',
-                                            ]}
-                                            aria-current={isCurrentPage(item.link) ? 'page' : undefined}
-                                        >
-                                            {item.name}
-                                            {item.children && item.showArrow && (
-                                                <ChevronDown
-                                                    size={16}
-                                                    class="transform transition-transform inline-block ml-1"
-                                                    aria-hidden="true"
-                                                />
-                                            )}
-                                        </a>
-                                        {item.children && (
-                                            <button
-                                                type="button"
-                                                class="sr-only"
-                                                aria-expanded="false"
-                                                aria-label={item.name}
-                                            />
-                                        )}
-                                    </div>
-                                    {item.children && (
-                                        <ul
-                                            class:list={[
-                                                'submenu desktop-submenu absolute mt-2 min-w-[200px] transition-all duration-200 opacity-0 invisible overflow-hidden z-[9999]',
-                                                index === headerMenu.filter(item => !item.mobileOnly).length - 1 ? 'right-0' : 'left-0',
-                                            ]}
-                                        >
-                                            {item.children.map((child, childIndex) => (
-                                                <li class="desktop-submenu-item">
-                                                    <a
-                                                        href={child.link}
-                                                        class:list={[
-                                                            'flex items-center justify-between px-4 text-small py-2',
-                                                            isCurrentPage(child.link)
-                                                                ? 'text-nav-text-current font-semibold'
-                                                                : 'text-nav-text hover:text-nav-text-hover',
-                                                        ]}
-                                                        aria-current={isCurrentPage(child.link) ? 'page' : undefined}
-                                                    >
-                                                        <span>{child.name}</span>
-                                                        {child.link.startsWith('http') && (
-                                                            <ArrowRightCircle
-                                                                size={16}
-                                                                class="ml-2 flex-shrink-0"
-                                                                aria-hidden="true"
-                                                            />
-                                                        )}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </li>
-                            ))
-                        }
-                    </ul>
-                </nav>
-
-                {/* Center: Logo (responsive scaling - icon-only until 2xl) */}
-                <div class="absolute left-1/2 transform -translate-x-1/2 scale-100 xl:scale-[1.1] 2xl:scale-[1.15] transition-transform duration-300">
+            {/* Desktop Layout: Left Logo, Right Nav + Social/CTA */}
+            <div class="hidden lg:flex lg:items-center lg:w-full">
+                {/* Left: Logo */}
+                <div class="flex-shrink-0">
                     <Logo variant="header" />
                 </div>
 
-            {/* Right: Social Icons + Donate Button */}
-            <div class="flex items-center gap-2 xl:gap-3 2xl:gap-4 flex-shrink-0">
-                {/* Social Icons - Filtered by location, hidden until more space */}
-                <div class="hidden xl:flex">
-                    <SocialBar 
-                        iconSize={20} 
-                        gap="gap-3" 
-                        colorClass="text-nav-text" 
-                        hoverColorClass="hover:text-nav-text-hover"
-                        location="header"
-                    />
+                {/* Right: Nav + Social + Donate */}
+                <div class="flex items-center ml-auto gap-2 lg:gap-3 xl:gap-5 2xl:gap-6">
+                    <nav class="flex items-center" aria-label="Site Navigation">
+                        <ul class="flex gap-2 lg:gap-3 xl:gap-4 2xl:gap-6 items-center">
+                            {
+                                headerMenu.filter(item => !item.mobileOnly).map((item, index) => (
+                                    <li class="relative group nav-item">
+                                        <div class="flex items-center gap-1">
+                                            <a
+                                                href={item.link}
+                                                class:list={[
+                                                    'text-sm lg:text-base font-medium rounded-md px-1.5 lg:px-2 py-1 whitespace-nowrap',
+                                                    isCurrentPage(item.link)
+                                                        ? 'text-nav-text-current font-semibold'
+                                                        : 'text-nav-text hover:text-nav-text-hover',
+                                                ]}
+                                                aria-current={isCurrentPage(item.link) ? 'page' : undefined}
+                                            >
+                                                {item.name}
+                                                {item.children && item.showArrow && (
+                                                    <ChevronDown
+                                                        size={16}
+                                                        class="transform transition-transform inline-block ml-1"
+                                                        aria-hidden="true"
+                                                    />
+                                                )}
+                                            </a>
+                                            {item.children && (
+                                                <button
+                                                    type="button"
+                                                    class="sr-only"
+                                                    aria-expanded="false"
+                                                    aria-label={item.name}
+                                                />
+                                            )}
+                                        </div>
+                                        {item.children && (
+                                            <ul
+                                                class:list={[
+                                                    'submenu desktop-submenu absolute mt-2 min-w-[200px] transition-all duration-200 opacity-0 invisible overflow-hidden z-[9999]',
+                                                    index === headerMenu.filter(item => !item.mobileOnly).length - 1 ? 'right-0' : 'left-0',
+                                                ]}
+                                            >
+                                                {item.children.map((child, childIndex) => (
+                                                    <li class="desktop-submenu-item">
+                                                        <a
+                                                            href={child.link}
+                                                            class:list={[
+                                                                'flex items-center justify-between px-4 text-small py-2',
+                                                                isCurrentPage(child.link)
+                                                                    ? 'text-nav-text-current font-semibold'
+                                                                    : 'text-nav-text hover:text-nav-text-hover',
+                                                            ]}
+                                                            aria-current={isCurrentPage(child.link) ? 'page' : undefined}
+                                                        >
+                                                            <span>{child.name}</span>
+                                                            {child.link.startsWith('http') && (
+                                                                <ArrowRightCircle
+                                                                    size={16}
+                                                                    class="ml-2 flex-shrink-0"
+                                                                    aria-hidden="true"
+                                                                />
+                                                            )}
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </nav>
+
+                    {/* Social Icons - hidden until xl */}
+                    <div class="hidden xl:flex">
+                        <SocialBar 
+                            iconSize={20} 
+                            gap="gap-3" 
+                            colorClass="text-nav-text" 
+                            hoverColorClass="hover:text-nav-text-hover"
+                            location="header"
+                        />
+                    </div>
+
+                    {/* Donate Button */}
+                    <Button 
+                        href={ctaButton.link} 
+                        variant="primary"
+                        size="sm"
+                        class="lg:text-sm xl:text-small whitespace-nowrap"
+                    >
+                        {ctaButton.name}
+                    </Button>
                 </div>
-                
-                {/* Donate Button */}
-                <Button 
-                    href={ctaButton.link} 
-                    variant="primary"
-                    size="sm"
-                    class="lg:text-sm xl:text-small whitespace-nowrap"
-                >
-                    {ctaButton.name}
-                </Button>
-            </div>
             </div>
             
-            {/* Mobile giving icon - always visible on mobile - Fixed width for centering */}
-            <a 
-                href={ctaButton.link} 
-                class="lg:hidden p-2 text-primary hover:text-primary-light transition-colors duration-200 w-12 h-12 flex items-center justify-center flex-shrink-0"
-                aria-label="Donate - Support our cause"
-            >
-                <HandHeart size={24} />
-            </a>
+            {/* Mobile: Donate icon + Hamburger - Right */}
+            <div class="lg:hidden flex items-center ml-auto gap-1">
+                <a 
+                    href={ctaButton.link} 
+                    class="p-2 text-primary hover:text-primary-light transition-colors duration-200 w-12 h-12 flex items-center justify-center flex-shrink-0"
+                    aria-label="Donate - Support our cause"
+                >
+                    <HandHeart size={24} />
+                </a>
+                <button
+                    class="mobile-menu-button relative z-[100] p-2 border-none cursor-pointer bg-transparent w-12 h-12 flex items-center justify-center flex-shrink-0"
+                    aria-label="Toggle Menu"
+                    aria-expanded="false"
+                >
+                    <span class="menu-icon block">
+                        <Menu size={24} class="text-primary" />
+                    </span>
+                    <span class="close-icon hidden">
+                        <X size={24} class="text-primary" />
+                    </span>
+                </button>
+            </div>
         </div>
     </div>
 </header>
@@ -449,6 +400,39 @@ const isCurrentPage = (link: string) => {
 </div>
 
 <script>
+    function initHeaderLayoutVars() {
+        if ((window as typeof window & { __bdiHeaderVarsInit?: boolean }).__bdiHeaderVarsInit) return;
+        (window as typeof window & { __bdiHeaderVarsInit?: boolean }).__bdiHeaderVarsInit = true;
+
+        const root = document.documentElement;
+        const headerEl = document.querySelector('header[data-header-mode]') as HTMLElement | null;
+        if (!headerEl) return;
+
+        const updateOffsets = () => {
+            const announcementBar = document.querySelector('.announcement-bar') as HTMLElement | null;
+            const announcementHeight = announcementBar
+                ? Math.ceil(announcementBar.getBoundingClientRect().height)
+                : 0;
+            const headerHeight = Math.ceil(headerEl.getBoundingClientRect().height);
+            const totalStackHeight = announcementHeight + headerHeight;
+
+            root.style.setProperty('--announcement-bar-height', `${announcementHeight}px`);
+            root.style.setProperty('--header-height', `${headerHeight}px`);
+            root.style.setProperty('--header-stack-height', `${totalStackHeight}px`);
+        };
+
+        const resizeObserver = new ResizeObserver(updateOffsets);
+        resizeObserver.observe(headerEl);
+        const announcementBar = document.querySelector('.announcement-bar') as HTMLElement | null;
+        if (announcementBar) resizeObserver.observe(announcementBar);
+
+        window.addEventListener('resize', updateOffsets, { passive: true });
+        document.addEventListener('astro:page-load', updateOffsets);
+        updateOffsets();
+    }
+
+    initHeaderLayoutVars();
+
     // Header scroll behavior - slides up on scroll down
     const header = document.querySelector('header') as HTMLElement;
     const headerMode = header?.getAttribute('data-header-mode');
