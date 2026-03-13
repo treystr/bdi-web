@@ -50,6 +50,26 @@ export interface Merchant {
   website: string | null;
 }
 
+export type DocumentType = "brochure" | "flyer";
+
+export interface DocumentFile {
+  id: string;
+  type?: string | null;
+  filename_download?: string | null;
+  title?: string | null;
+}
+
+export interface DocumentItem {
+  id: number;
+  status: string;
+  sort: number | null;
+  name: string;
+  description: string | null;
+  file: string | DocumentFile | null;
+  preview_image: string | DocumentFile | null;
+  type: unknown;
+}
+
 function getConfiguredDirectusUrl(): string | null {
   const isServer = import.meta.env.SSR;
   const url = isServer
@@ -222,6 +242,51 @@ export function getPressImageUrl(
   return `${getDirectusUrl()}/assets/${imageId}?format=webp&quality=80&width=${width}`;
 }
 
+export function getDocumentFileId(
+  file: DocumentItem["file"]
+): string | null {
+  if (!file) return null;
+  return typeof file === "string" ? file : file.id ?? null;
+}
+
+export function getDocumentAssetUrl(file: DocumentItem["file"]): string | null {
+  const fileId = getDocumentFileId(file);
+  if (!fileId) return null;
+  return `${getDirectusUrl()}/assets/${fileId}`;
+}
+
+export function getDocumentPreviewUrl(
+  file: DocumentItem["file"],
+  width = 800
+): string | null {
+  const fileId = getDocumentFileId(file);
+  if (!fileId) return null;
+  return `${getDirectusUrl()}/assets/${fileId}?format=webp&quality=80&width=${width}`;
+}
+
+export function getDocumentPreviewImageUrl(
+  previewImage: DocumentItem["preview_image"],
+  width = 850
+): string | null {
+  const imageId = getDocumentFileId(previewImage);
+  if (!imageId) return null;
+  return `${getDirectusUrl()}/assets/${imageId}?format=webp&quality=82&width=${width}`;
+}
+
+export function normalizeDocumentType(type: unknown): DocumentType | undefined {
+  if (Array.isArray(type)) {
+    const firstType = type.find((value) => typeof value === "string");
+    if (firstType === "brochure" || firstType === "flyer") return firstType;
+    return undefined;
+  }
+
+  if (typeof type === "string") {
+    if (type === "brochure" || type === "flyer") return type;
+  }
+
+  return undefined;
+}
+
 /**
  * Fetches all published press items, sorted by Date descending.
  */
@@ -292,6 +357,94 @@ export async function getPress(): Promise<CmsResult<PressItem[]>> {
     ) {
       console.error(
         "[Press] Permission denied - ensure the Public or service role has Read access to the Press collection"
+      );
+      return { data: null, error: "CMS_UNAVAILABLE" };
+    }
+
+    return {
+      data: null,
+      error: isProbablyNetworkError(error) ? "CMS_UNAVAILABLE" : "UNKNOWN",
+    };
+  }
+}
+
+/**
+ * Fetches all published documents, sorted by sort ascending.
+ */
+export async function getDocuments(): Promise<CmsResult<DocumentItem[]>> {
+  const client = getDirectusClient();
+  if (!client) {
+    console.error("[Documents] Directus client not configured");
+    return { data: null, error: "CMS_NOT_CONFIGURED" };
+  }
+
+  try {
+    const items = await withTimeout(
+      client.request(
+        readItems("Documents", {
+          fields: [
+            "id",
+            "status",
+            "sort",
+            "name",
+            "description",
+            "file.id",
+            "file.type",
+            "file.filename_download",
+            "file.title",
+            "preview_image.id",
+            "preview_image.type",
+            "preview_image.filename_download",
+            "preview_image.title",
+            "type",
+          ],
+          filter: {
+            status: {
+              _eq: "published",
+            },
+          },
+          sort: ["sort", "id"],
+        })
+      ),
+      5000
+    );
+
+    console.log(`[Documents] Fetched ${items.length} published document(s)`);
+
+    return {
+      data: items as DocumentItem[],
+      error: null,
+    };
+  } catch (error: any) {
+    let errorMessage = "Unknown error";
+    let statusCode: number | null = null;
+
+    if (error?.response) {
+      statusCode = error.response.status;
+      const errorBody = error.response._data || error.response.data;
+      if (errorBody?.errors?.[0]?.message) {
+        errorMessage = errorBody.errors[0].message;
+      } else if (errorBody?.message) {
+        errorMessage = errorBody.message;
+      }
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = String(error);
+    }
+
+    console.error("[Documents] Failed to fetch documents:", errorMessage);
+    if (statusCode) {
+      console.error(`[Documents] HTTP Status: ${statusCode}`);
+    }
+
+    if (
+      statusCode === 403 ||
+      errorMessage.includes("permission") ||
+      errorMessage.includes("Forbidden")
+    ) {
+      console.error(
+        "[Documents] Permission denied - ensure the Public or service role has Read access to the Documents collection"
       );
       return { data: null, error: "CMS_UNAVAILABLE" };
     }

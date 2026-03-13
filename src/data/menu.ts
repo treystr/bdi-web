@@ -19,7 +19,8 @@ export const headerMenu: MenuItem[] = [
         showArrow: true,
         children: [
             { name: 'Events', link: '/events' },
-            { name: 'Blog', link: '/blog' }
+            { name: 'Blog', link: '/blog' },
+            { name: 'Printables', link: '/resources/printables' }
         ]
     },
     { 
