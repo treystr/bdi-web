@@ -1,84 +1,10 @@
 ---
 export const prerender = false;
 
-import Layout from '@layouts/Layout.astro';
-import PageHeader from '@components/sections/PageHeader.astro';
-import DateComponent from '@components/ui/Date.astro';
-import { getPressItem, getPressImageUrl, type PressItem } from '@lib/directus';
-
 const { slug } = Astro.params;
-
-const id = parseInt(slug?.split('-')[0] ?? '', 10);
-if (isNaN(id)) {
-    return Astro.redirect('/404');
+if (!slug) {
+    return Astro.redirect('/news', 301);
 }
 
-const result = await getPressItem(id);
-if (result.error || !result.data) {
-    return Astro.redirect('/404');
-}
-
-const item: PressItem = result.data;
-const coverUrl = getPressImageUrl(item.Cover, 1200);
-const publishDate = item.Date ? new Date(item.Date) : null;
-
-const seoTitle = item.Title;
-const seoDescription = item.Subtitle ?? undefined;
-const seoImage = coverUrl ?? undefined;
+return Astro.redirect(`/news/${slug}`, 301);
 ---
-
-<Layout title={seoTitle} description={seoDescription} image={seoImage}>
-    <PageHeader 
-        title={item.Title} 
-        description={item.Subtitle ?? ''} 
-        background="base" 
-    />
-
-    <article class="site-container--article mx-auto px-4 pb-base">
-        <!-- Top navigation link -->
-        <div class="mt-4 mb-6">
-            <div class="flex justify-between items-baseline mb-4">
-                <a href="/press" class="inline-flex items-center text-sm text-accent hover:text-accent-dark transition-colors">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                    All News
-                </a>
-                {publishDate && (
-                    <div class="flex items-center gap-4 text-body-base/70">
-                        <DateComponent date={publishDate} />
-                    </div>
-                )}
-            </div>
-        </div>
-
-        {
-            coverUrl && (
-                <img
-                    src={coverUrl}
-                    alt=""
-                    width={1200}
-                    height={675}
-                    loading="eager"
-                    class="w-full h-auto rounded-lg border mb-12 border-black"
-                />
-            )
-        }
-
-        {item.Content && (
-            <div class="prose prose-lg max-w-none">
-                <Fragment set:html={item.Content} />
-            </div>
-        )}
-
-        <!-- Bottom navigation link -->
-        <div class="mt-12 pt-8 border-t border-body-base/10">
-            <a href="/press" class="inline-flex items-center text-sm text-accent hover:text-accent-dark transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-                All News
-            </a>
-        </div>
-    </article>
-</Layout>

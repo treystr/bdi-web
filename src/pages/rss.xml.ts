@@ -32,7 +32,7 @@ export async function GET(context: APIContext) {
       title: item.Title,
       description: item.Subtitle ?? "",
       pubDate: item.Date ? new Date(item.Date) : new Date(),
-      link: `/press/${getPressSlug(item)}/`,
+      link: `/news/${getPressSlug(item)}/`,
       categories: type ? [type] : [],
     };
   });

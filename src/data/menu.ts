@@ -12,6 +12,7 @@ export const headerMenu: MenuItem[] = [
     // { name: 'Theme Info', link: '/theme-info' },
     { name: 'Why Bitcoin?', link: '/why' },
     { name: 'Initiatives', link: '/initiatives' },
+    { name: 'News', link: '/news' },
     {
         name: 'Resources',
         link: '/resources',
@@ -27,8 +28,7 @@ export const headerMenu: MenuItem[] = [
       showArrow: true,
       children: [
           { name: 'Transparency', link: '/transparency' },
-          { name: 'FAQ', link: '/faq' },
-          { name: 'News', link: '/press' }
+          { name: 'FAQ', link: '/faq' }
       ]
   },
     { name: 'Join Bitcoin District', link: 'https://bitcoindistrict.org', mobileOnly: true }

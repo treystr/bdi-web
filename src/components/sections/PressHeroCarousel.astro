@@ -94,7 +94,7 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
             <div class="press-hero__caption">
                 {slides.map((slide, i) => (
                     <a
-                        href={`/press/${slide.slug}`}
+                        href={`/news/${slide.slug}`}
                         class:list={['press-hero__caption-item', { 'is-active': i === 0 }]}
                         data-caption-index={i}
                         data-layout="desktop"
@@ -129,7 +129,7 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
                     data-mobile-slide-index={i}
                     aria-hidden={i !== 0 ? 'true' : 'false'}
                 >
-                    <a href={`/press/${slide.slug}`} class="press-hero__mobile-image-wrap">
+                    <a href={`/news/${slide.slug}`} class="press-hero__mobile-image-wrap">
                         <img
                             src={slide.imageUrl}
                             alt=""
@@ -139,7 +139,7 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
                         />
                     </a>
                     <div class="press-hero__mobile-info">
-                        <a href={`/press/${slide.slug}`} class="press-hero__mobile-info-link">
+                        <a href={`/news/${slide.slug}`} class="press-hero__mobile-info-link">
                             <h2 class="press-hero__mobile-title">{slide.title}</h2>
                         </a>
                         {slide.excerpt && (

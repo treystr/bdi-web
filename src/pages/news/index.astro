@@ -1,0 +1,75 @@
+---
+export const prerender = false;
+
+import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
+import PressPost from '@components/press/PressPost.astro';
+import FilterButtons from '@components/ui/FilterButtons.astro';
+import {
+    getPress,
+    getPressSlug,
+    getPressImageUrl,
+    normalizePressType,
+    type PressItem,
+} from '@lib/directus';
+
+const seoTitle = "News";
+const seoDescription = "Official updates from the Bitcoin District Initiative, including press releases, media coverage, and events.";
+
+const pageHeaderContent = {
+    title: "News",
+    description: "Official updates from the Bitcoin District Initiative, including press releases, media coverage, and events."
+};
+
+const pressResult = await getPress();
+const pressItems: PressItem[] = pressResult.data ?? [];
+const cmsError = pressResult.error;
+
+const filters = [
+    { id: 'all', label: 'All', value: null },
+    { id: 'press-release', label: 'Press Releases', value: 'press-release' },
+    { id: 'in-the-news', label: 'In the News', value: 'in-the-news' },
+    { id: 'events', label: 'Events', value: 'events' },
+];
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+    <PageHeader 
+        title={pageHeaderContent.title} 
+        description={pageHeaderContent.description} 
+        background="base" 
+    />
+
+    <FilterButtons 
+        filters={filters} 
+        defaultFilter="all"
+        filterTarget="[data-filter-item]"
+    />
+
+    <section class="py-xsmall bg-background">
+        <div class="site-container--content mx-auto px-4">
+            {cmsError ? (
+                <p class="text-body-base/60 italic">
+                    News content is temporarily unavailable. Please check back soon.
+                </p>
+            ) : pressItems.length > 0 ? (
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 md:gap-6">
+                        {pressItems.map((item, index) => (
+                            <PressPost
+                                title={item.Title}
+                                excerpt={item.Subtitle ?? ''}
+                                featuredImage={getPressImageUrl(item.Cover, 600)}
+                                mobileThumbnail={getPressImageUrl(item.Cover, 160)}
+                                publishDate={item.Date ? new Date(item.Date) : new Date()}
+                                slug={getPressSlug(item)}
+                                index={index}
+                                type={normalizePressType(item.type)}
+                            />
+                        ))}
+                    </div>
+            ) : (
+                <p class="text-body-base/60 italic">No news items are available yet. Check back soon!</p>
+            )}
+        </div>
+    </section>
+</Layout>

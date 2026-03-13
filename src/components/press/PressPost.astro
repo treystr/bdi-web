@@ -7,17 +7,18 @@ import { format } from 'date-fns';
 interface Props {
     title: string;
     excerpt: string;
-    featuredImage: string | ImageMetadata | null;
+    featuredImage: string | Record<string, unknown> | null;
+    mobileThumbnail?: string | Record<string, unknown> | null;
     publishDate: Date;
     slug?: string;
     index: number;
     type?: 'press-release' | 'in-the-news' | 'events';
 }
 
-type ImageMetadata = { src: string; width: number; height: number; format: string };
-
-const { title, excerpt, featuredImage, publishDate, slug, index, type } = Astro.props;
+const { title, excerpt, featuredImage, mobileThumbnail = null, publishDate, slug, index, type } = Astro.props;
 const isExternalImage = typeof featuredImage === 'string';
+const mobileImage = mobileThumbnail ?? featuredImage;
+const isExternalMobileImage = typeof mobileImage === 'string';
 
 // Format date for mobile (short format)
 const shortDate = format(publishDate, 'MMM d, yyyy');
@@ -28,7 +29,7 @@ const TypeIcon = type === 'press-release' ? Megaphone : type === 'in-the-news' ?
 ---
 
 <a
-    href={`/press/${slug}`}
+    href={`/news/${slug}`}
     class="group press-post-item flex flex-col h-full overflow-hidden bg-white transition-all duration-300 hover:border-primary"
     data-aos="fade-up"
     data-aos-delay={index * 100}
@@ -36,7 +37,7 @@ const TypeIcon = type === 'press-release' ? Megaphone : type === 'in-the-news' ?
     data-filter-type={type || ''}
 >
     {/* Desktop Card Layout */}
-    <div class="hidden md:flex flex-col h-full rounded-lg border border-black">
+    <div class="hidden md:flex flex-col h-full max-h-[32rem] rounded-lg border border-black">
         <div
             class="relative aspect-[16/9] overflow-hidden border-black border-b group-hover:border-primary transition-colors duration-300"
         >
@@ -48,11 +49,13 @@ const TypeIcon = type === 'press-release' ? Megaphone : type === 'in-the-news' ?
                         width={600}
                         height={338}
                         loading="lazy"
+                        decoding="async"
+                        fetchpriority="low"
                         class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                     />
                 ) : featuredImage ? (
                     <Image
-                        src={featuredImage as ImageMetadata}
+                        src={featuredImage as any}
                         alt=""
                         width={600}
                         height={338}
@@ -81,21 +84,53 @@ const TypeIcon = type === 'press-release' ? Megaphone : type === 'in-the-news' ?
                 {title}
             </h2>
 
-            <p
-                class="mt-2 mb-8 text-body-base flex-grow text-small group-hover:text-gray-700 transition-colors duration-300"
-            >
-                {excerpt}
-            </p>
+            <div class="mt-2 mb-6 flex-grow min-h-0">
+                <p
+                    class="text-body-base text-small group-hover:text-gray-700 transition-colors duration-300 line-clamp-4 overflow-hidden"
+                    data-excerpt-clamp
+                >
+                    {excerpt}
+                </p>
+                <span
+                    class="mt-2 hidden items-center gap-1 text-xs font-semibold uppercase tracking-wide text-primary"
+                    data-overflow-link
+                >
+                    Show more
+                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </span>
+            </div>
         </div>
     </div>
 
     {/* Mobile Stacked Row Layout */}
     <div class={`md:hidden flex items-center gap-3 py-6 px-6 w-full transition-colors duration-300 ${index % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-gray-50 hover:bg-gray-100'}`}>
-        {type && TypeIcon && (
-            <div class="flex-shrink-0 text-primary">
-                <TypeIcon size={20} class="text-primary" />
-            </div>
-        )}
+        <div class="h-16 w-16 shrink-0 overflow-hidden rounded-md border border-black/10 bg-gray-100">
+            {
+                mobileImage && isExternalMobileImage ? (
+                    <img
+                        src={mobileImage}
+                        alt=""
+                        width={64}
+                        height={64}
+                        loading="lazy"
+                        decoding="async"
+                        fetchpriority="low"
+                        sizes="64px"
+                        class="h-full w-full object-cover"
+                    />
+                ) : mobileImage ? (
+                    <Image
+                        src={mobileImage as any}
+                        alt=""
+                        width={64}
+                        height={64}
+                        class="h-full w-full object-cover"
+                    />
+                ) : null
+            }
+        </div>
         <div class="flex-1 min-w-0">
             <h2 class="text-base font-bold text-gray-900 group-hover:text-primary transition-colors duration-300 line-clamp-2">
                 {title}
@@ -113,4 +148,47 @@ const TypeIcon = type === 'press-release' ? Megaphone : type === 'in-the-news' ?
         transition: opacity 0.2s ease-in-out;
     }
 </style>
+
+<script>
+    const overflowCheckers = new Set<() => void>();
+
+    function initPressPostOverflow() {
+        document.querySelectorAll<HTMLElement>('.press-post-item').forEach((card) => {
+            if (card.dataset.overflowInit === 'true') return;
+            const excerpt = card.querySelector<HTMLElement>('[data-excerpt-clamp]');
+            const overflowLink = card.querySelector<HTMLElement>('[data-overflow-link]');
+            if (!excerpt || !overflowLink) return;
+            card.dataset.overflowInit = 'true';
+
+            const checkOverflow = () => {
+                if (!excerpt.isConnected || excerpt.getClientRects().length === 0) return;
+                if (excerpt.scrollHeight > excerpt.clientHeight + 2) {
+                    overflowLink.classList.remove('hidden');
+                    overflowLink.classList.add('inline-flex');
+                } else {
+                    overflowLink.classList.remove('inline-flex');
+                    overflowLink.classList.add('hidden');
+                }
+            };
+
+            checkOverflow();
+            overflowCheckers.add(checkOverflow);
+        });
+    }
+
+    if (document.documentElement.dataset.pressPostOverflowResizeBound !== 'true') {
+        window.addEventListener('resize', () => {
+            overflowCheckers.forEach((checkOverflow) => checkOverflow());
+        });
+        document.documentElement.dataset.pressPostOverflowResizeBound = 'true';
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPressPostOverflow);
+    } else {
+        initPressPostOverflow();
+    }
+
+    document.addEventListener('astro:page-load', initPressPostOverflow);
+</script>
 
