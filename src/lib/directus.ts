@@ -242,6 +242,15 @@ export function getPressImageUrl(
   return `${getDirectusUrl()}/assets/${imageId}?format=webp&quality=80&width=${width}`;
 }
 
+export function getMerchantImageUrl(
+  image: Merchant["Image_Primary"],
+  width = 800
+): string | null {
+  if (!image) return null;
+  const imageId = typeof image === "string" ? image : image.id;
+  return `${getDirectusUrl()}/assets/${imageId}?format=webp&quality=80&width=${width}`;
+}
+
 export function getDocumentFileId(
   file: DocumentItem["file"]
 ): string | null {

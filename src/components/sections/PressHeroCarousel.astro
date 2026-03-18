@@ -5,7 +5,10 @@ import {
     getPress,
     getPressSlug,
     getPressImageUrl,
+    getMerchants,
+    getMerchantImageUrl,
     type PressItem,
+    type Merchant,
 } from '@lib/directus';
 
 export interface Props {
@@ -36,26 +39,94 @@ const {
 } = Astro.props;
 
 const pressResult = await getPress();
-const allItems: PressItem[] = pressResult.data ?? [];
-const pressItems = allItems
-    .filter(item => item.Cover)
-    .filter(item => !filterByType || item.type === filterByType)
-    .slice(0, limit);
-const hasPressItems = pressItems.length > 0;
+const merchantResult = await getMerchants();
 
-interface Slide {
-    imageUrl: string;
-    title: string;
-    slug: string;
-    excerpt: string;
+const allPressItems: PressItem[] = pressResult.data ?? [];
+const allMerchants: Merchant[] = merchantResult.data ?? [];
+
+function getTimestamp(value: string | null | undefined): number {
+    if (!value) return Number.NEGATIVE_INFINITY;
+    const parsed = Date.parse(value);
+    return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
 }
 
-const slides: Slide[] = pressItems.map(item => ({
-    imageUrl: getPressImageUrl(item.Cover, 1600) ?? '',
-    title: item.Title,
-    slug: getPressSlug(item),
-    excerpt: item.Subtitle ?? '',
-}));
+const pressItems = allPressItems
+    .filter(item => item.Cover)
+    .filter(item => !filterByType || item.type === filterByType)
+    .map(item => ({
+        kind: 'event' as const,
+        badgeLabel: 'Recent Event',
+        imageUrl: getPressImageUrl(item.Cover, 1600) ?? '',
+        title: item.Title,
+        href: `/news/${getPressSlug(item)}`,
+        excerpt: item.Subtitle ?? '',
+        timestamp: getTimestamp(item.Date),
+    }))
+    .filter(item => item.imageUrl)
+    .sort((a, b) => b.timestamp - a.timestamp);
+
+const merchantItems = allMerchants
+    .filter(item => item.Image_Primary)
+    .map(item => {
+        const onboardTimestamp = getTimestamp(item.Onboard_Date);
+        return {
+            kind: 'merchant' as const,
+            badgeLabel: 'Merchant Spotlight',
+            imageUrl: getMerchantImageUrl(item.Image_Primary, 1600) ?? '',
+            title: item.Name,
+            href: undefined,
+            excerpt: item.Short_Description ?? '',
+            timestamp: onboardTimestamp > Number.NEGATIVE_INFINITY
+                ? onboardTimestamp
+                : (item.Onboard_Block ?? Number.NEGATIVE_INFINITY),
+        };
+    })
+    .filter(item => item.imageUrl)
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 3);
+
+type SlideKind = 'event' | 'merchant';
+
+interface Slide {
+    kind: SlideKind;
+    badgeLabel: string;
+    imageUrl: string;
+    title: string;
+    href?: string;
+    excerpt: string;
+    timestamp: number;
+}
+
+function interleaveSlides(events: Slide[], merchants: Slide[], maxItems: number): Slide[] {
+    const mixed: Slide[] = [];
+    let eventIndex = 0;
+    let merchantIndex = 0;
+    let turn: SlideKind = 'event';
+
+    while (mixed.length < maxItems && (eventIndex < events.length || merchantIndex < merchants.length)) {
+        if (turn === 'event') {
+            if (eventIndex < events.length) {
+                mixed.push(events[eventIndex++]);
+            } else if (merchantIndex < merchants.length) {
+                mixed.push(merchants[merchantIndex++]);
+            }
+            turn = 'merchant';
+            continue;
+        }
+
+        if (merchantIndex < merchants.length) {
+            mixed.push(merchants[merchantIndex++]);
+        } else if (eventIndex < events.length) {
+            mixed.push(events[eventIndex++]);
+        }
+        turn = 'event';
+    }
+
+    return mixed;
+}
+
+const slides: Slide[] = interleaveSlides(pressItems, merchantItems, limit);
+const hasPressItems = slides.length > 0;
 
 const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
 ---
@@ -65,7 +136,7 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
     id={carouselId}
     data-press-hero
     data-auto-advance={autoAdvanceMs}
-    aria-label="Press highlights"
+    aria-label="Community highlights"
     style="position:relative;width:100%;overflow:hidden;"
 >
     {/* ===== DESKTOP: full-viewport immersive layout (hidden on mobile) ===== */}
@@ -93,17 +164,32 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
 
             <div class="press-hero__caption">
                 {slides.map((slide, i) => (
-                    <a
-                        href={`/news/${slide.slug}`}
-                        class:list={['press-hero__caption-item', { 'is-active': i === 0 }]}
-                        data-caption-index={i}
-                        data-layout="desktop"
-                    >
-                        <h2 class="press-hero__slide-title">{slide.title}</h2>
-                        {slide.excerpt && (
-                            <p class="press-hero__slide-excerpt">{slide.excerpt}</p>
-                        )}
-                    </a>
+                    slide.href ? (
+                        <a
+                            href={slide.href}
+                            class:list={['press-hero__caption-item', { 'is-active': i === 0 }]}
+                            data-caption-index={i}
+                            data-layout="desktop"
+                        >
+                            <span class="press-hero__badge">{slide.badgeLabel}</span>
+                            <h2 class="press-hero__slide-title">{slide.title}</h2>
+                            {slide.excerpt && (
+                                <p class="press-hero__slide-excerpt">{slide.excerpt}</p>
+                            )}
+                        </a>
+                    ) : (
+                        <div
+                            class:list={['press-hero__caption-item', 'is-static', { 'is-active': i === 0 }]}
+                            data-caption-index={i}
+                            data-layout="desktop"
+                        >
+                            <span class="press-hero__badge">{slide.badgeLabel}</span>
+                            <h2 class="press-hero__slide-title">{slide.title}</h2>
+                            {slide.excerpt && (
+                                <p class="press-hero__slide-excerpt">{slide.excerpt}</p>
+                            )}
+                        </div>
+                    )
                 ))}
             </div>
 
@@ -129,19 +215,38 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
                     data-mobile-slide-index={i}
                     aria-hidden={i !== 0 ? 'true' : 'false'}
                 >
-                    <a href={`/news/${slide.slug}`} class="press-hero__mobile-image-wrap">
-                        <img
-                            src={slide.imageUrl}
-                            alt=""
-                            class="press-hero__mobile-image"
-                            loading={i === 0 ? 'eager' : 'lazy'}
-                            decoding={i === 0 ? 'sync' : 'async'}
-                        />
-                    </a>
-                    <div class="press-hero__mobile-info">
-                        <a href={`/news/${slide.slug}`} class="press-hero__mobile-info-link">
-                            <h2 class="press-hero__mobile-title">{slide.title}</h2>
+                    {slide.href ? (
+                        <a href={slide.href} class="press-hero__mobile-image-wrap">
+                            <img
+                                src={slide.imageUrl}
+                                alt=""
+                                class="press-hero__mobile-image"
+                                loading={i === 0 ? 'eager' : 'lazy'}
+                                decoding={i === 0 ? 'sync' : 'async'}
+                            />
                         </a>
+                    ) : (
+                        <div class="press-hero__mobile-image-wrap">
+                            <img
+                                src={slide.imageUrl}
+                                alt=""
+                                class="press-hero__mobile-image"
+                                loading={i === 0 ? 'eager' : 'lazy'}
+                                decoding={i === 0 ? 'sync' : 'async'}
+                            />
+                        </div>
+                    )}
+                    <div class="press-hero__mobile-info">
+                        <span class="press-hero__badge">{slide.badgeLabel}</span>
+                        {slide.href ? (
+                            <a href={slide.href} class="press-hero__mobile-info-link">
+                                <h2 class="press-hero__mobile-title">{slide.title}</h2>
+                            </a>
+                        ) : (
+                            <div class="press-hero__mobile-info-link is-static">
+                                <h2 class="press-hero__mobile-title">{slide.title}</h2>
+                            </div>
+                        )}
                         {slide.excerpt && (
                             <div class="press-hero__mobile-excerpt-wrap">
                                 <p class="press-hero__mobile-excerpt" data-mobile-excerpt>{slide.excerpt}</p>
@@ -319,8 +424,25 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
         opacity: 0.85;
     }
 
+    .press-hero__caption-item.is-static:hover {
+        opacity: 1;
+    }
+
     .press-hero__caption-item.is-active {
         display: flex;
+    }
+
+    .press-hero__badge {
+        display: inline-flex;
+        align-self: flex-start;
+        padding: 0.22rem 0.6rem;
+        border-radius: 9999px;
+        background: rgba(247, 147, 26, 0.9);
+        color: #111;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
     }
 
     .press-hero__slide-title {
@@ -447,6 +569,10 @@ const carouselId = `press-hero-${Math.random().toString(36).slice(2, 11)}`;
         gap: 0.375rem;
         text-decoration: none;
         color: white;
+    }
+
+    .press-hero__mobile-info-link.is-static {
+        cursor: default;
     }
 
     .press-hero__mobile-title {
