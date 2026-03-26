@@ -4,8 +4,7 @@ import { blogSetting } from '../../data/config';
 import PaginatedBlogLayout from '../../components/blog/PaginatedBlogLayout.astro';
 export const prerender = true;
 
-// Get current page from URL, default to 1
-const currentPage = parseInt(Astro.url.searchParams.get('page') || '1');
+const currentPage = 1;
 
 // Get all posts without any filtering
 const allPosts = await getCollection('blog');
@@ -33,4 +32,6 @@ const paginatedPosts = sortedPosts.slice(start, end);
     baseUrl="/blog"
     title="Blog"
     subtitle="Latest news and updates from the Bitcoin District Initiative"
+    seoTitle="Bitcoin District Initiative Blog"
+    seoDescription="Read the latest Bitcoin District Initiative updates, education resources, and stories from our work building a Bitcoin circular economy in Washington, DC."
 />

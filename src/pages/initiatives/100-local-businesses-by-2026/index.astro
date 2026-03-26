@@ -3,6 +3,7 @@ export const prerender = false;
 
 import { getEntry, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
+import { siteConfig } from '@data/config';
 import PageHeader from '@components/sections/PageHeader.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import FeatureList from '@components/sections/FeatureList.astro';
@@ -25,6 +26,27 @@ const { Content } = await render(entry);
 // Use SEO data from frontmatter if available
 const seoTitle = entry.data.seo?.title || entry.data.title;
 const seoDescription = entry.data.seo?.description || entry.data.shortDescription;
+let seoImage: string | undefined = entry.data.seo?.image;
+if (seoImage && !seoImage.startsWith('http')) {
+    seoImage = seoImage.startsWith('/') ? seoImage : `/${seoImage}`;
+} else if (!seoImage) {
+    seoImage = entry.data.hero?.image?.src ?? entry.data.cardImage.src;
+}
+const canonicalPath = '/initiatives/100-local-businesses-by-2026';
+const canonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: seoTitle,
+    description: seoDescription,
+    url: canonicalUrl,
+    image: seoImage ? [new URL(seoImage, siteConfig.siteUrl).toString()] : undefined,
+    isPartOf: {
+        '@type': 'WebSite',
+        name: siteConfig.companyName,
+        url: siteConfig.siteUrl
+    }
+};
 
 // Page header content
 const pageHeaderContent = {
@@ -85,7 +107,14 @@ const donateCta = {
 };
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
+<Layout
+    title={seoTitle}
+    description={seoDescription}
+    image={seoImage}
+    imageAlt={entry.data.title}
+    canonicalUrl={canonicalPath}
+    jsonLd={jsonLd}
+>
     <PageHeader 
         title={pageHeaderContent.title} 
         description={pageHeaderContent.description} 
@@ -102,7 +131,7 @@ const donateCta = {
     <FeatureList 
         content={merchantSupportContent}
         background="light"
-        paddingTop="medium"
+        paddingTop="base"
         paddingBottom="large"
         columns={2}
     />

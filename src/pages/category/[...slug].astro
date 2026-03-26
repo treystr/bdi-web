@@ -23,7 +23,7 @@ return activeCategories.map((category) => ({
 }
 
 const { category } = Astro.props;
-const currentPage = parseInt(Astro.url.searchParams.get('page') || '1');
+const currentPage = 1;
 
 // Get posts for this category
 const posts = await getCollection('blog', ({ data }) => {
@@ -52,4 +52,7 @@ const paginatedPosts = sortedPosts.slice(start, end);
     baseUrl={`/category/${category.slug}`}
     title={category.name}
     subtitle={category.description}
-    currentCategory={category.name} /> 
+    seoTitle={`${category.name} Posts`}
+    seoDescription={category.description}
+    currentCategory={category.name}
+/>

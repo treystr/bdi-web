@@ -9,9 +9,11 @@ export interface SocialLink {
   visibleIn: SocialLocation[];
 }
 
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://bitcoindistrictinitiative.org';
+
 export const siteConfig = {
   companyName: 'Bitcoin District Initiative',
-  siteUrl: 'https://bitcoindistrictinitiative.org',
+  siteUrl,
   Socials: {
       xSocial: 'https://x.com/BTCDCInitiative',
       Github: 'https://github.com/',

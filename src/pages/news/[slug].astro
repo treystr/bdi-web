@@ -4,14 +4,23 @@ export const prerender = false;
 import Layout from '@layouts/Layout.astro';
 import PageHeader from '@components/sections/PageHeader.astro';
 import DateComponent from '@components/ui/Date.astro';
-import { getPressItem, getPressImageUrl, type PressItem } from '@lib/directus';
+import { siteConfig } from '@data/config';
+import {
+    getPressItem,
+    getPressImageUrl,
+    getPressSeoDescription,
+    getPressSlug,
+    type PressItem
+} from '@lib/directus';
 
 const { slug } = Astro.params;
+const incomingSlug = slug ?? "";
 
-const id = parseInt(slug?.split('-')[0] ?? '', 10);
-if (isNaN(id)) {
+const idMatch = incomingSlug.match(/^(\d+)/);
+if (!idMatch) {
     return Astro.redirect('/404');
 }
+const id = parseInt(idMatch[1], 10);
 
 const result = await getPressItem(id);
 if (result.error || !result.data) {
@@ -21,13 +30,48 @@ if (result.error || !result.data) {
 const item: PressItem = result.data;
 const coverUrl = getPressImageUrl(item.Cover, 1200);
 const publishDate = item.Date ? new Date(item.Date) : null;
+const modifiedDate = item.date_updated ? new Date(item.date_updated) : null;
+const canonicalSlug = getPressSlug(item);
+const canonicalPath = `/news/${canonicalSlug}`;
+const canonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
+
+if (incomingSlug !== canonicalSlug) {
+    return Astro.redirect(canonicalPath, 301);
+}
 
 const seoTitle = item.Title;
-const seoDescription = item.Subtitle ?? undefined;
+const seoDescription = getPressSeoDescription(item);
 const seoImage = coverUrl ?? undefined;
+const articleSection = item.type ?? undefined;
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    mainEntityOfPage: canonicalUrl,
+    headline: seoTitle,
+    description: seoDescription,
+    datePublished: publishDate?.toISOString(),
+    dateModified: modifiedDate?.toISOString() ?? publishDate?.toISOString(),
+    image: seoImage ? [seoImage] : undefined,
+    publisher: {
+        '@type': 'Organization',
+        name: siteConfig.companyName,
+        url: siteConfig.siteUrl,
+    }
+};
 ---
 
-<Layout title={seoTitle} description={seoDescription} image={seoImage}>
+<Layout
+    title={seoTitle}
+    description={seoDescription}
+    image={seoImage}
+    canonicalUrl={canonicalPath}
+    ogType="article"
+    publishedTime={publishDate?.toISOString()}
+    modifiedTime={modifiedDate?.toISOString()}
+    section={articleSection}
+    imageAlt={item.Title}
+    jsonLd={jsonLd}
+>
     <PageHeader 
         title={item.Title} 
         description={item.Subtitle ?? ''} 

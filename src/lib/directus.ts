@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 import { createDirectus, readItem, readItems, rest, staticToken } from "@directus/sdk";
+import { getPressFixedSlug as sharedPressFixedSlug, getPressSlug as sharedPressSlug } from "@utils/pressSlug.js";
 
 export type CmsErrorCode =
   | "CMS_NOT_CONFIGURED"
@@ -16,6 +17,12 @@ export interface PressItem {
   Title: string;
   Subtitle: string | null;
   Date: string | null;
+  date_created?: string | null;
+  date_updated?: string | null;
+  Slug?: string | null;
+  slug?: string | null;
+  url_slug?: string | null;
+  permalink?: string | null;
   Content: string | null;
   Cover:
     | string
@@ -211,14 +218,7 @@ export async function getMerchants(): Promise<CmsResult<Merchant[]>> {
   }
 }
 
-export function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/[\s_]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+export { slugify } from "@utils/pressSlug.js";
 
 export function normalizePressType(
   type: string | null
@@ -230,7 +230,41 @@ export function normalizePressType(
 }
 
 export function getPressSlug(item: PressItem): string {
-  return `${item.id}-${slugify(item.Title)}`;
+  return sharedPressSlug(item);
+}
+
+export function getPressFixedSlug(item: PressItem): string {
+  return sharedPressFixedSlug(item);
+}
+
+function stripHtml(value: string): string {
+  return value
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function trimAtWordBoundary(value: string, maxLength = 160): string {
+  if (value.length <= maxLength) return value;
+  const truncated = value.slice(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(" ");
+  if (lastSpace > maxLength * 0.7) return `${truncated.slice(0, lastSpace)}...`;
+  return `${truncated}...`;
+}
+
+export function getPressSeoDescription(
+  item: Pick<PressItem, "Subtitle" | "Content">,
+  maxLength = 160
+): string | undefined {
+  const subtitle = typeof item.Subtitle === "string" ? item.Subtitle.trim() : "";
+  if (subtitle.length > 0) return trimAtWordBoundary(subtitle, maxLength);
+
+  const content = typeof item.Content === "string" ? stripHtml(item.Content) : "";
+  if (content.length > 0) return trimAtWordBoundary(content, maxLength);
+
+  return undefined;
 }
 
 export function getPressImageUrl(
@@ -310,15 +344,7 @@ export async function getPress(): Promise<CmsResult<PressItem[]>> {
     const items = await withTimeout(
       client.request(
         readItems("Press", {
-          fields: [
-            "id",
-            "Title",
-            "Subtitle",
-            "Date",
-            "Content",
-            "Cover.*",
-            "type",
-          ],
+          fields: ["*", "Cover.*"],
           filter: {
             status: {
               _eq: "published",
@@ -481,16 +507,7 @@ export async function getPressItem(
     const item = await withTimeout(
       client.request(
         readItem("Press", id, {
-          fields: [
-            "id",
-            "status",
-            "Title",
-            "Subtitle",
-            "Date",
-            "Content",
-            "Cover.*",
-            "type",
-          ],
+          fields: ["*", "Cover.*"],
         })
       ),
       5000

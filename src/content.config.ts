@@ -108,6 +108,7 @@ const initiatives = defineCollection({
                 .object({
                     title: z.string().optional(),
                     description: z.string().optional(),
+                    image: z.string().optional(),
                 })
                 .optional(),
         }),

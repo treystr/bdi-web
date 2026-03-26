@@ -15,6 +15,7 @@ import savingFutureImage from '../assets/images/btcvsusd.jpg';
 
 const seoTitle = "Home";
 const seoDescription = "Our Initiative is building a grassroots Bitcoin circular economy in Washington, DC through education, business adoption, and community outreach.";
+const canonicalPath = "/";
 
 const pressHeroContent = {
     title: "Bitcoin Is Working — Right Here in DC",
@@ -86,7 +87,13 @@ const blogCarouselContent = {
 
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
+<Layout
+    title={seoTitle}
+    description={seoDescription}
+    canonicalUrl={canonicalPath}
+    image={heroImage.src}
+    imageAlt="Bitcoin community events and local business adoption in Washington, DC"
+>
     <PressHeroCarousel 
         content={pressHeroContent}
         fallbackImage={heroImage}

@@ -3,9 +3,25 @@ interface Props {
   category: string;
 }
 
+import { categories } from '@data/categories';
+
 const { category } = Astro.props;
+const categorySlug = categories.find(
+  (item) => item.name.toLowerCase() === category.toLowerCase()
+)?.slug;
 ---
 
-<span class="text-sm text-gray-700 font-medium group-hover:text-primary transition-colors duration-300 mr-2">
-  #{category.toLowerCase().replace(/\s+/g, '')}
-</span> 
+{
+  categorySlug ? (
+    <a
+      href={`/category/${categorySlug}`}
+      class="text-sm text-gray-700 font-medium group-hover:text-primary transition-colors duration-300 mr-2 hover:underline"
+    >
+      #{category.toLowerCase().replace(/\s+/g, '')}
+    </a>
+  ) : (
+    <span class="text-sm text-gray-700 font-medium group-hover:text-primary transition-colors duration-300 mr-2">
+      #{category.toLowerCase().replace(/\s+/g, '')}
+    </span>
+  )
+}

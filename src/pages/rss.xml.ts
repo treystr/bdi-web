@@ -21,7 +21,7 @@ export async function GET(context: APIContext) {
     title: post.data.title,
     description: post.data.excerpt,
     pubDate: post.data.publishDate,
-    link: `/blog/${post.id}/`,
+    link: `/blog/${post.id}`,
     categories: post.data.categories ?? [],
   }));
 
@@ -32,7 +32,7 @@ export async function GET(context: APIContext) {
       title: item.Title,
       description: item.Subtitle ?? "",
       pubDate: item.Date ? new Date(item.Date) : new Date(),
-      link: `/news/${getPressSlug(item)}/`,
+      link: `/news/${getPressSlug(item)}`,
       categories: type ? [type] : [],
     };
   });
@@ -49,6 +49,6 @@ export async function GET(context: APIContext) {
     xmlns: {
       atom: "http://www.w3.org/2005/Atom",
     },
-    customData: `<atom:link href="${context.site}rss.xml" rel="self" type="application/rss+xml" />`,
+    customData: `<atom:link href="${new URL("/rss.xml", context.site!).toString()}" rel="self" type="application/rss+xml" />`,
   });
 }

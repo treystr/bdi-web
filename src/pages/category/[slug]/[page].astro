@@ -69,4 +69,7 @@ if (page === 1) {
     baseUrl={`/category/${category.slug}`}
     title={category.name}
     subtitle={category.description}
-    currentCategory={category.name} /> 
+    seoTitle={`${category.name} Posts - Page ${page}`}
+    seoDescription={`Browse page ${page} of ${category.name.toLowerCase()} posts from the Bitcoin District Initiative.`}
+    currentCategory={category.name}
+/> 

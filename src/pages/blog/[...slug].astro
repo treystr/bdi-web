@@ -5,10 +5,12 @@ import PageHeader from '@components/sections/PageHeader.astro';
 import CategoryPill from '@components/ui/CategoryPill.astro';
 import Date from '@components/ui/Date.astro';
 import { Image } from 'astro:assets';
+import { siteConfig } from '@data/config';
 
 export async function getStaticPaths() {
     const posts = await getCollection('blog');
-    return posts.map((post) => ({
+    const publishedPosts = posts.filter((post) => import.meta.env.DEV || post.data.publish !== false);
+    return publishedPosts.map((post) => ({
         params: { slug: post.id },
         props: { post },
     }));
@@ -34,9 +36,41 @@ else if (!seoImage && post.data.featuredImage) {
     // We can use its src property directly, which Astro will process during build
     seoImage = post.data.featuredImage.src;
 }
+
+const canonicalPath = `/blog/${post.id}`;
+const canonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
+const articleSection = post.data.categories?.[0];
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    mainEntityOfPage: canonicalUrl,
+    headline: seoTitle,
+    description: seoDescription,
+    datePublished: post.data.publishDate.toISOString(),
+    image: seoImage ? [new URL(seoImage, siteConfig.siteUrl).toString()] : undefined,
+    author: {
+        '@type': 'Organization',
+        name: siteConfig.companyName
+    },
+    publisher: {
+        '@type': 'Organization',
+        name: siteConfig.companyName,
+        url: siteConfig.siteUrl
+    }
+};
 ---
 
-<Layout title={seoTitle} description={seoDescription} image={seoImage}>
+<Layout
+    title={seoTitle}
+    description={seoDescription}
+    image={seoImage}
+    canonicalUrl={canonicalPath}
+    ogType="article"
+    publishedTime={post.data.publishDate.toISOString()}
+    section={articleSection}
+    imageAlt={post.data.title}
+    jsonLd={jsonLd}
+>
     <PageHeader 
         title={post.data.title} 
         description={post.data.excerpt} 
@@ -61,7 +95,7 @@ else if (!seoImage && post.data.featuredImage) {
             post.data.featuredImage && (
                 <Image
                     src={post.data.featuredImage}
-                    alt=""
+                    alt={post.data.title}
                     width={1200}
                     height={675}
                     class="w-full h-auto rounded-lg border mb-12 border-black"
