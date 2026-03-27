@@ -4,15 +4,11 @@ export const prerender = false;
 import Layout from '@layouts/Layout.astro';
 import PressHeroCarousel from '@components/sections/PressHeroCarousel.astro';
 import AnnouncementsSpotlight from '@components/sections/AnnouncementsSpotlight.astro';
-import BitcoinBenefitsCards from '@components/sections/BitcoinBenefitsCards.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import MerchantMap from '@components/sections/MerchantMap.astro';
 import MerchantMasonryGallery from '@components/sections/MerchantMasonryGallery.astro';
 import BlogPostCarousel from '@components/sections/BlogPostCarousel.astro';
 import heroImage from '../assets/images/hero/hero-market.jpg';
-import understandingBitcoinImage from '../assets/images/compasscoffee.jpg';
-import bitcoinAcceptedImage from '../assets/images/bitcoinacceptedheremarket.jpg';
-import savingFutureImage from '../assets/images/btcvsusd.jpg';
 
 const seoTitle = "Home";
 const seoDescription = "Our Initiative is building a grassroots Bitcoin circular economy in Washington, DC through education, business adoption, and community outreach.";
@@ -41,42 +37,10 @@ const merchantGallerySection = {
     description: "These businesses recently joined our local Bitcoin economy. Support them and help strengthen peer-to-peer commerce in DC.",
 };
 
-const bitcoinBenefitsSection = {
-    eyebrow: "THE BITCOIN DISTRICT INITIATIVE",
-    title: "Understand Bitcoin. Accept Bitcoin. Build Long-Term Strength.",
-    description: "A condensed look at why Bitcoin matters for residents and small businesses across DC.",
-    cards: [
-        {
-            title: "Understanding Bitcoin",
-            description: "We help residents and business owners separate Bitcoin from the broader crypto noise and build practical confidence through education and real community support.",
-            image: {
-                src: understandingBitcoinImage.src,
-                alt: "Understanding Bitcoin and monetary sovereignty",
-            },
-        },
-        {
-            title: "Why Bitcoin for Your Business?",
-            description: "Bitcoin payments can reduce friction from card fees and chargebacks while helping businesses reach customers who prefer peer-to-peer digital cash.",
-            image: {
-                src: bitcoinAcceptedImage.src,
-                alt: "Local business accepting Bitcoin",
-            },
-        },
-        {
-            title: "Build Real Wealth",
-            description: "Saving a portion of earnings in Bitcoin can help businesses preserve value and create a stronger reserve for future opportunities.",
-            image: {
-                src: savingFutureImage.src,
-                alt: "Bitcoin grows while dollars lose value",
-            },
-        },
-    ],
-};
-
 const joinDistrictSection = {
     eyebrow: "MEET THE COMMUNITY",
     title: "Join Bitcoin District",
-    description: "Bitcoin District started as a group of friends and small business owners learning together. Today, it’s a citywide community of merchants, educators, and neighbors helping each other use Bitcoin in everyday life. Come to a meetup, learn from peers, and share your experience",
+    description: "Bitcoin District started as a group of friends and small business owners learning together. Today, it's a citywide community of merchants, educators, and neighbors helping each other use Bitcoin in everyday life. Come to a meetup, learn from peers, and share your experience",
     button: {
         text: "Visit BitcoinDistrict.org",
         link: "https://bitcoindistrict.org",
@@ -88,7 +52,7 @@ const joinDistrictSection = {
 const blogCarouselContent = {
     eyebrow: "Latest Updates",
     title: "Ready to Learn More?",
-    description: "Bitcoin can be confusing — we’re here to make it simple. Explore our latest guides and community stories to learn at your own pace.",
+    description: "Bitcoin can be confusing — we're here to make it simple. Explore our latest guides and community stories to learn at your own pace.",
     button: {
         text: "View All Posts",
         link: "/blog",
@@ -120,14 +84,6 @@ const blogCarouselContent = {
         padding="small"
         limit={6}
     />
-    <BitcoinBenefitsCards
-        eyebrow={bitcoinBenefitsSection.eyebrow}
-        title={bitcoinBenefitsSection.title}
-        description={bitcoinBenefitsSection.description}
-        cards={bitcoinBenefitsSection.cards}
-        background="light"
-        padding="small"
-    />
     <MerchantMasonryGallery
         eyebrow={merchantGallerySection.eyebrow}
         title={merchantGallerySection.title}
@@ -138,24 +94,23 @@ const blogCarouselContent = {
     />
     <MerchantMap 
         title="Put Your Business on the BTC Map"
-        description="Put your business on the map — literally. Joining DC’s Bitcoin merchants means joining a network that values local commerce and economic freedom. The BTC Map helps customers find and support you right away."
+        description="Put your business on the map — literally. Joining DC's Bitcoin merchants means joining a network that values local commerce and economic freedom. The BTC Map helps customers find and support you right away."
         topBackground="dark" 
-        bottomBackground="light"
-        padding="base"
+        bottomBackground="base"
     />
     <BlogPostCarousel 
-    content={blogCarouselContent}
-    background="light"
-    padding="small"
-    showFeatured={false}
-    fallbackToAll={true}
-    minPosts={3}
-    showLatest={true}
-    limit={8}
-/>
+        content={blogCarouselContent}
+        background="base"
+        padding="small"
+        showFeatured={false}
+        fallbackToAll={true}
+        minPosts={3}
+        showLatest={true}
+        limit={8}
+    />
     <CtaBanner 
         content={joinDistrictSection} 
-        background="light" 
+        background="dark" 
         padding="small" 
         variant="full-width" 
     />
