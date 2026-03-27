@@ -244,7 +244,7 @@ const isCurrentPage = (link: string) => {
                     </nav>
 
                     {/* Social Icons - hidden until xl */}
-                    <div class="hidden xl:flex">
+                    <div class="hidden xl:flex items-center">
                         <SocialBar 
                             iconSize={20} 
                             gap="gap-3" 
@@ -257,7 +257,7 @@ const isCurrentPage = (link: string) => {
                     {/* Search Button */}
                     <button
                         type="button"
-                        class="search-trigger p-2 text-nav-text hover:text-nav-text-hover transition-colors duration-200 rounded-md"
+                        class="search-trigger inline-flex items-center justify-center p-1.5 text-nav-text hover:text-nav-text-hover transition-colors duration-200 rounded-md leading-none"
                         aria-label="Search the site"
                     >
                         <Search size={20} />

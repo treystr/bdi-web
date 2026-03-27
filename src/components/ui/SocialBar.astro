@@ -34,7 +34,7 @@ const displayedLinks = visibleIcons
 ---
 
 <nav aria-label="Social media links">
-  <ul class={`flex justify-center items-center ${gap}`}>
+  <ul class={`flex justify-center items-center leading-none ${gap}`}>
     {displayedLinks.map(link => {
       const isExternal = link.url.startsWith('http');
       return (
@@ -43,7 +43,7 @@ const displayedLinks = visibleIcons
             href={link.url} 
             {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             aria-label={link.icon === 'rss' ? 'RSS Feed' : `Follow us on ${link.icon}`}
-            class={`inline-flex items-center justify-center ${colorClass} ${hoverColorClass} transition-colors`}
+            class={`inline-flex items-center justify-center leading-none ${colorClass} ${hoverColorClass} transition-colors`}
           >
             {link.icon === 'x' && <X size={iconSize} class={`${colorClass} ${hoverColorClass} transition-colors`} />}
             {link.icon === 'instagram' && <Instagram {...iconProps} />}
