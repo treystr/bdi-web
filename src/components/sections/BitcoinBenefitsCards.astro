@@ -1,0 +1,137 @@
+---
+import Eyebrow from '@components/ui/Eyebrow.astro';
+import { getPaddingClass, getBackgroundColor, getTextColor } from '@utils/styleUtils';
+import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
+
+type CardContent = {
+    title: string;
+    description: string;
+    image: {
+        src: string;
+        alt: string;
+    };
+};
+
+export interface Props {
+    eyebrow?: string;
+    title?: string;
+    description?: string;
+    cards: CardContent[];
+    background?: ThemeColor;
+    padding?: PaddingSize;
+    paddingTop?: PaddingSize;
+    paddingBottom?: PaddingSize;
+}
+
+const {
+    eyebrow = 'Why Bitcoin',
+    title = 'Why Bitcoin Works for Businesses',
+    description = 'A faster overview of the practical benefits of accepting and saving in Bitcoin.',
+    cards,
+    background = 'light',
+    padding,
+    paddingTop,
+    paddingBottom,
+} = Astro.props;
+
+const bgColor = getBackgroundColor(background);
+const textColor = getTextColor(background);
+const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
+---
+
+<section class:list={['bitcoin-benefits', bgColor, paddingClass]}>
+    <div class="site-container--content px-4">
+        <div class="bitcoin-benefits__header">
+            {eyebrow && <Eyebrow text={eyebrow} background={background} />}
+            <h2 class:list={['bitcoin-benefits__title', textColor]}>{title}</h2>
+            <p class:list={['bitcoin-benefits__description', textColor]}>{description}</p>
+        </div>
+
+        <div class="bitcoin-benefits__grid">
+            {cards.map((card) => (
+                <article class="bitcoin-benefits__card">
+                    <div class="bitcoin-benefits__image-wrap">
+                        <img src={card.image.src} alt={card.image.alt} class="bitcoin-benefits__image" loading="lazy" />
+                    </div>
+                    <div class="bitcoin-benefits__body">
+                        <h3 class="bitcoin-benefits__card-title">{card.title}</h3>
+                        <p class="bitcoin-benefits__card-text">{card.description}</p>
+                    </div>
+                </article>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    .bitcoin-benefits__header {
+        max-width: 48rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .bitcoin-benefits__title {
+        margin-top: 0.75rem;
+    }
+
+    .bitcoin-benefits__description {
+        margin-top: 0.75rem;
+        opacity: 0.85;
+    }
+
+    .bitcoin-benefits__grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .bitcoin-benefits__card {
+        border: 1px solid rgba(var(--color-body-base-rgb), 0.12);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--color-base);
+    }
+
+    .bitcoin-benefits__image-wrap {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        background: rgba(var(--color-body-base-rgb), 0.06);
+    }
+
+    .bitcoin-benefits__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .bitcoin-benefits__body {
+        padding: 1rem;
+    }
+
+    .bitcoin-benefits__card-title {
+        margin: 0;
+        font-size: 1.05rem;
+        line-height: 1.3;
+        color: var(--color-body-base);
+    }
+
+    .bitcoin-benefits__card-text {
+        margin-top: 0.5rem;
+        font-size: 0.92rem;
+        line-height: 1.55;
+        color: rgba(var(--color-body-base-rgb), 0.82);
+    }
+
+    @media (max-width: 1024px) {
+        .bitcoin-benefits__grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Keep home page from feeling too long on phones. */
+    @media (max-width: 767px) {
+        .bitcoin-benefits {
+            display: none;
+        }
+    }
+</style>

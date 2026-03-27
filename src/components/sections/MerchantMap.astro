@@ -1,15 +1,12 @@
 ---
-import { getPaddingClass, getBackgroundColor, getTextColor } from '@utils/styleUtils';
-import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
+import { getBackgroundColor, getTextColor } from '@utils/styleUtils';
+import type { ThemeColor } from '@utils/styleUtils';
 
 interface Props {
     title?: string;
     description?: string;
     topBackground?: ThemeColor;
     bottomBackground?: ThemeColor;
-    padding?: PaddingSize;
-    paddingTop?: PaddingSize;
-    paddingBottom?: PaddingSize;
 }
 
 const {
@@ -17,12 +14,8 @@ const {
     description = 'Bitcoin District Initiative works to help local businesses accept Bitcoin. Every purchase at these merchants helps build a thriving circular economy, strengthens local commerce, and proves Bitcoin\'s value as peer-to-peer electronic cash.',
     topBackground = 'dark',
     bottomBackground = 'dark',
-    padding,
-    paddingTop,
-    paddingBottom,
 } = Astro.props;
 
-const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
 const topBgColor = getBackgroundColor(topBackground);
 const topTextColor = getTextColor(topBackground);
 const bottomBgColor = getBackgroundColor(bottomBackground);
@@ -62,25 +55,28 @@ const bottomBgColor = getBackgroundColor(bottomBackground);
     </div>
 
     <!-- Bottom Background Section (overlaps with map) -->
-    <div class:list={['relative', bottomBgColor, paddingClass]}>
+    <div class:list={['relative', bottomBgColor, 'map-bottom-section']}>
         <div class="site-container--content px-4">
-            <!-- Map Attribution/Info (now in bottom section) -->
-            <div class="text-center mt-[0px] mb-6 opacity-75 map-attribution">
+            <div class="text-center map-attribution">
             </div>
         </div>
     </div>
 </section>
 
 <style>
+    .map-bottom-section {
+        padding-top: 370px;
+        padding-bottom: 2rem;
+    }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
         .map-card-container {
-            height: 400px !important;
-            margin-bottom: -250px !important;
+            height: 350px !important;
+            margin-bottom: -200px !important;
         }
-        .map-attribution {
-            margin-top: 270px !important;
+        .map-bottom-section {
+            padding-top: 220px;
+            padding-bottom: 1rem;
         }
     }
 </style>

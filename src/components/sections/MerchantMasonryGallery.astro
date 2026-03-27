@@ -1,0 +1,362 @@
+---
+import Eyebrow from '@components/ui/Eyebrow.astro';
+import { getMerchants, getMerchantImageUrl, type Merchant } from '@lib/directus';
+import { getPaddingClass, getBackgroundColor, getTextColor } from '@utils/styleUtils';
+import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
+
+export interface Props {
+    title?: string;
+    description?: string;
+    eyebrow?: string;
+    background?: ThemeColor;
+    padding?: PaddingSize;
+    paddingTop?: PaddingSize;
+    paddingBottom?: PaddingSize;
+    limit?: number;
+    merchants?: Merchant[];
+}
+
+const {
+    title = 'Recent Merchants Accepting Bitcoin',
+    description = 'Explore the latest local businesses proudly accepting Bitcoin and helping build a stronger circular economy in DC.',
+    eyebrow = 'Merchant Highlights',
+    background = 'base',
+    padding,
+    paddingTop,
+    paddingBottom,
+    limit = 8,
+    merchants: propMerchants,
+} = Astro.props;
+
+let items: Merchant[] = [];
+if (propMerchants) {
+    items = propMerchants;
+} else {
+    const result = await getMerchants();
+    items = result.data ?? [];
+}
+
+function getTimestamp(value: string | null | undefined): number {
+    if (!value) return Number.NEGATIVE_INFINITY;
+    const parsed = Date.parse(value);
+    return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
+}
+
+const merchants = [...items]
+    .sort((a, b) => {
+        const aTime = getTimestamp(a.Onboard_Date);
+        const bTime = getTimestamp(b.Onboard_Date);
+        if (aTime !== bTime) return bTime - aTime;
+        return (b.Onboard_Block ?? Number.NEGATIVE_INFINITY) - (a.Onboard_Block ?? Number.NEGATIVE_INFINITY);
+    })
+    .slice(0, limit);
+
+const shouldRender = merchants.length > 0;
+
+const bgColor = getBackgroundColor(background);
+const textColor = getTextColor(background);
+const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
+const galleryId = `merchant-gallery-${Math.random().toString(36).slice(2, 10)}`;
+---
+
+{shouldRender && (
+    <section class:list={['merchant-gallery', bgColor, paddingClass]} data-merchant-gallery id={galleryId}>
+        <div class="site-container--content px-4">
+            <div class="merchant-gallery__header">
+                {eyebrow && <Eyebrow text={eyebrow} background={background} />}
+                <h2 class:list={['merchant-gallery__title', textColor]}>{title}</h2>
+                <p class:list={['merchant-gallery__description', textColor]}>{description}</p>
+            </div>
+
+            <div class="merchant-gallery__controls">
+                <button type="button" class="merchant-gallery__arrow" data-gallery-prev aria-label="Previous merchant">
+                    <span aria-hidden="true">←</span>
+                </button>
+                <button type="button" class="merchant-gallery__arrow" data-gallery-next aria-label="Next merchant">
+                    <span aria-hidden="true">→</span>
+                </button>
+            </div>
+
+            <div class="merchant-gallery__viewport" data-gallery-viewport>
+                <div class="merchant-gallery__track">
+                {merchants.map((merchant, index) => {
+                    const imageUrl = getMerchantImageUrl(merchant.Image_Primary, 960);
+                    return (
+                        <article class="merchant-slide" data-gallery-slide>
+                            <div class="merchant-slide__media">
+                                {imageUrl ? (
+                                    <img
+                                        src={imageUrl}
+                                        alt={`${merchant.Name} storefront`}
+                                        loading={index < 3 ? 'eager' : 'lazy'}
+                                        decoding={index < 3 ? 'sync' : 'async'}
+                                        class="merchant-slide__image"
+                                        draggable="false"
+                                    />
+                                ) : (
+                                    <div class="merchant-slide__placeholder" />
+                                )}
+                                <div class="merchant-slide__title-badge">
+                                    <h3 class="merchant-slide__title">{merchant.Name}</h3>
+                                </div>
+                                {merchant.website && (
+                                    <a
+                                        href={merchant.website}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="merchant-slide__cta"
+                                        aria-label={`Visit ${merchant.Name} website`}
+                                        title={`Visit ${merchant.Name} website`}
+                                    >
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                    </a>
+                                )}
+                            </div>
+                        </article>
+                    );
+                })}
+                </div>
+            </div>
+        </div>
+    </section>
+)}
+
+<style>
+    .merchant-gallery__header {
+        max-width: 46rem;
+        margin-bottom: 1rem;
+    }
+
+    .merchant-gallery__title {
+        margin-top: 0.75rem;
+    }
+
+    .merchant-gallery__description {
+        margin-top: 0.75rem;
+        opacity: 0.85;
+    }
+
+    .merchant-gallery__controls {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .merchant-gallery__arrow {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(var(--color-body-base-rgb), 0.16);
+        background: var(--color-base);
+        color: var(--color-body-base);
+        cursor: pointer;
+    }
+
+    .merchant-gallery__viewport {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .merchant-gallery__viewport::-webkit-scrollbar {
+        display: none;
+    }
+
+    .merchant-gallery__track {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.9rem;
+        padding-bottom: 0.25rem;
+    }
+
+    .merchant-slide {
+        scroll-snap-align: start;
+        flex: 0 0 auto;
+        width: min(86vw, 30rem);
+        background: var(--color-base);
+        border: 1px solid rgba(var(--color-body-base-rgb), 0.12);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+        height: clamp(220px, 34vw, 300px);
+    }
+
+    .merchant-slide__media {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: rgba(var(--color-body-base-rgb), 0.04);
+    }
+
+    .merchant-slide__image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    .merchant-slide__placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(120deg, rgba(var(--color-body-base-rgb), 0.1), rgba(var(--color-body-base-rgb), 0.04));
+    }
+
+    .merchant-slide__title {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.25;
+        color: #fff;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+    }
+
+    .merchant-slide__title-badge {
+        position: absolute;
+        top: 0.65rem;
+        left: 0.65rem;
+        max-width: calc(100% - 3.5rem);
+        padding: 0.35rem 0.55rem;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.62);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(2px);
+    }
+
+    .merchant-slide__cta {
+        position: absolute;
+        right: 0.65rem;
+        bottom: 0.65rem;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.68);
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .merchant-slide__cta svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .merchant-slide__cta:hover {
+        transform: translateY(-1px) scale(1.03);
+        background: rgba(0, 0, 0, 0.82);
+    }
+
+    .merchant-gallery__viewport.is-dragging {
+        cursor: grabbing;
+        user-select: none;
+    }
+
+    .merchant-gallery__viewport {
+        cursor: grab;
+    }
+
+    @media (min-width: 1200px) {
+        .merchant-slide {
+            width: min(30vw, 28rem);
+        }
+    }
+</style>
+
+<script>
+    function initMerchantGalleries() {
+        const galleries = document.querySelectorAll<HTMLElement>('[data-merchant-gallery]');
+
+        galleries.forEach((gallery) => {
+            const viewport = gallery.querySelector<HTMLElement>('[data-gallery-viewport]');
+            const slides = gallery.querySelectorAll<HTMLElement>('[data-gallery-slide]');
+            const prev = gallery.querySelector<HTMLButtonElement>('[data-gallery-prev]');
+            const next = gallery.querySelector<HTMLButtonElement>('[data-gallery-next]');
+            if (!viewport || slides.length < 2) return;
+            const scroller = viewport;
+
+            const advanceBy = () => Math.max(280, Math.floor(scroller.clientWidth * 0.75));
+            let isPointerDown = false;
+            let startX = 0;
+            let startScrollLeft = 0;
+            let movedWhileDragging = false;
+
+            prev?.addEventListener('click', () => {
+                scroller.scrollBy({ left: -advanceBy(), behavior: 'smooth' });
+            });
+
+            next?.addEventListener('click', () => {
+                scroller.scrollBy({ left: advanceBy(), behavior: 'smooth' });
+            });
+
+            scroller.addEventListener('pointerdown', (event) => {
+                // Left-click + touch/pen only
+                if (event.pointerType === 'mouse' && event.button !== 0) return;
+                isPointerDown = true;
+                movedWhileDragging = false;
+                startX = event.clientX;
+                startScrollLeft = scroller.scrollLeft;
+                scroller.classList.add('is-dragging');
+                scroller.style.scrollSnapType = 'none';
+                scroller.setPointerCapture(event.pointerId);
+                event.preventDefault();
+            });
+
+            scroller.addEventListener('pointermove', (event) => {
+                if (!isPointerDown) return;
+                const deltaX = event.clientX - startX;
+                if (Math.abs(deltaX) > 3) movedWhileDragging = true;
+                scroller.scrollLeft = startScrollLeft - deltaX;
+                event.preventDefault();
+            });
+
+            function stopDragging(pointerId?: number) {
+                if (!isPointerDown) return;
+                isPointerDown = false;
+                scroller.classList.remove('is-dragging');
+                scroller.style.scrollSnapType = 'x mandatory';
+                if (typeof pointerId === 'number' && scroller.hasPointerCapture(pointerId)) {
+                    scroller.releasePointerCapture(pointerId);
+                }
+            }
+
+            scroller.addEventListener('pointerup', (event) => {
+                stopDragging(event.pointerId);
+            });
+
+            scroller.addEventListener('pointercancel', (event) => {
+                stopDragging(event.pointerId);
+            });
+
+            scroller.addEventListener('pointerleave', () => {
+                stopDragging();
+            });
+
+            // Prevent accidental link activation when user dragged.
+            scroller.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
+                link.addEventListener('click', (event) => {
+                    if (movedWhileDragging) {
+                        event.preventDefault();
+                        movedWhileDragging = false;
+                    }
+                });
+            });
+
+            // Prevent native browser drag ghost for images/links inside slider.
+            scroller.addEventListener('dragstart', (event) => {
+                event.preventDefault();
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', initMerchantGalleries);
+    document.addEventListener('astro:page-load', initMerchantGalleries);
+</script>

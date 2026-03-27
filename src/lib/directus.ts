@@ -57,6 +57,31 @@ export interface Merchant {
   website: string | null;
 }
 
+export interface Announcement {
+  id: number;
+  status: string;
+  sort: number | null;
+  title: string;
+  summary: string;
+  body: string | null;
+  link_url: string | null;
+  link_label: string | null;
+  image:
+    | string
+    | {
+        id: string;
+        filename_disk?: string;
+        width?: number;
+        height?: number;
+      }
+    | null;
+  is_featured: boolean | null;
+  type: string[] | string | null;
+  expiration_date: string | null;
+  date_created?: string | null;
+  date_updated?: string | null;
+}
+
 export type DocumentType = "brochure" | "flyer";
 
 export interface DocumentFile {
@@ -218,6 +243,243 @@ export async function getMerchants(): Promise<CmsResult<Merchant[]>> {
   }
 }
 
+/**
+ * Fetches all published announcements, featured first then sorted by sort/id.
+ */
+export async function getAnnouncements(): Promise<CmsResult<Announcement[]>> {
+  const client = getDirectusClient();
+  if (!client) {
+    console.error("[Announcements] Directus client not configured");
+    return { data: null, error: "CMS_NOT_CONFIGURED" };
+  }
+
+  function normalizeAnnouncementRecord(record: any): Announcement {
+    return {
+      id: Number(record?.id ?? 0),
+      status: typeof record?.status === "string" ? record.status : "published",
+      sort: typeof record?.sort === "number" ? record.sort : null,
+      title:
+        typeof record?.title === "string"
+          ? record.title
+          : typeof record?.Title === "string"
+          ? record.Title
+          : "",
+      summary:
+        typeof record?.summary === "string"
+          ? record.summary
+          : typeof record?.Summary === "string"
+          ? record.Summary
+          : "",
+      body:
+        typeof record?.body === "string"
+          ? record.body
+          : typeof record?.Body === "string"
+          ? record.Body
+          : null,
+      link_url:
+        typeof record?.link_url === "string"
+          ? record.link_url
+          : typeof record?.Link_URL === "string"
+          ? record.Link_URL
+          : null,
+      link_label:
+        typeof record?.link_label === "string"
+          ? record.link_label
+          : typeof record?.Link_Label === "string"
+          ? record.Link_Label
+          : null,
+      image: record?.image ?? record?.Image ?? null,
+      is_featured:
+        typeof record?.is_featured === "boolean"
+          ? record.is_featured
+          : typeof record?.isFeatured === "boolean"
+          ? record.isFeatured
+          : typeof record?.is_featured === "number"
+          ? record.is_featured === 1
+          : typeof record?.is_featured === "string"
+          ? record.is_featured === "true"
+          : null,
+      type: record?.type ?? record?.Type ?? null,
+      expiration_date:
+        typeof record?.expiration_date === "string"
+          ? record.expiration_date
+          : typeof record?.Expiration_Date === "string"
+          ? record.Expiration_Date
+          : null,
+      date_created:
+        typeof record?.date_created === "string"
+          ? record.date_created
+          : typeof record?.dateCreated === "string"
+          ? record.dateCreated
+          : null,
+      date_updated:
+        typeof record?.date_updated === "string"
+          ? record.date_updated
+          : typeof record?.dateUpdated === "string"
+          ? record.dateUpdated
+          : null,
+    };
+  }
+
+  const queryCandidates: Array<{
+    collection: string;
+    fields: string[];
+    sort: string[];
+  }> = [
+    {
+      collection: "BDI_Announcements",
+      fields: [
+        "id",
+        "status",
+        "sort",
+        "title",
+        "summary",
+        "body",
+        "link_url",
+        "link_label",
+        "image.*",
+        "is_featured",
+        "type",
+        "expiration_date",
+        "date_created",
+        "date_updated",
+      ],
+      sort: ["-is_featured", "sort", "-date_created", "id"],
+    },
+    {
+      collection: "bdi_announcements",
+      fields: [
+        "id",
+        "status",
+        "sort",
+        "title",
+        "summary",
+        "body",
+        "link_url",
+        "link_label",
+        "image.*",
+        "is_featured",
+        "type",
+        "expiration_date",
+        "date_created",
+        "date_updated",
+      ],
+      sort: ["-is_featured", "sort", "-date_created", "id"],
+    },
+    {
+      collection: "Announcements",
+      fields: [
+        "id",
+        "status",
+        "sort",
+        "Title",
+        "Summary",
+        "Body",
+        "Link_URL",
+        "Link_Label",
+        "Image.*",
+        "is_featured",
+        "Type",
+        "Expiration_Date",
+        "date_created",
+        "date_updated",
+      ],
+      sort: ["-is_featured", "sort", "-date_created", "id"],
+    },
+  ];
+
+  let lastError: any = null;
+
+  for (const candidate of queryCandidates) {
+    try {
+      const items = await withTimeout(
+        client.request(
+          readItems(candidate.collection, {
+            fields: candidate.fields,
+            filter: {
+              status: {
+                _eq: "published",
+              },
+            },
+            sort: candidate.sort,
+          })
+        ),
+        5000
+      );
+
+      const now = new Date();
+      function isExpired(expirationDate: string | null): boolean {
+        if (!expirationDate) return false;
+        const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(expirationDate);
+        const parsed = isDateOnly
+          ? new Date(`${expirationDate}T23:59:59.999`)
+          : new Date(expirationDate);
+        if (Number.isNaN(parsed.getTime())) return false;
+        return now.getTime() > parsed.getTime();
+      }
+
+      const normalizedItems = (items as any[])
+        .map(normalizeAnnouncementRecord)
+        .filter((item) => item.title.trim().length > 0 && item.summary.trim().length > 0)
+        .filter((item) => !isExpired(item.expiration_date));
+
+      console.log(
+        `[Announcements] Fetched ${normalizedItems.length} published announcement(s) from ${candidate.collection}`
+      );
+
+      return {
+        data: normalizedItems,
+        error: null,
+      };
+    } catch (error: any) {
+      lastError = error;
+    }
+  }
+
+  if (lastError) {
+    const error: any = lastError;
+    let errorMessage = "Unknown error";
+    let statusCode: number | null = null;
+
+    if (error?.response) {
+      statusCode = error.response.status;
+      const errorBody = error.response._data || error.response.data;
+      if (errorBody?.errors?.[0]?.message) {
+        errorMessage = errorBody.errors[0].message;
+      } else if (errorBody?.message) {
+        errorMessage = errorBody.message;
+      }
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = String(error);
+    }
+
+    console.error("[Announcements] Failed to fetch announcements:", errorMessage);
+    if (statusCode) {
+      console.error(`[Announcements] HTTP Status: ${statusCode}`);
+    }
+
+    if (
+      statusCode === 403 ||
+      errorMessage.includes("permission") ||
+      errorMessage.includes("Forbidden")
+    ) {
+      console.error(
+        "[Announcements] Permission denied - ensure the Public or service role has Read access to the Announcements collection"
+      );
+      return { data: null, error: "CMS_UNAVAILABLE" };
+    }
+
+    return {
+      data: null,
+      error: isProbablyNetworkError(error) ? "CMS_UNAVAILABLE" : "UNKNOWN",
+    };
+  }
+
+  return { data: null, error: "UNKNOWN" };
+}
+
 export { slugify } from "@utils/pressSlug.js";
 
 export function normalizePressType(
@@ -283,6 +545,15 @@ export function getMerchantImageUrl(
   if (!image) return null;
   const imageId = typeof image === "string" ? image : image.id;
   return `${getDirectusUrl()}/assets/${imageId}?format=webp&quality=80&width=${width}`;
+}
+
+export function getAnnouncementImageUrl(
+  image: Announcement["image"],
+  width = 1200
+): string | null {
+  if (!image) return null;
+  const imageId = typeof image === "string" ? image : image.id;
+  return `${getDirectusUrl()}/assets/${imageId}?format=webp&quality=82&width=${width}`;
 }
 
 export function getDocumentFileId(

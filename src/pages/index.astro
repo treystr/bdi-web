@@ -3,10 +3,11 @@ export const prerender = false;
 
 import Layout from '@layouts/Layout.astro';
 import PressHeroCarousel from '@components/sections/PressHeroCarousel.astro';
-import SplitPanel from '@components/sections/SplitPanel.astro';
-import InitiativeCards from '@components/sections/InitiativeCards.astro';
+import AnnouncementsSpotlight from '@components/sections/AnnouncementsSpotlight.astro';
+import BitcoinBenefitsCards from '@components/sections/BitcoinBenefitsCards.astro';
 import CtaBanner from '@components/sections/CtaBanner.astro';
 import MerchantMap from '@components/sections/MerchantMap.astro';
+import MerchantMasonryGallery from '@components/sections/MerchantMasonryGallery.astro';
 import BlogPostCarousel from '@components/sections/BlogPostCarousel.astro';
 import heroImage from '../assets/images/hero/hero-market.jpg';
 import understandingBitcoinImage from '../assets/images/compasscoffee.jpg';
@@ -28,20 +29,48 @@ const pressHeroContent = {
     },
 }
 
-const initiativesSection = {
-    eyebrow: "Our Impact",
-    headline: "Kickoff Projects",
-    description: "We’re working block by block across DC — hosting workshops, onboarding merchants, and building real connections that make Bitcoin part of daily life.",
-}
+const announcementsSection = {
+    eyebrow: "What's New",
+    title: "Announcements",
+    description: "Catch the latest partnerships, events, and community updates from Bitcoin District Initiative.",
+};
 
-const understandingBitcoinSection = {
+const merchantGallerySection = {
+    eyebrow: "Bitcoin Circular Economy",
+    title: "Recent Merchants Proudly Accepting Bitcoin",
+    description: "These businesses recently joined our local Bitcoin economy. Support them and help strengthen peer-to-peer commerce in DC.",
+};
+
+const bitcoinBenefitsSection = {
     eyebrow: "THE BITCOIN DISTRICT INITIATIVE",
-    headline: "Understanding Bitcoin",
-    description: "There’s a lot of noise about “crypto” today. The Bitcoin District Initiative helps DC residents and businesses understand why Bitcoin is different — and why it matters. Our focus is clear education and practical learning so you can ask questions, build confidence, and connect with customers who use Bitcoin.",
-    image: {
-        src: understandingBitcoinImage,
-        alt: "Understanding Bitcoin and monetary sovereignty"
-    }
+    title: "Understand Bitcoin. Accept Bitcoin. Build Long-Term Strength.",
+    description: "A condensed look at why Bitcoin matters for residents and small businesses across DC.",
+    cards: [
+        {
+            title: "Understanding Bitcoin",
+            description: "We help residents and business owners separate Bitcoin from the broader crypto noise and build practical confidence through education and real community support.",
+            image: {
+                src: understandingBitcoinImage.src,
+                alt: "Understanding Bitcoin and monetary sovereignty",
+            },
+        },
+        {
+            title: "Why Bitcoin for Your Business?",
+            description: "Bitcoin payments can reduce friction from card fees and chargebacks while helping businesses reach customers who prefer peer-to-peer digital cash.",
+            image: {
+                src: bitcoinAcceptedImage.src,
+                alt: "Local business accepting Bitcoin",
+            },
+        },
+        {
+            title: "Build Real Wealth",
+            description: "Saving a portion of earnings in Bitcoin can help businesses preserve value and create a stronger reserve for future opportunities.",
+            image: {
+                src: savingFutureImage.src,
+                alt: "Bitcoin grows while dollars lose value",
+            },
+        },
+    ],
 };
 
 const joinDistrictSection = {
@@ -55,24 +84,6 @@ const joinDistrictSection = {
         variant: "primary" as const
     }
 }
-
-const bitcoinAcceptedSection = {
-    headline: "Why Bitcoin for Your Business?",
-    description: "Credit card fees, chargebacks, and inflation cost small businesses thousands each year. With Bitcoin, you get instant payments that can’t be reversed or frozen — and you keep more of what you earn. Want help setting it up? We’ll walk you through every step.",
-    image: {
-        src: bitcoinAcceptedImage,
-        alt: "Local business accepting Bitcoin"
-    }
-};
-
-const savingFutureSection = {
-    headline: "Build Real Wealth",
-    description: "Saving a portion of your earnings in Bitcoin gives your business a reserve that holds value over time. With a fixed supply of 21 million, Bitcoin helps preserve purchasing power and gives you flexibility — whether reinvesting, covering slow months, or preparing for new opportunities.",
-    image: {
-        src: savingFutureImage,
-        alt: "Bitcoin grows while dollars lose value"
-    }
-};
 
 const blogCarouselContent = {
     eyebrow: "Latest Updates",
@@ -101,34 +112,30 @@ const blogCarouselContent = {
         autoAdvanceMs={6000}
         filterByType="events"
     />
-    <SplitPanel 
-        content={understandingBitcoinSection} 
-        imagePosition="right" 
-        background="light" 
-        padding="large" 
-        imageAspect="4/3"
+    <AnnouncementsSpotlight
+        eyebrow={announcementsSection.eyebrow}
+        title={announcementsSection.title}
+        description={announcementsSection.description}
+        background="light"
+        padding="small"
+        limit={6}
     />
-    <SplitPanel 
-        content={bitcoinAcceptedSection} 
-        imagePosition="left" 
-        background="base" 
-        padding="large" 
-        imageAspect="4/3"
-    >
-        <ul class="mt-6 space-y-3 text-base opacity-90">
-            <li>✔ Keep more of what you earn</li>
-            <li>✔ Accept payments instantly, worldwide</li>
-            <li>✔ Protect your business from rising costs</li>
-        </ul>
-    </SplitPanel>
-    <SplitPanel 
-        content={savingFutureSection} 
-        imagePosition="right" 
-        background="light" 
-        padding="large" 
-        imageAspect="4/3"
+    <BitcoinBenefitsCards
+        eyebrow={bitcoinBenefitsSection.eyebrow}
+        title={bitcoinBenefitsSection.title}
+        description={bitcoinBenefitsSection.description}
+        cards={bitcoinBenefitsSection.cards}
+        background="light"
+        padding="small"
     />
-    <InitiativeCards content={initiativesSection} background="base" padding="small" />
+    <MerchantMasonryGallery
+        eyebrow={merchantGallerySection.eyebrow}
+        title={merchantGallerySection.title}
+        description={merchantGallerySection.description}
+        background="base"
+        padding="small"
+        limit={8}
+    />
     <MerchantMap 
         title="Put Your Business on the BTC Map"
         description="Put your business on the map — literally. Joining DC’s Bitcoin merchants means joining a network that values local commerce and economic freedom. The BTC Map helps customers find and support you right away."
