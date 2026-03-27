@@ -14,6 +14,19 @@ import { getMerchants, type Merchant } from '@lib/directus';
 const merchantResult = await getMerchants();
 const merchants: Merchant[] = merchantResult.data ?? [];
 const cmsError = merchantResult.error;
+const latestMerchants = [...merchants]
+    .sort((a, b) => {
+        const blockA = a.Onboard_Block ?? -1;
+        const blockB = b.Onboard_Block ?? -1;
+        if (blockA !== blockB) return blockB - blockA;
+
+        const dateA = a.Onboard_Date ? new Date(a.Onboard_Date).getTime() : 0;
+        const dateB = b.Onboard_Date ? new Date(b.Onboard_Date).getTime() : 0;
+        if (dateA !== dateB) return dateB - dateA;
+
+        return b.id - a.id;
+    })
+    .slice(0, 5);
 
 // Get the initiative entry
 const entry = await getEntry('initiatives', '100-local-businesses-by-2026');
@@ -137,7 +150,27 @@ const donateCta = {
     />
 
     {/* Initiative Cards Grid */}
-    <InitiativeCardsGrid background="base" merchants={merchants} error={cmsError} />
+    <InitiativeCardsGrid
+        background="base"
+        merchants={latestMerchants}
+        error={cmsError}
+        cardLinkMode="merchant"
+        showJourneyContinuation={false}
+    />
+
+    <section class="site-container--content mx-auto px-4 pb-10 -mt-4">
+        <div class="text-center">
+            <a
+                href="/merchants"
+                class="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent-dark transition-colors"
+            >
+                View all merchants
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </a>
+        </div>
+    </section>
 
     {/* Donate CTA */}
     <CtaBanner

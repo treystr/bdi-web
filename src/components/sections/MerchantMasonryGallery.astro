@@ -1,6 +1,7 @@
 ---
 import Eyebrow from '@components/ui/Eyebrow.astro';
 import { getMerchants, getMerchantImageUrl, type Merchant } from '@lib/directus';
+import { getMerchantSlugPath } from '@utils/merchantSlug.js';
 import { getPaddingClass, getBackgroundColor, getTextColor } from '@utils/styleUtils';
 import type { PaddingSize, ThemeColor } from '@utils/styleUtils';
 
@@ -14,6 +15,8 @@ export interface Props {
     paddingBottom?: PaddingSize;
     limit?: number;
     merchants?: Merchant[];
+    showAllLink?: string;
+    showAllLabel?: string;
 }
 
 const {
@@ -26,6 +29,8 @@ const {
     paddingBottom,
     limit = 8,
     merchants: propMerchants,
+    showAllLink,
+    showAllLabel = 'See all Merchants',
 } = Astro.props;
 
 let items: Merchant[] = [];
@@ -69,21 +74,34 @@ const galleryId = `merchant-gallery-${Math.random().toString(36).slice(2, 10)}`;
             </div>
 
             <div class="merchant-gallery__controls">
-                <button type="button" class="merchant-gallery__arrow" data-gallery-prev aria-label="Previous merchant">
-                    <span aria-hidden="true">←</span>
-                </button>
-                <button type="button" class="merchant-gallery__arrow" data-gallery-next aria-label="Next merchant">
-                    <span aria-hidden="true">→</span>
-                </button>
+                {showAllLink && (
+                    <a href={showAllLink} class="merchant-gallery__cta-btn">
+                        {showAllLabel}
+                    </a>
+                )}
+                <div class="merchant-gallery__arrow-wrap">
+                    <button type="button" class="merchant-gallery__arrow" data-gallery-prev aria-label="Previous merchant">
+                        <span aria-hidden="true">←</span>
+                    </button>
+                    <button type="button" class="merchant-gallery__arrow" data-gallery-next aria-label="Next merchant">
+                        <span aria-hidden="true">→</span>
+                    </button>
+                </div>
             </div>
 
             <div class="merchant-gallery__viewport" data-gallery-viewport>
                 <div class="merchant-gallery__track">
                 {merchants.map((merchant, index) => {
                     const imageUrl = getMerchantImageUrl(merchant.Image_Primary, 960);
+                    const merchantPath = getMerchantSlugPath(merchant);
                     return (
                         <article class="merchant-slide" data-gallery-slide>
-                            <div class="merchant-slide__media">
+                            <a
+                                href={merchantPath}
+                                class="merchant-slide__media"
+                                aria-label={`View ${merchant.Name} merchant page`}
+                                title={`View ${merchant.Name} merchant page`}
+                            >
                                 {imageUrl ? (
                                     <img
                                         src={imageUrl}
@@ -99,21 +117,12 @@ const galleryId = `merchant-gallery-${Math.random().toString(36).slice(2, 10)}`;
                                 <div class="merchant-slide__title-badge">
                                     <h3 class="merchant-slide__title">{merchant.Name}</h3>
                                 </div>
-                                {merchant.website && (
-                                    <a
-                                        href={merchant.website}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="merchant-slide__cta"
-                                        aria-label={`Visit ${merchant.Name} website`}
-                                        title={`Visit ${merchant.Name} website`}
-                                    >
-                                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        </svg>
-                                    </a>
-                                )}
-                            </div>
+                                <span class="merchant-slide__cta" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </span>
+                            </a>
                         </article>
                     );
                 })}
@@ -125,7 +134,6 @@ const galleryId = `merchant-gallery-${Math.random().toString(36).slice(2, 10)}`;
 
 <style>
     .merchant-gallery__header {
-        max-width: 46rem;
         margin-bottom: 1rem;
     }
 
@@ -138,11 +146,48 @@ const galleryId = `merchant-gallery-${Math.random().toString(36).slice(2, 10)}`;
         opacity: 0.85;
     }
 
+    .merchant-gallery__cta-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.72rem 1.15rem;
+        border-radius: 0.65rem;
+        border: 2px solid var(--color-accent);
+        background: var(--color-accent);
+        color: #fff;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+        text-decoration: none;
+        box-shadow: 0 8px 20px rgba(var(--color-accent-rgb), 0.28);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    .merchant-gallery__cta-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(var(--color-accent-rgb), 0.34);
+        filter: brightness(1.04);
+    }
+
+    .merchant-gallery__cta-btn:focus-visible {
+        outline: 3px solid rgba(var(--color-accent-rgb), 0.35);
+        outline-offset: 2px;
+    }
+
     .merchant-gallery__controls {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        align-items: center;
         gap: 0.5rem;
         margin-bottom: 0.75rem;
+    }
+
+    .merchant-gallery__controls :is(button) + :is(button) {
+        margin-left: 0;
+    }
+
+    .merchant-gallery__arrow-wrap {
+        display: inline-flex;
+        gap: 0.5rem;
     }
 
     .merchant-gallery__arrow {
@@ -190,6 +235,8 @@ const galleryId = `merchant-gallery-${Math.random().toString(36).slice(2, 10)}`;
         width: 100%;
         height: 100%;
         background: rgba(var(--color-body-base-rgb), 0.04);
+        display: block;
+        text-decoration: none;
     }
 
     .merchant-slide__image {
@@ -250,7 +297,7 @@ const galleryId = `merchant-gallery-${Math.random().toString(36).slice(2, 10)}`;
         height: 1rem;
     }
 
-    .merchant-slide__cta:hover {
+    .merchant-slide__media:hover .merchant-slide__cta {
         transform: translateY(-1px) scale(1.03);
         background: rgba(0, 0, 0, 0.82);
     }

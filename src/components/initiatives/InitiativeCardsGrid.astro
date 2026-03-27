@@ -1,7 +1,7 @@
 ---
 import BusinessCard from './BusinessCard.astro';
 import MilestoneFlag from './MilestoneFlag.astro';
-import { getMerchants, getDirectusUrl, type Merchant } from '@lib/directus';
+import { getMerchants, getDirectusUrl, getMerchantSlugPath, type Merchant } from '@lib/directus';
 import { getBackgroundColor } from '@utils/styleUtils';
 import type { ThemeColor } from '@utils/styleUtils';
 
@@ -9,9 +9,19 @@ export interface Props {
     background?: ThemeColor;
     merchants?: Merchant[];
     error?: string | null;
+    cardLinkMode?: 'external' | 'merchant';
+    maxItems?: number;
+    showJourneyContinuation?: boolean;
 }
 
-const { background = 'base', merchants: propMerchants, error: propError } = Astro.props;
+const {
+    background = 'base',
+    merchants: propMerchants,
+    error: propError,
+    cardLinkMode = 'external',
+    maxItems,
+    showJourneyContinuation = true,
+} = Astro.props;
 
 let sortedEntries: Merchant[] = [];
 let cmsError: string | null = propError ?? null;
@@ -38,6 +48,8 @@ function getMerchantImageUrl(merchant: Merchant): string {
 }
 
 const milestones = [21, 50, 75, 100];
+const hasItemLimit = typeof maxItems === 'number' && maxItems > 0;
+const displayedEntries = hasItemLimit ? sortedEntries.slice(0, maxItems) : sortedEntries;
 
 const bgColor = getBackgroundColor(background);
 ---
@@ -59,9 +71,12 @@ const bgColor = getBackgroundColor(background);
         ) : (
             <>
                 <div class="initiative-cards-grid">
-                    {sortedEntries.map((entry, index) => {
+                    {displayedEntries.map((entry, index) => {
                         const businessNumber = index + 1;
                         const imageSrc = getMerchantImageUrl(entry);
+                        const internalLink = getMerchantSlugPath(entry);
+                        const linkUrl = cardLinkMode === 'merchant' ? internalLink : (entry.website ?? '#');
+                        const linkType = cardLinkMode === 'merchant' ? 'internal' : 'external';
 
                         return (
                             <BusinessCard
@@ -70,7 +85,8 @@ const bgColor = getBackgroundColor(background);
                                 description={entry.Short_Description ?? ''}
                                 imageSrc={imageSrc}
                                 imageAlt={`${entry.Name} storefront`}
-                                websiteUrl={entry.website ?? '#'}
+                                linkUrl={linkUrl}
+                                linkType={linkType}
                                 date={entry.Onboard_Date ?? ''}
                                 blockHeight={entry.Onboard_Block ?? 0}
                             />
@@ -86,7 +102,7 @@ const bgColor = getBackgroundColor(background);
                     </div>
                 ))}
 
-                {sortedEntries.length < 100 && (
+                {showJourneyContinuation && sortedEntries.length < 100 && (
                     <div class="initiative-cards-continuation">
                         <div class="continuation-content">
                             <div class="continuation-icon">🚀</div>

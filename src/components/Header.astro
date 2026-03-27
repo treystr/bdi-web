@@ -2,7 +2,7 @@
 import { headerMenu, type MenuItem } from '@data/menu';
 import { headerSetting } from '@data/config';
 import Logo from '@components/Logo.astro';
-import { Menu, X, ChevronDown, Plus, PlusCircle, ArrowRightCircle, HandHeart } from 'lucide-astro';
+import { Menu, X, ChevronDown, Plus, PlusCircle, ArrowRightCircle, HandHeart, Search } from 'lucide-astro';
 import Button from '@components/ui/Button.astro';
 import SocialBar from '@components/ui/SocialBar.astro';
 
@@ -154,7 +154,7 @@ const isCurrentPage = (link: string) => {
     }
 </style>
 
-<header class="fixed top-0 z-50 w-full left-0 bg-white border-b border-primary" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode}>
+<header class="fixed top-0 z-50 w-full left-0 bg-white border-b border-primary" data-header-mode={headerSetting.headerMode} data-overlay-mode={overlayMode} data-pagefind-ignore>
     <div class="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-6 lg:px-8">
         <div class="flex justify-between items-center py-3 md:py-4 relative">
             {/* Mobile Logo - Left */}
@@ -254,6 +254,15 @@ const isCurrentPage = (link: string) => {
                         />
                     </div>
 
+                    {/* Search Button */}
+                    <button
+                        type="button"
+                        class="search-trigger p-2 text-nav-text hover:text-nav-text-hover transition-colors duration-200 rounded-md"
+                        aria-label="Search the site"
+                    >
+                        <Search size={20} />
+                    </button>
+
                     {/* Donate Button */}
                     <Button 
                         href={ctaButton.link} 
@@ -266,8 +275,15 @@ const isCurrentPage = (link: string) => {
                 </div>
             </div>
             
-            {/* Mobile: Donate icon + Hamburger - Right */}
+            {/* Mobile: Search + Donate icon + Hamburger - Right */}
             <div class="lg:hidden flex items-center ml-auto gap-1">
+                <button
+                    type="button"
+                    class="search-trigger p-2 text-primary hover:text-primary-light transition-colors duration-200 w-12 h-12 flex items-center justify-center flex-shrink-0"
+                    aria-label="Search the site"
+                >
+                    <Search size={22} />
+                </button>
                 <a 
                     href={ctaButton.link} 
                     class="p-2 text-primary hover:text-primary-light transition-colors duration-200 w-12 h-12 flex items-center justify-center flex-shrink-0"
@@ -295,6 +311,7 @@ const isCurrentPage = (link: string) => {
 {/* Mobile Menu Panel - Outside header to avoid transform conflicts */}
 <div
     class="mobile-menu fixed z-[90] px-8 pt-8 bg-white lg:hidden mobile-menu-closed opacity-0 scale-95 transform transition-all duration-300 ease-in-out overflow-y-auto flex flex-col"
+    data-pagefind-ignore
 >
 
     {/* Main content area */}
@@ -719,5 +736,12 @@ const isCurrentPage = (link: string) => {
                 (mobileMenuButton as HTMLElement).focus();
             }
         }
+    });
+
+    // Search trigger buttons dispatch custom event for SearchOverlay
+    document.querySelectorAll('.search-trigger').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            document.dispatchEvent(new CustomEvent('open-search'));
+        });
     });
 </script>

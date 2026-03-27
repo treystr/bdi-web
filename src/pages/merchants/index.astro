@@ -1,0 +1,46 @@
+---
+export const prerender = false;
+
+import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
+import InitiativeCardsGrid from '@components/initiatives/InitiativeCardsGrid.astro';
+import { siteConfig } from '@data/config';
+import { getMerchants, type Merchant } from '@lib/directus';
+
+const seoTitle = "Merchants";
+const seoDescription = "Explore local businesses in the Bitcoin District Initiative merchant network and discover where Bitcoin is accepted in the DC area.";
+const canonicalPath = "/merchants";
+
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: seoTitle,
+    description: seoDescription,
+    url: new URL(canonicalPath, siteConfig.siteUrl).toString(),
+    isPartOf: {
+        "@type": "WebSite",
+        name: siteConfig.companyName,
+        url: siteConfig.siteUrl
+    }
+};
+
+const merchantResult = await getMerchants();
+const merchants: Merchant[] = merchantResult.data ?? [];
+const cmsError = merchantResult.error;
+---
+
+<Layout title={seoTitle} description={seoDescription} canonicalUrl={canonicalPath} jsonLd={jsonLd}>
+    <PageHeader
+        title="Our Merchant Network"
+        description="Browse every local merchant we've onboarded and click in for each business profile."
+        background="base"
+    />
+
+    <InitiativeCardsGrid
+        background="base"
+        merchants={merchants}
+        error={cmsError}
+        cardLinkMode="merchant"
+        showJourneyContinuation={false}
+    />
+</Layout>

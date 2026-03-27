@@ -1,6 +1,12 @@
 /// <reference types="vite/client" />
 import { createDirectus, readItem, readItems, rest, staticToken } from "@directus/sdk";
 import { getPressFixedSlug as sharedPressFixedSlug, getPressSlug as sharedPressSlug } from "@utils/pressSlug.js";
+import {
+  getMerchantFixedSlug as sharedMerchantFixedSlug,
+  getMerchantIdFromSlugParam as sharedMerchantIdFromSlugParam,
+  getMerchantSlug as sharedMerchantSlug,
+  getMerchantSlugPath as sharedMerchantSlugPath,
+} from "@utils/merchantSlug.js";
 
 export type CmsErrorCode =
   | "CMS_NOT_CONFIGURED"
@@ -499,6 +505,22 @@ export function getPressFixedSlug(item: PressItem): string {
   return sharedPressFixedSlug(item);
 }
 
+export function getMerchantFixedSlug(item: Merchant): string {
+  return sharedMerchantFixedSlug(item);
+}
+
+export function getMerchantSlug(item: Merchant): string {
+  return sharedMerchantSlug(item);
+}
+
+export function getMerchantSlugPath(item: Merchant): string {
+  return sharedMerchantSlugPath(item);
+}
+
+export function getMerchantIdFromSlugParam(value: string | undefined): number | null {
+  return sharedMerchantIdFromSlugParam(value);
+}
+
 function stripHtml(value: string): string {
   return value
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
@@ -817,6 +839,83 @@ export async function getPressItem(
 
     if (statusCode === 404 || statusCode === 403) {
       return { data: null, error: statusCode === 404 ? "NOT_FOUND" : "CMS_UNAVAILABLE" };
+    }
+
+    return {
+      data: null,
+      error: isProbablyNetworkError(error) ? "CMS_UNAVAILABLE" : "UNKNOWN",
+    };
+  }
+}
+
+/**
+ * Fetches a single published merchant by ID.
+ */
+export async function getMerchantById(
+  id: number
+): Promise<CmsResult<Merchant>> {
+  const client = getDirectusClient();
+  if (!client) {
+    console.error("[Merchants] Directus client not configured");
+    return { data: null, error: "CMS_NOT_CONFIGURED" };
+  }
+
+  try {
+    const item = await withTimeout(
+      client.request(
+        readItem("Merchants", id, {
+          fields: [
+            "id",
+            "status",
+            "Name",
+            "Onboard_Date",
+            "Onboard_Block",
+            "Image_Primary.*",
+            "Short_Description",
+            "Long_Description",
+            "website",
+          ],
+        })
+      ),
+      5000
+    );
+
+    if (!item || (item as any).status !== "published") {
+      return { data: null, error: "NOT_FOUND" };
+    }
+
+    return {
+      data: item as Merchant,
+      error: null,
+    };
+  } catch (error: any) {
+    let errorMessage = "Unknown error";
+    let statusCode: number | null = null;
+
+    if (error?.response) {
+      statusCode = error.response.status;
+      const errorBody = error.response._data || error.response.data;
+      if (errorBody?.errors?.[0]?.message) {
+        errorMessage = errorBody.errors[0].message;
+      } else if (errorBody?.message) {
+        errorMessage = errorBody.message;
+      }
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = String(error);
+    }
+
+    console.error(`[Merchants] Failed to fetch merchant ${id}:`, errorMessage);
+    if (statusCode) {
+      console.error(`[Merchants] HTTP Status: ${statusCode}`);
+    }
+
+    if (statusCode === 404 || statusCode === 403) {
+      return {
+        data: null,
+        error: statusCode === 404 ? "NOT_FOUND" : "CMS_UNAVAILABLE",
+      };
     }
 
     return {

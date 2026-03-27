@@ -1,0 +1,141 @@
+---
+export const prerender = false;
+
+import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
+import { siteConfig } from '@data/config';
+import {
+    getMerchantById,
+    getMerchantIdFromSlugParam,
+    getMerchantImageUrl,
+    getMerchantSlug,
+    type Merchant,
+} from '@lib/directus';
+
+const { slug } = Astro.params;
+const incomingSlug = slug ?? "";
+const id = getMerchantIdFromSlugParam(incomingSlug);
+
+if (!id) {
+    return Astro.redirect('/404');
+}
+
+const merchantResult = await getMerchantById(id);
+if (merchantResult.error || !merchantResult.data) {
+    return Astro.redirect('/404');
+}
+
+const merchant: Merchant = merchantResult.data;
+const canonicalSlug = getMerchantSlug(merchant);
+const canonicalPath = `/merchants/${canonicalSlug}`;
+
+if (incomingSlug !== canonicalSlug) {
+    return Astro.redirect(canonicalPath, 301);
+}
+
+const seoTitle = `${merchant.Name} | Merchants`;
+const seoDescription = merchant.Short_Description ?? `Learn more about ${merchant.Name}, a Bitcoin District Initiative merchant.`;
+const heroImage = getMerchantImageUrl(merchant.Image_Primary, 1200) ?? undefined;
+const canonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
+const onboardDate = merchant.Onboard_Date ? new Date(merchant.Onboard_Date) : null;
+const merchantRecord = merchant as unknown as Record<string, unknown>;
+const longDescriptionHtml = [
+    merchantRecord.Long_Description,
+    merchantRecord.long_description,
+    merchantRecord.longDescription,
+].find((value) => typeof value === 'string' && value.trim().length > 0) as string | undefined;
+const longDescriptionText = typeof longDescriptionHtml === 'string'
+    ? longDescriptionHtml
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+    : '';
+const hasLongDescription = longDescriptionText.length > 0;
+
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: merchant.Name,
+    description: merchant.Short_Description ?? merchant.Long_Description ?? undefined,
+    url: canonicalUrl,
+    image: heroImage ? [heroImage] : undefined,
+    sameAs: merchant.website ? [merchant.website] : undefined,
+    memberOf: {
+        "@type": "Organization",
+        name: siteConfig.companyName,
+        url: siteConfig.siteUrl,
+    },
+    foundingDate: onboardDate ? onboardDate.toISOString() : undefined,
+};
+---
+
+<Layout
+    title={seoTitle}
+    description={seoDescription}
+    image={heroImage}
+    imageAlt={merchant.Name}
+    canonicalUrl={canonicalPath}
+    ogType="article"
+    publishedTime={onboardDate?.toISOString()}
+    jsonLd={jsonLd}
+>
+    <PageHeader
+        title={merchant.Name}
+        description={merchant.Short_Description ?? "Bitcoin-friendly local merchant in the Bitcoin District Initiative network."}
+        background="base"
+    />
+
+    <article class="site-container--article mx-auto px-4 pb-base">
+        <div class="mt-4 mb-6">
+            <a href="/merchants" class="inline-flex items-center text-sm text-accent hover:text-accent-dark transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                All Merchants
+            </a>
+        </div>
+
+        {heroImage && (
+            <img
+                src={heroImage}
+                alt={`${merchant.Name} storefront`}
+                width={1200}
+                height={675}
+                loading="eager"
+                class="w-full h-auto rounded-lg border mb-10 border-black"
+            />
+        )}
+
+        {hasLongDescription && (
+            <section class="prose prose-lg max-w-none">
+                <Fragment set:html={longDescriptionHtml} />
+            </section>
+        )}
+
+        <div class="mt-8 flex flex-wrap gap-4 text-sm text-body-base/75">
+            {merchant.Onboard_Date && (
+                <p class="m-0">
+                    Onboarded: <time datetime={merchant.Onboard_Date}>{new Date(merchant.Onboard_Date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+                </p>
+            )}
+            {merchant.Onboard_Block && (
+                <p class="m-0">Block #{merchant.Onboard_Block}</p>
+            )}
+        </div>
+
+        {merchant.website && (
+            <div class="mt-8">
+                <a
+                    href={merchant.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-primary"
+                >
+                    Visit Merchant Website
+                </a>
+            </div>
+        )}
+    </article>
+</Layout>

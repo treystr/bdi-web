@@ -1,0 +1,334 @@
+---
+---
+
+<div
+    id="search-overlay"
+    class="fixed inset-0 z-[9999] flex items-start justify-center pt-[12vh] px-4 opacity-0 pointer-events-none transition-opacity duration-200 ease-out"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Site search"
+    aria-hidden="true"
+    data-pagefind-ignore
+>
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-search-backdrop></div>
+
+    <div class="search-panel relative w-full max-w-xl bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden transform scale-95 transition-transform duration-200 ease-out">
+        <div class="flex items-center gap-3 px-4 py-3 border-b border-gray-100">
+            <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input
+                id="search-input"
+                type="text"
+                placeholder="Search pages, news, blog posts, merchants..."
+                class="flex-1 text-base text-gray-900 placeholder-gray-400 bg-transparent border-none outline-none"
+                autocomplete="off"
+                spellcheck="false"
+            />
+            <kbd class="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium text-gray-400 bg-gray-100 rounded border border-gray-200">
+                ESC
+            </kbd>
+        </div>
+
+        <div id="search-results" class="max-h-[60vh] overflow-y-auto">
+            <div id="search-empty-state" class="px-4 py-12 text-center text-sm text-gray-400">
+                Type to search across the site
+            </div>
+            <div id="search-loading" class="hidden px-4 py-8 text-center">
+                <div class="inline-block w-5 h-5 border-2 border-gray-300 border-t-primary rounded-full animate-spin"></div>
+            </div>
+            <div id="search-results-list" class="hidden divide-y divide-gray-50"></div>
+            <div id="search-no-results" class="hidden px-4 py-12 text-center text-sm text-gray-400">
+                No results found
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between px-4 py-2 border-t border-gray-100 bg-gray-50 text-[11px] text-gray-400">
+            <span>
+                <kbd class="px-1 py-0.5 bg-white rounded border border-gray-200 text-[10px]">&uarr;</kbd>
+                <kbd class="px-1 py-0.5 bg-white rounded border border-gray-200 text-[10px]">&darr;</kbd>
+                to navigate
+            </span>
+            <span>
+                <kbd class="px-1 py-0.5 bg-white rounded border border-gray-200 text-[10px]">&crarr;</kbd>
+                to open
+            </span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const overlay = document.getElementById('search-overlay')!;
+    const panel = overlay.querySelector('.search-panel') as HTMLElement;
+    const input = document.getElementById('search-input') as HTMLInputElement;
+    const resultsList = document.getElementById('search-results-list')!;
+    const emptyState = document.getElementById('search-empty-state')!;
+    const loadingState = document.getElementById('search-loading')!;
+    const noResults = document.getElementById('search-no-results')!;
+
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    let activeIndex = -1;
+    let pagefindInstance: any = null;
+
+    async function getPagefind() {
+        if (pagefindInstance) return pagefindInstance;
+        try {
+            const path = '/pagefind/pagefind.js';
+            pagefindInstance = await import(/* @vite-ignore */ path);
+            await pagefindInstance.init();
+            return pagefindInstance;
+        } catch {
+            return null;
+        }
+    }
+
+    interface SearchResult {
+        title: string;
+        excerpt: string;
+        url: string;
+        source: 'page' | 'news' | 'merchant';
+        type?: string;
+    }
+
+    async function searchPagefind(query: string): Promise<SearchResult[]> {
+        const pf = await getPagefind();
+        if (!pf) return [];
+
+        const search = await pf.search(query);
+        const results: SearchResult[] = [];
+
+        const topResults = search.results.slice(0, 8);
+        const dataPromises = topResults.map((r: any) => r.data());
+        const dataArr = await Promise.all(dataPromises);
+
+        for (const data of dataArr) {
+            results.push({
+                title: data.meta?.title || 'Untitled',
+                excerpt: data.excerpt || '',
+                url: data.url || data.raw_url || '#',
+                source: 'page',
+            });
+        }
+        return results;
+    }
+
+    async function searchCms(query: string): Promise<SearchResult[]> {
+        try {
+            const resp = await fetch(`/api/search-cms.json?q=${encodeURIComponent(query)}`);
+            if (!resp.ok) return [];
+
+            const json = await resp.json();
+            const items: any[] = json.data || [];
+
+            return items.map((item) => ({
+                title: item.title || 'Untitled',
+                excerpt: item.excerpt || '',
+                url: item.url || '#',
+                source: item.source as SearchResult['source'],
+            }));
+        } catch {
+            return [];
+        }
+    }
+
+    function deduplicateResults(pageResults: SearchResult[], cmsResults: SearchResult[]): SearchResult[] {
+        const seen = new Set<string>();
+        const combined: SearchResult[] = [];
+
+        for (const r of pageResults) {
+            const key = r.url.replace(/\/$/, '');
+            if (!seen.has(key)) {
+                seen.add(key);
+                combined.push(r);
+            }
+        }
+
+        for (const r of cmsResults) {
+            const key = r.url.replace(/\/$/, '');
+            const idMatch = key.match(/\/news\/(\d+)/);
+            const merchantIdMatch = key.match(/\/merchants\/(\d+)(?:-|$)/);
+            const isDup = seen.has(key) ||
+                (idMatch && [...seen].some(s => s.includes(`/news/${idMatch[1]}`))) ||
+                (merchantIdMatch && [...seen].some(s => s.includes(`/merchants/${merchantIdMatch[1]}`)));
+            if (!isDup) {
+                seen.add(key);
+                combined.push(r);
+            }
+        }
+        return combined;
+    }
+
+    function renderResults(results: SearchResult[]) {
+        resultsList.innerHTML = '';
+        activeIndex = -1;
+
+        if (results.length === 0) {
+            resultsList.classList.add('hidden');
+            noResults.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            loadingState.classList.add('hidden');
+            return;
+        }
+
+        noResults.classList.add('hidden');
+        emptyState.classList.add('hidden');
+        loadingState.classList.add('hidden');
+        resultsList.classList.remove('hidden');
+
+        for (const result of results) {
+            const a = document.createElement('a');
+            a.href = result.url;
+            a.className = 'search-result-item flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer outline-none';
+            a.setAttribute('role', 'option');
+            a.setAttribute('tabindex', '-1');
+
+            const badgeMap: Record<string, string> = {
+                news: '<span class="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium bg-primary/10 text-primary rounded flex-shrink-0 mt-0.5">News</span>',
+                merchant: '<span class="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium bg-emerald-500/10 text-emerald-700 rounded flex-shrink-0 mt-0.5">Merchant</span>',
+            };
+            const badge = badgeMap[result.source] || '';
+
+            const excerptHtml = result.excerpt
+                ? `<p class="text-sm text-gray-500 line-clamp-2 mt-0.5">${result.excerpt}</p>`
+                : '';
+
+            a.innerHTML = `
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-medium text-gray-900 truncate">${escapeHtml(result.title)}</span>
+                        ${badge}
+                    </div>
+                    ${excerptHtml}
+                </div>
+                <svg class="w-4 h-4 text-gray-300 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            `;
+
+            resultsList.appendChild(a);
+        }
+    }
+
+    function escapeHtml(text: string): string {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function setActiveResult(index: number) {
+        const items = resultsList.querySelectorAll('.search-result-item');
+        items.forEach(el => el.classList.remove('bg-gray-50'));
+        activeIndex = index;
+        if (index >= 0 && index < items.length) {
+            items[index].classList.add('bg-gray-50');
+            items[index].scrollIntoView({ block: 'nearest' });
+        }
+    }
+
+    async function performSearch(query: string) {
+        if (!query.trim()) {
+            resultsList.classList.add('hidden');
+            noResults.classList.add('hidden');
+            loadingState.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+            return;
+        }
+
+        emptyState.classList.add('hidden');
+        noResults.classList.add('hidden');
+        resultsList.classList.add('hidden');
+        loadingState.classList.remove('hidden');
+
+        const [pageResults, cmsResults] = await Promise.all([
+            searchPagefind(query),
+            searchCms(query),
+        ]);
+
+        const combined = deduplicateResults(pageResults, cmsResults);
+        renderResults(combined);
+    }
+
+    function openSearch() {
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        overlay.classList.add('opacity-100', 'pointer-events-auto');
+        overlay.setAttribute('aria-hidden', 'false');
+        panel.classList.remove('scale-95');
+        panel.classList.add('scale-100');
+        document.body.style.overflow = 'hidden';
+
+        requestAnimationFrame(() => input.focus());
+    }
+
+    function closeSearch() {
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        overlay.classList.remove('opacity-100', 'pointer-events-auto');
+        overlay.setAttribute('aria-hidden', 'true');
+        panel.classList.add('scale-95');
+        panel.classList.remove('scale-100');
+        document.body.style.overflow = '';
+
+        input.value = '';
+        resultsList.innerHTML = '';
+        resultsList.classList.add('hidden');
+        noResults.classList.add('hidden');
+        loadingState.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        activeIndex = -1;
+    }
+
+    function isOverlayOpen(): boolean {
+        return overlay.classList.contains('opacity-100');
+    }
+
+    // Debounced input handler
+    input.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            performSearch(input.value);
+        }, 300);
+    });
+
+    // Keyboard navigation inside overlay
+    input.addEventListener('keydown', (e) => {
+        const items = resultsList.querySelectorAll('.search-result-item');
+        const count = items.length;
+
+        if (e.key === 'ArrowDown' && count > 0) {
+            e.preventDefault();
+            setActiveResult(activeIndex < count - 1 ? activeIndex + 1 : 0);
+        } else if (e.key === 'ArrowUp' && count > 0) {
+            e.preventDefault();
+            setActiveResult(activeIndex > 0 ? activeIndex - 1 : count - 1);
+        } else if (e.key === 'Enter' && activeIndex >= 0 && activeIndex < count) {
+            e.preventDefault();
+            (items[activeIndex] as HTMLAnchorElement).click();
+        } else if (e.key === 'Escape') {
+            closeSearch();
+        }
+    });
+
+    // Backdrop click to close
+    overlay.querySelector('[data-search-backdrop]')?.addEventListener('click', closeSearch);
+
+    // Global Cmd/Ctrl+K shortcut
+    document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            if (isOverlayOpen()) {
+                closeSearch();
+            } else {
+                openSearch();
+            }
+        }
+        if (e.key === 'Escape' && isOverlayOpen()) {
+            closeSearch();
+        }
+    });
+
+    // Listen for custom open-search event from header button
+    document.addEventListener('open-search', () => {
+        if (!isOverlayOpen()) {
+            openSearch();
+        }
+    });
+</script>
