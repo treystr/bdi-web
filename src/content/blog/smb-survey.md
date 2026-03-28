@@ -1,54 +1,58 @@
 ---
-title: "Local Business Market Research"
-excerpt: "Studying how DC's local businesses view Bitcoin adoption."
+title: "Local Business Surveys"
+excerpt: "What we learned from surveying DC local businesses about payments, savings, and Bitcoin readiness."
 featuredImage: "./images/smb.jpg"
-publishDate: "2025-08-26"
+publishDate: "2026-01-31"
 publish: true
 categories: ["Initiatives"]
 
 seo:
-  title: "Bitcoin Market Research with DC Local Businesses"
-  description: "The Bitcoin District Initiative is conducting grassroots research to understand local business needs and opportunities for Bitcoin adoption in Washington, DC."
+  title: "Local Business Surveys in Washington, DC"
+  description: "A recap of our local business survey effort across DC, including key findings on payment pain points, Bitcoin familiarity, and adoption barriers."
 ---
 
-## Listening Before Leading
+## What this survey was about
 
-At the Bitcoin District Initiative, we know that successful Bitcoin adoption begins with listening. While we're excited to help local businesses accept Bitcoin, we also recognize that every local business faces unique challenges and questions. That's why we're conducting **market research across Washington, DC**—to better understand how local entrepreneurs view Bitcoin, what concerns they have, and how we can best support them.
+Our **Local Business Survey** was a grassroots effort to understand what small, independent businesses in DC think about Bitcoin, from farmers market stands to single-owner shops.
 
-## Why Market Research Matters
+Just as important, the survey gave us a practical way to start real conversations. Instead of leading with a pitch, we led with questions, listened carefully, and learned how businesses actually operate day-to-day.
 
-Our mission is rooted in education and empowerment, not assumptions. By surveying and interviewing local business owners, we aim to:
+Every response was collected in person through field outreach, including farmers markets and door-to-door visits across DC.
 
-- **Identify barriers** that prevent businesses from adopting Bitcoin.  
-- **Understand priorities**—such as cost savings, customer demand, or ease of use.  
-- **Gather insights** on how Bitcoin can align with local businesses' real-world needs.  
-- **Shape solutions** that are practical, accessible, and tailored to the DC community.  
+## Goals of the effort
 
-This research ensures that our outreach efforts are grounded in the lived experiences of the very businesses we seek to serve.
+- **Spark genuine conversations** with local business owners and operators.
+- **Understand local needs** around payments and business savings.
+- **Evaluate barriers to adoption** (technical, practical, and cultural).
+- **Measure awareness** so we can tailor educational support to real needs.
 
-## Our Survey Initiative
+## Survey results
 
-We designed a simple, approachable survey for local businesses across DC. The questions focus on three main areas:
+Below is a snapshot of our latest available survey data (49 responses):
 
-1. **Awareness** — What do business owners already know about Bitcoin?  
-2. **Perceptions** — What benefits or risks do they associate with it?  
-3. **Adoption Readiness** — What tools, training, or assurances would make them comfortable accepting Bitcoin?  
+- **Biggest payment issue:** 31 respondents cited **high fees**.
+- **Savings/investment posture:** 27 respondents said **they do not really save**.
+- **Bitcoin familiarity:** 32 of 49 said they either **know a little** (16), **heard of it** (9), or **not at all** (11); 13 reported higher familiarity (**very knowledgeable** or **own some**).
+- **Acceptance readiness:** 34 respondents had **never thought about accepting Bitcoin**.
+- **What would increase adoption most:** **low transaction fees** (17) and **hands-on training** (16) were top themes.
+- **Follow-up interest:** 31 respondents asked for **more information**.
 
-By pairing survey responses with in-person conversations, we’re able to collect both quantitative data and personal stories, giving us a holistic picture of the local landscape.
+## From insights to action
 
-## From Insights to Action
+This was a one-off initiative, but the findings continue to shape our work. These insights directly inform how we design local business education and onboarding support:
 
-This market research is not an academic exercise—it's the foundation for real-world change. The insights we gather will directly inform our **local business onboarding program**, ensuring that our workshops, educational guides, and outreach address the actual needs of DC's local businesses.
+- if businesses need confidence, we focus on simple, practical training;
+- if fee pressure is the pain point, we emphasize tools that lower payment friction;
+- if interest is present but knowledge is low, we prioritize approachable educational content first.
 
-For example:  
-- If local businesses cite **staff training** as a concern, we’ll create tailored onboarding workshops.  
-- If they worry about **tax reporting**, we’ll prepare simple, clear resources.  
-- If they’re excited about **new customers**, we’ll connect them to the DC Bitcoin community.  
+## Why this mattered
 
-Every response helps us refine our approach and serve our city better.
+Our mission is rooted in listening before leading. This survey helped us:
 
-## Join the Effort
+- identify practical barriers that prevent businesses from adopting Bitcoin;
+- understand what business owners prioritize most in day-to-day operations;
+- turn field conversations into clearer, more useful onboarding support.
 
-Are you a local business owner in DC? We'd love to hear your perspective. Your feedback will help shape the future of Bitcoin adoption in our community.  
+## Thank you to everyone who participated
 
-And if you’re a volunteer who’d like to help us gather responses, get in touch. Together, we can make Washington, DC a leader in grassroots Bitcoin adoption—built on real conversations, real needs, and real solutions.
+To every local business owner who took time to share feedback: thank you. Your input helped us better understand the real challenges on the ground and how to build better support for Bitcoin adoption in DC.
