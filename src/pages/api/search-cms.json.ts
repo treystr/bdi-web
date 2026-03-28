@@ -1,6 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
+import { getCommunityPartnershipSlugPath } from '@utils/communityPartnershipSlug.js';
 import { getMerchantSlugPath } from '@utils/merchantSlug.js';
 
 function getDirectusConfig() {
@@ -71,6 +72,34 @@ async function searchMerchants(query: string, baseUrl: string, headers: Record<s
     }
 }
 
+async function searchCommunityPartnerships(query: string, baseUrl: string, headers: Record<string, string>) {
+    const endpoint = new URL('/items/BDI_Community_Partnerships', baseUrl);
+    endpoint.searchParams.set('search', query);
+    endpoint.searchParams.set('filter[status][_eq]', 'published');
+    endpoint.searchParams.set('fields', 'id,title,subtitle,description,body,date_updated,date_created');
+    endpoint.searchParams.set('limit', '6');
+    endpoint.searchParams.set('sort', '-date_updated,-date_created,-id');
+
+    try {
+        const resp = await fetch(endpoint.toString(), { headers });
+        if (!resp.ok) return [];
+        const json = await resp.json();
+        return (json.data || []).map((item: any) => {
+            const plainExcerpt = typeof item.body === 'string'
+                ? stripHtml(item.body).slice(0, 200)
+                : '';
+            return {
+                title: item.title || 'Untitled',
+                excerpt: item.description || item.subtitle || plainExcerpt,
+                url: getCommunityPartnershipSlugPath(item),
+                source: 'partnership',
+            };
+        });
+    } catch {
+        return [];
+    }
+}
+
 function slugify(text: string): string {
     return String(text || '')
         .toLowerCase()
@@ -95,12 +124,13 @@ export const GET: APIRoute = async ({ url }) => {
         });
     }
 
-    const [pressResults, merchantResults] = await Promise.all([
+    const [pressResults, merchantResults, partnershipResults] = await Promise.all([
         searchPress(query, directusUrl, headers),
         searchMerchants(query, directusUrl, headers),
+        searchCommunityPartnerships(query, directusUrl, headers),
     ]);
 
-    return new Response(JSON.stringify({ data: [...pressResults, ...merchantResults] }), {
+    return new Response(JSON.stringify({ data: [...pressResults, ...merchantResults, ...partnershipResults] }), {
         headers: { 'Content-Type': 'application/json' },
     });
 };

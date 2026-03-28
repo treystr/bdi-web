@@ -20,7 +20,7 @@
             <input
                 id="search-input"
                 type="text"
-                placeholder="Search pages, news, blog posts, merchants..."
+                placeholder="Search pages, news, blog posts, merchants, partnerships..."
                 class="flex-1 text-base text-gray-900 placeholder-gray-400 bg-transparent border-none outline-none"
                 autocomplete="off"
                 spellcheck="false"
@@ -86,7 +86,7 @@
         title: string;
         excerpt: string;
         url: string;
-        source: 'page' | 'news' | 'merchant';
+        source: 'page' | 'news' | 'merchant' | 'partnership';
         type?: string;
     }
 
@@ -147,9 +147,11 @@
             const key = r.url.replace(/\/$/, '');
             const idMatch = key.match(/\/news\/(\d+)/);
             const merchantIdMatch = key.match(/\/merchants\/(\d+)(?:-|$)/);
+            const partnershipIdMatch = key.match(/\/initiatives\/community-partnerships\/(\d+)(?:-|$)/);
             const isDup = seen.has(key) ||
                 (idMatch && [...seen].some(s => s.includes(`/news/${idMatch[1]}`))) ||
-                (merchantIdMatch && [...seen].some(s => s.includes(`/merchants/${merchantIdMatch[1]}`)));
+                (merchantIdMatch && [...seen].some(s => s.includes(`/merchants/${merchantIdMatch[1]}`))) ||
+                (partnershipIdMatch && [...seen].some(s => s.includes(`/initiatives/community-partnerships/${partnershipIdMatch[1]}`)));
             if (!isDup) {
                 seen.add(key);
                 combined.push(r);
@@ -185,6 +187,8 @@
             const badgeMap: Record<string, string> = {
                 news: '<span class="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium bg-primary/10 text-primary rounded flex-shrink-0 mt-0.5">News</span>',
                 merchant: '<span class="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium bg-emerald-500/10 text-emerald-700 rounded flex-shrink-0 mt-0.5">Merchant</span>',
+                partnership:
+                    '<span class="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium bg-indigo-500/10 text-indigo-700 rounded flex-shrink-0 mt-0.5">Partnership</span>',
             };
             const badge = badgeMap[result.source] || '';
 

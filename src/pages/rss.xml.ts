@@ -5,16 +5,20 @@ import type { APIContext } from "astro";
 import { getCollection } from "astro:content";
 import { SEO } from "@data/config";
 import {
+  getCommunityPartnerships,
+  getCommunityPartnershipSlugPath,
   getPress,
   getPressSlug,
   normalizePressType,
+  type CommunityPartnership,
   type PressItem,
 } from "@lib/directus";
 
 export async function GET(context: APIContext) {
-  const [blogPosts, pressResult] = await Promise.all([
+  const [blogPosts, pressResult, communityPartnershipsResult] = await Promise.all([
     getCollection("blog", ({ data }) => data.publish !== false),
     getPress(),
+    getCommunityPartnerships(),
   ]);
 
   const blogItems = blogPosts.map((post) => ({
@@ -37,7 +41,22 @@ export async function GET(context: APIContext) {
     };
   });
 
-  const allItems = [...blogItems, ...pressRssItems].sort(
+  const communityPartnershipItems: CommunityPartnership[] =
+    communityPartnershipsResult.data ?? [];
+  const communityPartnershipRssItems = communityPartnershipItems.map((item) => {
+    const dateCandidate = item.date_updated ?? item.date_created ?? "";
+    const parsedDate = dateCandidate ? new Date(dateCandidate) : new Date();
+
+    return {
+      title: item.title,
+      description: item.description ?? item.subtitle ?? "",
+      pubDate: Number.isNaN(parsedDate.valueOf()) ? new Date() : parsedDate,
+      link: getCommunityPartnershipSlugPath(item),
+      categories: ["community-partnerships"],
+    };
+  });
+
+  const allItems = [...blogItems, ...pressRssItems, ...communityPartnershipRssItems].sort(
     (a, b) => b.pubDate.valueOf() - a.pubDate.valueOf()
   );
 
