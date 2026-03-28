@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import { getPressSlugPath } from './src/utils/pressSlug.js';
 import { getMerchantSlugPath } from './src/utils/merchantSlug.js';
+import { getCommunityPartnershipSlugPath } from './src/utils/communityPartnershipSlug.js';
 
 // Get the site URL from environment variable or use a default for local development
 const site = process.env.PUBLIC_SITE_URL || 'http://localhost:4321';
@@ -13,6 +14,7 @@ const staticSitemapPaths = [
   '/news',
   '/merchants',
   '/initiatives/100-local-businesses-by-2026',
+  '/initiatives/community-partnerships',
 ];
 const toAbsoluteUrl = (path) => new URL(path, site).toString();
 
@@ -74,10 +76,47 @@ async function getMerchantSitemapPages() {
   }
 }
 
+async function getCommunityPartnershipSitemapPages() {
+  const directusUrl = process.env.PUBLIC_DIRECTUS_URL || process.env.DIRECTUS_URL;
+  if (!directusUrl) return [];
+
+  try {
+    const baseUrl = directusUrl.replace(/\/+$/, '');
+    const endpoint = new URL('/items/BDI_Community_Partnerships', baseUrl);
+    endpoint.searchParams.set('fields', 'id,title');
+    endpoint.searchParams.set('filter[status][_eq]', 'published');
+    endpoint.searchParams.set('limit', '-1');
+
+    const headers = {};
+    if (process.env.DIRECTUS_STATIC_TOKEN) {
+      headers.Authorization = `Bearer ${process.env.DIRECTUS_STATIC_TOKEN}`;
+    }
+
+    const response = await fetch(endpoint, { headers });
+    if (!response.ok) return [];
+
+    const payload = await response.json();
+    const items = Array.isArray(payload?.data) ? payload.data : [];
+    return items
+      .filter((item) => typeof item?.id === 'number')
+      .map((item) => toAbsoluteUrl(getCommunityPartnershipSlugPath(item)));
+  } catch {
+    return [];
+  }
+}
+
 const newsSitemapPages = await getNewsSitemapPages();
 const merchantSitemapPages = await getMerchantSitemapPages();
+const communityPartnershipSitemapPages = await getCommunityPartnershipSitemapPages();
 const staticSitemapPages = staticSitemapPaths.map(toAbsoluteUrl);
-const customSitemapPages = [...new Set([...staticSitemapPages, ...newsSitemapPages, ...merchantSitemapPages])];
+const customSitemapPages = [
+  ...new Set([
+    ...staticSitemapPages,
+    ...newsSitemapPages,
+    ...merchantSitemapPages,
+    ...communityPartnershipSitemapPages,
+  ]),
+];
 
 export default defineConfig({
   output: 'static',

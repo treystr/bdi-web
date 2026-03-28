@@ -1,0 +1,155 @@
+---
+interface Props {
+    title: string;
+    subtitle?: string | null;
+    description?: string | null;
+    imageSrc?: string | null;
+    href: string;
+}
+
+const { title, subtitle, description, imageSrc, href } = Astro.props;
+---
+
+<article class="partnership-card" data-aos="fade-up">
+    <a href={href} class="partnership-image-link" aria-label={`View details for ${title}`}>
+        <div class="partnership-image-wrapper">
+            {imageSrc ? (
+                <img src={imageSrc} alt={title} loading="lazy" class="partnership-image" />
+            ) : (
+                <div class="partnership-image partnership-image--placeholder" aria-hidden="true">
+                    BDI
+                </div>
+            )}
+        </div>
+    </a>
+
+    <div class="partnership-content">
+        {subtitle && <p class="partnership-subtitle">{subtitle}</p>}
+
+        <h3 class="partnership-title">
+            <a href={href} class="partnership-title-link">{title}</a>
+        </h3>
+
+        {description && <p class="partnership-description">{description}</p>}
+
+        <a href={href} class="partnership-cta">
+            View partnership
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </a>
+    </div>
+</article>
+
+<style>
+    .partnership-card {
+        border: 1px solid rgba(var(--color-body-base-rgb), 0.12);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--color-base);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .partnership-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+        border-color: rgba(var(--color-accent-rgb), 0.35);
+    }
+
+    .partnership-image-link {
+        display: block;
+    }
+
+    .partnership-image-wrapper {
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        background: rgba(var(--color-body-base-rgb), 0.05);
+    }
+
+    .partnership-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.25s ease;
+    }
+
+    .partnership-card:hover .partnership-image {
+        transform: scale(1.04);
+    }
+
+    .partnership-image--placeholder {
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        color: rgba(var(--color-body-base-rgb), 0.4);
+        letter-spacing: 0.08em;
+    }
+
+    .partnership-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem 1rem 1.125rem;
+        height: 100%;
+    }
+
+    .partnership-subtitle {
+        margin: 0;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        color: rgba(var(--color-body-base-rgb), 0.65);
+    }
+
+    .partnership-title {
+        margin: 0;
+        font-size: 1.1rem;
+        line-height: 1.35;
+        color: var(--color-accent);
+    }
+
+    .partnership-title-link {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.2s ease;
+    }
+
+    .partnership-title-link:hover {
+        color: var(--color-primary);
+    }
+
+    .partnership-description {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: rgba(var(--color-body-base-rgb), 0.82);
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        flex: 1;
+    }
+
+    .partnership-cta {
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: var(--color-primary);
+        text-decoration: none;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .partnership-cta:hover {
+        color: var(--color-accent);
+        transform: translateX(2px);
+    }
+</style>

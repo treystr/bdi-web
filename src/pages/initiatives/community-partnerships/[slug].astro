@@ -1,0 +1,135 @@
+---
+export const prerender = false;
+
+import Layout from '@layouts/Layout.astro';
+import PageHeader from '@components/sections/PageHeader.astro';
+import { siteConfig } from '@data/config';
+import {
+    getCommunityPartnershipById,
+    getCommunityPartnershipIdFromSlugParam,
+    getCommunityPartnershipImageUrl,
+    getCommunityPartnershipSlug,
+    type CommunityPartnership,
+} from '@lib/directus';
+
+const { slug } = Astro.params;
+const incomingSlug = slug ?? '';
+const id = getCommunityPartnershipIdFromSlugParam(incomingSlug);
+
+if (!id) {
+    return Astro.redirect('/404');
+}
+
+const partnershipResult = await getCommunityPartnershipById(id);
+if (partnershipResult.error || !partnershipResult.data) {
+    return Astro.redirect('/404');
+}
+
+const partnership: CommunityPartnership = partnershipResult.data;
+const canonicalSlug = getCommunityPartnershipSlug(partnership);
+const canonicalPath = `/initiatives/community-partnerships/${canonicalSlug}`;
+
+if (incomingSlug !== canonicalSlug) {
+    return Astro.redirect(canonicalPath, 301);
+}
+
+function sanitizeHtml(input: string): string {
+    return input
+        .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+        .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, '')
+        .replace(/\son\w+="[^"]*"/gi, '')
+        .replace(/\son\w+='[^']*'/gi, '')
+        .replace(/javascript:/gi, '');
+}
+
+const bodyHtml = typeof partnership.body === 'string' ? sanitizeHtml(partnership.body) : '';
+const hasBody = bodyHtml.trim().length > 0;
+const heroImage = getCommunityPartnershipImageUrl(partnership.cover_image, 1400) ?? undefined;
+const seoTitle = `${partnership.title} | Community Partnerships`;
+const seoDescription =
+    partnership.description ??
+    partnership.subtitle ??
+    `Learn more about ${partnership.title}, a Bitcoin District Initiative community partnership.`;
+const canonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
+
+const partnershipRecord = partnership as unknown as Record<string, unknown>;
+const partnershipWebsite = [
+    partnershipRecord.website,
+    partnershipRecord.website_url,
+    partnershipRecord.link_url,
+    partnershipRecord.url,
+].find((value) => typeof value === 'string' && value.trim().length > 0) as string | undefined;
+
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: partnership.title,
+    description: seoDescription,
+    url: canonicalUrl,
+    image: heroImage ? [heroImage] : undefined,
+    isPartOf: {
+        '@type': 'WebSite',
+        name: siteConfig.companyName,
+        url: siteConfig.siteUrl,
+    },
+};
+---
+
+<Layout
+    title={seoTitle}
+    description={seoDescription}
+    image={heroImage}
+    imageAlt={partnership.title}
+    canonicalUrl={canonicalPath}
+    ogType="article"
+    jsonLd={jsonLd}
+>
+    <PageHeader
+        title={partnership.title}
+        description={partnership.subtitle ?? partnership.description ?? 'Community partnership with Bitcoin District Initiative.'}
+        background="base"
+    />
+
+    <article class="site-container--article mx-auto px-4 pb-base">
+        <div class="mt-4 mb-6">
+            <a href="/initiatives/community-partnerships" class="inline-flex items-center text-sm text-accent hover:text-accent-dark transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                All Community Partnerships
+            </a>
+        </div>
+
+        {heroImage && (
+            <img
+                src={heroImage}
+                alt={`${partnership.title} cover`}
+                width={1400}
+                height={788}
+                loading="eager"
+                class="w-full h-auto rounded-lg border mb-10 border-black"
+            />
+        )}
+
+        {partnership.description && <p class="text-lg text-body-base/80 -mt-2 mb-8">{partnership.description}</p>}
+
+        {hasBody && (
+            <section class="prose prose-lg max-w-none">
+                <Fragment set:html={bodyHtml} />
+            </section>
+        )}
+
+        {partnershipWebsite && (
+            <div class="mt-8">
+                <a
+                    href={partnershipWebsite}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-primary"
+                >
+                    Visit Partner Website
+                </a>
+            </div>
+        )}
+    </article>
+</Layout>

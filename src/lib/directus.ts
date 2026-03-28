@@ -7,6 +7,12 @@ import {
   getMerchantSlug as sharedMerchantSlug,
   getMerchantSlugPath as sharedMerchantSlugPath,
 } from "@utils/merchantSlug.js";
+import {
+  getCommunityPartnershipFixedSlug as sharedCommunityPartnershipFixedSlug,
+  getCommunityPartnershipIdFromSlugParam as sharedCommunityPartnershipIdFromSlugParam,
+  getCommunityPartnershipSlug as sharedCommunityPartnershipSlug,
+  getCommunityPartnershipSlugPath as sharedCommunityPartnershipSlugPath,
+} from "@utils/communityPartnershipSlug.js";
 
 export type CmsErrorCode =
   | "CMS_NOT_CONFIGURED"
@@ -61,6 +67,27 @@ export interface Merchant {
   Short_Description: string | null;
   Long_Description: string | null;
   website: string | null;
+}
+
+export interface CommunityPartnership {
+  id: number;
+  status: string;
+  sort: number | null;
+  title: string;
+  subtitle: string | null;
+  description: string | null;
+  body: string | null;
+  cover_image:
+    | string
+    | {
+        id: string;
+        filename_disk?: string;
+        width?: number;
+        height?: number;
+      }
+    | null;
+  date_created?: string | null;
+  date_updated?: string | null;
 }
 
 export interface Announcement {
@@ -238,6 +265,95 @@ export async function getMerchants(): Promise<CmsResult<Merchant[]>> {
     ) {
       console.error(
         "[Merchants] Permission denied - ensure the Public or service role has Read access to the Merchants collection"
+      );
+      return { data: null, error: "CMS_UNAVAILABLE" };
+    }
+
+    return {
+      data: null,
+      error: isProbablyNetworkError(error) ? "CMS_UNAVAILABLE" : "UNKNOWN",
+    };
+  }
+}
+
+/**
+ * Fetches all published community partnerships, sorted by sort ascending.
+ */
+export async function getCommunityPartnerships(): Promise<CmsResult<CommunityPartnership[]>> {
+  const client = getDirectusClient();
+  if (!client) {
+    console.error("[CommunityPartnerships] Directus client not configured");
+    return { data: null, error: "CMS_NOT_CONFIGURED" };
+  }
+
+  try {
+    const partnerships = await withTimeout(
+      client.request(
+        readItems("BDI_Community_Partnerships", {
+          fields: [
+            "id",
+            "status",
+            "sort",
+            "title",
+            "subtitle",
+            "description",
+            "body",
+            "cover_image.*",
+            "date_created",
+            "date_updated",
+          ],
+          filter: {
+            status: {
+              _eq: "published",
+            },
+          },
+          sort: ["sort", "id"],
+        })
+      ),
+      5000
+    );
+
+    console.log(
+      `[CommunityPartnerships] Fetched ${partnerships.length} published partnership(s)`
+    );
+
+    return {
+      data: partnerships as CommunityPartnership[],
+      error: null,
+    };
+  } catch (error: any) {
+    let errorMessage = "Unknown error";
+    let statusCode: number | null = null;
+
+    if (error?.response) {
+      statusCode = error.response.status;
+      const errorBody = error.response._data || error.response.data;
+      if (errorBody?.errors?.[0]?.message) {
+        errorMessage = errorBody.errors[0].message;
+      } else if (errorBody?.message) {
+        errorMessage = errorBody.message;
+      }
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = String(error);
+    }
+
+    console.error(
+      "[CommunityPartnerships] Failed to fetch community partnerships:",
+      errorMessage
+    );
+    if (statusCode) {
+      console.error(`[CommunityPartnerships] HTTP Status: ${statusCode}`);
+    }
+
+    if (
+      statusCode === 403 ||
+      errorMessage.includes("permission") ||
+      errorMessage.includes("Forbidden")
+    ) {
+      console.error(
+        "[CommunityPartnerships] Permission denied - ensure the Public or service role has Read access to the BDI_Community_Partnerships collection"
       );
       return { data: null, error: "CMS_UNAVAILABLE" };
     }
@@ -521,6 +637,28 @@ export function getMerchantIdFromSlugParam(value: string | undefined): number | 
   return sharedMerchantIdFromSlugParam(value);
 }
 
+export function getCommunityPartnershipFixedSlug(
+  item: CommunityPartnership
+): string {
+  return sharedCommunityPartnershipFixedSlug(item);
+}
+
+export function getCommunityPartnershipSlug(item: CommunityPartnership): string {
+  return sharedCommunityPartnershipSlug(item);
+}
+
+export function getCommunityPartnershipSlugPath(
+  item: CommunityPartnership
+): string {
+  return sharedCommunityPartnershipSlugPath(item);
+}
+
+export function getCommunityPartnershipIdFromSlugParam(
+  value: string | undefined
+): number | null {
+  return sharedCommunityPartnershipIdFromSlugParam(value);
+}
+
 function stripHtml(value: string): string {
   return value
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
@@ -567,6 +705,15 @@ export function getMerchantImageUrl(
   if (!image) return null;
   const imageId = typeof image === "string" ? image : image.id;
   return `${getDirectusUrl()}/assets/${imageId}?format=webp&quality=80&width=${width}`;
+}
+
+export function getCommunityPartnershipImageUrl(
+  image: CommunityPartnership["cover_image"],
+  width = 1200
+): string | null {
+  if (!image) return null;
+  const imageId = typeof image === "string" ? image : image.id;
+  return `${getDirectusUrl()}/assets/${imageId}?format=webp&quality=82&width=${width}`;
 }
 
 export function getAnnouncementImageUrl(
@@ -909,6 +1056,87 @@ export async function getMerchantById(
     console.error(`[Merchants] Failed to fetch merchant ${id}:`, errorMessage);
     if (statusCode) {
       console.error(`[Merchants] HTTP Status: ${statusCode}`);
+    }
+
+    if (statusCode === 404 || statusCode === 403) {
+      return {
+        data: null,
+        error: statusCode === 404 ? "NOT_FOUND" : "CMS_UNAVAILABLE",
+      };
+    }
+
+    return {
+      data: null,
+      error: isProbablyNetworkError(error) ? "CMS_UNAVAILABLE" : "UNKNOWN",
+    };
+  }
+}
+
+/**
+ * Fetches a single published community partnership by ID.
+ */
+export async function getCommunityPartnershipById(
+  id: number
+): Promise<CmsResult<CommunityPartnership>> {
+  const client = getDirectusClient();
+  if (!client) {
+    console.error("[CommunityPartnerships] Directus client not configured");
+    return { data: null, error: "CMS_NOT_CONFIGURED" };
+  }
+
+  try {
+    const item = await withTimeout(
+      client.request(
+        readItem("BDI_Community_Partnerships", id, {
+          fields: [
+            "id",
+            "status",
+            "sort",
+            "title",
+            "subtitle",
+            "description",
+            "body",
+            "cover_image.*",
+            "date_created",
+            "date_updated",
+          ],
+        })
+      ),
+      5000
+    );
+
+    if (!item || (item as any).status !== "published") {
+      return { data: null, error: "NOT_FOUND" };
+    }
+
+    return {
+      data: item as CommunityPartnership,
+      error: null,
+    };
+  } catch (error: any) {
+    let errorMessage = "Unknown error";
+    let statusCode: number | null = null;
+
+    if (error?.response) {
+      statusCode = error.response.status;
+      const errorBody = error.response._data || error.response.data;
+      if (errorBody?.errors?.[0]?.message) {
+        errorMessage = errorBody.errors[0].message;
+      } else if (errorBody?.message) {
+        errorMessage = errorBody.message;
+      }
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = String(error);
+    }
+
+    console.error(
+      `[CommunityPartnerships] Failed to fetch community partnership ${id}:`,
+      errorMessage
+    );
+    if (statusCode) {
+      console.error(`[CommunityPartnerships] HTTP Status: ${statusCode}`);
     }
 
     if (statusCode === 404 || statusCode === 403) {

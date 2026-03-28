@@ -1,0 +1,137 @@
+---
+import CommunityPartnershipCard from './CommunityPartnershipCard.astro';
+import {
+    getCommunityPartnerships,
+    getCommunityPartnershipImageUrl,
+    getCommunityPartnershipSlugPath,
+    type CommunityPartnership,
+} from '@lib/directus';
+import { getBackgroundColor, getPaddingClass } from '@utils/styleUtils';
+import type { ThemeColor, PaddingSize } from '@utils/styleUtils';
+
+export interface Props {
+    background?: ThemeColor;
+    paddingTop?: PaddingSize;
+    paddingBottom?: PaddingSize;
+    padding?: PaddingSize;
+    maxItems?: number;
+    partnerships?: CommunityPartnership[];
+    error?: string | null;
+}
+
+const {
+    background = 'base',
+    paddingTop,
+    paddingBottom,
+    padding = 'base',
+    maxItems,
+    partnerships: propPartnerships,
+    error: propError,
+} = Astro.props;
+
+let partnerships: CommunityPartnership[] = [];
+let cmsError: string | null = propError ?? null;
+
+if (propPartnerships) {
+    partnerships = propPartnerships;
+} else {
+    const result = await getCommunityPartnerships();
+    if (result.error) {
+        cmsError = result.error;
+    } else {
+        partnerships = result.data ?? [];
+    }
+}
+
+const hasItemLimit = typeof maxItems === 'number' && maxItems > 0;
+const displayedPartnerships = hasItemLimit ? partnerships.slice(0, maxItems) : partnerships;
+
+const bgColor = getBackgroundColor(background);
+const paddingClass = getPaddingClass({ padding, paddingTop, paddingBottom });
+---
+
+<section class:list={['community-partnerships-section', bgColor, paddingClass]} aria-label="Community partnerships">
+    <div class="container mx-auto px-4">
+        <div class="community-partnerships-header">
+            <h2 class="community-partnerships-title">Community Partnerships in Action</h2>
+            <p class="community-partnerships-subtitle hidden md:block">
+                Explore local organizations we support through strategic Bitcoin education and long-term financial planning.
+            </p>
+        </div>
+
+        {cmsError ? (
+            <div class="community-partnerships-message">
+                <p>Unable to load partnership data right now. Please check back soon.</p>
+            </div>
+        ) : displayedPartnerships.length === 0 ? (
+            <div class="community-partnerships-message">
+                <p>We are onboarding our first partners now. Check back soon for updates.</p>
+            </div>
+        ) : (
+            <div class="community-partnerships-grid">
+                {displayedPartnerships.map((partnership) => (
+                    <CommunityPartnershipCard
+                        title={partnership.title}
+                        subtitle={partnership.subtitle}
+                        description={partnership.description}
+                        imageSrc={getCommunityPartnershipImageUrl(partnership.cover_image, 960)}
+                        href={getCommunityPartnershipSlugPath(partnership)}
+                    />
+                ))}
+            </div>
+        )}
+    </div>
+</section>
+
+<style>
+    .community-partnerships-header {
+        text-align: center;
+        max-width: 760px;
+        margin: 0 auto 2.25rem;
+    }
+
+    .community-partnerships-title {
+        margin: 0 0 0.75rem;
+        font-size: 2rem;
+        line-height: 1.2;
+        font-weight: 800;
+        color: var(--color-body-base);
+    }
+
+    .community-partnerships-subtitle {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.65;
+        color: rgba(var(--color-body-base-rgb), 0.78);
+    }
+
+    .community-partnerships-grid {
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .community-partnerships-message {
+        max-width: 680px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 1.5rem 1rem;
+        border: 1px dashed rgba(var(--color-body-base-rgb), 0.3);
+        border-radius: 12px;
+        color: rgba(var(--color-body-base-rgb), 0.7);
+    }
+
+    @media (min-width: 768px) {
+        .community-partnerships-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.25rem;
+        }
+    }
+
+    @media (min-width: 1100px) {
+        .community-partnerships-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+    }
+</style>
